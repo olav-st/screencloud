@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'ScreenCloudHelper' target in the 'ScreenCloudHelper' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

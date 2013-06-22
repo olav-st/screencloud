@@ -1,0 +1,297 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5E17B285159F301900B2B434 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E17B284159F301900B2B434 /* Cocoa.framework */; };
+		5E17B28F159F301A00B2B434 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E17B28D159F301A00B2B434 /* InfoPlist.strings */; };
+		5E17B291159F301A00B2B434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E17B290159F301A00B2B434 /* main.m */; };
+		5E17B298159F301A00B2B434 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E17B297159F301A00B2B434 /* AppDelegate.m */; };
+		5E17B29B159F301A00B2B434 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5E17B299159F301A00B2B434 /* MainMenu.xib */; };
+		5EF736A8159F3729008D4A37 /* icons_mac.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5EF736A7159F3729008D4A37 /* icons_mac.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5E17B280159F301900B2B434 /* ScreenCloudHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScreenCloudHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E17B284159F301900B2B434 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		5E17B287159F301A00B2B434 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		5E17B288159F301A00B2B434 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		5E17B289159F301A00B2B434 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5E17B28C159F301A00B2B434 /* ScreenCloudHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ScreenCloudHelper-Info.plist"; sourceTree = "<group>"; };
+		5E17B28E159F301A00B2B434 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5E17B290159F301A00B2B434 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5E17B292159F301A00B2B434 /* ScreenCloudHelper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScreenCloudHelper-Prefix.pch"; sourceTree = "<group>"; };
+		5E17B296159F301A00B2B434 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5E17B297159F301A00B2B434 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5E17B29A159F301A00B2B434 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		5E17B2A1159F302300B2B434 /* ScreenCloudHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ScreenCloudHelper.entitlements; sourceTree = "<group>"; };
+		5EF736A7159F3729008D4A37 /* icons_mac.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icons_mac.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5E17B27D159F301900B2B434 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E17B285159F301900B2B434 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5E17B275159F301900B2B434 = {
+			isa = PBXGroup;
+			children = (
+				5EF736A7159F3729008D4A37 /* icons_mac.icns */,
+				5E17B28A159F301A00B2B434 /* ScreenCloudHelper */,
+				5E17B283159F301900B2B434 /* Frameworks */,
+				5E17B281159F301900B2B434 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5E17B281159F301900B2B434 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5E17B280159F301900B2B434 /* ScreenCloudHelper.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E17B283159F301900B2B434 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E17B284159F301900B2B434 /* Cocoa.framework */,
+				5E17B286159F301900B2B434 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5E17B286159F301900B2B434 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E17B287159F301A00B2B434 /* AppKit.framework */,
+				5E17B288159F301A00B2B434 /* CoreData.framework */,
+				5E17B289159F301A00B2B434 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		5E17B28A159F301A00B2B434 /* ScreenCloudHelper */ = {
+			isa = PBXGroup;
+			children = (
+				5E17B2A1159F302300B2B434 /* ScreenCloudHelper.entitlements */,
+				5E17B296159F301A00B2B434 /* AppDelegate.h */,
+				5E17B297159F301A00B2B434 /* AppDelegate.m */,
+				5E17B299159F301A00B2B434 /* MainMenu.xib */,
+				5E17B28B159F301A00B2B434 /* Supporting Files */,
+			);
+			path = ScreenCloudHelper;
+			sourceTree = "<group>";
+		};
+		5E17B28B159F301A00B2B434 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5E17B28C159F301A00B2B434 /* ScreenCloudHelper-Info.plist */,
+				5E17B28D159F301A00B2B434 /* InfoPlist.strings */,
+				5E17B290159F301A00B2B434 /* main.m */,
+				5E17B292159F301A00B2B434 /* ScreenCloudHelper-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5E17B27F159F301900B2B434 /* ScreenCloudHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E17B29E159F301A00B2B434 /* Build configuration list for PBXNativeTarget "ScreenCloudHelper" */;
+			buildPhases = (
+				5E17B27C159F301900B2B434 /* Sources */,
+				5E17B27D159F301900B2B434 /* Frameworks */,
+				5E17B27E159F301900B2B434 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScreenCloudHelper;
+			productName = ScreenCloudHelper;
+			productReference = 5E17B280159F301900B2B434 /* ScreenCloudHelper.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5E17B277159F301900B2B434 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 5E17B27A159F301900B2B434 /* Build configuration list for PBXProject "ScreenCloudHelper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5E17B275159F301900B2B434;
+			productRefGroup = 5E17B281159F301900B2B434 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5E17B27F159F301900B2B434 /* ScreenCloudHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5E17B27E159F301900B2B434 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E17B28F159F301A00B2B434 /* InfoPlist.strings in Resources */,
+				5E17B29B159F301A00B2B434 /* MainMenu.xib in Resources */,
+				5EF736A8159F3729008D4A37 /* icons_mac.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5E17B27C159F301900B2B434 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E17B291159F301A00B2B434 /* main.m in Sources */,
+				5E17B298159F301A00B2B434 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5E17B28D159F301A00B2B434 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5E17B28E159F301A00B2B434 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		5E17B299159F301A00B2B434 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5E17B29A159F301A00B2B434 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5E17B29C159F301A00B2B434 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5E17B29D159F301A00B2B434 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5E17B29F159F301A00B2B434 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ScreenCloudHelper/ScreenCloudHelper.entitlements;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScreenCloudHelper/ScreenCloudHelper-Prefix.pch";
+				INFOPLIST_FILE = "ScreenCloudHelper/ScreenCloudHelper-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		5E17B2A0159F301A00B2B434 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ScreenCloudHelper/ScreenCloudHelper.entitlements;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScreenCloudHelper/ScreenCloudHelper-Prefix.pch";
+				INFOPLIST_FILE = "ScreenCloudHelper/ScreenCloudHelper-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5E17B27A159F301900B2B434 /* Build configuration list for PBXProject "ScreenCloudHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E17B29C159F301A00B2B434 /* Debug */,
+				5E17B29D159F301A00B2B434 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E17B29E159F301A00B2B434 /* Build configuration list for PBXNativeTarget "ScreenCloudHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E17B29F159F301A00B2B434 /* Debug */,
+				5E17B2A0159F301A00B2B434 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5E17B277159F301900B2B434 /* Project object */;
+}

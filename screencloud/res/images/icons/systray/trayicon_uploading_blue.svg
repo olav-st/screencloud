@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   id="svg2987"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="trayicon_uploading_win.svg"
+   inkscape:export-filename="/home/justin/Sites/screencloud/app/webroot/img/screencloud-logo-newb.png"
+   inkscape:export-xdpi="21.280001"
+   inkscape:export-ydpi="21.280001">
+  <defs
+     id="defs2989">
+    <linearGradient
+       id="linearGradient3794"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3796" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="45.254832"
+     inkscape:cx="5.1009936"
+     inkscape:cy="8.8470511"
+     inkscape:document-units="px"
+     inkscape:current-layer="g3787"
+     showgrid="false"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata2992">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Tray Icon"
+     id="g3787"
+     inkscape:groupmode="layer"
+     style="display:inline"
+     transform="translate(-485.50023,-323.43323)">
+    <path
+       style="fill:#66a7e3;fill-opacity:1;stroke:none"
+       d="m 491.17461,326.86924 c -2.36727,0 -4.28633,1.91906 -4.28633,4.28633 0,0.0974 0.004,0.19381 0.01,0.28959 -0.8322,0.40161 -1.39805,1.20705 -1.39805,2.13992 0,1.33632 1.16095,2.41214 2.60304,2.41214 l 10.79392,0 c 1.44209,0 2.60304,-1.07582 2.60304,-2.41214 0,-0.99282 -0.641,-1.8417 -1.56183,-2.21258 0.0226,-0.15011 0.0347,-0.30349 0.0347,-0.45988 0,-1.69639 -1.3752,-3.07158 -3.07159,-3.07158 -0.85206,0 -1.62361,0.34641 -2.18004,0.90672 -0.77123,-1.13399 -2.07185,-1.87852 -3.54664,-1.87852 z m -1.77332,1.30694 c 0.4629,0 0.8384,0.35749 0.8384,0.79935 0,0.44185 -0.3755,0.80043 -0.8384,0.80043 -0.46289,0 -0.83839,-0.35858 -0.83839,-0.80043 0,-0.44186 0.3755,-0.79935 0.83839,-0.79935 z m 4.0987,1.18764 c 1.51771,0 2.76031,1.24498 2.76031,2.76356 0,1.51856 -1.2426,2.76355 -2.76031,2.76355 -1.51771,0 -2.7603,-1.24499 -2.7603,-2.76355 0,-1.51858 1.24259,-2.76356 2.7603,-2.76356 z m 0,1.18763 c -0.87518,0 -1.57267,0.69789 -1.57267,1.57593 0,0.87803 0.69749,1.57592 1.57267,1.57592 0.87518,0 1.57267,-0.69789 1.57267,-1.57592 0,-0.87804 -0.69749,-1.57593 -1.57267,-1.57593 z"
+       id="path3789"
+       inkscape:export-filename="/home/justin/Desktop/screencloud-logo-large.png"
+       inkscape:export-xdpi="72"
+       inkscape:export-ydpi="72"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#82d082;fill-opacity:1;stroke:#285414;stroke-width:0.75871152;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       id="rect2834"
+       d="m 497.09009,326.64601 -3.43292,4.95169 1.71646,0 0,4.95167 3.43291,0 0,-4.95167 1.71647,0 -3.43292,-4.95169 z"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       d="M 7.6931131,11.447034 C 7.0636575,11.380236 6.4442703,11.069855 5.99655,10.596869 5.7088079,10.29289 5.514885,9.9731638 5.3823302,9.5841885 5.2800957,9.2841865 5.240468,9.0365095 5.240468,8.6975353 c 0,-0.808492 0.3141844,-1.5183756 0.911367,-2.0591868 0.7434368,-0.6732598 1.7948103,-0.8891428 2.7428114,-0.5631933 0.094567,0.032515 0.172811,0.069062 0.1738751,0.081215 0.00107,0.012153 -0.150811,0.2423123 -0.3375003,0.5114643 L 8.3915861,7.1572016 8.0931073,7.1460176 C 7.737714,7.1327009 7.5768439,7.1630459 7.3084927,7.2940198 6.7502132,7.5664985 6.4021295,8.1670548 6.4428833,8.7874742 c 0.026305,0.4004503 0.1774632,0.7295679 0.4673479,1.017557 0.145809,0.1448553 0.2207195,0.1992268 0.3888672,0.2822458 0.2725434,0.134561 0.4696134,0.17578 0.7717438,0.161413 0.5934111,-0.02822 1.058112,-0.3305851 1.3265947,-0.8631795 l 0.087619,-0.1738111 0,0.9082626 0,0.908262 -0.093913,0.05989 c -0.262819,0.167596 -0.7268057,0.318654 -1.1039835,0.359419 -0.2385359,0.02578 -0.3472966,0.02569 -0.5940466,-4.95e-4 l 0,0 z"
+       id="path2986"
+       inkscape:connector-curvature="0"
+       transform="translate(485.50023,323.43323)" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       d="M 3.6130441,6.3026774 C 3.0313217,6.0992926 2.871796,5.3920124 3.3113594,4.9651139 3.4900496,4.7915722 3.7897961,4.7041779 4.0450255,4.7512058 4.8494821,4.8994327 5.0005876,5.9151677 4.2701431,6.2644525 4.1466843,6.3234882 4.0985812,6.3338365 3.9276382,6.3381352 3.7813781,6.3418131 3.6981497,6.3324324 3.6130441,6.3026774 z"
+       id="path2988"
+       inkscape:connector-curvature="0"
+       transform="translate(485.50023,323.43323)" />
+  </g>
+</svg>

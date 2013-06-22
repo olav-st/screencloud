@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/email_activationLink.png</file>
+        <file>images/wizard_background.png</file>
+        <file>images/tutorial_systemtray_mac.png</file>
+    </qresource>
+    <qresource prefix="/forms">
+        <file alias="settings-ftp.ui">forms/settings-ftp.ui</file>
+        <file alias="settings-saveToFile.ui">forms/settings-saveToFile.ui</file>
+        <file alias="settings-screencloud.ui">forms/settings-screencloud.ui</file>
+        <file alias="settings-sftp.ui">forms/settings-sftp.ui</file>
+        <file alias="settings-defaultUploader.ui">forms/settings-defaultUploader.ui</file>
+    </qresource>
+    <qresource prefix="/shortcuts">
+        <file alias="fullscreen.png">images/shortcut_fullscreen_mac.png</file>
+        <file alias="selection.png">images/shortcut_selection_mac.png</file>
+        <file alias="window.png">images/shortcut_window_mac.png</file>
+    </qresource>
+</RCC>

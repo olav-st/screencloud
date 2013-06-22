@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Name=ScreenCloud
+Comment=Capture and share screenshots easily
+Icon=screencloud
+Type=Application
+Exec=/opt/screencloud/screencloud.sh
+Hidden=false
+NoDisplay=false
+Categories=Network;RemoteAccess
+Terminal=false

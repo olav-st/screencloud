@@ -1,0 +1,18 @@
+# Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
+pkgname=screencloud
+pkgver=1.0.2
+pkgrel=1
+pkgdesc="Easy to use screenshot sharing application."
+arch=('i686')
+url="https://screencloud.net/"
+license=('custom')
+depends=('qt' 'qoauth' 'qca' 'qca-ossl' 'sdl' 'sdl_mixer')
+makedepends=()
+options=('emptydirs')
+source=("$pkgname-$pkgver-arch.tar.gz")
+md5sums=("137071cbe2a04e4cbc482d7bef29cd8b") #generate with 'makepkg -g'
+build() {
+  echo "Copying files..."
+  cp -R "$srcdir/usr" "$pkgdir"
+  cp -R "$srcdir/opt" "$pkgdir"
+}
