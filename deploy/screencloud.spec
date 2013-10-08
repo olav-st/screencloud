@@ -17,11 +17,11 @@ BuildRequires: gcc-c++ cmake
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
 BuildRequires: libqt4-devel libqxt-devel libqca2-devel qoauth-devel quazip-devel libssh2-devel libSDL-devel libSDL_mixer-devel qtsingleapplication-devel
-Requires: libqt4 libqxt1 libqca2 libqoauth1 libquazip1 libssh2-1 libSDL-1_2-0 libSDL_mixer-1_2-0 qtsingleapplication
+Requires: libqt4 libqxt1 libqca2 libqoauth1 libquazip1 libssh2-1 libSDL-1_2-0 libSDL_mixer-1_2-0 qtsingleapplication qt4-qtscript
 %endif
 %if 0%{?fedora_version}
 BuildRequires: libqt4-devel libqxt-devel qca2-devel qoauth-devel quazip-devel libssh2-devel SDL-devel SDL_mixer-devel qtsingleapplication-devel
-Requires: qt libqxt qca2 qca-ossl qoauth quazip libssh2 SDL SDL_mixer qtsingleapplication
+Requires: qt libqxt qca2 qca-ossl qoauth quazip libssh2 SDL SDL_mixer qtsingleapplication qtscriptbindings
 %endif
 
 %description
