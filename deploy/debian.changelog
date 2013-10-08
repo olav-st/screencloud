@@ -1,0 +1,19 @@
+screencloud (1.1.2) unstable; urgency=low
+
+  * Added OpenSuse build service package
+
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Wed, 02 Oct 2012 17:57:12 -0000
+
+screencloud (1.1.0) unstable; urgency=low
+
+  * Added plugin support
+  * Updated icons to match new website design
+  * Added option to reset hotkeys to default
+
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Tue, 20 Nov 2012 19:57:12 -0000
+
+screencloud (1.0.2) unstable; urgency=low
+
+  * Added multi monitor support
+
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Mon, 09 July 2012 12:00:00 -0000

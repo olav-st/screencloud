@@ -79,6 +79,7 @@ FOREACH(mod ${QXT_MODULES})
         /sw
         /usr/lib
         /usr/lib/x86_64-linux-gnu
+        /usr/lib/i386-linux-gnu
         /usr/local
         /usr
         /opt/local

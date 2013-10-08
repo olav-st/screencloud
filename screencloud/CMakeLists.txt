@@ -258,7 +258,6 @@ endif(QSINGLEAPPLICATION_FOUND)
 find_package(QCA2 REQUIRED)
 if(QCA2_FOUND)
     include_directories(${QCA2_INCLUDE_DIR})
-    include_directories(${QCA2_INCLUDE_DIR}/QtCrypto)
     add_definitions(${QCA2_DEFINITIONS})
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ${QCA2_LIBRARIES}
@@ -347,91 +346,21 @@ if(UNIX)
     install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud")
     install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.sh" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud")
     #install libraries
-    get_filename_component(QXT_QXTCORE_LIB_RELEASE_PATH ${QXT_QXTCORE_LIB_RELEASE} PATH)
-    FILE(GLOB QXT_QXTCORE_LIB_WITH_SYMLINKS ${QXT_QXTCORE_LIB_RELEASE_PATH}/libQxtCore.so*)
-    set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QXT_QXTCORE_LIB_WITH_SYMLINKS})
-    get_filename_component(QXT_QXTGUI_LIB_RELEASE_PATH ${QXT_QXTGUI_LIB_RELEASE} PATH)
-    FILE(GLOB QXT_QXTGUI_LIB_WITH_SYMLINKS ${QXT_QXTGUI_LIB_RELEASE_PATH}/libQxtGui.so*)
-    set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QXT_QXTGUI_LIB_WITH_SYMLINKS})
-    get_filename_component(QUAZIP_LIBRARY_PATH ${QUAZIP_LIBRARY} PATH)
-    FILE(GLOB QUAZIP_LIBRARY_WITH_SYMLINKS ${QUAZIP_LIBRARY_PATH}/libquazip.so*)
-    set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QUAZIP_LIBRARY_WITH_SYMLINKS})
-    install(FILES ${BUNDLED_LIBS} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    get_filename_component(QSINGLEAPPLICATION_LIBRARY_PATH ${QSINGLEAPPLICATION_LIBRARY} PATH)
+    FILE(GLOB QSINGLEAPPLICATION_LIBRARY_WITH_SYMLINKS ${QSINGLEAPPLICATION_LIBRARY_PATH}/libQtSolutions_SingleApplication-head.so*)
+    set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QSINGLEAPPLICATION_LIBRARY_WITH_SYMLINKS})
+    #get_filename_component(QXT_QXTCORE_LIB_RELEASE_PATH ${QXT_QXTCORE_LIB_RELEASE} PATH)
+    #FILE(GLOB QXT_QXTCORE_LIB_WITH_SYMLINKS ${QXT_QXTCORE_LIB_RELEASE_PATH}/libQxtCore.so*)
+    #set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QXT_QXTCORE_LIB_WITH_SYMLINKS})
+    #get_filename_component(QXT_QXTGUI_LIB_RELEASE_PATH ${QXT_QXTGUI_LIB_RELEASE} PATH)
+    #FILE(GLOB QXT_QXTGUI_LIB_WITH_SYMLINKS ${QXT_QXTGUI_LIB_RELEASE_PATH}/libQxtGui.so*)
+    #set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QXT_QXTGUI_LIB_WITH_SYMLINKS})
+    #get_filename_component(QUAZIP_LIBRARY_PATH ${QUAZIP_LIBRARY} PATH)
+    #FILE(GLOB QUAZIP_LIBRARY_WITH_SYMLINKS ${QUAZIP_LIBRARY_PATH}/libquazip.so*)
+    #set(BUNDLED_LIBS ${BUNDLED_LIBS} ${QUAZIP_LIBRARY_WITH_SYMLINKS})
+    
+    #install(FILES ${BUNDLED_LIBS} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    
     #Install sfx
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endif(UNIX)
-
-#Package build settings
-if(BUILD_DEB)
-    find_program(DPKG_PROGRAM dpkg DOC "dpkg program of Debian-based systems")
-
-    set(CPACK_GENERATOR "DEB")
-    set(CPACK_PACKAGE_NAME "screencloud")
-    set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://screencloud.net")
-    set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
-    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Olav S. Thoresen <olav.s.th@gmail.com>")
-    set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Easy to use screenshot tool.
- .
- Take a screenshot using one of the 3 hotkeys or simply click the
- ScreenCloud tray icon. You can choose where you want to save your screenshot.
- .
- If you choose to upload your screenshot to the screencloud website, a
- link will automatically be copied to your clipboard. You can share
- this link with your friends or colleagues via email or in an IM
- conversation. All they have to do is click the link and look at your screenshot.
- .
- ScreenCloud also offers FTP and SFTP uploading if you want to use
- your own server")
-    set(CPACK_DEBIAN_PACKAGE_NAME "screencloud")
-    set(CPACK_DEBIAN_PACKAGE_VERSION "${VERSION_STRING}")
-    SET(CPACK_STRIP_FILES TRUE)
-    set(CPACK_PACKAGE_EXECUTABLES "screencloud;screencloud.sh")
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.14), libgcc1 (>= 1:4.1.1), libqca2 (>= 2.0.2), libqoauth1, libqt4-network (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-script (>= 4:4.5.3), libqtcore4 (>= 4:4.8.0), libqtgui4 (>= 4:4.8.0), libsdl-mixer1.2, libsdl1.2debian (>= 1.2.10-1), libssh2-1 (>= 1.0), libstdc++6 (>= 4.2.1), libqca2-plugin-ossl, libqtscript4-core (>=0.2.0), libqtscript4-gui (>=0.2.0), libqtscript4-network (>=0.2.0)")
-
-    set(CPACK_DEBIAN_PACKAGE_SECTION "net")
-
-    string(TOLOWER "${CPACK_PACKAGE_NAME}" CPACK_PACKAGE_NAME_LOWERCASE)
-    execute_process(
-        COMMAND ${DPKG_PROGRAM} --print-architecture
-        OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME_LOWERCASE}_${CPACK_DEBIAN_PACKAGE_VERSION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
-
-
-    include(CPack)
-endif(BUILD_DEB)
-
-if(BUILD_RPM)
-    set(CPACK_GENERATOR "RPM")
-    set(CPACK_PACKAGE_NAME "screencloud")
-    set(CPACK_RPM_PACKAGE_VENDOR "Olav S. Thoresen <olav.s.th@gmail.com>")
-    set(CPACK_RPM_PACKAGE_SUMMARY "Easy to use screenshot sharing application")
-    set(CPACK_RPM_PACKAGE_DESCRIPTION "Easy to use screenshot tool.
- .
- Take a screenshot using one of the 3 hotkeys or simply click the
- ScreenCloud tray icon. You can choose where you want to save your screenshot.
- .
- If you choose to upload your screenshot to the screencloud website, a
- link will automatically be copied to your clipboard. You can share
- this link with your friends or colleagues via email or in an IM
- conversation. All they have to do is click the link and look at your screenshot.
- .
- ScreenCloud also offers FTP and SFTP uploading if you want to use
- your own server.")
-    set(CPACK_RPM_PACKAGE_NAME "screencloud")
-    set(CPACK_RPM_PACKAGE_VERSION "${VERSION_STRING}")
-    set(CPACK_STRIP_FILES TRUE)
-    set(CPACK_PACKAGE_EXECUTABLES "screencloud;screencloud.sh")
-    set(CPACK_RPM_PACKAGE_REQUIRES "qt, qoauth, qca2, qca-ossl, quazip, SDL, SDL_mixer, qtscriptbindings")
-
-    string(TOLOWER "${CPACK_PACKAGE_NAME}" CPACK_PACKAGE_NAME_LOWERCASE)
-    execute_process(
-        COMMAND ${ARCH_PROGRAM}
-        OUTPUT_VARIABLE CPACK_RPM_PACKAGE_ARCHITECTURE
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME_LOWERCASE}_${CPACK_RPM_PACKAGE_VERSION}.${CPACK_RPM_PACKAGE_ARCHITECTURE}")
-
-    include(CPack)
-endif(BUILD_RPM)

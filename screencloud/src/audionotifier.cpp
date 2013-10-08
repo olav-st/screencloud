@@ -22,10 +22,12 @@ AudioNotifier::AudioNotifier()
     int audio_buffers = 4096;
     if (SDL_Init(SDL_INIT_AUDIO) != 0) {
         qDebug() << "Unable to initialize SDL:" << SDL_GetError();
+        SDL_Quit();
         return;
     }
     if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
             qDebug() << "Unable to initialize audio: " << Mix_GetError();
+            SDL_Quit();
             return;
     }
 }

@@ -17,7 +17,19 @@ else (QSINGLEAPPLICATION_INCLUDE_DIR AND QSINGLEAPPLICATION_LIBRARY)
   endif(NOT WIN32)
 
   set(PC_QSINGLEAPPLICATION_LIBRARY_DIRS ${PC_QSINGLEAPPLICATION_LIBRARY_DIRS}
-    
+    /usr/lib/qtsingleapplication
+    /usr/lib/QtSolutions
+    /usr/lib/
+    /usr/lib/x86_64-linux-gnu/qtsingleapplication
+    /usr/lib/x86_64-linux-gnu/
+    /usr/lib/i386-linux-gnu/
+    /usr/lib64/QtSolutions
+    /usr/lib64/qt4
+    /usr/lib64
+    /usr/local/lib/qtsingleapplication
+    /usr/local/lib
+    /opt/local/lib/qtsingleapplication
+    /opt/local/lib/
   )
   set(PC_QSINGLEAPPLICATION_INCLUDE_DIRS ${PC_QSINGLEAPPLICATION_INCLUDE_DIRS}
     qt-solutions/qtsingleapplication/src
@@ -32,9 +44,9 @@ else (QSINGLEAPPLICATION_INCLUDE_DIR AND QSINGLEAPPLICATION_LIBRARY)
     /opt/local/include
   )
 
-  find_library(QSINGLEAPPLICATION_LIBRARY NAMES QtSolutions_SingleApplication-head QtSolutions_SingleApplication qtsingleapplication
+  find_library(QSINGLEAPPLICATION_LIBRARY NAMES QtSolutions_SingleApplication-head QtSolutions_SingleApplication QtSolutions_SingleApplication-2.6 qtsingleapplication QtSingleApplication
     HINTS ${PC_QSINGLEAPPLICATION_LIBRARY_DIR} ${PC_QSINGLEAPPLICATION_LIBRARY_DIRS}
-    PATH_SUFFIXES lib64/ lib/ qtsingleapplication/lib64 qtsingleapplication/lib qt-solutions/qtsingleapplication/lib64 qt-solutions/qtsingleapplication/lib
+    PATH_SUFFIXES lib64/ lib/ qtsingleapplication/lib64 qtsingleapplication/lib QtSolutions/ qt-solutions/qtsingleapplication/lib64 qt-solutions/qtsingleapplication/lib
     PATHS
     ${CMAKE_CURRENT_BINARY_DIR}/qt-solutions/
     ${CMAKE_CURRENT_BINARY_DIR}/qtsingleapplication/
@@ -47,8 +59,11 @@ else (QSINGLEAPPLICATION_INCLUDE_DIR AND QSINGLEAPPLICATION_LIBRARY)
     ${CMAKE_SOURCE_DIR}/../qtsingleapplication/
     /usr/lib/qtsingleapplication
     /usr/lib/
+    /usr/lib64/QtSolutions/
+    /usr/lib64/
     /usr/lib/x86_64-linux-gnu/qtsingleapplication
     /usr/lib/x86_64-linux-gnu/
+    /usr/lib/i386-linux-gnu/
     /usr/local/lib/qtsingleapplication
     /usr/local/lib
     /opt/local/lib/qtsingleapplication
@@ -57,7 +72,7 @@ else (QSINGLEAPPLICATION_INCLUDE_DIR AND QSINGLEAPPLICATION_LIBRARY)
   )
   find_path(QSINGLEAPPLICATION_INCLUDE_DIR qtsingleapplication.h
     HINTS ${PC_QSINGLEAPPLICATION_INCLUDEDIR} ${PC_QSINGLEAPPLICATION_INCLUDE_DIRS}
-    PATH_SUFFIXES src/ qtsingleapplication/src qt-solutions/qtsingleapplication/src
+    PATH_SUFFIXES src/ qtsingleapplication/src qt-solutions/qtsingleapplication/src QtSolutions/
     PATHS
     ${CMAKE_CURRENT_BINARY_DIR}/qt-solutions/
     ${CMAKE_CURRENT_BINARY_DIR}/qtsingleapplication/

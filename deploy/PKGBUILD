@@ -1,0 +1,24 @@
+# Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
+pkgname=screencloud
+pkgver=1.1.2
+pkgrel=1
+pkgdesc="Easy to use screenshot sharing application."
+arch=('i686 x86_64')
+url="https://screencloud.net/"
+license=('gpl-2')
+depends=('qt4' 'qoauth' 'qca' 'qca-ossl' 'sdl' 'sdl_mixer' 'qt4-solutions' 'quazip' 'libqxt')
+makedepends=('cmake' 'gcc' 'qt4' 'qoauth' 'qca' 'qca-ossl' 'sdl' 'sdl_mixer' 'qt4-solutions' 'quazip' 'libqxt')
+options=('emptydirs')
+source=("$pkgname-$pkgver.tar.gz")
+md5sums=("6904a2d4da746d7a32bd48ff27bf3889")
+install=screencloud.install
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  cmake ./ $(< $srcdir/$pkgname-$pkgver/screencloud-apikeys.txt)
+  make
+}
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir/" install
+}

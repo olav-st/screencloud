@@ -2,11 +2,12 @@
 
 [Desktop Entry]
 Name=ScreenCloud
+GenericName=Screenshot sharing tool
 Comment=Capture and share screenshots easily
 Icon=screencloud
 Type=Application
 Exec=/opt/screencloud/screencloud.sh
 Hidden=false
 NoDisplay=false
-Categories=Network;RemoteAccess
+Categories=Internet;RemoteAccess;Graphics;2DGraphics;System;TrayIcon;
 Terminal=false
