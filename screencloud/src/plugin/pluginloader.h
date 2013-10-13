@@ -53,5 +53,7 @@ static QScriptValue loadUiFile(QScriptContext *context, QScriptEngine *scriptEng
 static QScriptValue encrypt(QScriptContext *context, QScriptEngine *scriptEngine);
 static QScriptValue decrypt(QScriptContext *context, QScriptEngine *scriptEngine);
 static QScriptValue alert(QScriptContext *context, QScriptEngine *scriptEngine);
+static QScriptValue getOSName(QScriptContext *context, QScriptEngine *scriptEngine);
+static QScriptValue getOSShortname(QScriptContext *context, QScriptEngine *scriptEngine);
 
 #endif // PLUGINLOADER_H

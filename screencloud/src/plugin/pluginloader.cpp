@@ -47,6 +47,13 @@ PluginLoader::PluginLoader(QObject *parent, QList<Uploader*> *uploadersPtr) :
     security.setProperty("decrypt", dec, QScriptValue::ReadOnly);
     QScriptValue alertFunc = scriptEngine.newFunction(alert);
     scriptEngine.globalObject().setProperty("alert", alertFunc, QScriptValue::ReadOnly);
+    //Create global object OS and set static functions
+    QScriptValue osObj = scriptEngine.newObject();
+    QScriptValue getOSNameFunc = scriptEngine.newFunction(getOSName);
+    osObj.setProperty("getName", getOSNameFunc);
+    QScriptValue getOSShortnameFunc = scriptEngine.newFunction(getOSShortname);
+    osObj.setProperty("getShortname", getOSShortnameFunc);
+    scriptEngine.globalObject().setProperty("OS", osObj);
     //Global vars
     scriptEngine.evaluate("loadQtBindings(\"qt.core\"); var settings = new QSettings(\"screencloud\", \"ScreenCloud\");");
 }
@@ -329,4 +336,14 @@ static QScriptValue alert(QScriptContext *context, QScriptEngine *scriptEngine)
     QString message = context->argument(0).toString();
     QMessageBox::critical(NULL, "Alert", message);
     return scriptEngine->undefinedValue();
+}
+static QScriptValue getOSName(QScriptContext *context, QScriptEngine *scriptEngine)
+{
+    QScriptValue ret = QScriptValue(scriptEngine, QString(OPERATING_SYSTEM));
+    return ret;
+}
+static QScriptValue getOSShortname(QScriptContext *context, QScriptEngine *scriptEngine)
+{
+    QScriptValue ret = QScriptValue(scriptEngine, QString(OS_SHORTNAME));
+    return ret;
 }

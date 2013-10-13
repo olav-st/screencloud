@@ -42,7 +42,6 @@ QString Security::encrypt(QString input)
     //check if encryption succeded
     if (!cipher.ok())
     {
-        qDebug() << "Encryption failed !";
         return "";
     }
     return QString(qPrintable(QCA::arrayToHex(encryptedData.toByteArray())));
@@ -73,8 +72,6 @@ QString Security::decrypt(QString input)
     //check if decryption succeded
     if (!cipher.ok())
     {
-        qDebug() << "Decryption failed!";
-        qDebug() << "Tried to decrypt: " << input;
         return "";
     }
     return QString(decryptedData.data());
