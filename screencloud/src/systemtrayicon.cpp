@@ -50,16 +50,6 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
         qDebug() << "Using bundled icon:" << QString(":/systray/trayicon_" + color + ".svg");
     }
     //Create uploaders
-    ScreencloudUploader* s = new ScreencloudUploader(this);
-    FileUploader* f = new FileUploader(this);
-    FTPUploader* ftp = new FTPUploader(this);
-    SFTPUploader* sftp = new SFTPUploader(this);
-    uploaders << s << f << ftp << sftp;
-#ifdef Q_OS_MACX
-    ClipboardUploader *c = new ClipboardUploader(this);
-    uploaders << c;
-#endif
-
 #ifdef PLUGIN_SUPPORT
     if(PluginLoader::countInstalledPlugins() > 0)
     {

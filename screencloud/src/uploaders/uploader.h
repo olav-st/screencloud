@@ -39,13 +39,12 @@ public:
     virtual void setupSettingsUi();
     virtual void openSettingsDialog(QWidget* parent = 0);
     QDialog* loadUiFile(QString filename);
-    virtual void setFilename(QString newName);
+    virtual void setFilename(QString newName) = 0;
     QString& getName();
     QString& getShortName();
     QIcon& getIcon();
-    virtual bool isConfigured();
-    virtual QString getFilename();
-    QString validateFilename(QString filename);
+    virtual bool isConfigured() = 0;
+    virtual QString getFilename() = 0;
 protected:
     QString name, shortname, filename, format;
     QString screenshotName;

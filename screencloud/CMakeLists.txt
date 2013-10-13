@@ -79,10 +79,6 @@ set( screencloud_SOURCES
     src/systemtrayicon.cpp
     src/screenshotthumbview.cpp
     src/transparentrubberband.cpp
-    src/uploaders/fileuploader.cpp
-    src/uploaders/ftpuploader.cpp
-    src/uploaders/screenclouduploader.cpp
-    src/uploaders/sftpuploader.cpp
     src/uploaders/uploader.cpp
     src/utils/security.cpp
     src/utils/updater.cpp
@@ -123,10 +119,6 @@ set( screencloud_HEADERS_MOC
     src/systemtrayicon.h
     src/screenshotthumbview.h
     src/transparentrubberband.h
-    src/uploaders/fileuploader.h
-    src/uploaders/ftpuploader.h
-    src/uploaders/screenclouduploader.h
-    src/uploaders/sftpuploader.h
     src/uploaders/uploader.h
     src/utils/updater.h
     src/preferencesdialog.h   
@@ -140,11 +132,6 @@ set(screencloud_HEADERS
 set( screencloud_FORMS
     src/datetimedialog.ui
     src/downloadupdatedialog.ui
-    res/forms/settings-defaultUploader.ui
-    res/forms/settings-ftp.ui
-    res/forms/settings-saveToFile.ui
-    res/forms/settings-screencloud.ui
-    res/forms/settings-sftp.ui
     src/logindialog.ui
     src/licensesdialog.ui
     src/savescreenshotdialog.ui

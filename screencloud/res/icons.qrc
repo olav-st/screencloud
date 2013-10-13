@@ -9,11 +9,6 @@
         <file alias="trayicon_uploading_gray.svg">images/icons/systray/trayicon_uploading_gray.svg</file>
     </qresource>
     <qresource prefix="/uploaders">
-        <file alias="clipboard.png">images/uploaders/clipboard.png</file>
         <file alias="default.png">images/uploaders/default.png</file>
-        <file alias="file.png">images/uploaders/file.png</file>
-        <file alias="ftp.png">images/uploaders/ftp.png</file>
-        <file alias="screencloud.png">images/uploaders/screencloud.png</file>
-        <file alias="sftp.png">images/uploaders/sftp.png</file>
     </qresource>
 </RCC>

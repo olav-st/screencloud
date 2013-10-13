@@ -79,17 +79,6 @@ void Uploader::openSettingsDialog(QWidget* parent)
 
 }
 
-void Uploader::setFilename(QString newName)
-{
-    this->filename = validateFilename(newName);
-    if(!this->filename.contains("." + format))
-    {
-        this->filename.append("." + format);
-    }
-    this->filenameSetExternally = true;
-}
-
-
 void Uploader::settingsDialogAccepted()
 {
     this->saveSettings();
@@ -98,30 +87,6 @@ void Uploader::settingsDialogAccepted()
 void Uploader::setupSettingsUi()
 {
 }
-
-QString Uploader::getFilename()
-{
-    return this->filename;
-}
-
-QString Uploader::validateFilename(QString filename)
-{
-    qDebug() << "Validating filename: " << filename;
-#ifdef Q_OS_WIN
-    filename.replace( QRegExp(
-             "[^"
-                "A-Z,a-z,0-9,"
-                "\\^,\\&,\\',\\@,"
-                "\\{,\\},\\[,\\],"
-                "\\,,\\$,\\=,\\!,"
-                "\\-,\\#,\\(,\\),"
-                "\\%,\\.,\\+,\\~,\\_"
-             "]"), " " );
-    qDebug() << "Valid: " << filename;
-#endif
-    return filename;
-}
-
 
 
 
