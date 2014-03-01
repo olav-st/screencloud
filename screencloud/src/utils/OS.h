@@ -18,16 +18,19 @@
 #define OPERATING_SYSTEM "Windows"
 #define OS_SHORTNAME "win"
 #define OS_DEFAULT_COLOR "blue"
+#define LUA_NATIVE_MODULE_EXTENSION "dll"
 #endif
 #ifdef Q_OS_MACX
 #define OPERATING_SYSTEM "Mac OS X"
 #define OS_SHORTNAME "mac"
 #define OS_DEFAULT_COLOR "black"
+#define LUA_NATIVE_MODULE_EXTENSION "dylib"
 #endif
 #ifdef Q_OS_LINUX
 #define OPERATING_SYSTEM "Linux"
 #define OS_SHORTNAME "linux"
 #define OS_DEFAULT_COLOR "gray"
+#define LUA_NATIVE_MODULE_EXTENSION "so"
 #endif
 
 #endif // OS_H

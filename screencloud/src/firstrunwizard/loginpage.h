@@ -24,10 +24,8 @@
 #include <QNetworkReply>
 #include <QEventLoop>
 #include <QApplication>
-#include <QtOAuth>
 #include <QSettings>
 #include <firstrunwizard/firstrunwizard.h>
-#include <utils/security.h>
 
 class LoginPage : public QWizardPage
 {

@@ -31,16 +31,16 @@ void Updater::loadSettings()
 {
     QSettings settings("screencloud", "ScreenCloud");
     settings.beginGroup("account");
-    token = settings.value("token", "").toByteArray();
-    tokenSecret = settings.value("token_secret", "").toByteArray();
+    token = settings.value("token", "").toString();
+    tokenSecret = settings.value("token-secret", "").toString();
     settings.endGroup();
     settings.beginGroup("updates");
 #ifdef Q_OS_WIN
-    notifyUpdates = settings.value("notify_updates", true).toBool();
+    notifyUpdates = settings.value("check-updates-automatically", true).toBool();
 #elif defined(Q_OS_LINUX) && !defined(UBUNTU_SOFTWARE_CENTER)
-    notifyUpdates = settings.value("notify_updates", true).toBool();
+    notifyUpdates = settings.value("check-updates-automatically", true).toBool();
 #else
-    notifyUpdates = settings.value("notify_updates", false).toBool();
+    notifyUpdates = settings.value("check-updates-automatically", false).toBool();
 #endif
     settings.endGroup();
 }
@@ -56,29 +56,19 @@ void Updater::checkForUpdates(int flag)
     {
         notifyUpdates = false;
     }
-    QOAuth::Interface *qoauth = new QOAuth::Interface;
-    qoauth->setConsumerKey(CONSUMER_KEY_SCREENCLOUD);
-    qoauth->setConsumerSecret(CONSUMER_SECRET_SCREENCLOUD);
-    QByteArray url( "http://screencloud.net/1.0/updates/check_version.xml" );
-    // create a request parameters map
-    QOAuth::ParamMap map;
-    map.insert("version", VERSION);
-    map.insert("os", OS_SHORTNAME);
-
-    // construct the body string
-    QByteArray params =
-    qoauth->createParametersString( url, QOAuth::POST,
-                                        token, tokenSecret,QOAuth::HMAC_SHA1, map,
-                                        QOAuth::ParseForRequestContent );
+    QUrl url( "https://screencloud.net/1.0/updates/check_version.xml" );
+    // create a request parameters
+    url.addQueryItem("version", VERSION);
+    url.addQueryItem("os", OS_SHORTNAME);
+    //Send the req
     QNetworkRequest request;
-    request.setUrl(QUrl(url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    manager->post(request, params);
+    request.setUrl(url);
+    manager->get(request);
 #endif
 }
 void Updater::showUpdateNotification()
 {
-    qDebug() << "There is a new verision available (" << latestVersion << ")";
+    INFO("There is a new verision available (" + latestVersion + ")");
     if(notifyUpdates)
     {
         //Show update message
@@ -92,10 +82,10 @@ void Updater::showUpdateNotification()
         msgBox.setText("There's a new version of ScreenCloud avaiable. Do you want to download it?");
 #endif
 #ifdef Q_OS_MACX
-        msgBox.setText("There's a new version of ScreenCloud avaiable. You can download it from the <b>Mac App Store</b> or the <a href=\"http://www.screencloud.net\">ScreenCloud website</a>.");
+        msgBox.setText("There's a new version of ScreenCloud avaiable. You can download it from the <b>Mac App Store</b> or the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>.");
 #endif
 #ifdef Q_OS_LINUX
-        msgBox.setText("There's a new version of ScreenCloud avaiable. You can download it from the <b>Ubuntu Software Center</b> or the <a href=\"http://www.screencloud.net\">ScreenCloud website</a>.");
+        msgBox.setText("There's a new version of ScreenCloud avaiable. You can download it from the <b>Ubuntu Software Center</b> or the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>.");
 #endif
         int selection = msgBox.exec();
         if(selection == QMessageBox::Yes)

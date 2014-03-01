@@ -1,6 +1,5 @@
 post_install() {
     xdg-icon-resource forceupdate
-    ln -sf /opt/screencloud/screencloud.sh /usr/bin/screencloud
 }
 
 post_upgrade() {

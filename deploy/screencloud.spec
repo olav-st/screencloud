@@ -6,7 +6,7 @@ Name:           screencloud
 License:        GPL-2.0
 Group:          Productivity/Networking/Other
 Summary:        Easy to use screenshot sharing application
-Version:        1.1.2
+Version:        1.1.3
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source:         %{name}-%{version}.tar.gz	
@@ -16,12 +16,12 @@ BuildRequires: gcc-c++ cmake
 
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
-BuildRequires: libqt4-devel libqxt-devel libqca2-devel qoauth-devel quazip-devel libssh2-devel libSDL-devel libSDL_mixer-devel qtsingleapplication-devel
-Requires: libqt4 libqxt1 libqca2 libqoauth1 libquazip1 libssh2-1 libSDL-1_2-0 libSDL_mixer-1_2-0 qtsingleapplication qt4-qtscript
+BuildRequires: libqt4-devel libqxt-devel quazip-devel libPythonQt-devel
+Requires: libqt4 libqxt1 libquazip1 qt4-qtscript
 %endif
 %if 0%{?fedora_version}
-BuildRequires: libqt4-devel libqxt-devel qca2-devel qoauth-devel quazip-devel libssh2-devel SDL-devel SDL_mixer-devel qtsingleapplication-devel
-Requires: qt libqxt qca2 qca-ossl qoauth quazip libssh2 SDL SDL_mixer qtsingleapplication qtscriptbindings
+BuildRequires: libqt4-devel libqxt-devel quazip-devel pythonqt-devel
+Requires: qt libqxt quazip pythonqt
 %endif
 
 %description
@@ -88,10 +88,11 @@ cmake ../%{name}-%{version} $(cat ../%{name}-%{version}/screencloud-apikeys.txt)
 /opt/%{name}/%{name}.sh
 /opt/%{name}/sfx/notification.wav
 /opt/%{name}/sfx/shutter.wav
+/opt/%{name}/modules/ScreenCloud.py
 
  
 %changelog
-* Mon Sep 30 2013 Olav S Thoresen <olav.s.th@gmail.com> - 1.1.3
-- New release
-- Spec remade for using cmake
-- rpmlintrc added
+* Sat Mar 1 2014 Olav S Thoresen <olav.s.th@gmail.com> - 1.1.3
+- New plugin format (python plugins)
+- All URLs use https by default
+- Removed various dependencies

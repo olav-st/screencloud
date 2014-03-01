@@ -13,7 +13,7 @@
 //
 
 #include "firstrunwizard.h"
-#include <QDebug>
+#include <utils/log.h>
 
 FirstRunWizard::FirstRunWizard(QWidget *parent) :
     QWizard(parent)
@@ -22,8 +22,9 @@ FirstRunWizard::FirstRunWizard(QWidget *parent) :
     setPage(Page_Login, new LoginPage);
     setPage(Page_NewAccount, new NewAccountPage);
     setPage(Page_Activate, new ActivatePage);
-    setPage(Page_Tutorial1, new TutorialPage1);
+    setPage(Page_Welcome, new WelcomePage);
     setPage(Page_KeyboardShortcuts, new ShortcutsPage);
+    setPage(Page_OnlineServices, new OnlineServicesPage);
     setPage(Page_Finished, new FinishedPage);
 
     setStartId(Page_Intro);

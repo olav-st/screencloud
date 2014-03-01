@@ -19,12 +19,11 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QDomDocument>
-#include <QtOAuth>
 #include <QMessageBox>
-#include <QDebug>
+#include <utils/log.h>
 #include <QSettings>
-#include <downloadupdatedialog.h>
 #include <utils/OS.h>
+#include <dialog/downloadupdatedialog.h>
 
 class Updater : public QObject
 {
@@ -38,7 +37,7 @@ public:
 
 private:
     QNetworkAccessManager *manager;
-    QByteArray token, tokenSecret;
+    QString token, tokenSecret;
     bool notifyUpdates;
     QString latestVersion;
 public:

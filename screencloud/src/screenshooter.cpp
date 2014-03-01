@@ -13,56 +13,81 @@
 //
 
 #include "screenshooter.h"
-#include <QDebug>
+#include <utils/log.h>
 
 ScreenShooter::ScreenShooter(QObject *parent) :
     QObject(parent)
 {
-
 }
 
-void ScreenShooter::takeFullscreenScreenshot()
+void ScreenShooter::setScreenshot(const QImage &s)
 {
-    pixmap = QPixmap(); // clear image
-    pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-    playNotificationSound();
-    emit screenshotTaken(&pixmap);
+    screenshot = s;
+    emit screenshotTaken();
 }
 
-void ScreenShooter::takeSelectionScreenshot(QRect* area, QPixmap* fullScreenShot)
+QImage ScreenShooter::getScreenshot()
 {
-    disconnect(sender(), SIGNAL(selectionDone(QRect*, QPixmap*)), this, SLOT(takeSelectionScreenshot(QRect*, QPixmap*)));
-    QPixmap areaScreenshot = fullScreenShot->copy(*area);
-    playNotificationSound();
-    emit screenshotTaken(&areaScreenshot);
+    return screenshot;
 }
 
-void ScreenShooter::takeWindowScreenshot()
+void ScreenShooter::setCaptureWindowBorders(const bool &value)
+{
+    captureWindowBorders = value;
+    emit captureWindowBordersChanged();
+}
+
+bool ScreenShooter::getCaptureWindowBorders()
+{
+    return captureWindowBorders;
+}
+
+void ScreenShooter::setCaptureMouseCursor(const bool &value)
+{
+    captureMouseCursor = value;
+    emit captureMouseCursorChanged();
+}
+
+bool ScreenShooter::getCaptureMouseCursor()
+{
+    return captureMouseCursor;
+}
+
+const QImage &ScreenShooter::captureFullscreen()
+{
+    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+    screenshot = pixmap.toImage();
+    setScreenshot(pixmap.toImage());
+    return screenshot;
+}
+
+const QImage &ScreenShooter::captureSelection(const QRect &area)
+{
+    QPixmap fullScreenShot = QPixmap::grabWindow(QApplication::desktop()->winId());
+    QPixmap areaScreenshot = fullScreenShot.copy(area);
+    setScreenshot(areaScreenshot.toImage());
+    return screenshot;
+}
+
+const QImage &ScreenShooter::captureWindow(WId windowID)
 {
     QSettings settings("screencloud", "ScreenCloud");
-    settings.beginGroup("general");
-    captureWindowBorders = settings.value("capture_window_borders", false).toBool();
+    settings.beginGroup("main");
+    captureWindowBorders = settings.value("capture-window-borders", false).toBool();
     settings.endGroup();
 #ifdef Q_OS_MACX
     captureWindowBorders = true;
 #endif
 
-    pixmap = QPixmap(); // clear image
     WId id = QxtWindowSystem::activeWindow();
+    QPixmap pixmap;
     if(captureWindowBorders)
     {
         QRect winGeom = QxtWindowSystem::windowGeometry(id);
-        qDebug() << "winGeom" << winGeom;
         pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), winGeom.x(), winGeom.y(), winGeom.width(),winGeom.height());
     }else {
         pixmap = QPixmap::grabWindow(id);
     }
-    playNotificationSound();
-    emit screenshotTaken(&pixmap);
-}
-
-void ScreenShooter::playNotificationSound()
-{
-    notifier.play("sfx/shutter.wav");
-
+    setScreenshot(pixmap.toImage());
+    return screenshot;
 }

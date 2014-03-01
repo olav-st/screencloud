@@ -14,9 +14,8 @@
 
 #include "uploader.h"
 #include <QPushButton>
-#include <QDebug>
+#include <utils/log.h>
 #include <QApplication>
-#include <QUiLoader>
 
 Uploader::Uploader(QObject* parent) : QObject(parent)
 {
@@ -24,14 +23,17 @@ Uploader::Uploader(QObject* parent) : QObject(parent)
     shortname = "defaultUploader";
     icon = QIcon(":/uploaders/default.png");
     buffer = new QBuffer(&bufferArray, this);
-    settingsWidget = new QWidget();
-    settingsDialog = new QDialog();
     filename = "Default filename.png";
     filenameSetExternally = false;
 }
 Uploader::~Uploader()
 {
     delete buffer;
+}
+
+void Uploader::upload(const QImage &screenshot, QString name)
+{
+    emit finished();
 }
 
 QString& Uploader::getName()
@@ -47,6 +49,7 @@ QIcon& Uploader::getIcon()
 {
     return icon;
 }
+
 bool Uploader::isConfigured()
 {
     QSettings settings("screencloud", "ScreenCloud");
@@ -58,35 +61,12 @@ bool Uploader::isConfigured()
     return this->configured;
 }
 
-void Uploader::openSettingsDialog(QWidget* parent)
+QString Uploader::getFilename()
 {
-    //Open settings dialog
-    QUiLoader loader;
-    QFile file(":/forms/settings-" + this->shortname + ".ui");
-    if(!file.open(QFile::ReadOnly))
-    {
-        file.setFileName(qApp->applicationDirPath() + QDir::separator() + this->shortname + QDir::separator() + "settings.ui");
-        file.open(QFile::ReadOnly);
-    }
-    settingsWidget = loader.load(&file, parent);
-    settingsDialog = dynamic_cast<QDialog*>(settingsWidget);
-    file.close();
-    connect(settingsDialog, SIGNAL(accepted()), this, SLOT(settingsDialogAccepted()));
-
-    setupSettingsUi();
-    settingsDialog->setWindowTitle(this->name + " settings");
-    settingsDialog->exec();
-
+    return QString();
 }
 
-void Uploader::settingsDialogAccepted()
-{
-    this->saveSettings();
-}
-
-void Uploader::setupSettingsUi()
+void Uploader::showSettingsUI(QWidget* parent)
 {
 }
-
-
 

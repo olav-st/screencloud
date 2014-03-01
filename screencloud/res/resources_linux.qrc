@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/email_activationLink.png</file>
         <file>images/tutorial_systemtray_linux.png</file>
         <file>images/wizard_background.png</file>
     </qresource>

@@ -33,8 +33,8 @@ bool FinishedPage::validatePage()
 {
     bool runOnStartup = checkbox_runOnStartup->isChecked();
     QSettings settings("screencloud", "ScreenCloud");
-    settings.beginGroup("general");
-    settings.setValue("run_on_startup", runOnStartup);
+    settings.beginGroup("main");
+    settings.setValue("run-on-startup", runOnStartup);
     Startup::setRunOnStartup(runOnStartup);
     settings.endGroup();
     return true;

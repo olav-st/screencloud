@@ -15,34 +15,36 @@
 #define PLUGININSTALLER_H
 
 #include <QObject>
-#include <QFtp>
 #include <QFile>
+#include <QNetworkAccessManager>
 class PluginInstaller : public QObject
 {
     Q_OBJECT
 public:
     explicit PluginInstaller(QObject *parent = 0);
-    void installPlugin(QString s);
-    void extractPlugin(QString s);
+    void installPlugin(QString url);
+    void extractPlugin(QString zipFilename);
+    void analyzeAndMovePlugin(QString exctractedDirPath);
     bool uninstallPlugin(QString s);
     bool removeDir(const QString & dirName);
+    QUrl checkUrlForRedirect(QUrl checkUrl);
+    bool copyFolder(QString sourceFolder, QString destFolder);
     bool isInstalling();
     QString getShortname();
     
 private:
-    QString shortname;
-    QFtp* ftp;
+    QNetworkAccessManager netManager;
     QFile* tmpFile;
     int id_connect, id_login, id_cd, id_get, id_close;
     bool installing;
 
-signals:
-    void installationProgress(QString, quint64, quint64);
+Q_SIGNALS:
+    void installationProgress(int);
     void pluginInstalled(QString);
+    void installationError(QString);
     
-public slots:
-    void ftpCommandFinished(int id, bool error);
-    void updateDataTransferProgress(qint64 done, qint64 total);
+public Q_SLOTS:
+    void fileDownloaded(QNetworkReply* reply);
 };
 
 #endif // PLUGININSTALLER_H

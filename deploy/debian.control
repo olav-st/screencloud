@@ -5,7 +5,7 @@ Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
 
 Package: screencloud
 Architecture: any
-Depends: libc6, libgcc1, libqca2 (>= 2.0.2), libqoauth1, libqt4-designer (>= 4:4.5.3), libqt4-network (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-svg (>= 4:4.5.3), libqtcore4 (>= 4:4.8.0), libqtgui4 (>= 4:4.8.0), libsdl-mixer1.2, libsdl1.2debian (>= 1.2.10-1), libssh2-1 (>= 1.0), libstdc++6, libqca2-plugin-ossl, libqtsingleapplication, libqxt-core0, libqxt-gui0, libquazip0, libqtscript4-qtbindings
+Depends: libc6, libgcc1, libqt4-designer (>= 4:4.5.3), libqt4-network (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-svg (>= 4:4.5.3), libqtcore4 (>= 4:4.8.0), libqtgui4 (>= 4:4.8.0), libstdc++6, libqxt-core0, libqxt-gui0, libquazip0, libpythonqt2.0
 Homepage: http://screencloud.net
 Description: Easy to use screenshot sharing application
  ScreenCloud is an easy to use screenshot tool.

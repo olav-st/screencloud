@@ -2,5 +2,5 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: screencloud
 
 Files: *
-Copyright: 2013 Olav S Thoresen
+Copyright: 2014 Olav Sortland Thoresen
 License: GPL

@@ -19,28 +19,25 @@
 #include <QMenu>
 #include <QAction>
 #include <QSettings>
-
-#include <QxtGlobalShortcut>
 #include <QKeySequence>
+#include <QxtGlobalShortcut>
 #include <QList>
 #include <QMenu>
 #include <QTimer>
 #include <QDesktopServices>
 #include <QClipboard>
-#include "uploaders/uploader.h"
-#include "screenshooter.h"
-#include "selectionoverlay.h"
-#include "audionotifier.h"
-#include "savescreenshotdialog.h"
-#include "preferencesdialog.h"
 #include <utils/OS.h>
-#include <utils/security.h>
-#include <utils/updater.h>
-#include <downloadupdatedialog.h>
-#ifdef PLUGIN_SUPPORT
-    #include <plugin/pluginloader.h>
-#endif
 #include <QNetworkProxy>
+#include <QMessageBox>
+#include <screenshooter.h>
+#include <uploaders/uploader.h>
+#include <dialog/preferencesdialog.h>
+#include <utils/updater.h>
+#include <gui-elements/selectionoverlay.h>
+#include <plugin/pluginmanager.h>
+#include <uploadmanager.h>
+#include <dialog/savescreenshotdialog.h>
+#include <audionotifier.h>
 
 class SystemTrayIcon : public QSystemTrayIcon
 {
@@ -53,12 +50,17 @@ public:
     void createGlobalShortcuts();
     void createSystrayActions();
     void createSystrayMenu();
+    void populateSaveSubmenu();
     void updateSystrayMenu();
     void updateGlobalShortcuts();
-    int findUploaderIndex(QString shortname);
+    void saveScreenshot();
 private:
-    QByteArray token, tokenSecret;
-    ScreenShooter* screenShooter;
+    QString token, tokenSecret;
+    ScreenShooter screenShooter;
+    PreferencesDialog* prefDialog;
+    UploadManager uploadManager;
+    QString currentUploaderShortname;
+    QImage screenshot;
     QMenu *trayMenu;
     QMenu *traySubmenuUploaders;
     QIcon systrayIconNormal;
@@ -66,9 +68,6 @@ private:
 #ifdef Q_OS_MACX
     QIcon systrayIconSelected;
 #endif
-    Uploader* activeUploader;
-    int activeUploaderIndex;
-    QList<Uploader*> uploaders;
     QMap<QString, QAction*> submenuActions; //Key is uploaders shortname
     QPixmap fullScreenshot;
     SelectionOverlay* overlay;
@@ -92,28 +91,26 @@ private:
     bool showSaveDialog;
     bool uploading;
     bool showNotifications;
-    Updater* updater;
+    Updater updater;
     bool autoCheckUpdates;
     AudioNotifier notifier;
-#ifdef PLUGIN_SUPPORT
-    PluginLoader* pluginLoader;
-#endif
     bool useProxy, autodetectProxy;
     QNetworkProxy proxy;
 private slots:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void openDashboard();
+    void captureFullScreenAction();
+    void captureSelectionAction();
+    void captureWindowAction();
     void captureFullScreen();
-    void captureSelection();
+    void captureSelection(QRect& rect, QPixmap& fullScreenshot);
     void captureWindow();
     void openPreferencesWindow();
     void quitApplication();
-    void saveScreenshot(QPixmap* screenshot);
     void openSelectionOverlay();
     void uploaderMenuItemChecked(bool checked);
     void screenshotSaved(QString url);
     void screenshotSavingError(QString errorMessage);
-    void reloadPlugins(QList<QString> installed, QList<QString> uninstalled);
     void setAppProxy();
 
 };

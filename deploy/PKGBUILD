@@ -1,13 +1,13 @@
 # Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
 pkgname=screencloud
-pkgver=1.1.2
+pkgver=1.1.3
 pkgrel=1
 pkgdesc="Easy to use screenshot sharing application."
 arch=('i686 x86_64')
 url="https://screencloud.net/"
 license=('gpl-2')
-depends=('qt4' 'qoauth' 'qca' 'qca-ossl' 'sdl' 'sdl_mixer' 'qt4-solutions' 'quazip' 'libqxt' 'qtscriptgenerator')
-makedepends=('cmake' 'gcc' 'qt4' 'qoauth' 'qca' 'qca-ossl' 'sdl' 'sdl_mixer' 'qt4-solutions' 'quazip' 'libqxt')
+depends=('qt4' 'quazip' 'libqxt' 'qtscriptgenerator' 'pythonqt')
+makedepends=('cmake' 'gcc' 'qt4' 'quazip' 'libqxt' 'pythonqt')
 options=('emptydirs')
 source=("$pkgname-$pkgver.tar.gz")
 md5sums=("6904a2d4da746d7a32bd48ff27bf3889")
@@ -21,4 +21,7 @@ build() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
   make DESTDIR="$pkgdir/" install
+  #Create a symlink in /usr/bin
+  mkdir -p $pkgdir/usr/bin
+  ln -sf /opt/screencloud/screencloud.sh $pkgdir/usr/bin/screencloud
 }

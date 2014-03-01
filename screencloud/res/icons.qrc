@@ -1,14 +1,16 @@
 <RCC>
     <qresource prefix="/systray">
-        <file alias="trayicon_black.svg">images/icons/systray/trayicon_black.svg</file>
-        <file alias="trayicon_black_selected.svg">images/icons/systray/trayicon_black_selected.svg</file>
-        <file alias="trayicon_blue.svg">images/icons/systray/trayicon_blue.svg</file>
-        <file alias="trayicon_gray.svg">images/icons/systray/trayicon_gray.svg</file>
-        <file alias="trayicon_uploading_black.svg">images/icons/systray/trayicon_uploading_black.svg</file>
-        <file alias="trayicon_uploading_blue.svg">images/icons/systray/trayicon_uploading_blue.svg</file>
-        <file alias="trayicon_uploading_gray.svg">images/icons/systray/trayicon_uploading_gray.svg</file>
+        <file alias="trayicon-black-selected.svg">icons/systray/trayicon-black-selected.svg</file>
+        <file alias="trayicon-black.svg">icons/systray/trayicon-black.svg</file>
+        <file alias="trayicon-blue.svg">icons/systray/trayicon-blue.svg</file>
+        <file alias="trayicon-gray.svg">icons/systray/trayicon-gray.svg</file>
+        <file alias="trayicon-uploading-black.svg">icons/systray/trayicon-uploading-black.svg</file>
+        <file alias="trayicon-uploading-blue.svg">icons/systray/trayicon-uploading-blue.svg</file>
+        <file alias="trayicon-uploading-gray.svg">icons/systray/trayicon-uploading-gray.svg</file>
     </qresource>
     <qresource prefix="/uploaders">
-        <file alias="default.png">images/uploaders/default.png</file>
+        <file alias="screencloud.png">icons/uploaders/screencloud.png</file>
+        <file alias="default.png">icons/uploaders/default.png</file>
+        <file alias="clipboard.png">icons/uploaders/clipboard.png</file>
     </qresource>
 </RCC>

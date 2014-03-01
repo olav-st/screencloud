@@ -1,3 +1,11 @@
+screencloud (1.1.3) unstable; urgency=low
+
+  * New plugin format (python plugins)
+  * All urls are https by default
+  * Removed a few dependencies
+
+ -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 1 Mar 2014 19:10:51 -0000
+
 screencloud (1.1.2) unstable; urgency=low
 
   * Added OpenSuse build service package

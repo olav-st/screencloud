@@ -14,28 +14,27 @@
 
 #include "audionotifier.h"
 
-AudioNotifier::AudioNotifier()
+AudioNotifier::AudioNotifier(QObject *parent)
 {
-    int audio_rate = 22050;
-    Uint16 audio_format = AUDIO_S16SYS;
-    int audio_channels = 2;
-    int audio_buffers = 4096;
-    if (SDL_Init(SDL_INIT_AUDIO) != 0) {
-        qDebug() << "Unable to initialize SDL:" << SDL_GetError();
-        SDL_Quit();
-        return;
+    QAudioDeviceInfo info = QAudioDeviceInfo::defaultOutputDevice();
+    // Set up the format, eg.
+    format = info.preferredFormat();
+
+    if (!info.isFormatSupported(format)) {
+        WARNING("Audio format not supported by backend. Trying nearest format.");
+        format = info.nearestFormat(format);
     }
-    if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
-            qDebug() << "Unable to initialize audio: " << Mix_GetError();
-            SDL_Quit();
-            return;
+
+    audioOutput = new QAudioOutput(format, this);
+    if(audioOutput->error() != QAudio::NoError)
+    {
+        WARNING("Error while creating audio output. Code: " + QString::number(audioOutput->error()) + " Device: " + info.deviceName());
     }
 }
 
 AudioNotifier::~AudioNotifier()
 {
-    Mix_CloseAudio();
-    SDL_Quit();
+    delete audioOutput;
 }
 
 
@@ -48,21 +47,42 @@ void AudioNotifier::play(QString file)
     settings.endGroup();
     if(soundNotifications)
     {
-        Mix_Chunk *sound = NULL;
+        if(audioFile.isOpen())
+        {
+            audioFile.close();
+        }
 #ifdef Q_OS_MACX
-        sound = Mix_LoadWAV(QString(qApp->applicationDirPath() + "/../Resources/" + file).toLocal8Bit());
+        audioFile.setFileName(QString(qApp->applicationDirPath() + "/../Resources/" + file).toLocal8Bit());
 #else
-        sound = Mix_LoadWAV(QString(qApp->applicationDirPath() + QDir::separator() + file).toLocal8Bit());
+        audioFile.setFileName(QString(qApp->applicationDirPath() + QDir::separator() + file).toLocal8Bit());
 #endif
-        if(sound == NULL) {
-                qDebug() << "Unable to load WAV file: " << Mix_GetError();
-                return;
+        audioFile.open(QIODevice::ReadOnly);
+        //Make sure we dont try to play the wav headers
+        for(int i = 0; i < audioFile.size(); ++i) {
+            QByteArray ba = audioFile.peek(4);
+            if (ba == "data") {
+                audioFile.read(8);
+                break;
+            } else {
+                audioFile.read(1);
+            }
         }
-        channel = Mix_PlayChannel(-1, sound, 0);
-        if(channel == -1) {
-                qDebug() << "Unable to play WAV file: " << Mix_GetError();
+        if(audioOutput == NULL)
+        {
+            WARNING("Failed to play " + file + " audioOutput == NULL");
+        }else if (!audioFile.exists())
+        {
+            WARNING(file + " does not exist.");
+        }else if(!audioFile.isOpen())
+        {
+            WARNING(file + " is not open.");
+        }else
+        {
+            audioOutput->start(&audioFile);
         }
-        while(Mix_Playing(channel) != 0);
-        Mix_FreeChunk(sound);
+        if(audioOutput->error() != QAudio::NoError)
+        {
+            WARNING("Error while playing " + file + ". Code: " + QString::number(audioOutput->error()));
+        }
     }
 }

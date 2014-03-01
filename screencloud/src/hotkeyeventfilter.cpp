@@ -13,7 +13,7 @@
 //
 
 #include "hotkeyeventfilter.h"
-#include <QDebug>
+#include <utils/log.h>
 
 HotkeyEventFilter::HotkeyEventFilter(QObject *parent) :
     QObject(parent)
@@ -25,38 +25,18 @@ bool HotkeyEventFilter::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         int keycode = keyEvent->key();
-        switch(keyEvent->key())
+        Qt::Key key = static_cast<Qt::Key>(keycode);
+        if( key == Qt::Key_unknown )
         {
-            case Qt::Key_CapsLock:
-                return QObject::eventFilter(obj, event);
-            case Qt::Key_NumLock:
-                return QObject::eventFilter(obj, event);
-            case Qt::Key_Return:
-                emit keyRecorded("Return");
-            case Qt::Key_Enter:
-                emit keyRecorded("Enter");
-            case Qt::Key_Shift:
-                emit keyRecorded("Shift");
-                break;
-            case Qt::Key_Control:
-                emit keyRecorded("Ctrl");
-                break;
-            case Qt::Key_Alt:
-                emit keyRecorded("Alt");
-                break;
-            case Qt::Key_AltGr:
-                emit keyRecorded("AltGr");
-                break;
-            case Qt::Key_Meta:
-                emit keyRecorded("Super");
-                break;
-            default:
-                emit keyRecorded(QKeySequence(keycode).toString(QKeySequence::NativeText));
-                break;
+            return false;
         }
-        return true;
+        // Checking for key combinations
+        Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
+
+        emit keyRecorded(key, keycode, modifiers);
     } else {
         // standard event processing
         return QObject::eventFilter(obj, event);
     }
+    return true;
 }

@@ -23,13 +23,14 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QtOAuth>
 #include <QApplication>
 #include <QEventLoop>
 #include <QDomDocument>
 #include <QCheckBox>
 #include <QHBoxLayout>
-#include "clickablelabel.h"
+#include <QDateTime>
+#include <utils/network.h>
+#include <gui-elements/clickablelabel.h>
 
 class NewAccountPage : public QWizardPage
 {

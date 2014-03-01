@@ -36,7 +36,7 @@ int IntroPage::nextId() const
     } else if(radiobtn_haveAccount->isChecked()) {
         return FirstRunWizard::Page_Login;
     }else{
-        return FirstRunWizard::Page_Tutorial1;
+        return FirstRunWizard::Page_Welcome;
     }
 
 }
@@ -60,8 +60,8 @@ bool IntroPage::validatePage()
             //Save the users selection
             QSettings settings("screencloud", "ScreenCloud");
             settings.beginGroup("account");
-            settings.setValue("logged_in", false);
-            settings.setValue("user_denied_login", true);
+            settings.setValue("logged-in", false);
+            settings.setValue("user-denied-login", true);
             settings.endGroup();
             return true;
         }

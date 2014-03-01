@@ -17,88 +17,71 @@
 #include <uploaders/scripteduploader.h>
 #endif
 #include <QNetworkProxy>
-#ifdef Q_OS_MACX
-#include "uploaders/clipboarduploader.h"
-#endif
 
 SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     QSystemTrayIcon(parent)
 {
-    screenShooter = new ScreenShooter();
-    //overlay = new SelectionOverlay(); /* Bugs out on mac for no particular reason */
     overlay = NULL;
-    connect(screenShooter, SIGNAL(screenshotTaken(QPixmap*)), SLOT(saveScreenshot(QPixmap*)));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-    updater = new Updater(this);
+    setToolTip("ScreenCloud - Idle");
     // load icon
     if(color.isEmpty())
     {
         color = OS_DEFAULT_COLOR;
     }
-    systrayIconUploading = QIcon::fromTheme("screencloud-uploading", QIcon(QString(":/systray/trayicon_uploading_") + color + ".svg"));
+    systrayIconUploading = QIcon::fromTheme("screencloud-uploading", QIcon(QString(":/systray/trayicon-uploading-") + color + ".svg"));
 #ifdef Q_OS_MACX
-    systrayIconNormal.addFile(QString(":/systray/trayicon_") + color + ".svg");
-    systrayIconNormal.addFile(QString(":/systray/trayicon_") + color + QString("_selected") + ".svg", QSize(), QIcon::Selected);
+    systrayIconNormal.addFile(QString(":/systray/trayicon-") + color + ".svg");
+    systrayIconNormal.addFile(QString(":/systray/trayicon-") + color + QString("-selected") + ".svg", QSize(), QIcon::Selected);
 #else
-    systrayIconNormal = QIcon::fromTheme("screencloud-idle", QIcon(QString(":/systray/trayicon_") + color + ".svg"));
+    systrayIconNormal = QIcon::fromTheme("screencloud-idle", QIcon(QString(":/systray/trayicon-") + color + ".svg"));
 #endif
+    if(systrayIconNormal.isNull())
+    {
+        WARNING("Failed to load tray icon. Make sure QtSvg is installed.");
+        QMessageBox::warning(NULL, "Failed to load tray icon.", "Failed to load tray icon. Make sure QtSvg is installed.");
+    }
     if(QIcon::hasThemeIcon("screencloud-idle"))
     {
-        qDebug() << "Using icon from theme:" << QIcon::themeName();
+        INFO(tr("Using icon from theme: ") + QIcon::themeName())
     }else
     {
-        qDebug() << "Using bundled icon:" << QString(":/systray/trayicon_" + color + ".svg");
+        INFO(tr("Using bundled icon: ") + QString(":/systray/trayicon-" + color + ".svg"))
     }
+    // set up and show the system tray icon
+    setIcon(systrayIconNormal);
+
+    connect(&uploadManager, SIGNAL(finished(QString)), this, SLOT(screenshotSaved(QString)));
+    connect(&uploadManager, SIGNAL(error(QString)), this, SLOT(screenshotSavingError(QString)));
     //Create uploaders
-#ifdef PLUGIN_SUPPORT
-    if(PluginLoader::countInstalledPlugins() > 0)
-    {
-        pluginLoader = new PluginLoader(this, &uploaders);
-        pluginLoader->loadPlugins();
-    }else
-    {
-        pluginLoader = NULL;
-    }
-#endif
-    activeUploader = NULL;
     loadSettings();
-    if(activeUploaderIndex > -1 && activeUploaderIndex < uploaders.size())
-    {
-        activeUploader = uploaders.at(activeUploaderIndex);
-    }else
-    {
-        activeUploaderIndex = -1;
-        QSettings settings("screencloud", "ScreenCloud");
-        settings.beginGroup("general");
-        settings.remove("active_uploader_index");
-        settings.endGroup();
-    }
     setAppProxy();
     createGlobalShortcuts();
     createSystrayActions();
     createSystrayMenu();
-    // set up and show the system tray icon
-    setIcon(systrayIconNormal);
     setContextMenu(trayMenu);
+    prefDialog = new PreferencesDialog(NULL, &uploadManager);
     uploading = false;
     //Check for new version
     if(autoCheckUpdates)
     {
-        updater->checkForUpdates();
+        updater.checkForUpdates();
     }
 }
 
 SystemTrayIcon::~SystemTrayIcon()
 {
     delete trayMenu;
-    delete updater;
-    QList<Uploader*>::iterator it = uploaders.begin();
-    while(it != uploaders.end())
-    {
-        delete *it;
-        ++it;
-    }
-    uploaders.clear();
+    //delete traySubmenuUploaders;
+    delete openDashboardAct;
+    delete cptFullScreenAct;
+    delete cptSelectionAct;
+    delete cptWindowAct;
+    delete preferencesAct;
+    delete quitAct;
+    delete askMeAct;
+    delete overlay;
+    delete prefDialog;
 }
 
 
@@ -110,67 +93,68 @@ void SystemTrayIcon::loadSettings()
     keySqSelection = QKeySequence(settings.value("captureSelection", tr("Shift+Alt+2")).toString());
     keySqWindow = QKeySequence(settings.value("captureWindow", "Shift+Alt+3").toString());
     settings.endGroup();
-    settings.beginGroup("general");
+    settings.beginGroup("main");
     screenshotDelay = settings.value("delay", 300).toInt();
-    activeUploaderIndex = settings.value("active_uploader_index", -1).toInt();
-    showSaveDialog = settings.value("show_save_dialog", true).toBool();
-    showNotifications = settings.value("show_notifications", true).toBool();
+    showSaveDialog = settings.value("show-save-dialog", true).toBool();
+    showNotifications = settings.value("show-notifications", true).toBool();
+    currentUploaderShortname = settings.value("current-uploader", uploadManager.getDefaultService()).toString();
     settings.endGroup();
     settings.beginGroup("account");
-    token = settings.value("token", "").toByteArray();
-    tokenSecret = settings.value("token_secret", "").toByteArray();
+    token = settings.value("token", "").toString();
+    tokenSecret = settings.value("token-secret", "").toString();
     settings.endGroup();
     settings.beginGroup("updates");
-    autoCheckUpdates = settings.value("check_updates_automatically", true).toBool();
+    autoCheckUpdates = settings.value("check-updates-automatically", true).toBool();
     settings.endGroup();
     settings.beginGroup("network");
-    useProxy = settings.value("use_proxy", false).toBool();
-    autodetectProxy = settings.value("autodetect_proxy", false).toBool();
+    useProxy = settings.value("use-proxy", false).toBool();
+    autodetectProxy = settings.value("autodetect-proxy", false).toBool();
     settings.endGroup();
 }
 
 void SystemTrayIcon::saveSettings()
 {
     QSettings settings("screencloud", "ScreenCloud");
-    settings.beginGroup("general");
-    settings.setValue("active_uploader_index", activeUploaderIndex);
-    settings.setValue("show_save_dialog", showSaveDialog);
+    settings.beginGroup("main");
+    settings.setValue("show-save-dialog", showSaveDialog);
+    settings.setValue("current-uploader", currentUploaderShortname);
     settings.endGroup();
+    settings.sync();
 }
 void SystemTrayIcon::createGlobalShortcuts()
 {
     hotkeyFullScreen = new QxtGlobalShortcut(keySqFullScreen, this);
-    connect(hotkeyFullScreen, SIGNAL(activated()), this, SLOT(captureFullScreen()));
+    connect(hotkeyFullScreen, SIGNAL(activated()), this, SLOT(captureFullScreenAction()));
     hotkeySelection = new QxtGlobalShortcut(keySqSelection, this);
-    connect(hotkeySelection, SIGNAL(activated()), this, SLOT(captureSelection()));
+    connect(hotkeySelection, SIGNAL(activated()), this, SLOT(captureSelectionAction()));
     hotkeyWindow = new QxtGlobalShortcut(keySqWindow, this);
-    connect(hotkeyWindow, SIGNAL(activated()), this, SLOT(captureWindow()));
+    connect(hotkeyWindow, SIGNAL(activated()), this, SLOT(captureWindowAction()));
 }
 
 
 void SystemTrayIcon::createSystrayActions()
 {
-    openDashboardAct = new QAction("Open Online Dashboard", this);
+    openDashboardAct = new QAction(tr("Open Online Dashboard"), this);
     connect(openDashboardAct, SIGNAL(triggered()), this, SLOT(openDashboard()));
-    cptFullScreenAct = new QAction("Capture Full Screen", this);
+    cptFullScreenAct = new QAction(tr("Capture Full Screen"), this);
     cptFullScreenAct->setShortcut(keySqFullScreen);
-    connect(cptFullScreenAct, SIGNAL(triggered()), this, SLOT(captureFullScreen()));
-    cptSelectionAct = new QAction("Capture Selection", this);
+    connect(cptFullScreenAct, SIGNAL(triggered()), this, SLOT(captureFullScreenAction()));
+    cptSelectionAct = new QAction(tr("Capture Selection"), this);
     cptSelectionAct->setShortcut(keySqSelection);
-    connect(cptSelectionAct, SIGNAL(triggered()), this, SLOT(captureSelection()));
-    cptWindowAct = new QAction("Capture Window", this);
+    connect(cptSelectionAct, SIGNAL(triggered()), this, SLOT(captureSelectionAction()));
+    cptWindowAct = new QAction(tr("Capture Window"), this);
     cptWindowAct->setShortcut(keySqWindow);
-    connect(cptWindowAct, SIGNAL(triggered()), this, SLOT(captureWindow()));
-    preferencesAct = new QAction("Preferences...", this);
+    connect(cptWindowAct, SIGNAL(triggered()), this, SLOT(captureWindowAction()));
+    preferencesAct = new QAction(tr("Preferences..."), this);
     connect(preferencesAct, SIGNAL(triggered()), this, SLOT(openPreferencesWindow()));
-    quitAct = new QAction("Quit", this);
+    quitAct = new QAction(tr("Quit"), this);
     connect(quitAct, SIGNAL(triggered()), this, SLOT(quitApplication()));
     //Sub menu
-    askMeAct = new QAction("Ask me..", this);
+    askMeAct = new QAction(tr("Ask me.."), this);
     askMeAct->setCheckable(true);
     connect(askMeAct, SIGNAL(triggered(bool)), this, SLOT(uploaderMenuItemChecked(bool)));
     submenuActions.insert("askme", askMeAct);
-    if(activeUploaderIndex <= -1)
+    if(showSaveDialog)
     {
         askMeAct->setChecked(true);
     }
@@ -180,7 +164,7 @@ void SystemTrayIcon::createSystrayMenu()
     // build menu
     trayMenu = new QMenu();
     traySubmenuUploaders = new QMenu(trayMenu);
-    traySubmenuUploaders->setTitle("Save to");
+    traySubmenuUploaders->setTitle(tr("Save to"));
     trayMenu->addAction(openDashboardAct);
     trayMenu->addSeparator();
     trayMenu->addAction(cptFullScreenAct);
@@ -190,12 +174,17 @@ void SystemTrayIcon::createSystrayMenu()
     trayMenu->addMenu(traySubmenuUploaders);
     trayMenu->addAction(preferencesAct);
     trayMenu->addAction(quitAct);
+    populateSaveSubmenu();
+}
+
+void SystemTrayIcon::populateSaveSubmenu()
+{
     //Populate submenu
     traySubmenuUploaders->addAction(askMeAct);
     traySubmenuUploaders->addSeparator();
-    for(int i = 0; i < uploaders.size(); i++)
+    for(int i = 0; i < uploadManager.list()->size(); i++)
     {
-        Uploader* u = uploaders.at(i);
+        Uploader* u = uploadManager.list()->at(i);
         QAction* act = new QAction(u->getName(), this);
         act->setCheckable(true);
         if(!u->isConfigured())
@@ -205,7 +194,7 @@ void SystemTrayIcon::createSystrayMenu()
         }
         connect(act, SIGNAL(triggered(bool)), this, SLOT(uploaderMenuItemChecked(bool)));
         traySubmenuUploaders->addAction(act);
-        if(i == activeUploaderIndex  && !showSaveDialog)
+        if(u->getShortName() == currentUploaderShortname  && !showSaveDialog)
         {
             act->setChecked(true);
         }
@@ -219,14 +208,15 @@ void SystemTrayIcon::createSystrayMenu()
 }
 void SystemTrayIcon::updateSystrayMenu()
 {
+    traySubmenuUploaders->clear();
+    populateSaveSubmenu();
     QAction* act;
     for(int i = 0; i < traySubmenuUploaders->actions().size(); i++)
     {
         act = traySubmenuUploaders->actions().at(i);
-        if(i == activeUploaderIndex + 2 && !showSaveDialog)
+        if(i != 0 && !showSaveDialog)
         {
             act->setCheckable(true);
-            act->setChecked(true);
         }else
         {
             act->setChecked(false);
@@ -238,8 +228,8 @@ void SystemTrayIcon::updateSystrayMenu()
         traySubmenuUploaders->actions().at(0)->setChecked(true);
     }
     //Update if the uploader has been configured
-    QList<Uploader*>::iterator it = uploaders.begin();
-    while(it != uploaders.end())
+    QList<Uploader*>::iterator it = uploadManager.list()->begin();
+    while(it != uploadManager.list()->end())
     {
         Uploader* u = *it;
         QAction* act = submenuActions[u->getShortName()];
@@ -247,6 +237,10 @@ void SystemTrayIcon::updateSystrayMenu()
         {
             act->setEnabled(true);
             act->setCheckable(true);
+        }else
+        {
+            act->setEnabled(false);
+            act->setCheckable(false);
         }
         ++it;
     }
@@ -259,16 +253,28 @@ void SystemTrayIcon::updateGlobalShortcuts()
     hotkeyWindow->setShortcut(keySqWindow);
 }
 
-int SystemTrayIcon::findUploaderIndex(QString shortname)
+void SystemTrayIcon::saveScreenshot()
 {
-    for(int i = 0; i < uploaders.size(); i++)
+    loadSettings();
+    updateSystrayMenu();
+    if(showSaveDialog)
     {
-        if(uploaders.at(i)->getShortName() == shortname)
+        SaveScreenshotDialog save(0, screenshot, &uploadManager);
+        int selection = save.exec();
+        if(selection == QMessageBox::Accepted)
         {
-            return i;
+            uploading = true;
+            setIcon(systrayIconUploading);
+            setToolTip("ScreenCloud - Uploading");
+            uploadManager.upload(screenshot, save.getUploaderShortname(), save.getName(), false);
         }
+    }else
+    {
+        uploading = true;
+        setIcon(systrayIconUploading);
+        setToolTip("ScreenCloud - Uploading");
+        uploadManager.upload(screenshot, currentUploaderShortname, uploadManager.getUploader(currentUploaderShortname)->getFilename(), false);
     }
-    return -1;
 }
 
 void SystemTrayIcon::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -283,32 +289,28 @@ void SystemTrayIcon::iconActivated(QSystemTrayIcon::ActivationReason reason)
 }
 void SystemTrayIcon::openDashboard()
 {
-    QOAuth::Interface *qoauth = new QOAuth::Interface;
-    qoauth->setConsumerKey(CONSUMER_KEY_SCREENCLOUD);
-    qoauth->setConsumerSecret(CONSUMER_SECRET_SCREENCLOUD);
-    QByteArray url( "http://screencloud.net/1.0/users/redirect_dashboard" );
+    QUrl url("https://screencloud.net/1.0/users/redirect_dashboard");
 
-    QOAuth::ParamMap map;
     // construct the parameters string
-    QByteArray content =
-        qoauth->createParametersString( url, QOAuth::GET,
-                                        token, tokenSecret,QOAuth::HMAC_SHA1, map,
-                                        QOAuth::ParseForInlineQuery );
+    url.addQueryItem("oauth_version", "1.0");
+    url.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    url.addQueryItem("oauth_token", token);
+    url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    url.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
+    url.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    url.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
 
-    url.append( content );
-    QUrl qurl = QUrl::fromEncoded(url);
-    QDesktopServices::openUrl(qurl);
+    QDesktopServices::openUrl(url);
 }
-
-void SystemTrayIcon::captureFullScreen()
+void SystemTrayIcon::captureFullScreenAction()
 {
     if(!uploading)
     {
-        QTimer::singleShot(screenshotDelay, screenShooter, SLOT(takeFullscreenScreenshot()));
+        QTimer::singleShot(screenshotDelay, this, SLOT(captureFullScreen()));
     }
 }
 
-void SystemTrayIcon::captureSelection()
+void SystemTrayIcon::captureSelectionAction()
 {
     if(!uploading)
     {
@@ -317,23 +319,46 @@ void SystemTrayIcon::captureSelection()
 
 }
 
-void SystemTrayIcon::captureWindow()
+void SystemTrayIcon::captureWindowAction()
 {
     if(!uploading)
     {
-        QTimer::singleShot(screenshotDelay, screenShooter, SLOT(takeWindowScreenshot()));
+        QTimer::singleShot(screenshotDelay, this, SLOT(captureWindow()));
     }
 
 }
 
+void SystemTrayIcon::captureFullScreen()
+{
+    screenshot = screenShooter.captureFullscreen();
+    notifier.play("sfx/shutter.wav");
+    saveScreenshot();
+}
+
+void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
+{
+    disconnect(sender(), SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
+    QPixmap areaScreenshot = fullScreenShot.copy(rect);
+    screenshot = areaScreenshot.toImage();
+    notifier.play("sfx/shutter.wav");
+    saveScreenshot();
+}
+
+void SystemTrayIcon::captureWindow()
+{
+    screenshot = screenShooter.captureWindow();
+    notifier.play("sfx/shutter.wav");
+    saveScreenshot();
+}
+
 void SystemTrayIcon::openPreferencesWindow()
 {
-    PreferencesDialog prefDialog(NULL, Qt::Dialog, &uploaders, activeUploader);
-    connect(&prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
-    connect(&prefDialog, SIGNAL(pluginsChanged(QList<QString>,QList<QString>)), this, SLOT(reloadPlugins(QList<QString>,QList<QString>)));
-    prefDialog.exec();
-    disconnect(&prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
-    disconnect(&prefDialog, SIGNAL(pluginsChanged(QList<QString>,QList<QString>)), this, SLOT(reloadPlugins(QList<QString>,QList<QString>)));
+    prefDialog->getUserInfo();
+    prefDialog->loadSettings();
+    prefDialog->setupUi();
+    connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
+    prefDialog->exec();
+    disconnect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
     //Update the sytray icon, menus and shortcuts
     loadSettings();
     setAppProxy();
@@ -344,72 +369,9 @@ void SystemTrayIcon::quitApplication()
 {
     saveSettings();
     hide();
-    QCoreApplication::exit(0);
+    qApp->quit();
 }
 
-void SystemTrayIcon::saveScreenshot(QPixmap* screenshot)
-{
-    loadSettings();
-    if(activeUploaderIndex == -1 || activeUploaderIndex >= uploaders.size())
-    {
-        //Ask me
-        showSaveDialog = true;
-    }else
-    {
-        showSaveDialog = false;
-    }
-    QString name;
-    if(showSaveDialog)
-    {
-        SaveScreenshotDialog save(0, screenshot, &uploaders, activeUploader);
-        int selection = save.exec();
-        if(selection == QMessageBox::Accepted)
-        {
-            activeUploader = uploaders.at(save.getUploaderIndex());
-            name = save.getName();
-        }else
-        {
-            activeUploader = NULL;
-        }
-
-    }else
-    {
-        if(activeUploaderIndex > -1 && activeUploaderIndex < uploaders.size())
-        {
-            activeUploader = uploaders.at(activeUploaderIndex);
-        }else
-        {
-            qDebug() << "activeUploaderIndex >= uploaders.size()";
-        }
-    }
-    loadSettings();
-    updateSystrayMenu();
-    //Upload
-    if(activeUploader != NULL && !uploading)
-    {
-        uploading = true;
-        //Set the uploading trayicon
-        setIcon(systrayIconUploading);
-        show();
-        if(screenshot->isNull())
-        {
-            QMessageBox msgBox;
-            msgBox.setIcon(QMessageBox::Critical);
-            msgBox.setText("Failed to take screenshot :(");
-            msgBox.exec();
-        }
-        connect(activeUploader, SIGNAL(uploadingFinished(QString)), this, SLOT(screenshotSaved(QString)));
-        connect(activeUploader, SIGNAL(uploadingError(QString)), this, SLOT(screenshotSavingError(QString)));
-        QImage img = screenshot->toImage();
-        activeUploader->loadSettings();
-        if(!name.isEmpty())
-        {
-            activeUploader->setFilename(name);
-        }
-        activeUploader->upload(&img);
-    }
-
-}
 
 void SystemTrayIcon::openSelectionOverlay()
 {
@@ -426,19 +388,16 @@ void SystemTrayIcon::openSelectionOverlay()
         //Grab a full screenshot to work with
         fullScreenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenSize.x(), screenSize.y(), screenSize.width(), screenSize.height());
         //Show the fullScreenshot in fullscreen with an overlay
-        overlay->setScreenshot(&fullScreenshot);
+        overlay->setScreenshot(fullScreenshot);
         //Move the widget to the screen where the mouse is and resize it
         overlay->resize( QSize(screenSize.width(), screenSize.height()) );
         overlay->setGeometry(screenSize);
         //Set attributes for fullscreen
-        overlay->setDragMode(QGraphicsView::NoDrag);
-        overlay->setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
         overlay->setFocusPolicy( Qt::StrongFocus );
-        overlay->setWindowFlags( Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint );
-        connect(overlay, SIGNAL(selectionDone(QRect*, QPixmap*)), screenShooter, SLOT(takeSelectionScreenshot(QRect*, QPixmap*)));
+        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
         overlay->showFullScreen();
     }
-
 }
 
 void SystemTrayIcon::uploaderMenuItemChecked(bool checked)
@@ -458,52 +417,43 @@ void SystemTrayIcon::uploaderMenuItemChecked(bool checked)
                 action->setChecked(false);
             }else
             {
-                QString shortname = submenuActions.key(action);
-                activeUploaderIndex = findUploaderIndex(shortname);
+                currentUploaderShortname = submenuActions.key(action);
             }
             ++it;
         }
     }
-    if(activeUploaderIndex == -1 || activeUploaderIndex >= uploaders.size())
+    if(currentUploaderShortname == "askme")
     {
         //Ask me
         showSaveDialog = true;
+        currentUploaderShortname == "";
     }else
     {
         showSaveDialog = false;
     }
-    if(activeUploaderIndex > -1)
-    {
-        activeUploader = uploaders.at(activeUploaderIndex);
-    }else
-    {
-        activeUploader = NULL;
-    }
     saveSettings();
-
 
 }
 
 void SystemTrayIcon::screenshotSaved(QString url)
 {
+    loadSettings();
     setIcon(systrayIconNormal);
+    setToolTip(tr("ScreenCloud - Idle"));
     uploading = false;
-    //Disconnect slots
-    disconnect(activeUploader, SIGNAL(uploadingFinished(QString)), this, SLOT(screenshotSaved(QString)));
-    disconnect(activeUploader, SIGNAL(uploadingError(QString)), this, SLOT(screenshotSavingError(QString)));
     if(!url.isEmpty())
     {
         QClipboard *clipboard = QApplication::clipboard();
         clipboard->setText(url);
         if(showNotifications)
         {
-            showMessage("Upload finished", activeUploader->getFilename() + " was saved. Link copied to clipboard");
+            showMessage(tr("Upload finished"), uploadManager.getLastScreenshotName() + tr(" was saved. Link copied to clipboard"));
         }
     }else
     {
         if(showNotifications)
         {
-            showMessage("Upload finished", activeUploader->getFilename() + " was saved!");
+            showMessage(tr("Upload finished"), uploadManager.getLastScreenshotName() + tr(" was saved!"));
         }
     }
     notifier.play("sfx/notification.wav");
@@ -512,59 +462,9 @@ void SystemTrayIcon::screenshotSaved(QString url)
 void SystemTrayIcon::screenshotSavingError(QString errorMessage)
 {
     setIcon(systrayIconNormal);
+    setToolTip(tr("ScreenCloud - Idle"));
     uploading = false;
-
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("ScreenCloud upload");
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.setText(activeUploader->getName() + " upload failed!\nError was: " + errorMessage);
-    msgBox.exec();
-
-    //Disconnect slots
-    disconnect(activeUploader, SIGNAL(uploadingFinished(QString)), this, SLOT(screenshotSaved(QString)));
-    disconnect(activeUploader, SIGNAL(uploadingError(QString)), this, SLOT(screenshotSavingError(QString)));
-}
-
-void SystemTrayIcon::reloadPlugins(QList<QString> installed, QList<QString> uninstalled)
-{
-#ifdef PLUGIN_SUPPORT
-    if(pluginLoader == NULL)
-    {
-        pluginLoader = new PluginLoader(this, &uploaders);
-    }
-    for(int i = 0; i < installed.size(); i ++)
-    {
-        QString shortname = installed.at(i);
-        if(!pluginLoader->isLoaded(shortname))
-        {
-            ScriptedUploader* uploader = pluginLoader->loadSinglePlugin(shortname);
-            //Add the new uploader to the tray menu
-            QAction* act = new QAction(uploader->getName(), this);
-            act->setCheckable(true);
-            if(!uploader->isConfigured())
-            {
-                act->setEnabled(false);
-                act->setCheckable(false);
-            }
-            connect(act, SIGNAL(triggered(bool)), this, SLOT(uploaderMenuItemChecked(bool)));
-            traySubmenuUploaders->addAction(act);
-            submenuActions.insert(shortname, act);
-        }
-    }
-    for(int i2 = 0; i2 < uninstalled.size(); i2++)
-    {
-        QString shortname = uninstalled.at(i2);
-        int index = findUploaderIndex(shortname);
-        if(index == activeUploaderIndex)
-        {
-            activeUploaderIndex = -1;
-        }
-        QAction* act = submenuActions[shortname];
-        traySubmenuUploaders->removeAction(act);
-        submenuActions.remove(shortname);
-        pluginLoader->unloadSinglePlugin(uninstalled.at(i2));
-    }
-#endif
+    QMessageBox::critical(NULL, tr("ScreenCloud upload"), tr("Upload failed!\nError was: ") + errorMessage);
 }
 
 void SystemTrayIcon::setAppProxy()
@@ -579,12 +479,12 @@ void SystemTrayIcon::setAppProxy()
         {
             QSettings settings("screencloud", "ScreenCloud");
             settings.beginGroup("network");
-            QString hostname = settings.value("proxy_hostname", "").toString();
-            quint16 port = settings.value("proxy_port", 8080).toUInt();
-            QString username = settings.value("proxy_username", "").toString();
-            QString password = Security::decrypt(settings.value("proxy_password", "").toString());
-            QString proxy_type = settings.value("proxy_type", "").toString();
-            bool proxyRequireAuth = settings.value("proxy_req_auth", false).toBool();
+            QString hostname = settings.value("proxy-hostname", "").toString();
+            quint16 port = settings.value("proxy-port", 8080).toUInt();
+            QString username = settings.value("proxy-username", "").toString();
+            QString password = settings.value("proxy-password", "").toString();
+            QString proxy_type = settings.value("proxy-type", "").toString();
+            bool proxyRequireAuth = settings.value("proxy-req-auth", false).toBool();
             settings.endGroup();
             proxy.setHostName(hostname);
             proxy.setPort(port);
@@ -601,6 +501,7 @@ void SystemTrayIcon::setAppProxy()
                 proxy.setType(QNetworkProxy::Socks5Proxy);
             }
             QNetworkProxy::setApplicationProxy(proxy);
+            INFO(tr("Setting app proxy to: ") + hostname + ":" + QString::number(port));
         }
     }
 }

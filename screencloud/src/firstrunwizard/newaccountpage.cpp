@@ -13,7 +13,7 @@
 //
 
 #include "newaccountpage.h"
-#include <QDebug>
+#include <utils/log.h>
 
 NewAccountPage::NewAccountPage(QWidget *parent) :
     QWizardPage(parent)
@@ -34,7 +34,7 @@ NewAccountPage::NewAccountPage(QWidget *parent) :
     input_confirmPassword->setEchoMode(QLineEdit::Password);
     checkbox_terms = new QCheckBox(this);
     label_termsLink = new ClickableLabel();
-    label_termsLink->setText("I have read, and agree to the <a href=\"http://screencloud.net/pages/terms\">terms of service</a>");
+    label_termsLink->setText("I have read, and agree to the <a href=\"https://screencloud.net/pages/terms\">terms of service</a>");
     label_termsLink->setOpenExternalLinks(false); //We want to handle the click event
     connect(label_termsLink, SIGNAL(clicked()), checkbox_terms, SLOT(toggle()));
     connect(label_termsLink, SIGNAL(linkClicked()), checkbox_terms, SLOT(toggle()));
@@ -84,26 +84,24 @@ bool NewAccountPage::validatePage()
         return false;
     }
     label_message->setText("Creating account...");
-    QByteArray token, tokenSecret;
-    QOAuth::Interface *qoauth = new QOAuth::Interface;
-    qoauth->setConsumerKey(CONSUMER_KEY_SCREENCLOUD);
-    qoauth->setConsumerSecret(CONSUMER_SECRET_SCREENCLOUD);
-    QByteArray url( "https://screencloud.net/1.0/users/register.xml" );
-    QString urlString = QString(url);
+    QUrl url( "https://screencloud.net/1.0/users/register.xml" );
+    url.addQueryItem("oauth_version", "1.0");
+    url.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    url.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
+    url.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    url.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
     // create a request parameters map
-    QOAuth::ParamMap map;
-    map.insert( "data[User][email]", QUrl::toPercentEncoding(input_email->text()));
-    map.insert( "data[User][password]", QUrl::toPercentEncoding(input_password->text()) );
-    map.insert("data[User][password_confirmation]", QUrl::toPercentEncoding(input_confirmPassword->text()));
+    QUrl bodyParams;
+    bodyParams.addQueryItem("data[User][email]", input_email->text());
+    bodyParams.addQueryItem("data[User][password]", input_password->text());
+    bodyParams.addQueryItem("data[User][password_confirmation]", input_confirmPassword->text());
 
     // construct the body string
-    QByteArray body =
-    qoauth->createParametersString( urlString, QOAuth::POST,
-                                        token, tokenSecret,QOAuth::HMAC_SHA1, map,
-                                        QOAuth::ParseForRequestContent );
+    QByteArray body = bodyParams.encodedQuery();
 
     QNetworkRequest request;
-    request.setUrl(QUrl(url));
+    request.setUrl(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     manager->post(request, body);
     while (!serverQueryFinished) {
@@ -120,7 +118,6 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
 {
     label_message->setText("Sending activation email...");
     QString replyText = reply->readAll();
-    qDebug() << replyText;
     if(reply->error() != QNetworkReply::NoError)
     {
         serverQueryError = true;
@@ -137,6 +134,7 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
         {
             label_message->setText("<font color='red'>Failed to parse response from server</font>");
         }
+        WARNING(reply->request().url().toString() + " returned: " + replyText);
 
     }else
     {
@@ -145,6 +143,7 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
         QDomDocument doc("reply");
         if (!doc.setContent(replyText)) {
             label_message->setText("<font color='red'>Failed to parse response from server</font>");
+            WARNING(reply->request().url().toString() + " returned: " + replyText);
             return;
         }
         QDomElement docElem = doc.documentElement();

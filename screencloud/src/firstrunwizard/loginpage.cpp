@@ -13,7 +13,7 @@
 //
 
 #include "loginpage.h"
-#include <QDebug>
+#include <utils/log.h>
 
 LoginPage::LoginPage(QWidget *parent) :
     QWizardPage(parent)
@@ -29,7 +29,7 @@ LoginPage::LoginPage(QWidget *parent) :
     input_email->setValidator(new QRegExpValidator(QRegExp(".*@.*"), this));
     input_password = new QLineEdit(this);
     input_password->setEchoMode(QLineEdit::Password);
-    label_forgotPassword = new QLabel("<a href=\"http://screencloud.net/users/forgot_password\">Forgot password?</a>", this);
+    label_forgotPassword = new QLabel("<a href=\"https://screencloud.net/users/forgot_password\">Forgot password?</a>", this);
     label_forgotPassword->setOpenExternalLinks(true);
     label_message = new QLabel(this);
     label_message->setWordWrap(true);
@@ -53,7 +53,7 @@ LoginPage::LoginPage(QWidget *parent) :
 
 int LoginPage::nextId() const
 {
-    return FirstRunWizard::Page_Tutorial1;
+    return FirstRunWizard::Page_Welcome;
 }
 
 bool LoginPage::validatePage()
@@ -61,46 +61,39 @@ bool LoginPage::validatePage()
     serverQueryFinished = false;
     serverQueryError = false;
     label_message->setText("Connecting to server...");
-    QByteArray token, tokenSecret;
-    QOAuth::Interface *qoauth = new QOAuth::Interface;
-    qoauth->setConsumerKey(CONSUMER_KEY_SCREENCLOUD);
-    qoauth->setConsumerSecret(CONSUMER_SECRET_SCREENCLOUD);
-    QByteArray url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
-    QString urlString = QString(url);
-    // create a request parameters map
-    QOAuth::ParamMap map;
-    map.insert( "data[User][email]", QUrl::toPercentEncoding(input_email->text()));
-    map.insert( "data[User][password]", QUrl::toPercentEncoding(input_password->text()) );
-
-    QOAuth::ParamMap reply =
-    qoauth->accessToken( urlString , QOAuth::POST, token,
-                         tokenSecret, QOAuth::HMAC_SHA1, map );
+    QString token, tokenSecret;
+    QUrl url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
+    // create body request parameters
+    QUrl bodyParams;
+    bodyParams.addQueryItem("data[User][email]", input_email->text());
+    bodyParams.addQueryItem("data[User][password]", input_password->text());
+    bodyParams.addQueryItem("oauth_version", "1.0");
+    bodyParams.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    bodyParams.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    bodyParams.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
+    bodyParams.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    bodyParams.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+    QByteArray body = bodyParams.encodedQuery();
 
     QNetworkRequest request;
-    request.setUrl(QUrl(url));
-    //manager->get(request);
-    if ( qoauth->error() == QOAuth::NoError ) {
-        //Save to qsettings
-        QSettings settings("screencloud", "ScreenCloud");
-        settings.beginGroup("account");
-        settings.setValue("token", reply.value( QOAuth::tokenParameterName() ));
-        settings.setValue("token_secret", reply.value( QOAuth::tokenSecretParameterName() ));
-        settings.setValue("email", input_email->text());
-        settings.setValue("logged_in", true);
-        settings.endGroup();
-        return true;
-    }else
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    manager->post(request, body);
+
+    while (!serverQueryFinished) {
+       qApp->processEvents(QEventLoop::WaitForMoreEvents);
+    }
+    if(serverQueryError)
     {
-        label_message->setText("<font color='red'>Login failed. Please check your email, password and internet connection.</font>");
         return false;
     }
-
+    return true;
 }
 
 void LoginPage::replyFinished(QNetworkReply *reply)
 {
     label_message->setText("Reading response from server...");
-    qDebug() << reply->readAll();
+    QString replyText = reply->readAll();
     if(reply->error() != QNetworkReply::NoError)
     {
         serverQueryError = true;
@@ -109,13 +102,23 @@ void LoginPage::replyFinished(QNetworkReply *reply)
             label_message->setText("<font color='red'>Your email/password combination was incorrect or account is not activated</font>");
         }else
         {
-            label_message->setText("<font color='red'>Server returned an unknown error. Please try again later. (Error code: " + QString::number(reply->error()) + ")</font>");
+            label_message->setText("<font color='red'>Login failed. Please check your email, password and internet connection.</font>");
         }
+        WARNING(reply->request().url().toString() + " returned: " + replyText);
 
     }else
     {
         //No error in request
         label_message->setText("Logged in...");
+        //Save to qsettings
+        QUrl replyParams = QUrl("?" + replyText);
+        QSettings settings("screencloud", "ScreenCloud");
+        settings.beginGroup("account");
+        settings.setValue("token", replyParams.queryItemValue("oauth_token"));
+        settings.setValue("token-secret", replyParams.queryItemValue("oauth_token_secret"));
+        settings.setValue("email", input_email->text());
+        settings.setValue("logged-in", true);
+        settings.endGroup();
     }
     serverQueryFinished = true;
 

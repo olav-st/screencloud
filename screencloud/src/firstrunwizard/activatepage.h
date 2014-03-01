@@ -20,13 +20,14 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QtOAuth>
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QApplication>
 #include <QEventLoop>
 #include <QSettings>
 #include <QDomDocument>
+#include <QDateTime>
+#include <utils/network.h>
 
 class ActivatePage : public QWizardPage
 {

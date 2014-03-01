@@ -13,7 +13,7 @@
 //
 
 #include "activatepage.h"
-#include <QDebug>
+#include <utils/log.h>
 
 ActivatePage::ActivatePage(QWidget *parent) :
     QWizardPage(parent)
@@ -25,17 +25,13 @@ ActivatePage::ActivatePage(QWidget *parent) :
     serverQueryError = false;
     //Setup GUI
     setTitle(tr("Activate your account"));
-    label_activation = new QLabel("Before you can start using your new ScreenCloud account, you need to activate it. An activation link has been sent to your email address. Simply click the link and you should be good to go.", this);
+    label_activation = new QLabel("Before you can start using your new ScreenCloud account, you need to activate it. An activation link has been sent to your email address. Click the link and you should be good to go!", this);
     label_activation->setWordWrap(true);
-    QPixmap activationLinkPixmap(":/images/email_activationLink.png");
-    image_activationLink = new QLabel(this);
-    image_activationLink->setPixmap(activationLinkPixmap);
     label_message = new QLabel(this);
     label_message->setWordWrap(true);
 
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(label_activation);
-    layout->addWidget(image_activationLink);
     layout->addStretch();
     layout->addWidget(label_message);
     setLayout(layout);
@@ -61,22 +57,19 @@ bool ActivatePage::checkUserActivated(int user_id)
     serverQueryFinished = false;
     serverQueryError = false;
     label_message->setText("Logging in...");
-    QString url( "http://screencloud.net/1.0/users/check_activated.xml");
+    QString url( "https://screencloud.net/1.0/users/check_activated.xml");
 
-    QByteArray token, tokenSecret;
-    QOAuth::Interface *qoauth = new QOAuth::Interface;
-    qoauth->setConsumerKey(CONSUMER_KEY_SCREENCLOUD);
-    qoauth->setConsumerSecret(CONSUMER_SECRET_SCREENCLOUD);
+    QString token, tokenSecret;
 
     // create a request parameters map
-    QOAuth::ParamMap map;
-    map.insert( "user_id", QString::number(user_id).toAscii());
+    QUrl bodyParams;
+    bodyParams.addQueryItem("user_id", QString::number(user_id));
+    bodyParams.addQueryItem("oauth_version", "1.0");
+    bodyParams.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    bodyParams.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    bodyParams.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
 
-    // construct the body string
-    QByteArray body =
-    qoauth->createParametersString( url, QOAuth::POST,
-                                        token, tokenSecret,QOAuth::HMAC_SHA1, map,
-                                        QOAuth::ParseForRequestContent );
+    QByteArray body = bodyParams.encodedQuery();
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
@@ -88,7 +81,6 @@ bool ActivatePage::checkUserActivated(int user_id)
 void ActivatePage::replyFinished(QNetworkReply *reply)
 {
     QString replyText = reply->readAll();
-    qDebug() << replyText;
     if(reply->error() != QNetworkReply::NoError)
     {
         serverQueryError = true;
@@ -105,6 +97,7 @@ void ActivatePage::replyFinished(QNetworkReply *reply)
         {
             label_message->setText("<font color='red'>Failed to parse response from server</font>");
         }
+        WARNING(reply->request().url().toString() + " returned: " + replyText);
 
     }else
     {
@@ -130,35 +123,46 @@ bool ActivatePage::getAccessToken()
 {
     serverQueryFinished = false;
     serverQueryError = false;
+    disconnect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     label_message->setText("Requesting key...");
-    QByteArray token, tokenSecret;
-    QOAuth::Interface *qoauth = new QOAuth::Interface;
-    qoauth->setConsumerKey(CONSUMER_KEY_SCREENCLOUD);
-    qoauth->setConsumerSecret(CONSUMER_SECRET_SCREENCLOUD);
-    QByteArray url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
-    QString urlString = QString(url);
-    // create a request parameters map
-    QOAuth::ParamMap map;
-    map.insert( "data[User][email]", QUrl::toPercentEncoding(field("register.email").toString()));
-    map.insert( "data[User][password]", QUrl::toPercentEncoding(field("register.password").toString()) );
 
-    // construct the body string
-    QOAuth::ParamMap reply =
-    qoauth->accessToken( urlString , QOAuth::POST, token,
-                         tokenSecret, QOAuth::HMAC_SHA1, map );
+    QUrl url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
+    // create a request parameters map
+    QUrl bodyParams;
+    bodyParams.addQueryItem( "data[User][email]", field("register.email").toString());
+    bodyParams.addQueryItem( "data[User][password]", field("register.password").toString());
+    bodyParams.addQueryItem("oauth_version", "1.0");
+    bodyParams.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    bodyParams.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    bodyParams.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
+    bodyParams.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    bodyParams.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+    QByteArray body = bodyParams.encodedQuery();
 
     QNetworkRequest request;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setUrl(QUrl(url));
-    //manager->get(request);
-    if ( qoauth->error() == QOAuth::NoError ) {
+    request.setUrl(url);
+    QNetworkReply* reply = manager->post(request, body);
+    QEventLoop loop;
+    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    if ( reply->error() == QNetworkReply::NoError ) {
         //Save to qsettings
+        QString replyText = reply->readAll();
+        if(replyText.isEmpty())
+        {
+            label_message->setText("<font color='red'>Failed to get credentials. Empty reply from server.</font>");
+            return false;
+        }
+        INFO(reply->request().url().toString() + " returned: " + replyText);
+        QUrl replyParams = QUrl("?" + replyText);
         QSettings settings("screencloud", "ScreenCloud");
         settings.beginGroup("account");
-        settings.setValue("token", reply.value( QOAuth::tokenParameterName() ));
-        settings.setValue("token_secret", reply.value( QOAuth::tokenSecretParameterName() ));
+        settings.setValue("token", replyParams.queryItemValue("oauth_token"));
+        settings.setValue("token-secret", replyParams.queryItemValue("oauth_token_secret"));
         settings.setValue("email", field("register.email").toString());
-        settings.setValue("logged_in", true);
+        settings.setValue("logged-in", true);
         settings.endGroup();
         return true;
     }else
@@ -166,4 +170,5 @@ bool ActivatePage::getAccessToken()
         label_message->setText("<font color='red'>OAuth error</font>");
         return false;
     }
+    return false;
 }

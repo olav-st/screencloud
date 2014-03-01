@@ -14,22 +14,25 @@
 #ifndef AUDIONOTIFIER_H
 #define AUDIONOTIFIER_H
 
+#include <QObject>
 #include <QSettings>
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
-#include <QDebug>
+#include <QAudioOutput>
+#include <utils/log.h>
 #include <QDir>
 #include <QApplication>
 
-class AudioNotifier
+class AudioNotifier : public QObject
 {
+    Q_OBJECT
 public:
-    AudioNotifier();
+    AudioNotifier(QObject *parent = 0);
     ~AudioNotifier();
     void play(QString file);
 
 private:
-    int channel;
+    QAudioOutput* audioOutput;
+    QAudioFormat format;
+    QFile audioFile;
 
 };
 

@@ -13,7 +13,7 @@
 //
 
 #include "startup.h"
-#include <QDebug>
+#include <utils/log.h>
 
 Startup::Startup()
 {
@@ -65,7 +65,7 @@ void Startup::setRunOnStartup(bool runOnStartup)
     {
         if(!autostartFile.exists())
         {
-            qDebug() << "Installing autostart file to " << autostartLocation;
+            INFO("Installing autostart file to " + autostartLocation);
             autostartFile.open(QFile::WriteOnly);
             autostartFile.write(desktopFileContents.toLocal8Bit());
             autostartFile.close();
@@ -75,7 +75,7 @@ void Startup::setRunOnStartup(bool runOnStartup)
     {
         if(autostartFile.exists())
         {
-            qDebug() << "Removing autostart file " << autostartFile.fileName();
+            INFO("Removing autostart file " + autostartFile.fileName());
             autostartFile.remove();
         }
     }
