@@ -22,8 +22,8 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     QSystemTrayIcon(parent)
 {
     overlay = NULL;
-    connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     setToolTip("ScreenCloud - Idle");
+    connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     // load icon
     if(color.isEmpty())
     {
@@ -50,7 +50,6 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     }
     // set up and show the system tray icon
     setIcon(systrayIconNormal);
-
     connect(&uploadManager, SIGNAL(finished(QString)), this, SLOT(screenshotSaved(QString)));
     connect(&uploadManager, SIGNAL(error(QString)), this, SLOT(screenshotSavingError(QString)));
     //Create uploaders

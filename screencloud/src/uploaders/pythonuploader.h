@@ -23,6 +23,8 @@ private:
     PythonQtObjectPtr pythonContext;
     PythonQtObjectPtr moduleObj;
     QString className;
+    QString lastPythonErr;
+    bool hadPythonErr;
 
 public:
     QString workingDir;
@@ -32,6 +34,7 @@ signals:
 public slots:
     void upload(const QImage& screenshot, QString name);
     QString getFilename();
+    void pythonError(QString err);
 
 };
 

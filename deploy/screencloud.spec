@@ -16,11 +16,11 @@ BuildRequires: gcc-c++ cmake
 
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
-BuildRequires: libqt4-devel libqxt-devel quazip-devel libPythonQt-devel
-Requires: libqt4 libqxt1 libquazip1 qt4-qtscript
+BuildRequires: libqt4-devel libqxt-devel quazip-devel libpythonqt-devel
+Requires: libqt4 libqxt1 libquazip1 pythonqt
 %endif
 %if 0%{?fedora_version}
-BuildRequires: libqt4-devel libqxt-devel quazip-devel pythonqt-devel
+BuildRequires: libqt4-devel libqxt-devel quazip-devel pythonqt-devel python-devel
 Requires: qt libqxt quazip pythonqt
 %endif
 
@@ -50,7 +50,8 @@ Authors:
 
  
 %build
-cmake ../%{name}-%{version} $(cat ../%{name}-%{version}/screencloud-apikeys.txt)
+ls
+cmake ./ $(cat ../screencloud-apikeys.txt)
 %{__make} %{?jobs:-j%jobs}
  
 %install

@@ -24,19 +24,24 @@ PythonUploader::PythonUploader(QString name, QString shortname, QString classNam
       QMessageBox::critical(0, "Error", "Failed to load plugin \"" + shortname + "\". File main.py exists, but is not readable.");
       return;
     }
+    hadPythonErr = false;
+    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     PythonQt::self()->addSysPath(workingDir + QDir::separator() + "modules");
     moduleObj = PythonQt::self()->createModuleFromScript(shortname + "_uploader");
     moduleObj.addVariable("workingDir", workingDir);
     moduleObj.evalScript(QString(mainScriptFile.readAll()));
-    if(PythonQt::self()->hadError())
+    if(hadPythonErr)
     {
         PythonQt::self()->handleError();
         WARNING("Error while parsing script file " + mainScriptFile.fileName());
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Error while parsing script file " + mainScriptFile.fileName() + "\n" + "Plugin: " + this->shortname);
+        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Error in file: " + mainScriptFile.fileName() + "\n" + lastPythonErr);
+        lastPythonErr.clear();
+        hadPythonErr = false;
     }
     pythonContext = PythonQt::self()->getMainModule();
     pythonContext.evalScript("from " + shortname + "_uploader import " + className);
     pythonContext.evalScript(shortname + "_u = " + className + "()");
+    disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
 }
 
 PythonUploader::~PythonUploader()
@@ -46,16 +51,19 @@ PythonUploader::~PythonUploader()
 
 void PythonUploader::upload(const QImage &screenshot, QString name)
 {
+    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     QVariantList args;
     args << screenshot;
     args << name;
     QVariant result = pythonContext.call(shortname + "_u.upload", args);
-    if(PythonQt::self()->hadError())
+    if(hadPythonErr)
     {
         PythonQt::self()->handleError();
         WARNING("Failed to call upload() in " + this->className);
-        //QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call upload() in " +  this->className + "\n" + "Plugin: " + this->shortname + "\n" + "dir: " + this->workingDir);
-        emit uploadingError("Failed to call upload() in " +  this->className + "\n" + "Plugin: " + this->shortname + "\n" + "dir: " + this->workingDir);
+        emit uploadingError("Failed to call " + this->className + ".upload()" + "\n" + lastPythonErr);
+        lastPythonErr.clear();
+        hadPythonErr = false;
+        disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
         return;
     }
     bool success = result.toBool();
@@ -75,37 +83,70 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
     //Clean up
     moduleObj.removeVariable("ScreenCloud.clipboardUrl");
     moduleObj.removeVariable("ScreenCloud.uploadingError");
+    disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     emit finished();
 }
 
 void PythonUploader::showSettingsUI(QWidget *parent)
 {
-    //moduleObj.addObject("parentWidget", parent);
+    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     PythonQt::self()->getMainModule().call(shortname + "_u.showSettingsUI");
-    if(PythonQt::self()->hadError())
+    if(hadPythonErr)
     {
         PythonQt::self()->handleError();
         WARNING("Failed to call showSettingsUI() in " + this->className);
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call showSettingsUI() in " +  this->className + "\n" + "Plugin: " + this->shortname + "\n" + "dir: " + this->workingDir);
+        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call " + this->className + ".showSettingsUI()" + "\n" + lastPythonErr);
+        lastPythonErr.clear();
+        hadPythonErr = false;
     }
+    disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
 }
 
 bool PythonUploader::isConfigured()
 {
+    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     QVariant result = pythonContext.call(shortname + "_u.isConfigured");
-    if(PythonQt::self()->hadError())
+    if(hadPythonErr)
     {
         PythonQt::self()->handleError();
         WARNING("Failed to call isConfigured() in " + this->className);
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call isConfigured() in " +  this->className + "\n" + "Plugin: " + this->shortname + "\n" + "dir: " + this->workingDir);
+        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call " + this->className + ".isConfigured()" + "\n" + lastPythonErr);
+        lastPythonErr.clear();
+        hadPythonErr = false;
+        disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
         return false;
     }
+    disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     return result.toBool();
 }
 
 QString PythonUploader::getFilename()
 {
+    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     QVariant result = pythonContext.call(shortname + "_u.getFilename");
+    if(hadPythonErr)
+    {
+        PythonQt::self()->handleError();
+        WARNING("Failed to call getFilename() in " + this->className);
+        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call " + this->className + ".getFilename()" + "\n" + lastPythonErr);
+        lastPythonErr.clear();
+        hadPythonErr = false;
+        disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
+        return QString();
+    }
+    disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     this->filename = result.toString();
     return filename;
+}
+
+void PythonUploader::pythonError(QString err)
+{
+    hadPythonErr = true;
+    if(lastPythonErr.isEmpty())
+    {
+        lastPythonErr = err;
+    }else
+    {
+        lastPythonErr.append(err);
+    }
 }

@@ -203,7 +203,7 @@ if(QUAZIP_FOUND)
       )
 endif(QUAZIP_FOUND)
 
-find_package(PythonLibs 2.7 REQUIRED)
+find_package(PythonLibs 2.6 REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHON_LIBRARIES}
