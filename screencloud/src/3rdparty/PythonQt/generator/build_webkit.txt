@@ -1,0 +1,6 @@
+<typesystem>
+   <load-typesystem name="typesystem_core.xml" generate="no" />
+   <load-typesystem name="typesystem_gui.xml" generate="no" />
+   <load-typesystem name="typesystem_network.xml" generate="no" />
+   <load-typesystem name="typesystem_webkit.xml" generate="yes" />
+</typesystem>

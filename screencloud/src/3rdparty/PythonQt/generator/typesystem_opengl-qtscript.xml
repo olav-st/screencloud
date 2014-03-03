@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<typesystem package="com.trolltech.qt.opengl">
+
+    <!-- fixme -->
+    <rejection class="QGL"/>
+    <rejection class="QGLFormat"/>
+
+</typesystem>

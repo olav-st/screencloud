@@ -1,0 +1,13 @@
+# profile for non-mevis users to link to PythonQt_QtAll
+
+INCLUDEPATH += $$PWD/../extensions/PythonQt_QtAll
+
+# check if debug or release
+CONFIG(debug, debug|release) {
+  DEBUG_EXT = _d 
+} else {
+  DEBUG_EXT = 
+}
+
+win32::LIBS += $$PWD/../lib/PythonQt_QtAll$${DEBUG_EXT}.lib
+unix::LIBS += -L$$PWD/../lib -lPythonQt_QtAll$${DEBUG_EXT}

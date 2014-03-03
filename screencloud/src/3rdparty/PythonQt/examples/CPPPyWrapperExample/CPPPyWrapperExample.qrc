@@ -1,0 +1,5 @@
+ <RCC version="1.0">
+ <qresource>
+     <file>eyed3tagger.py</file>
+ </qresource>
+ </RCC>

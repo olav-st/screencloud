@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<typesystem package="com.trolltech.qt.xml">
+
+    <!-- ### value type without copy constructor -->
+    <rejection class="QXmlNamespaceSupport"/>
+
+    <value-type name="QDomNode">
+        <modify-function signature="save(QTextStream&amp;,int)const">
+            <modify-argument index="1">
+                <replace-type modified-type="QTextStream*"/>
+                <conversion-rule class="native">
+                QTextStream &amp; %out% = *qscriptvalue_cast&lt;QTextStream*&gt;(%in%);
+                </conversion-rule>
+            </modify-argument>
+        </modify-function>
+
+        <modify-function signature="save(QTextStream&amp;,int,QDomNode::EncodingPolicy)const">
+            <modify-argument index="1">
+                <replace-type modified-type="QTextStream*"/>
+                <conversion-rule class="native">
+                QTextStream &amp; %out% = *qscriptvalue_cast&lt;QTextStream*&gt;(%in%);
+                </conversion-rule>
+            </modify-argument>
+        </modify-function>
+    </value-type>
+
+    <object-type name="QXmlReader">
+        <modify-function signature="feature(QString,bool*)const">
+            <modify-argument index="2">
+                <remove-argument/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="property(QString,bool*)const">
+            <modify-argument index="2">
+                <remove-argument/>
+            </modify-argument>
+        </modify-function>
+    </object-type>
+
+</typesystem>

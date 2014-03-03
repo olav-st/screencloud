@@ -16,12 +16,12 @@ BuildRequires: gcc-c++ cmake
 
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
-BuildRequires: libqt4-devel libqxt-devel quazip-devel libpythonqt-devel
-Requires: libqt4 libqxt1 libquazip1 pythonqt
+BuildRequires: libqt4-devel libqxt-devel quazip-devel python-devel
+Requires: libqt4 libqxt1 libquazip1 python
 %endif
 %if 0%{?fedora_version}
-BuildRequires: libqt4-devel libqxt-devel quazip-devel pythonqt-devel python-devel
-Requires: qt libqxt quazip pythonqt
+BuildRequires: libqt4-devel libqxt-devel quazip-devel python-devel
+Requires: qt libqxt quazip python
 %endif
 
 %description

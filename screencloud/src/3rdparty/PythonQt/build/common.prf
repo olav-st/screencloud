@@ -1,0 +1,18 @@
+
+# depending on your Qt configuration, you want to enable or disable
+# one of the release/debug builds (if all three lines are commented,
+# the default of your Qt installation will used)
+
+# build with both debug and release mode
+#CONFIG += debug_and_release build_all
+
+# build with release mode only
+#CONFIG += release
+
+# build with debug mode only
+#CONFIG += debug
+
+# for all debug builds, add "_d" extension to target
+CONFIG(debug, debug|release) {
+  TARGET = $${TARGET}_d 
+}

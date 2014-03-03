@@ -1,0 +1,1499 @@
+<?xml version="1.0"?>
+<typesystem package="com.trolltech.qt.core">
+
+    <template name="core.prepare_removed_bool*_argument">
+          bool __ok;
+          bool *%out% = &amp;__ok;
+    </template>
+
+    <template name="core.convert_to_null_or_wrap">
+          QScriptValue %out%;
+          if (!__ok)
+              %out% = context->engine()->nullValue();
+          else
+              %out% = qScriptValueFromValue(context->engine(), %in%);
+    </template>
+
+    <template name="core.convert_to_null_or_primitive">
+          QScriptValue %out%;
+          if (!__ok)
+              %out% = context->engine()->nullValue();
+          else
+              %out% = QScriptValue(context->engine(), %in%);
+    </template>
+
+    <template name="core.convert_string_arg_to_char*">
+          QByteArray tmp_%out% = %in%.toString().toLatin1();
+          const char * %out% = tmp_%out%.constData();
+    </template>
+
+    <template name="core.convert_int_arg_and_check_range">
+          int %out% = %in%.toInt32();
+          if ((%out% &lt; 0) || (%this%-&gt;size() &lt; %out%)) {
+              return context->throwError(QScriptContext::RangeError,
+                                         QString::fromLatin1("%CLASS_NAME%::%FUNCTION_NAME%(): index out of range"));
+          }
+    </template>
+
+    <template name="core.convert_pointer_arg_and_check_null">
+          %TYPE% %out% = qscriptvalue_cast&lt;%TYPE%&gt;(%in%);
+          if (!%out%) {
+              return context->throwError(QScriptContext::TypeError,
+                                         QString::fromLatin1("%CLASS_NAME%::%FUNCTION_NAME%(): failed to convert argument to %TYPE%"));
+          }
+    </template>
+
+    <template name="core.convert_stringref_to_string">
+            QString %out% = %in%.toString();
+    </template>
+
+  <namespace-type name="Qt">
+    <extra-includes>
+        <include file-name="QTextDocument" location="global"/>
+    </extra-includes>
+  </namespace-type>
+
+  <!-- classes that aren't deemed relevant to scripts -->
+  <rejection class="QTextCodec::ConverterState"/>
+  <rejection class="QTextCodecFactoryInterface"/>
+  <rejection class="QAbstractEventDispatcher"/>
+  <rejection class="QAbstractFileEngine"/>
+  <rejection class="QAbstractFileEngineHandler"/>
+  <rejection class="QAbstractFileEngineIterator"/>
+  <rejection class="QFSFileEngine"/>
+  <rejection class="QSystemLocale"/>
+
+  <rejection class="QFutureWatcherBase"/>
+  <rejection class="QFutureSynchronizer"/> <!-- ### problem with shell class -->
+
+  <namespace-type name="QtConcurrent">
+    <extra-includes>
+        <include file-name="qtconcurrentreducekernel.h" location="global"/>
+        <include file-name="qtconcurrentthreadengine.h" location="global"/>
+    </extra-includes>
+  </namespace-type>
+
+
+  <value-type name="QFileInfo">
+    <modify-function signature="QFileInfo(QFile)">
+      <modify-argument index="1">
+        <replace-type modified-type="QFile*"/>
+        <conversion-rule class="native">
+        QFile &amp; %out% = *qscriptvalue_cast&lt;QFile*&gt;(%in%);
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+    <modify-function signature="setFile(QFile)">
+      <modify-argument index="1">
+        <replace-type modified-type="QFile*"/>
+        <conversion-rule class="native">
+        QFile &amp; %out% = *qscriptvalue_cast&lt;QFile*&gt;(%in%);
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+  </value-type>
+  <object-type name="QTemporaryFile">
+    <modify-function signature="createLocalFile(QFile&amp;)">
+      <modify-argument index="1">
+        <replace-type modified-type="QFile*"/>
+        <conversion-rule class="native">
+        QFile &amp; %out% = *qscriptvalue_cast&lt;QFile*&gt;(%in%);
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+  </object-type>
+
+  <value-type name="QLocale">
+    <extra-includes>
+        <include file-name="QDate" location="global"/>
+    </extra-includes>
+
+    <inject-code class="native" position="beginning">
+    Q_DECLARE_METATYPE(QScriptValue)
+    </inject-code>
+
+    <modify-function signature="toDouble(QString,bool*)const">
+        <modify-argument index="2">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toFloat(QString,bool*)const">
+        <modify-argument index="2">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toInt(QString,bool*,int)const">
+        <modify-argument index="2">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toLongLong(QString,bool*,int)const">
+        <modify-argument index="2">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          QScriptValue %out%;
+          if (!__ok)
+              %out% = context->engine()->nullValue();
+          else
+              %out% = QScriptValue(context->engine(), double(%in%)).toObject();
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toShort(QString,bool*,int)const">
+        <modify-argument index="2">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toUShort(QString,bool*,int)const">
+        <modify-argument index="2">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+  </value-type>
+
+  <object-type name="QAbstractEventDispatcher">
+    <extra-includes>
+        <include file-name="QPair" location="global"/>
+    </extra-includes>
+  </object-type>
+
+  <value-type name="QBitArray">
+    <modify-function signature="at(int)const">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QBitArray"/>
+          <replace from="%FUNCTION_NAME%" to="at"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="clearBit(int)">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QBitArray"/>
+          <replace from="%FUNCTION_NAME%" to="clearBit"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="setBit(int)">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QBitArray"/>
+          <replace from="%FUNCTION_NAME%" to="setBit"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="setBit(int,bool)">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QBitArray"/>
+          <replace from="%FUNCTION_NAME%" to="setBit"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="testBit(int)const">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QBitArray"/>
+          <replace from="%FUNCTION_NAME%" to="testBit"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toggleBit(int)">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QBitArray"/>
+          <replace from="%FUNCTION_NAME%" to="toggleBit"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="operator&amp;=(QBitArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="operator=(QBitArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="operator^=(QBitArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="operator|=(QBitArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+  </value-type>
+
+  <object-type name="QBuffer">
+    <!-- ### modify to return value by pointer? -->
+    <modify-function signature="buffer()const" remove="all"/>
+    <modify-function signature="data()const" remove="all"/>
+
+    <modify-function signature="setData(const char*,int)" remove="all"/>
+  </object-type>
+
+  <object-type name="QCoreApplication">
+    <modify-function signature="QCoreApplication(int &amp;, char **)" remove="all"/>
+    <!-- ### arguments() causes a warning: "QScriptValue::setProperty(arguments): cannot change flags of a native property" -->
+    <modify-function signature="arguments()" remove="all"/>
+    <modify-function signature="translate(const char*,const char*,const char*,QCoreApplication::Encoding,int)">
+      <modify-argument index="1">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+      <modify-argument index="2">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+      <modify-argument index="3">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+    <modify-function signature="translate(const char *,const char *,const char *,QCoreApplication::Encoding)">
+      <modify-argument index="1">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+      <modify-argument index="2">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+      <modify-argument index="3">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+  </object-type>
+
+  <value-type name="QByteArray">
+    <inject-code class="pywrap-h">
+  PyObject* data(QByteArray* b) {
+    if (b->data()) {
+      return PyString_FromStringAndSize(b->data(), b->size());
+    } else {
+      Py_INCREF(Py_None);
+      return Py_None;
+    }
+  }
+    </inject-code>
+  
+    <inject-code class="native" position="beginning">
+    Q_DECLARE_METATYPE(QScriptValue)
+    </inject-code>
+
+    <modify-function signature="QByteArray(const char*,int)" remove="all"/>
+    <modify-function signature="QByteArray(const char*)" remove="all"/>
+
+    <modify-function signature="at(int)const">
+      <modify-argument index="1">
+        <conversion-rule class="native">
+        <insert-template name="core.convert_int_arg_and_check_range">
+          <replace from="%CLASS_NAME%" to="QByteArray"/>
+          <replace from="%FUNCTION_NAME%" to="at"/>
+        </insert-template>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="append(const char *)" remove="all"/>
+    <modify-function signature="append(QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="append(QString)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="append(const char *)" remove="all">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="append(char)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="appendByte"/> 
+    </modify-function>
+
+    <modify-function signature="count(const char *)const" remove="all"/>
+
+    <modify-function signature="data()" remove="all"/>
+
+    <modify-function signature="endsWith(const char *)const" remove="all"/>
+
+    <modify-function signature="fill(char,int)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+
+    <modify-function signature="indexOf(const char*,int)const" remove="all"/>
+    <modify-function signature="indexOf(char,int)const">
+      <rename to="indexOfByte"/> 
+    </modify-function>
+
+    <modify-function signature="insert(int,QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="insert(int,QString)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="insert(int,const char *)" remove="all"/>
+    <modify-function signature="insert(int,char)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="insertByte"/>
+    </modify-function>
+
+    <modify-function signature="lastIndexOf(const char*,int)const" remove="all"/>
+    <modify-function signature="lastIndexOf(char,int)const">
+      <rename to="lastIndexOfByte"/> 
+    </modify-function>
+
+    <modify-function signature="prepend(QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="prepend(const char *)" remove="all"/>
+    <modify-function signature="prepend(char)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="prependByte"/>
+    </modify-function>
+
+    <modify-function signature="remove(int,int)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+
+    <modify-function signature="replace(int,int,QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="replace(int,int,const char *)" remove="all"/>
+    <modify-function signature="replace(QByteArray,QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="replace(const char*,QByteArray)" remove="all"/>
+    <modify-function signature="replace(QByteArray,const char *)" remove="all"/>
+    <modify-function signature="replace(QString,QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="replace(QString,const char *)" remove="all"/>
+    <modify-function signature="replace(const char *,const char *)" remove="all"/>
+    <modify-function signature="replace(char,QByteArray)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="replace(char,QString)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+    <modify-function signature="replace(char,const char *)" remove="all"/>
+    <modify-function signature="replace(char,char)">
+      <modify-argument index="0" replace-value="this"/>
+    </modify-function>
+
+    <modify-function signature="startsWith(const char *)const" remove="all"/>
+
+    <modify-function signature="fromRawData(const char*,int)" remove="all"/>
+
+    <modify-function signature="number(int,int)">
+      <rename to="fromInt"/>
+    </modify-function>
+    <modify-function signature="number(uint,int)">
+      <rename to="fromUInt"/>
+    </modify-function>
+    <modify-function signature="number(qlonglong,int)">
+      <rename to="fromLongLong"/>
+    </modify-function>
+    <modify-function signature="number(qulonglong,int)">
+      <rename to="fromULongLong"/>
+    </modify-function>
+
+    <modify-function signature="setNum(int,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setInt"/>
+    </modify-function>
+    <modify-function signature="setNum(uint,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setUInt"/>
+    </modify-function>
+    <modify-function signature="setNum(short,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setShort"/>
+    </modify-function>
+    <modify-function signature="setNum(ushort,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setUShort"/>
+    </modify-function>
+    <modify-function signature="setNum(qlonglong,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setLongLong"/>
+    </modify-function>
+    <modify-function signature="setNum(qulonglong,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setULongLong"/>
+    </modify-function>
+    <modify-function signature="setNum(double,char,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setDouble"/>
+    </modify-function>
+    <modify-function signature="setNum(float,char,int)">
+      <modify-argument index="0" replace-value="this"/>
+      <rename to="setFloat"/>
+    </modify-function>
+
+    <modify-function signature="toDouble(bool*)const">
+        <modify-argument index="1">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toFloat(bool*)const">
+        <modify-argument index="1">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toInt(bool*,int)const">
+        <modify-argument index="1">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+
+    <modify-function signature="toUShort(bool*,int)const">
+        <modify-argument index="1">
+          <remove-default-expression/>
+          <remove-argument/>
+          <conversion-rule class="native">
+          <insert-template name="core.prepare_removed_bool*_argument"/>
+          </conversion-rule>            
+        </modify-argument>
+        <modify-argument index="return">
+          <conversion-rule class="native">
+          <insert-template name="core.convert_to_null_or_primitive"/>
+          </conversion-rule>
+        </modify-argument>
+    </modify-function>
+  </value-type>
+
+  <object-type name="QIODevice">
+    <modify-function signature="peek(char *,qint64)" remove="all"/>
+    <modify-function signature="read(char *,qint64)" remove="all"/>
+    <modify-function signature="readLine(char *,qint64)" remove="all"/>
+    <modify-function signature="write(const char *,qint64)" remove="all"/>
+  </object-type>
+
+  <object-type name="QFile">
+    <modify-function signature="open(int,QFlags&lt;QIODevice::OpenModeFlag&gt;)" remove="all"/>
+    <modify-function signature="decodeName(const char*)" remove="all"/>
+    <modify-function signature="map(qint64,qint64,QFile::MemoryMapFlags)" remove="all"/>
+    <modify-function signature="unmap(uchar*)" remove="all"/>
+  </object-type>
+
+  <object-type name="QSignalMapper">
+    <!-- ### overloads -->
+    <modify-function signature="mapping(int)const">
+      <rename to="mappingById"/>
+    </modify-function>
+    <modify-function signature="mapping(QString)const">
+      <rename to="mappingByString"/>
+    </modify-function>
+    <modify-function signature="mapping(QObject*)const">
+      <rename to="mappingByObject"/>
+    </modify-function>
+    <modify-function signature="setMapping(QObject*,int)">
+      <rename to="setMappingById"/>
+    </modify-function>
+    <modify-function signature="setMapping(QObject*,QString)">
+      <rename to="setMappingByString"/>
+    </modify-function>
+    <modify-function signature="setMapping(QObject*,QObject*)">
+      <rename to="setMappingByObject"/>
+    </modify-function>
+  </object-type>
+
+  <object-type name="QDataStream">
+      <modify-function signature="operator&gt;&gt;(signed char&amp;)" remove="all"/>
+      <modify-function signature="operator&lt;&lt;(signed char)" remove="all"/>
+
+      <modify-function signature="operator&lt;&lt;(bool)"> 
+          <rename to="writeBoolean"/> 
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(unsigned char)">  
+          <modify-argument index="0" replace-value="this"/>
+          <rename to="writeByte"/> 
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(int)">
+          <rename to="writeInt"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(qint64)">
+          <rename to="writeLongLong"/> 
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(float)"> 
+          <rename to="writeFloat"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(double)"> 
+          <rename to="writeDouble"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function> 
+      <modify-function signature="operator&lt;&lt;(short)">
+          <rename to="writeShort"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+
+      <modify-function signature="operator&gt;&gt;(bool &amp;)"> 
+          <rename to="readBoolean"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            bool __result;
+            bool &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            bool %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(unsigned char &amp;)">  
+          <rename to="readByte"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            unsigned char __result;
+            unsigned char &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            int %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(int &amp;)">
+          <rename to="readInt"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            int __result;
+            int &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            int %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(uint &amp;)">
+          <rename to="readUInt"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            uint __result;
+            uint &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            uint %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(qint64 &amp;)">
+          <rename to="readLongLong"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            qint64 __result;
+            qint64 &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            qint64 %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(unsigned long long &amp;)">
+          <rename to="readULongLong"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            unsigned long long __result;
+            unsigned long long &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            unsigned long long %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(float &amp;)"> 
+          <rename to="readFloat"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            float __result;
+            float &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            float %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(double &amp;)"> 
+          <rename to="readDouble"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            double __result;
+            double &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            double %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function> 
+      <modify-function signature="operator&gt;&gt;(short &amp;)">
+          <rename to="readShort"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            short __result;
+            short &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            short %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(unsigned short &amp;)">
+          <rename to="readUShort"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            unsigned short __result;
+            unsigned short &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            unsigned short %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+  </object-type>
+
+  <object-type name="QTextStream">
+      <modify-function signature="setCodec(const char *)"> 
+        <modify-argument index="1">
+          <replace-type modified-type="QString"/>
+          <conversion-rule class="native">
+            <insert-template name="core.convert_string_arg_to_char*"/>
+          </conversion-rule>            
+        </modify-argument>
+      </modify-function>
+
+      <modify-function signature="operator&lt;&lt;(QBool)"> 
+          <rename to="writeBoolean"/> 
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(char)">  
+          <modify-argument index="0" replace-value="this"/>
+          <rename to="writeByte"/> 
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(signed int)">
+          <rename to="writeInt"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(qlonglong)">
+          <rename to="writeLongLong"/> 
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(float)"> 
+          <rename to="writeFloat"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(double)"> 
+          <rename to="writeDouble"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function> 
+      <modify-function signature="operator&lt;&lt;(signed short)">
+          <rename to="writeShort"/>  
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+      <modify-function signature="operator&lt;&lt;(const QByteArray&amp;)">
+          <rename to="writeByteArray"/>
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>   
+      <modify-function signature="operator&lt;&lt;(const QString&amp;)">
+          <rename to="writeString"/>
+          <modify-argument index="0" replace-value="this"/>
+      </modify-function>
+
+      <modify-function signature="operator&gt;&gt;(char&amp;)">
+          <rename to="readByte"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            char __result;
+            char &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            int %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(signed short&amp;)">
+          <rename to="readShort"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            short __result;
+            short &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            short %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(signed int&amp;)">
+          <rename to="readInt"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            int __result;
+            int &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            int %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(unsigned short&amp;)">
+          <rename to="readUShort"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            unsigned short __result;
+            unsigned short &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            unsigned short %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(unsigned int&amp;)">
+          <rename to="readUInt"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            unsigned int __result;
+            unsigned int &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            unsigned int %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(qlonglong&amp;)">
+          <rename to="readLongLong"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            qlonglong __result;
+            qlonglong &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            qlonglong %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(qulonglong&amp;)">
+          <rename to="readULongLong"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            qulonglong __result;
+            qulonglong &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            qulonglong %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(float&amp;)">
+          <rename to="readFloat"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            float __result;
+            float &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            float %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+      <modify-function signature="operator&gt;&gt;(double&amp;)">
+          <rename to="readDouble"/>
+          <modify-argument index="1">
+            <remove-argument/>
+            <conversion-rule class="native">
+            double __result;
+            double &amp; %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+          <modify-argument index="0" replace-value="void">
+            <conversion-rule class="native">
+            double %out% = __result;
+            </conversion-rule>            
+          </modify-argument>
+      </modify-function>
+
+      <modify-function signature="operator&lt;&lt;(qulonglong)" remove="all"/> 
+      <modify-function signature="operator&gt;&gt;(qulonglong&amp;)" remove="all"/> 
+  </object-type>
+
+  <value-type name="QPointF">
+    <modify-function signature="rx()" remove="all"/> 
+    <modify-function signature="ry()" remove="all"/> 
+  </value-type>
+
+  <value-type name="QPoint">
+    <modify-function signature="rx()" remove="all"/> 
+    <modify-function signature="ry()" remove="all"/> 
+  </value-type>
+
+  <value-type name="QPixmap">
+      <modify-function signature="save(QIODevice*, const char*, int)" remove="all"/>
+  </value-type>
+
+  <object-type name="QObject">
+    <modify-function signature="property(const char*)const">
+      <modify-argument index="1">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="setProperty(const char*,QVariant)">
+      <modify-argument index="1">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+
+    <modify-function signature="inherits(const char*)const">
+      <modify-argument index="1">
+        <replace-type modified-type="QString"/>
+        <conversion-rule class="native">
+          <insert-template name="core.convert_string_arg_to_char*"/>
+        </conversion-rule>            
+      </modify-argument>
+    </modify-function>
+  </object-type>
+
+  <object-type name="QCryptographicHash">
+    <modify-function signature="addData(const char*,int)" remove="all"/>
+  </object-type>
+
+
+  <value-type name="QtScriptFuture">
+    <modify-function signature="operator==(const QFuture &amp;)const">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture"/>
+        </modify-argument>
+    </modify-function>  
+    <modify-function signature="QFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture" />
+        </modify-argument>
+    </modify-function>  
+    <inject-code class="native">
+    </inject-code>
+  </value-type>
+  
+  <value-type name="QtScriptVoidFuture">
+    <modify-function signature="operator==(const QFuture &amp;)const">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptVoidFuture"/>
+        </modify-argument>
+    </modify-function>  
+    <modify-function signature="QFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptVoidFuture" />
+        </modify-argument>
+    </modify-function>    
+  </value-type>
+  
+  <object-type name="QtScriptFutureWatcher">
+    <modify-function signature="setFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture" />
+        </modify-argument>
+    </modify-function>         
+  </object-type>
+  
+  <object-type name="QtScriptVoidFutureWatcher">
+    <modify-function signature="setFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptVoidFuture" />
+        </modify-argument>
+    </modify-function>         
+  </object-type>
+  
+  <object-type name="QtScriptFutureSynchronizer">
+      <modify-function signature="QFutureSynchronizer(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture" />
+        </modify-argument>
+      </modify-function>
+      <modify-function signature="addFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture" />
+        </modify-argument>
+      </modify-function>      
+      <modify-function signature="setFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture" />
+        </modify-argument>
+      </modify-function>            
+      <modify-function signature="futures()const" remove="all" />
+  </object-type>
+  <object-type name="QtScriptVoidFutureSynchronizer">
+      <modify-function signature="QFutureSynchronizer(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptVoidFuture" />
+        </modify-argument>
+      </modify-function>
+      <modify-function signature="addFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptVoidFuture" />
+        </modify-argument>
+      </modify-function>      
+      <modify-function signature="setFuture(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptVoidFuture" />
+        </modify-argument>
+      </modify-function>                  
+      <modify-function signature="futures()const" remove="all" />
+  </object-type>
+  
+  <object-type name="QtScriptFutureIterator">
+    <modify-function signature="QFutureIterator(const QFuture &amp;)">
+        <modify-argument index="1">
+            <replace-type modified-type="QtScriptFuture" />
+        </modify-argument>
+    </modify-function>       
+  </object-type>
+
+
+  <!-- QXMLStream stream stuff. This was moved from QtXml to QtCore in 4.4 -->
+
+    <enum-type name="QXmlStreamReader::Error" />
+    <enum-type name="QXmlStreamReader::TokenType" />
+
+    <value-type name="QXmlStreamAttribute">
+        <modify-function signature="operator=(QXmlStreamAttribute)" remove="all"/>
+
+      <modify-function signature="name()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="namespaceUri()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="prefix()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="qualifiedName()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="value()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+    </value-type>
+
+    <value-type name="QXmlStreamAttributes">
+        <modify-function signature="operator+(QVector&lt;QXmlStreamAttribute>)const" remove="all"/>
+        <modify-function signature="operator&lt;&lt;(QVector&lt;QXmlStreamAttribute>)" remove="all"/>
+        <modify-function signature="operator&lt;&lt;(QXmlStreamAttribute)" remove="all"/>
+        <modify-function signature="push_back(QXmlStreamAttribute)" remove="all"/>
+        <modify-function signature="pop_back()" remove="all"/>
+        <modify-function signature="push_front(QXmlStreamAttribute)" remove="all"/>
+        <modify-function signature="pop_front()" remove="all"/>
+
+        <modify-function signature="value(const QString &amp;, const QLatin1String &amp;)const">
+            <remove />
+        </modify-function>            
+        <modify-function signature="value(const QLatin1String &amp;, const QLatin1String &amp;)const">
+            <remove />
+        </modify-function>            
+        <modify-function signature="value(const QLatin1String &amp;)const">
+            <remove />            
+        </modify-function>            
+        <modify-function signature="hasAttribute(const QLatin1String &amp;)const">
+            <remove />            
+        </modify-function>            
+
+
+      <modify-function signature="value(QString,QString)const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="value(QString)const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+    </value-type>
+
+    <value-type name="QXmlStreamNamespaceDeclaration">
+        <modify-function signature="operator=(QXmlStreamNamespaceDeclaration)" remove="all"/>
+
+      <modify-function signature="namespaceUri()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="prefix()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+    </value-type>
+
+    <value-type name="QXmlStreamNotationDeclaration">
+        <modify-function signature="operator=(QXmlStreamNotationDeclaration)" remove="all"/>
+
+      <modify-function signature="name()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="publicId()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="systemId()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+    </value-type>
+
+    <value-type name="QXmlStreamEntityDeclaration">
+        <modify-function signature="operator=(QXmlStreamEntityDeclaration)" remove="all"/>
+
+      <modify-function signature="name()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="notationName()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="publicId()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="systemId()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="value()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+    </value-type>
+
+    <object-type name="QXmlStreamReader">
+      <modify-function signature="QXmlStreamReader(const char*)" remove="all" />
+      <modify-function signature="addData(const char*)" remove="all" />
+      <modify-function signature="setEntityResolver(QXmlStreamEntityResolver*)">
+        <modify-argument index="1">
+            <reference-count action="set" variable-name="__rcEntityResolver" />
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="name()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="documentEncoding()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="documentVersion()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="dtdName()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="dtdPublicId()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="dtdSystemId()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="namespaceUri()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="prefix()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="processingInstructionData()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="processingInstructionTarget()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="qualifiedName()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+
+      <modify-function signature="text()const">
+        <modify-argument index="return">
+            <conversion-rule class="native">
+            <insert-template name="core.convert_stringref_to_string"/>
+            </conversion-rule>
+        </modify-argument>
+      </modify-function>      
+    </object-type>
+
+    <object-type name="QXmlStreamWriter">
+        <modify-function signature="QXmlStreamWriter(QString *)">
+            <remove />
+        </modify-function>
+
+        <modify-function signature="setCodec(const char*)">
+          <modify-argument index="1">
+            <replace-type modified-type="QString"/>
+            <conversion-rule class="native">
+              <insert-template name="core.convert_string_arg_to_char*"/>
+            </conversion-rule>
+          </modify-argument>
+        </modify-function>
+
+        <modify-function signature="writeCurrentToken(QXmlStreamReader)">
+          <modify-argument index="1">
+            <replace-type modified-type="QXmlStreamReader*"/>
+            <conversion-rule class="native">
+            QXmlStreamReader &amp; %out% = *qscriptvalue_cast&lt;QXmlStreamReader*&gt;(%in%);
+            </conversion-rule>
+          </modify-argument>
+        </modify-function>
+
+    </object-type>
+
+    <primitive-type name="bool"/>    
+    <primitive-type name="double"/>
+    <primitive-type name="qreal"/>
+    <primitive-type name="float"/>
+    <primitive-type name="qint64"/>
+    <primitive-type name="__int64"/>
+    <primitive-type name="unsigned __int64"/>
+    <primitive-type name="unsigned long long"/>
+    <primitive-type name="long long"/>
+    <primitive-type name="qlonglong"/>
+    <primitive-type name="qulonglong"/>
+    <primitive-type name="short"/>
+    <primitive-type name="short"/>
+    <primitive-type name="signed short"/>
+    <primitive-type name="ushort"/>
+    <primitive-type name="unsigned short"/>
+    <primitive-type name="char"/>
+    <primitive-type name="signed char"/>
+    <primitive-type name="uchar"/>
+    <primitive-type name="unsigned char"/>
+    <primitive-type name="int"/>
+    <primitive-type name="signed int"/>
+    <primitive-type name="uint"/>
+    <primitive-type name="ulong"/>
+    <primitive-type name="unsigned int"/>
+    <primitive-type name="signed long"/>
+    <primitive-type name="long"/>
+    <primitive-type name="unsigned long"/>
+    <primitive-type name="WId"/>
+    <primitive-type name="Qt::HANDLE"/>
+    <primitive-type name="QVariant::Type"/>
+    <primitive-type name="QByteRef"/>
+    <primitive-type name="QBitRef"/>
+    <primitive-type name="QBool"/>
+    <primitive-type name="jobject"/>
+    <primitive-type name="quintptr"/>
+
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: signal 'finished' in class 'QProcess' is overloaded." />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: missing required class for enums: QRegExp" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: enum 'QtValidLicenseForScriptToolsModule' does not have a type entry or is not an enum" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: Rejected enum has no alternative...: QDataStream::Qt_4_5" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: unhandled enum value: Qt::MatchFlags(Qt::MatchStartsWith in Qt::MatchFlag" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: unhandled enum value: Qt::MatchWrap) in Qt::MatchFlag" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: unmatched enum Qt::MatchFlags(Qt::MatchStartsWith|Qt::MatchWrap) when parsing default value of 'match' in class 'QAbstractItemModel'" />
+
+  <!-- some catch-all warning suppressions -->
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: unsupported default value 'QLatin1String(defaultConnection)' of argument in function '*', class '*'"/>
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: Class '*' has equals operators but no qHash() function" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: type '*' is specified in typesystem, but not defined. This could potentially lead to compilation errors." />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: namespace '*' for enum '*' is not declared" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: skipping function '*', unmatched parameter type '*'" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: skipping function '*', unmatched return type '*'" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: signature '*' for function modification in '*' not found. Possible candidates: " />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: namespace '*' does not have a type entry" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: unsupported default value '*' of argument in function '*', class '*'" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: Shadowing: * and *; Java code will not compile" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: enum '*' is specified in typesystem, but not declared" />
+
+</typesystem>

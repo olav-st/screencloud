@@ -198,6 +198,7 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
 find_package(QuaZip REQUIRED)
 if(QUAZIP_FOUND)
   include_directories(${QUAZIP_INCLUDE_DIR})
+  include_directories(${ZLIB_INCLUDE_DIRS})
   set(REQUIRED_LIBS ${REQUIRED_LIBS}
       ${QUAZIP_LIBRARY}
       )
@@ -209,13 +210,17 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHON_LIBRARIES}
 )
 
-find_package(PythonQt REQUIRED)
-if(PYTHONQT_FOUND)
-    include_directories(${PYTHONQT_INCLUDE_DIR})
-    set(REQUIRED_LIBS ${REQUIRED_LIBS}
-        ${PYTHONQT_LIBRARIES} ${PYTHONQT_LIBRARY}
-    )
-endif(PYTHONQT_FOUND)
+#Include PythonQt in the build
+message(STATUS "Including PythonQT in build")
+SET(PythonQt_Wrap_Qtcore ON CACHE BOOL "Make all of Qtcore available in python")
+SET(PythonQt_Wrap_Qtgui ON CACHE BOOL "Make all of Qtgui available in python")
+SET(PythonQt_Wrap_Qtuitools ON CACHE BOOL "Make all of Qtuitools available in python")
+add_subdirectory(src/3rdparty/PythonQt PythonQt/)
+include_directories(src/3rdparty/PythonQt/src)
+include_directories(src/3rdparty/PythonQt/generated_cpp)
+set(REQUIRED_LIBS ${REQUIRED_LIBS}
+    PythonQt
+)
 
 if(WIN32)
     set(OPTIONAL_LIBS ${OPTIONAL_LIBS}
@@ -233,3 +238,25 @@ include_directories( ${CMAKE_BINARY_DIR} )
 add_executable( screencloud WIN32 ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
 target_link_libraries( screencloud ${REQUIRED_LIBS} ${OPTIONAL_LIBS})
+
+if(UNIX)
+    set(CMAKE_INSTALL_PREFIX "/opt")
+    #Install icons and desktop file
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.desktop" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/applications/" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/screencloud.svg" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/scalable/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/16x16/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/16x16/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/32x32/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/32x32/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/64x64/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/64x64/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/128x128/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    #install copyright and changelog
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.gz" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    #INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.Debian.gz" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    #Install binaries
+    install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud")
+    install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.sh" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud")
+    #install python modules
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    #Install sfx
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+endif(UNIX)

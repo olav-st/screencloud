@@ -23,6 +23,16 @@ FIND_LIBRARY(QUAZIP_LIBRARY NAMES quazip )
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(quazip DEFAULT_MSG QUAZIP_LIBRARY QUAZIP_INCLUDE_DIR)
 
+#If on windows, use qt zlib headers
+IF(UNIX)
+        find_package(ZLIB REQUIRED)
+ELSE(UNIX)
+        SET(ZLIB_INCLUDE_DIRS "${QT_ROOT}/src/3rdparty/zlib" CACHE STRING "Path to ZLIB headers of Qt")
+        IF(NOT EXISTS "${ZLIB_INCLUDE_DIRS}/zlib.h")
+                MESSAGE("Please specify a valid zlib include dir")
+        ENDIF(NOT EXISTS "${ZLIB_INCLUDE_DIRS}/zlib.h")
+ENDIF(UNIX)
+
 IF(QUAZIP_FOUND)
   SET( QUAZIP_LIBRARIES ${QUAZIP_LIBRARY} )
 ELSE(QUAZIP_FOUND)

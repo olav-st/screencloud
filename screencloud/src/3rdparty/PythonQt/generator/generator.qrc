@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/trolltech/generator/">
+<file>qtscript_masterinclude.h</file>
+<file>build_all.txt</file>
+<file alias="typesystem_core.txt">typesystem_core.xml</file>
+<file alias="typesystem_gui.txt">typesystem_gui.xml</file>
+<file alias="typesystem_sql.txt">typesystem_sql.xml</file>
+<file alias="typesystem_opengl.txt">typesystem_opengl.xml</file>
+<file alias="typesystem_svg.txt">typesystem_svg.xml</file>
+<file alias="typesystem_network.txt">typesystem_network.xml</file>
+<file alias="typesystem_xml.txt">typesystem_xml.xml</file>
+<file alias="typesystem_phonon.txt">typesystem_phonon.xml</file>
+<file alias="typesystem_webkit.txt">typesystem_webkit.xml</file>
+<file alias="typesystem_xmlpatterns.txt">typesystem_xmlpatterns.xml</file>
+<file>parser/rpp/pp-qt-configuration</file>
+</qresource>
+</RCC>

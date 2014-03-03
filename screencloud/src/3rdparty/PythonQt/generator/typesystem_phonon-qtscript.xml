@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<typesystem package="com.trolltech.qt.phonon">
+    
+    <value-type name="Phonon::AudioChannelDescription">
+        <modify-function signature="operator==(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="operator!=(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="fromIndex(int)" remove="all" />
+    </value-type>
+
+    <value-type name="Phonon::AudioCaptureDevice">
+        <modify-function signature="operator==(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="operator!=(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="fromIndex(int)" remove="all" /> 
+    </value-type>
+
+    <value-type name="Phonon::AudioOutputDevice">
+        <modify-function signature="operator==(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="operator!=(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="fromIndex(int)" remove="all" />
+    </value-type>
+
+    <value-type name="Phonon::EffectDescription">
+        <modify-function signature="operator==(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="operator!=(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="fromIndex(int)" remove="all" />
+    </value-type>
+
+    <value-type name="Phonon::EffectParameter">
+        <modify-function signature="EffectParameter(Phonon::EffectParameter)" remove="all" />
+        <modify-function signature="operator==(Phonon::EffectParameter)const" remove="all" />
+    </value-type>
+
+    <value-type name="Phonon::SubtitleDescription">
+        <modify-function signature="operator==(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="operator!=(Phonon::ObjectDescription)const" remove="all" />
+        <modify-function signature="fromIndex(int)" remove="all" />
+    </value-type>
+
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: enum 'Phonon::AddonInterface::SubtitleCommand' does not have a type entry or is not an enum" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: enum 'Phonon::AddonInterface::AudioChannelCommand' does not have a type entry or is not an enum" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: class 'AudioOutputInterface' inherits from unknown base class 'Phonon::AudioOutputInterface40'" />
+  <suppress-warning text="WARNING(MetaJavaBuilder) :: class not found for setup inheritance 'Phonon::AudioOutputInterface40'" />
+
+</typesystem>

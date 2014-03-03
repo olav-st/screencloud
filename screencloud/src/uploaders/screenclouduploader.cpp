@@ -118,6 +118,7 @@ void ScreenCloudUploader::upload(const QImage &screenshot, QString name)
 
 bool ScreenCloudUploader::isConfigured()
 {
+    loadSettings();
     if( (token == "" || tokenSecret == "") && !loggedIn)
     {
         return false;

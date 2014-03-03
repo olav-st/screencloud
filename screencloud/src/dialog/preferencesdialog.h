@@ -39,7 +39,7 @@
 #include <dialog/plugindialog.h>
 #include <dialog/logindialog.h>
 #include <PythonQt.h>
-#include <PythonQtScriptingConsole.h>
+#include <gui/PythonQtScriptingConsole.h>
 
 namespace Ui {
     class PreferencesDialog;

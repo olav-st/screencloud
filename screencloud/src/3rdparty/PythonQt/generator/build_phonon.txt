@@ -1,0 +1,5 @@
+<typesystem>
+   <load-typesystem name="typesystem_core.xml" generate="no" />
+   <load-typesystem name="typesystem_gui.xml" generate="no" />
+   <load-typesystem name="typesystem_phonon.xml" generate="yes" />
+</typesystem>

@@ -1,0 +1,5 @@
+<typesystem package="com.trolltech.qt.uitools">
+
+  <object-type name="QUiLoader"/>
+  
+</typesystem>

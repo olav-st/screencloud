@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<typesystem package="com.trolltech.qt.svg">
+
+    <rejection class="QGraphicsSvgItem"/>
+
+</typesystem>

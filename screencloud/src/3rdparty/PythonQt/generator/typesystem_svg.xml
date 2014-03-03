@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<typesystem package="com.trolltech.qt.svg"><rejection class="QGraphicsSvgItem"/>
+   <namespace-type name="QSvg"/>
+
+  <enum-type name="QGraphicsSvgItem::enum_1"/>
+
+  <object-type name="QSvgRenderer">
+    <extra-includes>
+        <include file-name="QRectF" location="global"/>
+        <include file-name="QMatrix" location="global"/>
+        <include file-name="QSize" location="global"/>
+        <include file-name="QByteArray" location="global"/>
+    </extra-includes>
+  </object-type>
+
+  <object-type name="QSvgWidget">
+    <extra-includes>
+        <include file-name="QByteArray" location="global"/>
+        <include file-name="QSvgRenderer" location="global"/>
+        <include file-name="QSize" location="global"/>
+    </extra-includes>
+  </object-type>
+
+  <object-type name="QSvgGenerator">
+    <modify-function signature="setOutputDevice(QIODevice*)">
+        <modify-argument index="1">
+            <reference-count action="set" variable-name="__rcOutputDevice"/>
+        </modify-argument>
+    </modify-function>
+  </object-type>
+
+  <object-type name="QGraphicsSvgItem">
+    <extra-includes>
+        <include file-name="QGraphicsItem" location="global"/>
+        <include file-name="QSvgRenderer" location="global"/>
+        <include file-name="QSize" location="global"/>
+    </extra-includes>
+
+    <modify-function signature="matrix()const" remove="all"/>
+    <modify-function signature="resetMatrix()" remove="all"/>
+    <modify-function signature="sceneMatrix()const" remove="all"/>
+    <modify-function signature="setMatrix(QMatrix, bool)" remove="all"/>
+ </object-type>
+
+</typesystem>
