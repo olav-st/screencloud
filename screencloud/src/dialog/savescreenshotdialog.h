@@ -57,6 +57,9 @@ private:
     QString currentUploaderShortname;
     QString screenshotName;
     bool loggedIn;
+
+signals:
+    void uploaderSelected(QString name, QString uploaderShortname);
 };
 
 #endif // SAVESCREENSHOTDIALOG_H

@@ -92,7 +92,6 @@ void SaveScreenshotDialog::setupUi()
 }
 void SaveScreenshotDialog::updateUi()
 {
-    //ui->comboBox_uploaders->setCurrentIndex(comboboxUploaderIndex);
     ui->input_name->setText(uploadManager->getUploader(currentUploaderShortname)->getFilename());
     if(uploadManager->getUploader(currentUploaderShortname)->isConfigured() == false)
     {
@@ -129,6 +128,7 @@ void SaveScreenshotDialog::on_buttonBox_accepted()
 {
     screenshotName = ui->input_name->text();
     saveSettings();
+    emit uploaderSelected(screenshotName, currentUploaderShortname);
 }
 
 void SaveScreenshotDialog::on_comboBox_uploaders_currentIndexChanged(int row)

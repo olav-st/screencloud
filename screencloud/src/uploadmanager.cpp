@@ -6,6 +6,7 @@ UploadManager::UploadManager(QObject *parent) :
     loadServices();
     uploadersModel = new UploadersListModel(this, &uploaders);
     uploadFinished = false;
+    lastScreenshotName.clear();
 }
 
 UploadManager::~UploadManager()
@@ -48,6 +49,7 @@ bool UploadManager::upload(const QImage &screenshot, QString serviceShortname, Q
     {
         if(uploaders.at(i)->getShortName() == serviceShortname)
         {
+            lastScreenshotName = screenshotName;
             Uploader* uploader = uploaders.at(i);
             connect(uploader, SIGNAL(uploadingFinished(QString)), this, SLOT(uploaderFinished(QString)));
             connect(uploader, SIGNAL(uploadingError(QString)), this, SLOT(uploaderError(QString)));
@@ -65,7 +67,6 @@ bool UploadManager::upload(const QImage &screenshot, QString serviceShortname, Q
                    qApp->processEvents(QEventLoop::WaitForMoreEvents);
                 }
             }
-            lastScreenshotName = screenshotName;
             return true;
         }
     }

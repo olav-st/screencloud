@@ -60,6 +60,7 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     createSystrayMenu();
     setContextMenu(trayMenu);
     prefDialog = new PreferencesDialog(NULL, &uploadManager);
+    connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
     uploading = false;
     //Check for new version
     if(autoCheckUpdates)
@@ -252,28 +253,23 @@ void SystemTrayIcon::updateGlobalShortcuts()
     hotkeyWindow->setShortcut(keySqWindow);
 }
 
-void SystemTrayIcon::saveScreenshot()
+void SystemTrayIcon::saveScreenshot(QString name, QString uploaderShortname)
 {
     loadSettings();
     updateSystrayMenu();
-    if(showSaveDialog)
+    uploading = true;
+    setIcon(systrayIconUploading);
+    setToolTip("ScreenCloud - Uploading");
+    if(uploaderShortname.isEmpty())
     {
-        SaveScreenshotDialog save(0, screenshot, &uploadManager);
-        int selection = save.exec();
-        if(selection == QMessageBox::Accepted)
-        {
-            uploading = true;
-            setIcon(systrayIconUploading);
-            setToolTip("ScreenCloud - Uploading");
-            uploadManager.upload(screenshot, save.getUploaderShortname(), save.getName(), false);
-        }
-    }else
-    {
-        uploading = true;
-        setIcon(systrayIconUploading);
-        setToolTip("ScreenCloud - Uploading");
-        uploadManager.upload(screenshot, currentUploaderShortname, uploadManager.getUploader(currentUploaderShortname)->getFilename(), false);
+        uploaderShortname = currentUploaderShortname;
     }
+    if(name.isEmpty())
+    {
+        name = uploadManager.getUploader(uploaderShortname)->getFilename();
+    }
+    uploadManager.upload(screenshot, uploaderShortname, name, false);
+
 }
 
 void SystemTrayIcon::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -331,7 +327,13 @@ void SystemTrayIcon::captureFullScreen()
 {
     screenshot = screenShooter.captureFullscreen();
     notifier.play("sfx/shutter.wav");
-    saveScreenshot();
+    if(showSaveDialog)
+    {
+        openSaveDialog();
+    }else
+    {
+        saveScreenshot();
+    }
 }
 
 void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
@@ -340,14 +342,26 @@ void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
     QPixmap areaScreenshot = fullScreenShot.copy(rect);
     screenshot = areaScreenshot.toImage();
     notifier.play("sfx/shutter.wav");
-    saveScreenshot();
+    if(showSaveDialog)
+    {
+        openSaveDialog();
+    }else
+    {
+        saveScreenshot();
+    }
 }
 
 void SystemTrayIcon::captureWindow()
 {
     screenshot = screenShooter.captureWindow();
     notifier.play("sfx/shutter.wav");
-    saveScreenshot();
+    if(showSaveDialog)
+    {
+        openSaveDialog();
+    }else
+    {
+        saveScreenshot();
+    }
 }
 
 void SystemTrayIcon::openPreferencesWindow()
@@ -355,14 +369,31 @@ void SystemTrayIcon::openPreferencesWindow()
     prefDialog->getUserInfo();
     prefDialog->loadSettings();
     prefDialog->setupUi();
-    connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
-    prefDialog->exec();
-    disconnect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
+    prefDialog->show();
+    connect(prefDialog, SIGNAL(finished(int)), this, SLOT(preferencesWindowFinished(int)));
+}
+
+void SystemTrayIcon::preferencesWindowFinished(int result)
+{
     //Update the sytray icon, menus and shortcuts
     loadSettings();
     setAppProxy();
     updateGlobalShortcuts();
     updateSystrayMenu();
+}
+
+void SystemTrayIcon::openSaveDialog()
+{
+    SaveScreenshotDialog* save = new SaveScreenshotDialog(0, screenshot, &uploadManager);
+    connect(save, SIGNAL(uploaderSelected(QString,QString)), this, SLOT(saveScreenshot(QString,QString)));
+    connect(save, SIGNAL(accepted()), save, SLOT(deleteLater()));
+    connect(save, SIGNAL(rejected()), save, SLOT(deleteLater()));
+    save->show();
+}
+
+void SystemTrayIcon::saveDialogFinished(int result)
+{
+
 }
 void SystemTrayIcon::quitApplication()
 {

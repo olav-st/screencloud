@@ -53,11 +53,11 @@ public:
     void populateSaveSubmenu();
     void updateSystrayMenu();
     void updateGlobalShortcuts();
-    void saveScreenshot();
 private:
     QString token, tokenSecret;
     ScreenShooter screenShooter;
     PreferencesDialog* prefDialog;
+    SaveScreenshotDialog* saveDialog;
     UploadManager uploadManager;
     QString currentUploaderShortname;
     QImage screenshot;
@@ -105,7 +105,11 @@ private slots:
     void captureFullScreen();
     void captureSelection(QRect& rect, QPixmap& fullScreenshot);
     void captureWindow();
+    void saveScreenshot(QString name = "", QString uploaderShortname = "");
     void openPreferencesWindow();
+    void preferencesWindowFinished(int result);
+    void openSaveDialog();
+    void saveDialogFinished(int result);
     void quitApplication();
     void openSelectionOverlay();
     void uploaderMenuItemChecked(bool checked);
