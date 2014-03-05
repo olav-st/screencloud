@@ -163,12 +163,6 @@ add_definitions( -Wall )
 add_definitions(-DVERSION="${VERSION_STRING}")
 add_definitions(-DUPDATE_CHANNEL="windows")
 
-#required qt modules
-set( QT_USE_QTNETWORK TRUE)
-set( QT_USE_QTXML TRUE )
-set( QT_USE_QTMULTIMEDIA TRUE)
-
-
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(CMAKE_EXE_LINKER_FLAGS
     "-framework Foundation -framework ServiceManagement"
@@ -177,6 +171,21 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 #Embed QtSingleApplication
 include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
+
+#required qt modules
+set( QT_USE_QTNETWORK TRUE)
+set( QT_USE_QTXML TRUE )
+find_package(QtMobility COMPONENTS MultimediaKit)
+if(QT_MOBILITY_FOUND)
+    MESSAGE(STATUS "Using QtMobility to provide QAudioOutput.")
+    include_directories(${QT_MOBILITY_MULTIMEDIAKIT_INCLUDE_DIR} ${QT_MOBILITY_INCLUDE_DIR})
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
+        ${QT_MOBILITY_MULTIMEDIAKIT_LIBRARY}
+    )
+else(QT_MOBILITY_FOUND)
+    MESSAGE(STATUS "Using Qt library to provide QAudioOutput.")
+    set( QT_USE_QTMULTIMEDIA TRUE)
+endif(QT_MOBILITY_FOUND)
 
 #Find Qt4 (required)
 find_package(Qt4 REQUIRED)
@@ -196,13 +205,12 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
 )
 
 find_package(QuaZip REQUIRED)
-if(QUAZIP_FOUND)
-  include_directories(${QUAZIP_INCLUDE_DIR})
-  include_directories(${ZLIB_INCLUDE_DIRS})
-  set(REQUIRED_LIBS ${REQUIRED_LIBS}
-      ${QUAZIP_LIBRARY}
-      )
-endif(QUAZIP_FOUND)
+include_directories(${QUAZIP_INCLUDE_DIR})
+include_directories(${ZLIB_INCLUDE_DIRS})
+set(REQUIRED_LIBS ${REQUIRED_LIBS}
+  ${QUAZIP_LIBRARY}
+  )
+
 
 find_package(PythonLibs 2.6 REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
