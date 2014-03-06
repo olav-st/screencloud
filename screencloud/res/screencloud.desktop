@@ -9,5 +9,5 @@ Type=Application
 Exec=/opt/screencloud/screencloud.sh
 Hidden=false
 NoDisplay=false
-Categories=Internet;RemoteAccess;Graphics;2DGraphics;System;TrayIcon;
+Categories=Internet;RemoteAccess;Graphics;2DGraphics;TrayIcon;
 Terminal=false

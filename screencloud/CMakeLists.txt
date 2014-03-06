@@ -263,6 +263,8 @@ if(UNIX)
     #Install binaries
     install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud")
     install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.sh" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud")
+    #install libraries
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/PythonQt/libPythonQt.so" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #install python modules
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #Install sfx
