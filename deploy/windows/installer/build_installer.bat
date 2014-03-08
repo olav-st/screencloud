@@ -2,6 +2,12 @@ set version=0.0.0
 set update_channel=windows
 set arch=x86
 
+if not exist BatchSubstitute.bat (
+	echo "This script requires BatchSubstitute.bat"
+	pause
+	exit
+)
+
 ECHO WScript.Echo InputBox( "Enter version number", "versionNumberInput", "" ) >usermessage.vbs
 FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo usermessage.vbs') DO SET versionNumberInput=%%A
 set version=%versionNumberInput%
