@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" Name="ScreenCloud" Language="1033" Version="VERSIONNUMBERNOTSET" Manufacturer="Olav S Thoresen" UpgradeCode="C80D60EB-D743-4756-9B33-A62B31FD64D5">
         <Package Description="ScreenCloud" InstallerVersion="200" Compressed="yes" />
-        <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+        <Media Id="1" Cabinet="screencloud.cab" EmbedCab="yes" CompressionLevel="high" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="SCREENCLOUD" Name="ScreenCloud">
@@ -15,34 +15,24 @@
                     <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589">
                         <File Id="LIBEAY32.DLL" Name="libeay32.dll" Source="..\ScreenCloud\\libeay32.dll" />
                         <File Id="LIBGCC_S_DW2_1.DLL" Name="libgcc_s_dw2-1.dll" Source="..\ScreenCloud\\libgcc_s_dw2-1.dll" />
-                        <File Id="LIBOGG_0.DLL" Name="libogg-0.dll" Source="..\ScreenCloud\\libogg-0.dll" />
                         <File Id="LIBSTDC___6.DLL" Name="libstdc++-6.dll" Source="..\ScreenCloud\\libstdc++-6.dll" />
-                        <File Id="LIBVORBIS_0.DLL" Name="libvorbis-0.dll" Source="..\ScreenCloud\\libvorbis-0.dll" />
-                        <File Id="LIBVORBISFILE_3.DLL" Name="libvorbisfile-3.dll" Source="..\ScreenCloud\\libvorbisfile-3.dll" />
                         <File Id="MINGWM10.DLL" Name="mingwm10.dll" Source="..\ScreenCloud\\mingwm10.dll" />
-                        <File Id="QCA2.DLL" Name="qca2.dll" Source="..\ScreenCloud\\qca2.dll" />
-                        <File Id="QOAUTH1.DLL" Name="qoauth1.dll" Source="..\ScreenCloud\\qoauth1.dll" />
                         <File Id="QXTCORE.DLL" Name="QxtCore.dll" Source="..\ScreenCloud\\QxtCore.dll" />
                         <File Id="QXTGUI.DLL" Name="QxtGui.dll" Source="..\ScreenCloud\\QxtGui.dll" />
-                        <File Id="SDL.DLL" Name="SDL.dll" Source="..\ScreenCloud\\SDL.dll" />
-                        <File Id="SDL_MIXER.DLL" Name="SDL_mixer.dll" Source="..\ScreenCloud\\SDL_mixer.dll" />
                         <File Id="SSLEAY32.DLL" Name="ssleay32.dll" Source="..\ScreenCloud\ssleay32.dll" />
-                        <File Name="quazip1.dll" Id="QUAZIP1.DLL" Source="..\ScreenCloud\quazip1.dll" />
-                        <File Id="LIBSSH2.dll" Name="libssh2.dll" Source="..\ScreenCloud\libssh2.dll" />
+                        <File Name="libquazip.dll" Id="LIBQUAZIP.DLL" Source="..\ScreenCloud\libquazip.dll" />
+                        <File Id="LIBPYTHONQT.DLL" Name="libPythonQt.dll" Source="..\ScreenCloud\libPythonQt.dll" />
+                        <File Id="PYTHON27.DLL" Name="python27.dll" Source="..\ScreenCloud\python27.dll">
+                        </File>
                     </Component>
                     <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545">
                         <File Id="QTCORE4.DLL" Name="QtCore4.dll" Source="..\ScreenCloud\\QtCore4.dll" />
                         <File Id="QTGUI4.DLL" Name="QtGui4.dll" Source="..\ScreenCloud\\QtGui4.dll" />
                         <File Id="QTNETWORK4.DLL" Name="QtNetwork4.dll" Source="..\ScreenCloud\\QtNetwork4.dll" />
-                        <File Id="QTSCRIPT4.DLL" Name="QtScript4.dll" Source="..\ScreenCloud\\QtScript4.dll" />
                         <File Id="QTXML4.DLL" Name="QtXml4.dll" Source="..\ScreenCloud\\QtXml4.dll" />
                         <File Id="QTSVG4.DLL" Name="QtSvg4.dll" Source="..\ScreenCloud\QtSvg4.dll" />
+                        <File Id="QTMULTIMEDIA4.DLL" Name="QtMultimedia4.dll" Source="..\ScreenCloud\QtMultimedia4.dll" />
                     </Component>
-                    <Directory Id="CRYPTO" Name="crypto">
-                        <Component Id="QCA_OSSL2.DLL" DiskId="1" Guid="8AC2EC93-C78A-44C8-98E8-300C4CED92E4">
-                            <File Id="QCA_OSSL2.DLL" Name="qca-ossl2.dll" Source="..\ScreenCloud\\crypto\qca-ossl2.dll" />
-                        </Component>
-                    </Directory>
                     <Directory Id="SFX" Name="sfx">
                         <Component Id="NOTIFICATION.WAV" DiskId="1" Guid="95EC1C92-1A9C-47D1-9234-BF3C08D190FC">
                             <File Id="NOTIFICATION.WAV" Name="notification.wav" Source="..\ScreenCloud\sfx\notification.wav" />
@@ -51,16 +41,19 @@
                             <File Id="SHUTTER.WAV" Name="shutter.wav" Source="..\ScreenCloud\sfx\shutter.wav" />
                         </Component>
                     </Directory>
-                    <Directory Id="IMAGEFORMATS" Name="iconengines">
+                    <Directory Id="ICONENGINES" Name="iconengines">
                         <Component Id="QSVGICON4.DLL" Guid="DE3EE756-E1D9-4908-8FEA-87EAAD6CBC95">
                             <File Name="qsvgicon4.dll" Id="QSVGICON4.DLL" Source="..\ScreenCloud\iconengines\qsvgicon4.dll" />
                         </Component>
                     </Directory>
-                    <Directory Id="SCRIPT" Name="script">
-                        <Component Id="SCRIPTBINDINGS" Guid="8F20B1AA-16FC-44D8-ADC4-BA4FCCA18477">
-                            <File Source="..\ScreenCloud\script\qtscript_core.dll" Id="QTSCRIPT_CORE.DLL" Name="qtscript_core.dll" />
-                            <File Id="QTSCRIPT_GUI.DLL" Name="qtscript_gui.dll" Source="..\ScreenCloud\script\qtscript_gui.dll" />
-                            <File Id="QTSCRIPT_NETWORK.DLL" Name="qtscript_network.dll" Source="..\ScreenCloud\script\qtscript_network.dll" />
+                    <Directory Id="IMAGEFORMATS" Name="imageformats">
+                        <Component Id="QJPEG4.DLL" Guid="70A45777-D415-4469-90C1-4452FFAFCCC4">
+                            <File Id="QJPEG4.DLL" Name="qjpeg4.dll" Source="..\ScreenCloud\imageformats\qjpeg4.dll" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="MODULES" Name="modules">
+                        <Component Id="SCREENCLOUD.PY" Guid="01FA92FA-8DBF-45DD-B526-88CA19A069A7">
+                            <File Id="SCREENCLOUD.PY" Name="ScreenCloud.py" Source="..\ScreenCloud\modules\ScreenCloud.py" />
                         </Component>
                     </Directory>
                 </Directory>
@@ -86,7 +79,6 @@
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
             <ComponentRef Id="SCREENCLOUD.EXE" />
-            <ComponentRef Id="QCA_OSSL2.DLL" />
             <ComponentRef Id="NOTIFICATION.WAV" />
             <ComponentRef Id="SHUTTER.WAV" />
             <ComponentRef Id="StartMenuShortcuts" />
@@ -94,17 +86,18 @@
             <ComponentRef Id="QTDLLS" />
             <ComponentRef Id="RemoveSettings" />
             <ComponentRef Id="QSVGICON4.DLL" />
-            <ComponentRef Id="SCRIPTBINDINGS" />
+            <ComponentRef Id="QJPEG4.DLL" />
+            <ComponentRef Id="SCREENCLOUD.PY" />
         </Feature>
         <UI />
         <Icon Id="DesktopIcon.exe" SourceFile="..\ScreenCloud\\ScreenCloud.exe" />
         <Icon Id="StartMenuIcon.exe" SourceFile="..\ScreenCloud\\ScreenCloud.exe" />
         <Property Id="WIXUI_INSTALLDIR" Value="SCREENCLOUD" />
-        <WixVariable Id="WixUIBannerBmp" Value="Binary\bannrbmp.bmp" />
-        <WixVariable Id="WixUIDialogBmp" Value="Binary\dlgbmp.bmp" />
+        <WixVariable Id="WixUIBannerBmp" Value="Binary\banner.jpg" />
+        <WixVariable Id="WixUIDialogBmp" Value="Binary\dialog.jpg" />
         <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
-        <Binary Id="dialogbmp" SourceFile="C:\Users\olatho\Dropbox\Programmering\screinclaud\installer\Binary\dlgbmp.bmp" />
-        <Binary Id="bannerbmp" SourceFile="C:\Users\olatho\Dropbox\Programmering\screinclaud\installer\Binary\bannrbmp.bmp" />
+        <Binary Id="dialogbmp" SourceFile="Binary\dialog.jpg" />
+        <Binary Id="bannerbmp" SourceFile="Binary\banner.jpg" />
         <UIRef Id="WixUI_InstallDir" />
         <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
         <Upgrade Id="C80D60EB-D743-4756-9B33-A62B31FD64D5">
@@ -115,8 +108,9 @@
         </InstallExecuteSequence>
         <CustomAction Id="StartAppOnExit" FileKey="SCREENCLOUD.EXE" ExeCommand="" Execute="immediate" Impersonate="yes" Return="asyncNoWait" />
         <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch ScreenCloud when setup exits." />
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
         <UI>
-            <Publish Dialog="ExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT</Publish>
+            <Publish Dialog="ExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 AND NOT Installed</Publish>
         </UI>
     </Product>
 </Wix>

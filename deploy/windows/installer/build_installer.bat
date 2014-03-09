@@ -36,3 +36,4 @@ move wix\ScreenCloud.wxs.temp wix\ScreenCloud.wxs
 
 mkdir installers\%update_channel%\%version%
 copy wix\ScreenCloud.msi installers\%update_channel%\%version%\ScreenCloud-%version%-%arch%.msi
+pause
