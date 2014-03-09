@@ -360,14 +360,15 @@ void SelectionOverlay::drawOverlay(QPainter *painter, const QColor &color)
 void SelectionOverlay::drawRubberband(QPainter *painter, const QRect &rect, const QColor &color, int lineSize)
 {
     painter->save();
-    QPen pen(color, lineSize, Qt::SolidLine);
+    QPen pen(color, lineSize, Qt::SolidLine, Qt::SquareCap);
     painter->setPen(pen);
+    int offset = -(lineSize / 2);
     if(selection.width() > 0 && selection.height() > 0);
     {
         QRect drawRect = rect;
-        drawRect.setSize(rect.size() - QSize(lineSize / 2, lineSize / 2));
-        drawRect.setX(drawRect.x() + lineSize / 2);
-        drawRect.setY(drawRect.y() + lineSize / 2);
+        drawRect.setSize(rect.size() - QSize(offset, offset));
+        drawRect.setX(drawRect.x() + offset);
+        drawRect.setY(drawRect.y() + offset);
         painter->drawRect(drawRect);
     }
     painter->restore();
@@ -379,7 +380,7 @@ void SelectionOverlay::drawHandles(QPainter* painter, const QRect& rect, const Q
     QColor fillColor(color);
     fillColor.setAlpha(100);
     QPen pen(color, lineSize, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-    int offset = lineSize / 2;
+    int offset = -(lineSize / 2);
     painter->setPen(pen);
     painter->setBrush(QBrush(fillColor, Qt::SolidPattern));
     if(selection.width() > 0 && selection.height() > 0)
