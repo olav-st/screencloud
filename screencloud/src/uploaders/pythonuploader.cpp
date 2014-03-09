@@ -81,9 +81,9 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
         emit uploadingError(errorString);
     }
     //Clean up
-    moduleObj.removeVariable("ScreenCloud.clipboardUrl");
-    moduleObj.removeVariable("ScreenCloud.uploadingError");
     disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
+    moduleObj.evalScript("ScreenCloud.clipboardUrl = None");
+    moduleObj.evalScript("ScreenCloud.uploadingError = None");
     emit finished();
 }
 
@@ -91,7 +91,11 @@ void PythonUploader::showSettingsUI(QWidget *parent)
 {
     connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     moduleObj.addObject("parentWidget", parent);
+#ifdef Q_OS_WIN
+    pythonContext.evalScript(shortname + "_u.showSettingsUI()");
+#else
     pythonContext.call(shortname + "_u.showSettingsUI");
+#endif
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
