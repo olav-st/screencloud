@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
             return 0;
         }
         //Setup the python interpreter
-        PythonQt::init();
+        PythonQt::init(PythonQt::RedirectStdOut);
         PythonQt_init_QtBindings();
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib");
