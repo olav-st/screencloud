@@ -37,7 +37,7 @@ void LoginDialog::on_button_login_clicked()
     serverQueryError = false;
     ui->label_message->setText("Connecting to server...");
     QString token, tokenSecret;
-    QUrl url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
+    QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create body request parameters
     QUrl bodyParams;
     bodyParams.addQueryItem("data[User][email]", ui->input_email->text());

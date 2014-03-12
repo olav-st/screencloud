@@ -62,7 +62,7 @@ bool LoginPage::validatePage()
     serverQueryError = false;
     label_message->setText("Connecting to server...");
     QString token, tokenSecret;
-    QUrl url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
+    QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create body request parameters
     QUrl bodyParams;
     bodyParams.addQueryItem("data[User][email]", input_email->text());

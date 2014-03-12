@@ -68,7 +68,7 @@ void ScreenCloudUploader::upload(const QImage &screenshot, QString name)
         }
     }
     //Upload to screencloud
-    QUrl url( "https://screencloud.net/1.0/screenshots/upload.xml" );
+    QUrl url( "https://api.screencloud.net/1.0/screenshots/upload.xml" );
 
     // create request parameters
     url.addQueryItem( "name", QUrl::toPercentEncoding(name) );

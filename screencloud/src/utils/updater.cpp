@@ -56,7 +56,7 @@ void Updater::checkForUpdates(int flag)
     {
         notifyUpdates = false;
     }
-    QUrl url( "https://screencloud.net/1.0/updates/check_version.xml" );
+    QUrl url( "https://api.screencloud.net/1.0/updates/check_version.xml" );
     // create a request parameters
     url.addQueryItem("version", VERSION);
     url.addQueryItem("os", OS_SHORTNAME);

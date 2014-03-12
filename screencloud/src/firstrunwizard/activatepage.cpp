@@ -57,7 +57,7 @@ bool ActivatePage::checkUserActivated(int user_id)
     serverQueryFinished = false;
     serverQueryError = false;
     label_message->setText("Logging in...");
-    QString url( "https://screencloud.net/1.0/users/check_activated.xml");
+    QString url( "https://api.screencloud.net/1.0/users/check_activated.xml");
 
     QString token, tokenSecret;
 
@@ -126,7 +126,7 @@ bool ActivatePage::getAccessToken()
     disconnect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     label_message->setText("Requesting key...");
 
-    QUrl url( "https://screencloud.net/1.0/oauth/access_token_xauth" );
+    QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create a request parameters map
     QUrl bodyParams;
     bodyParams.addQueryItem( "data[User][email]", field("register.email").toString());

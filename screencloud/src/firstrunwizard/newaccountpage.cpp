@@ -84,7 +84,7 @@ bool NewAccountPage::validatePage()
         return false;
     }
     label_message->setText("Creating account...");
-    QUrl url( "https://screencloud.net/1.0/users/register.xml" );
+    QUrl url( "https://api.screencloud.net/1.0/users/register.xml" );
     url.addQueryItem("oauth_version", "1.0");
     url.addQueryItem("oauth_signature_method", "PLAINTEXT");
     url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);

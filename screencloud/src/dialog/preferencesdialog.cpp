@@ -258,7 +258,7 @@ void PreferencesDialog::setupUi()
 
 void PreferencesDialog::getUserInfo()
 {
-    QUrl url( "https://screencloud.net/1.0/users/info.xml" );
+    QUrl url( "https://api.screencloud.net/1.0/users/info.xml" );
 
     // construct the parameters string
     url.addQueryItem("oauth_version", "1.0");
@@ -600,7 +600,7 @@ void PreferencesDialog::on_button_logout_clicked()
     if(selection == QMessageBox::Yes)
     {
         //Send logout request
-        QUrl url( "https://screencloud.net/1.0/users/logout.xml" );
+        QUrl url( "https://api.screencloud.net/1.0/users/logout.xml" );
 
         // construct the parameters string
         url.addQueryItem("oauth_version", "1.0");
