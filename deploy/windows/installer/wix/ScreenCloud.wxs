@@ -33,6 +33,9 @@
                         <File Id="QTSVG4.DLL" Name="QtSvg4.dll" Source="..\ScreenCloud\QtSvg4.dll" />
                         <File Id="QTMULTIMEDIA4.DLL" Name="QtMultimedia4.dll" Source="..\ScreenCloud\QtMultimedia4.dll" />
                     </Component>
+                    <Component Id="PYTHON27.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
+                        <File Id="PYTHON27.ZIP" Name="python27.zip" Source="..\ScreenCloud\python27.zip" />
+                    </Component>
                     <Directory Id="SFX" Name="sfx">
                         <Component Id="NOTIFICATION.WAV" DiskId="1" Guid="95EC1C92-1A9C-47D1-9234-BF3C08D190FC">
                             <File Id="NOTIFICATION.WAV" Name="notification.wav" Source="..\ScreenCloud\sfx\notification.wav" />
@@ -55,6 +58,15 @@
                         <Component Id="SCREENCLOUD.PY" Guid="01FA92FA-8DBF-45DD-B526-88CA19A069A7">
                             <File Id="SCREENCLOUD.PY" Name="ScreenCloud.py" Source="..\ScreenCloud\modules\ScreenCloud.py" />
                         </Component>
+                        <Directory Id="PYTHON_STDLIB_NATIVE" Name="python-stdlib-native">
+                            <Component Id="PYTHON_NATIVES" Guid="608CC1ED-A3A7-4317-B779-BEB2BEB5DCB4">
+                                <File Id="_SOCKET.PYD" Name="_socket.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\_socket.pyd" />
+                                <File Id="_HASHLIB.PYD" Name="_hashlib.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\_hashlib.pyd" />
+                                <File Id="_SSL.PYD" Name="_ssl.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\_ssl.pyd" />
+                                <File Id="UNICODEDATA.PYD" Name="unicodedata.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\unicodedata.pyd" />
+                                <File Id="_CTYPES.PYD" Name="_ctypes.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\_ctypes.pyd" />
+                            </Component>
+                        </Directory>
                     </Directory>
                 </Directory>
             </Directory>
@@ -88,6 +100,8 @@
             <ComponentRef Id="QSVGICON4.DLL" />
             <ComponentRef Id="QJPEG4.DLL" />
             <ComponentRef Id="SCREENCLOUD.PY" />
+            <ComponentRef Id="PYTHON27.ZIP" />
+            <ComponentRef Id="PYTHON_NATIVES" />
         </Feature>
         <UI />
         <Icon Id="DesktopIcon.exe" SourceFile="..\ScreenCloud\\ScreenCloud.exe" />

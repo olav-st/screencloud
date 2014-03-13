@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         PythonQt::init(PythonQt::RedirectStdOut);
         PythonQt_init_QtBindings();
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
-        PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib");
+        PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib-native");
         //Global vars
         if(cmdline_args.contains("--cli") || cmdline_args.contains("-c"))
         {
