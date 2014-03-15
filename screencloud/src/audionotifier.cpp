@@ -42,7 +42,7 @@ void AudioNotifier::play(QString file)
 {
     bool soundNotifications;
     QSettings settings("screencloud", "ScreenCloud");
-    settings.beginGroup("general");
+    settings.beginGroup("main");
     soundNotifications = settings.value("sound", true).toBool();
     settings.endGroup();
     if(soundNotifications)
