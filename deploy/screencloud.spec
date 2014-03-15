@@ -18,8 +18,7 @@ BuildRequires: gcc-c++ cmake
 BuildRequires: update-desktop-files
 BuildRequires: libqt4-devel libqxt-devel quazip-devel python-devel
 Requires: libqt4 libqxt1 libquazip1 python
-%endif
-%if 0%{?fedora_version}
+%else
 BuildRequires: libqt4-devel libqxt-devel quazip-devel python-devel
 Requires: qt libqxt quazip python
 %endif
