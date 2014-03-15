@@ -35,12 +35,7 @@ public:
 protected:
     QString name, shortname, filename, format;
     QIcon icon;
-    QWidget* settingsWidget;
-    QDialog* settingsDialog;
-    QBuffer* buffer;
-    QByteArray bufferArray;
     bool configured;
-    bool filenameSetExternally;
 
 public slots:
     virtual void upload(const QImage& screenshot, QString name);

@@ -22,13 +22,10 @@ Uploader::Uploader(QObject* parent) : QObject(parent)
     name  = "Default Uploader";
     shortname = "defaultUploader";
     icon = QIcon(":/uploaders/default.png");
-    buffer = new QBuffer(&bufferArray, this);
     filename = "Default filename.png";
-    filenameSetExternally = false;
 }
 Uploader::~Uploader()
 {
-    delete buffer;
 }
 
 void Uploader::upload(const QImage &screenshot, QString name)

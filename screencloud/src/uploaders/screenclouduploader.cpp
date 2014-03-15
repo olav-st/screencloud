@@ -23,11 +23,13 @@ ScreenCloudUploader::ScreenCloudUploader(QObject *parent) : Uploader(parent)
     manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)),
              this, SLOT(replyFinished(QNetworkReply*)));
+    buffer = new QBuffer(&bufferArray, this);
     loadSettings();
 }
 ScreenCloudUploader::~ScreenCloudUploader()
 {
     delete manager;
+    delete buffer;
 }
 
 void ScreenCloudUploader::loadSettings()
@@ -52,7 +54,6 @@ void ScreenCloudUploader::upload(const QImage &screenshot, QString name)
 {
     loadSettings();
     //Save to a buffer
-    buffer = new QBuffer(&bufferArray, this);
     buffer->open(QIODevice::WriteOnly);
     if(format == "jpg")
     {
@@ -155,8 +156,7 @@ void ScreenCloudUploader::replyFinished(QNetworkReply *reply)
         emit uploadingFinished(url.text());
         emit finished();
     }
-    buffer->reset();
-    delete buffer;
+    buffer->close();
     bufferArray.clear();
 }
 

@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QDateTime>
 #include <utils/network.h>
+#include <QBuffer>
 
 class ScreenCloudUploader : public Uploader
 {
@@ -44,6 +45,8 @@ private:
     QNetworkAccessManager *manager;
     int jpegQuality;
     bool loggedIn;
+    QByteArray bufferArray;
+    QBuffer* buffer;
 signals:
 
 public slots:
