@@ -56,6 +56,7 @@ void AudioNotifier::play(QString file)
     {
         if(audioFile.isOpen())
         {
+            audioOutput->stop();
             audioFile.close();
         }
 #ifdef Q_OS_MACX
