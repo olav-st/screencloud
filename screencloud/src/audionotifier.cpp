@@ -19,6 +19,12 @@ AudioNotifier::AudioNotifier(QObject *parent)
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultOutputDevice();
     // Set up the format, eg.
     format = info.preferredFormat();
+    format.setCodec("audio/pcm");
+    format.setChannels(2);
+    format.setSampleRate(44100);
+    format.setSampleSize(16);
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleType(QAudioFormat::SignedInt);
 
     if (!info.isFormatSupported(format)) {
         WARNING("Audio format not supported by backend. Trying nearest format.");
@@ -26,6 +32,7 @@ AudioNotifier::AudioNotifier(QObject *parent)
     }
 
     audioOutput = new QAudioOutput(format, this);
+    connect(audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioStateChanged(QAudio::State)));
     if(audioOutput->error() != QAudio::NoError)
     {
         WARNING("Error while creating audio output. Code: " + QString::number(audioOutput->error()) + " Device: " + info.deviceName());
@@ -84,5 +91,13 @@ void AudioNotifier::play(QString file)
         {
             WARNING("Error while playing " + file + ". Code: " + QString::number(audioOutput->error()));
         }
+    }
+}
+
+void AudioNotifier::audioStateChanged(QAudio::State state)
+{
+    if(audioOutput->error() != QAudio::NoError)
+    {
+        WARNING("Error while playing audio. Code: " + QString::number(audioOutput->error()));
     }
 }

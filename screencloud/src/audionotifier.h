@@ -34,6 +34,9 @@ private:
     QAudioFormat format;
     QFile audioFile;
 
+public slots:
+    void audioStateChanged(QAudio::State state);
+
 };
 
 #endif // AUDIONOTIFIER_H
