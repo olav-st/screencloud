@@ -55,7 +55,9 @@ bool ScreenShooter::getCaptureMouseCursor()
 
 const QImage &ScreenShooter::captureFullscreen()
 {
-    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+    int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    QRect screenGeometry = QApplication::desktop()->screenGeometry(screenNumber);
+    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->screen(screenNumber)->winId(),screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
     screenshot = pixmap.toImage();
     setScreenshot(pixmap.toImage());
     return screenshot;

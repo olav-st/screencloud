@@ -18,9 +18,6 @@ SelectionOverlay::SelectionOverlay(QWidget *parent) :
     QWidget(parent)
 {
     setStyleSheet( "QGraphicsView { border-style: none; }" );
-    Qt::WindowStates state = windowState();
-    state |= Qt::WindowFullScreen;
-    state |= Qt::WindowActive;
     selection = QRect(0,0,0,0);
     selectionBeforeDrag = QRect(0,0,0,0);
     resizingFrom = MOUSE_OUT;
@@ -29,7 +26,6 @@ SelectionOverlay::SelectionOverlay(QWidget *parent) :
     rbDistX = 0;
     rbDistY = 0;
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
-    setWindowState( state );
     setMouseTracking(true);
     //Set mau5 cursor
     setCursor(crossShape);

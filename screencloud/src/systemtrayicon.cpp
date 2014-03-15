@@ -412,21 +412,20 @@ void SystemTrayIcon::openSelectionOverlay()
     if(!overlay->isVisible())
     {
         overlay->resetRubberBand();
+        //Set attributes for fullscreen
+        overlay->setFocusPolicy( Qt::StrongFocus );
+        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         //Figure out which screen we want to use
-        int activeScreen = QApplication::desktop()->screenNumber(QCursor::pos());
-        QRect screenSize = QApplication::desktop()->screenGeometry(activeScreen);
+        QRect screenSize = QApplication::desktop()->geometry();
         //Grab a full screenshot to work with
         fullScreenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenSize.x(), screenSize.y(), screenSize.width(), screenSize.height());
         //Show the fullScreenshot in fullscreen with an overlay
         overlay->setScreenshot(fullScreenshot);
         //Move the widget to the screen where the mouse is and resize it
-        overlay->resize( QSize(screenSize.width(), screenSize.height()) );
-        overlay->setGeometry(screenSize);
-        //Set attributes for fullscreen
-        overlay->setFocusPolicy( Qt::StrongFocus );
-        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-        connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
         overlay->showFullScreen();
+        overlay->setGeometry(screenSize);
+        overlay->resize(screenSize.width(), screenSize.height());
+        connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
     }
 }
 
