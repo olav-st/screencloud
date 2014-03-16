@@ -414,7 +414,11 @@ void SystemTrayIcon::openSelectionOverlay()
         overlay->resetRubberBand();
         //Set attributes for fullscreen
         overlay->setFocusPolicy( Qt::StrongFocus );
-        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool | Qt::X11BypassWindowManagerHint);
+        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        if(QApplication::desktop()->screenCount() > 1)
+        {
+            overlay->setWindowFlags(overlay->windowFlags() | Qt::X11BypassWindowManagerHint);
+        }
         overlay->setWindowState(Qt::WindowFullScreen | Qt::WindowActive);
         //Figure out which screen we want to use
         QRect screenGeom = QApplication::desktop()->geometry();
@@ -428,8 +432,11 @@ void SystemTrayIcon::openSelectionOverlay()
         overlay->resize(screenGeom.width(), screenGeom.height());
         overlay->move(screenGeom.x(), screenGeom.y());
         connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
-        overlay->grabKeyboard();
-        overlay->grabMouse();
+        if(QApplication::desktop()->screenCount() > 1)
+        {
+            overlay->grabKeyboard();
+            overlay->grabMouse();
+        }
     }
 }
 
@@ -497,7 +504,7 @@ void SystemTrayIcon::screenshotSavingError(QString errorMessage)
     setIcon(systrayIconNormal);
     setToolTip(tr("ScreenCloud - Idle"));
     uploading = false;
-    QMessageBox::critical(NULL, tr("ScreenCloud upload"), tr("Upload failed!\nError was: ") + errorMessage);
+    QMessageBox::critical(NULL, tr("ScreenCloud upload"), tr("Upload failed!\n") + errorMessage);
 }
 
 void SystemTrayIcon::setAppProxy()
