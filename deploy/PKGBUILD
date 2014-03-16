@@ -7,10 +7,10 @@ arch=('i686 x86_64')
 url="https://screencloud.net/"
 license=('gpl-2')
 depends=('qt4' 'quazip' 'libqxt' 'python2')
-makedepends=('cmake' 'gcc' 'qt4' 'quazip' 'libqxt' 'python2')
+makedepends=('cmake' 'gcc' 'qt4' 'quazip' 'libqxt' 'python2' 'mesa-libgl')
 options=('emptydirs')
 source=("$pkgname-$pkgver.tar.gz")
-md5sums=("6904a2d4da746d7a32bd48ff27bf3889")
+md5sums=("bd606940fffeceb3e048b79db19fd3b1")
 install=screencloud.install
 
 build() {
