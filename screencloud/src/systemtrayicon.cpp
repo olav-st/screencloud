@@ -417,7 +417,7 @@ void SystemTrayIcon::openSelectionOverlay()
         overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         if(QApplication::desktop()->screenCount() > 1)
         {
-            overlay->setWindowFlags(overlay->windowFlags() | Qt::X11BypassWindowManagerHint);
+            overlay->setWindowFlags(overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
         }
         overlay->setWindowState(Qt::WindowFullScreen | Qt::WindowActive);
         //Figure out which screen we want to use
@@ -430,7 +430,6 @@ void SystemTrayIcon::openSelectionOverlay()
         overlay->showFullScreen();
         overlay->setGeometry(screenGeom);
         overlay->resize(screenGeom.width(), screenGeom.height());
-        overlay->move(screenGeom.x(), screenGeom.y());
         connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
         if(QApplication::desktop()->screenCount() > 1)
         {
