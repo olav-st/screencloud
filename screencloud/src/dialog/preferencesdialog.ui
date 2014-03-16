@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>559</width>
-    <height>381</height>
+    <height>387</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -948,7 +948,10 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;ScreenCloud uses icons from &lt;/span&gt;&lt;a href=&quot;http://kde-look.org/content/show.php/nuoveXT+2?content=62630&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;NuoveXT 2&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; and &lt;/span&gt;&lt;a href=&quot;http://freebiesbooth.com/hand-drawn-web-icons&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;Hand Drawn Web Icons&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;.&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;ScreenCloud uses icons from &lt;/span&gt;&lt;a href=&quot;http://www.visualpharm.com/must_have_icon_set/&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;Must Have&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; and &lt;/span&gt;&lt;a href=&quot;http://freebiesbooth.com/hand-drawn-web-icons&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;Hand Drawn Web Icons&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;.&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
