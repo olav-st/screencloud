@@ -168,6 +168,7 @@ QString PluginManager::pythonQtInputCallback(void *callData)
     d.setWindowTitle("Input Required");
     d.setModal(false);
     d.show();
+    d.raise();
     while(d.isVisible())
     {
         qApp->processEvents(QEventLoop::WaitForMoreEvents);

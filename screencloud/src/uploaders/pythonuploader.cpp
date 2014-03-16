@@ -104,12 +104,8 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
 void PythonUploader::showSettingsUI(QWidget *parent)
 {
     connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
-    moduleObj.addObject("parentWidget", parent);
-#ifdef Q_OS_WIN
-    pythonContext.evalScript(shortname + "_u.showSettingsUI()");
-#else
-    pythonContext.call(shortname + "_u.showSettingsUI");
-#endif
+    pythonContext.addObject("parentWidget_", parent);
+    pythonContext.evalScript(shortname + "_u.showSettingsUI(parentWidget_)");
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
