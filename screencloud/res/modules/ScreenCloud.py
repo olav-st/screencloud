@@ -13,10 +13,11 @@ def getScreenshotFormat():
 	return format
 
 def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()):
-        try:
-            name = strftime(nameFormat.encode('utf-8'), localtime()).decode('utf-8')
-        except ValueError:
-            pass
+	try:
+		name = strftime(nameFormat.encode('utf-8'), localtime()).decode('utf-8')
+	except ValueError:
+		name = nameFormat
+		pass
 	random_hash = md5(os.urandom(128)).hexdigest()
 	random_num = str(randint(0,9))
 	var_dict = defaultdict(str, rnd = random_num, rnd_h = random_hash)
