@@ -40,6 +40,7 @@ public:
     void loadPlugins();
     void unloadPlugins();
     void reloadPlugins();
+    void initStdinHandler();
     bool isLoaded(QString shortname);
     void installPlugins(QStringList& urls);
     bool uninstallPlugins(QStringList &shortnames);

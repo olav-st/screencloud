@@ -3,6 +3,7 @@
 UploadManager::UploadManager(QObject *parent) :
     QObject(parent)
 {
+    pluginManager.initStdinHandler();
     loadServices();
     uploadersModel = new UploadersListModel(this, &uploaders);
     uploadFinished = false;
