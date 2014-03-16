@@ -415,6 +415,7 @@ void SystemTrayIcon::openSelectionOverlay()
         //Set attributes for fullscreen
         overlay->setFocusPolicy( Qt::StrongFocus );
         overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        overlay->setWindowState(Qt::WindowFullScreen | Qt::WindowActive);
         //Figure out which screen we want to use
         QRect screenSize = QApplication::desktop()->geometry();
         //Grab a full screenshot to work with
