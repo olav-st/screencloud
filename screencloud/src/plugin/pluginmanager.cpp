@@ -28,10 +28,17 @@ PluginManager::PluginManager(QObject *parent) :
     QObject(parent)
 {
     connect(&netManager, SIGNAL(finished(QNetworkReply*)), SLOT(fileDownloaded(QNetworkReply*)));
+    PythonQt::self()->setRedirectStdInCallback(pythonQtInputCallback, &lastPythonStdOut);
+    PythonQt::self()->setRedirectStdInCallbackEnabled(true);
+    connect(PythonQt::self(), SIGNAL(pythonStdOut(QString)), this, SLOT(pythonStdOut(QString)));
+    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonStdErr(QString)));
 }
 
 PluginManager::~PluginManager()
 {
+    disconnect(PythonQt::self(), SIGNAL(pythonStdOut(QString)), this, SLOT(pythonStdOut(QString)));
+    disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonStdErr(QString)));
+    PythonQt::self()->setRedirectStdInCallbackEnabled(false);
 }
 
 void PluginManager::loadPlugins()
@@ -147,6 +154,25 @@ int PluginManager::countInstalledPlugins()
        }
    }
    return pluginsFound;
+}
+
+QString PluginManager::pythonQtInputCallback(void *callData)
+{
+    QString* text = static_cast<QString*>(callData);
+    QInputDialog d;
+    if(text->isEmpty())
+    {
+        *text = "Input:";
+    }
+    d.setLabelText(*text);
+    d.setWindowTitle("Input Required");
+    d.setModal(false);
+    d.show();
+    while(d.isVisible())
+    {
+        qApp->processEvents(QEventLoop::WaitForMoreEvents);
+    }
+    return d.textValue();
 }
 void PluginManager::installPlugins(QStringList &urls)
 {
@@ -349,4 +375,14 @@ void PluginManager::fileDownloaded(QNetworkReply *reply)
         this->extractPlugin(tmpFile->fileName());
     }
     netReplies.removeOne(reply);
+}
+
+void PluginManager::pythonStdOut(QString out)
+{
+    lastPythonStdOut = out;
+}
+
+void PluginManager::pythonStdErr(QString err)
+{
+    lastPythonStdErr = err;
 }

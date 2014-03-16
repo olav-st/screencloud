@@ -28,6 +28,8 @@
 #include <quazip/quazip.h>
 #include <utils/network.h>
 #include <QDomDocument>
+#include <QInputDialog>
+#include <PythonQt.h>
 
 class PluginManager : public QObject
 {
@@ -56,12 +58,14 @@ private:
     QFile* tmpFile;
     bool busy;
     int currentProgress;
+    QString lastPythonStdOut, lastPythonStdErr;
 
 public:
     static bool isInstalled(QString shortname);
     static QString installedVersion(QString shortname);
     static int countInstalledPlugins();
     static QString pluginPath() { return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins/"; }
+    static QString pythonQtInputCallback(void *callData);
 
     QHash<QString, Uploader*> uploaderPlugins; //List of available uploader plugins
 
@@ -73,6 +77,8 @@ signals:
 
 public slots:
     void fileDownloaded(QNetworkReply* reply);
+    void pythonStdOut(QString out);
+    void pythonStdErr(QString err);
 
     
 };
