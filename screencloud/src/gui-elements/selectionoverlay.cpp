@@ -404,8 +404,9 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
         QFont d;
         QFont f(d.defaultFamily(), 22, QFont::Normal);
         painter->setFont(f);
-
-        QRect helpTextRect = QRect(this->width()/2 - 300, this->height() /2 - 50, 620, 100);
+        QRect helpTextRect = QRect(0, 0, 620, 100);
+        QRect primaryScreenRect = QApplication::desktop()->screenGeometry(QApplication::desktop()->primaryScreen());
+        helpTextRect.moveCenter(this->mapFromGlobal(primaryScreenRect.center()));
         painter->setBrush(roundedRectBrush);
         painter->setPen(roundedRectPen);
         painter->drawRoundedRect(helpTextRect, 10.0, 10.0);

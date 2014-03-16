@@ -25,6 +25,8 @@
 #include <QRubberBand>
 #include <QGraphicsRectItem>
 #include <utils/log.h>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #define MOUSE_OVER_LEFT 0x0
 #define MOUSE_OVER_RIGHT 0x1
