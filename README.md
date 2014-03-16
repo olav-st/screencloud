@@ -4,7 +4,7 @@ This is the source code for the ScreenCloud client. ScreenCloud is an easy to us
 
 You can also upload to other services, including your own FTP server, Imgur, Dropbox & Ubuntu One through the use of [plugins](https://github.com/olav-st/screencloud-plugins).
 
-![A screenshot of the client running on Ubuntu](http://screencloud.net/img/screenshots/f8bcc619cb72c94cb6530b93bfefcacb.png)
+![A screenshot of the client running on Ubuntu](https://screencloud.net/img/systemtray_linux.png)
 
 Features
 --------------
