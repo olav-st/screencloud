@@ -417,6 +417,12 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
     }
 }
 
+void SelectionOverlay::hideEvent(QHideEvent *e)
+{
+    releaseMouse();
+    releaseKeyboard();
+}
+
 void SelectionOverlay::paintEvent(QPaintEvent *pe)
 {
     Q_UNUSED(pe);

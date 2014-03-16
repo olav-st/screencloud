@@ -54,6 +54,7 @@ public:
     void drawHandles(QPainter* painter, const QRect& rect, const QColor& color, int lineSize, int handleSize);
     void drawHelpText(QPainter *painter, const QColor &bgColor, const QColor &textColor);
 protected:
+    void hideEvent(QHideEvent *e);
     void paintEvent(QPaintEvent* pe);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent *event);
