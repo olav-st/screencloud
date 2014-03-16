@@ -65,6 +65,7 @@
                                 <File Id="_SSL.PYD" Name="_ssl.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\_ssl.pyd" />
                                 <File Id="UNICODEDATA.PYD" Name="unicodedata.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\unicodedata.pyd" />
                                 <File Id="_CTYPES.PYD" Name="_ctypes.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\_ctypes.pyd" />
+                                <File Id="SELECT.PYD" Name="select.pyd" Source="..\ScreenCloud\modules\python-stdlib-native\select.pyd" />
                             </Component>
                         </Directory>
                         <Directory Id="CRYPTO" Name="Crypto">
