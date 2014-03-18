@@ -45,7 +45,6 @@ class SelectionOverlay : public QWidget
 public:
     explicit SelectionOverlay(QWidget *parent = 0);
     virtual ~SelectionOverlay();
-    void setScreenshot(QPixmap &screenshot);
     void checkIfRubberBandOutOfBounds();
     int checkMouseOverRubberBand(QPoint& mousePos);
     void resetRubberBand();
@@ -53,7 +52,10 @@ public:
     void drawRubberband(QPainter* painter, const QRect& rect, const QColor& color, int lineSize);
     void drawHandles(QPainter* painter, const QRect& rect, const QColor& color, int lineSize, int handleSize);
     void drawHelpText(QPainter *painter, const QColor &bgColor, const QColor &textColor);
+    void moveToScreen(int screenNumber);
+
 protected:
+    void showEvent(QShowEvent *e);
     void hideEvent(QHideEvent *e);
     void paintEvent(QPaintEvent* pe);
     void mousePressEvent(QMouseEvent* event);
@@ -69,6 +71,8 @@ private:
 
 signals:
     void selectionDone(QRect& area, QPixmap& screenshot);
+    void selectionCanceled();
+    void currentScreenChanged(int newScreenNumber);
 
 private:
     //Cursors
@@ -85,6 +89,7 @@ private:
     bool drawingRubberBand, movingRubberBand, resizingRubberBand, startedDrawingRubberBand;
     int resizingFrom;
     int rbDistX, rbDistY;
+    int currentScreenNumber;
 
 public slots:
 

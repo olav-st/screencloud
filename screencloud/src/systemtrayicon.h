@@ -69,8 +69,6 @@ private:
     QIcon systrayIconSelected;
 #endif
     QMap<QString, QAction*> submenuActions; //Key is uploaders shortname
-    QPixmap fullScreenshot;
-    SelectionOverlay* overlay;
     int screenshotDelay;
     //systray menu actions
     QAction* openDashboardAct;
@@ -89,7 +87,7 @@ private:
     QxtGlobalShortcut* hotkeySelection;
     QxtGlobalShortcut* hotkeyWindow;
     bool showSaveDialog;
-    bool uploading;
+    bool uploading, capturing;
     bool showNotifications;
     Updater updater;
     bool autoCheckUpdates;
@@ -104,6 +102,7 @@ private slots:
     void captureWindowAction();
     void captureFullScreen();
     void captureSelection(QRect& rect, QPixmap& fullScreenshot);
+    void selectionCanceled();
     void captureWindow();
     void saveScreenshot(QString name = "", QString uploaderShortname = "");
     void openPreferencesWindow();

@@ -26,30 +26,24 @@ SelectionOverlay::SelectionOverlay(QWidget *parent) :
     rbDistX = 0;
     rbDistY = 0;
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
+    currentScreenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    moveToScreen(currentScreenNumber);
     setMouseTracking(true);
-    //Set mau5 cursor
     setCursor(crossShape);
 }
 SelectionOverlay::~SelectionOverlay()
 {
-
-}
-
-
-void SelectionOverlay::setScreenshot(QPixmap& screenshot)
-{
-    this->screenshot = screenshot;
-    selection = QRect(0,0,0,0);
-    drawingRubberBand = resizingRubberBand = movingRubberBand = false;
-    startedDrawingRubberBand = false;
+    releaseMouse();
+    releaseKeyboard();
 }
 
 void SelectionOverlay::mousePressEvent(QMouseEvent *event)
 {
+    this->activateWindow();
     //Stop the overlay from drawing help text
     startedDrawingRubberBand = true;
     QPoint mousePos = event->pos();
-    //Check if the mau5 is over the rubber band
+    //Check if the mouse is over the rubber band
     if(checkMouseOverRubberBand(mousePos) == MOUSE_OVER_INSIDE)
     {
         movingRubberBand = true;
@@ -85,7 +79,7 @@ void SelectionOverlay::mouseReleaseEvent(QMouseEvent *event)
 }
 void SelectionOverlay::mouseMoveEvent(QMouseEvent *event)
 {
-    //Check if the mau5 is over the rubber band
+    //Check if the mouse is over the rubber band
     QPoint mousePos = event->pos();
     if(checkMouseOverRubberBand(mousePos) == MOUSE_OVER_INSIDE)
     {
@@ -93,26 +87,29 @@ void SelectionOverlay::mouseMoveEvent(QMouseEvent *event)
         if(!drawingRubberBand && !movingRubberBand && !resizingRubberBand)
         {
             setCursor(openHandShape);
+        }else if(movingRubberBand)
+        {
+            setCursor(closedHandShape);
         }
     }
-    //If the mau5 is on the left side of the rubberband
-    else if(!movingRubberBand && !drawingRubberBand && !resizingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_LEFT || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_RIGHT))
+    //If the mouse is on the left side of the rubberband
+    else if(!movingRubberBand && !drawingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_LEFT || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_RIGHT))
     {
         setCursor(horizontalShape);
     }
-    else if(!movingRubberBand && !drawingRubberBand && !resizingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_TOP || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_BOTTOM))
+    else if(!movingRubberBand && !drawingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_TOP || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_BOTTOM))
     {
         setCursor(verticalShape);
     }
-    else if(!movingRubberBand && !drawingRubberBand && !resizingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_TOPLEFT || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_BOTTOMRIGHT))
+    else if(!movingRubberBand && !drawingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_TOPLEFT || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_BOTTOMRIGHT))
     {
         setCursor(leftDiagonalShape);
     }
-    else if(!movingRubberBand && !drawingRubberBand && !resizingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_TOPRIGHT || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_BOTTOMLEFT))
+    else if(!movingRubberBand && !drawingRubberBand && (checkMouseOverRubberBand(mousePos) == MOUSE_OVER_TOPRIGHT || checkMouseOverRubberBand(mousePos) == MOUSE_OVER_BOTTOMLEFT))
     {
         setCursor(rightDiagonalShape);
     }
-    else if(!drawingRubberBand && !resizingRubberBand)
+    else if(!movingRubberBand && !resizingRubberBand)
     {
         setCursor(crossShape);
     }
@@ -125,6 +122,7 @@ void SelectionOverlay::mouseMoveEvent(QMouseEvent *event)
     {
         selRectEnd = event->pos();
         selection = QRect(selRectStart, selRectEnd).normalized();
+        selection = selection.intersected(this->rect());
     }
     if(event->buttons() == Qt::LeftButton && resizingRubberBand)
     {
@@ -227,6 +225,7 @@ void SelectionOverlay::mouseMoveEvent(QMouseEvent *event)
     {
         this->repaint();
     }
+    selection = selection.intersected(this->rect());
 }
 
 void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
@@ -237,8 +236,16 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
         emit selectionDone(selection, screenshot);
     }else if(event->matches(QKeySequence::Quit) || event->key() == Qt::Key_Escape)
     {
+        emit selectionCanceled();
         this->close();
+    }else if(event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
+    {
+        this->moveToScreen(currentScreenNumber + 1);
+    }else if(event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
+    {
+        this->moveToScreen(currentScreenNumber - 1);
     }
+    QWidget::keyReleaseEvent(event);
 }
 
 void SelectionOverlay::checkIfRubberBandOutOfBounds()
@@ -404,17 +411,53 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
         QFont d;
         QFont f(d.defaultFamily(), 22, QFont::Normal);
         painter->setFont(f);
-        QRect helpTextRect = QRect(0, 0, 620, 100);
-        QRect primaryScreenRect = QApplication::desktop()->screenGeometry(QApplication::desktop()->primaryScreen());
-        helpTextRect.moveCenter(this->mapFromGlobal(primaryScreenRect.center()));
+        QRect helpTextRect = QRect( 0, 0, 620, 100);
+        QString helpText = tr("Draw a a rectangular area using the mouse.\nPress Enter to take a screenshot or Esc to exit.");
+        if(QApplication::desktop()->screenCount() > 1)
+        {
+            helpText.append(tr("\nUse the arrow keys to switch between screens."));
+            helpTextRect.setWidth(helpTextRect.width() + 30);
+            helpTextRect.setHeight(helpTextRect.height() + 30);
+        }
+        helpTextRect.moveCenter(this->mapFromGlobal(QApplication::desktop()->screenGeometry(currentScreenNumber).center()));
         painter->setBrush(roundedRectBrush);
         painter->setPen(roundedRectPen);
         painter->drawRoundedRect(helpTextRect, 10.0, 10.0);
         painter->setBrush(textBrush);
         painter->setPen(QPen(textBrush, 1.0));
-        painter->drawText(helpTextRect, Qt::AlignCenter, tr("Draw a a rectangular area using the mouse.\nPress enter to take a screenshot or esc to exit."));
+        painter->drawText(helpTextRect, Qt::AlignCenter, helpText);
         painter->restore();
     }
+}
+
+void SelectionOverlay::moveToScreen(int screenNumber)
+{
+    if(screenNumber < 0)
+    {
+        screenNumber = QApplication::desktop()->screenCount() -1;
+    }else if(screenNumber >= QApplication::desktop()->screenCount())
+    {
+        screenNumber = 0;
+    }
+    currentScreenNumber = screenNumber;
+    QRect screenGeom = QApplication::desktop()->screenGeometry(currentScreenNumber);
+    screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
+    setGeometry(screenGeom);
+    selection = QRect(0,0,0,0);
+    drawingRubberBand = resizingRubberBand = movingRubberBand = false;
+    startedDrawingRubberBand = false;
+    this->resetRubberBand();
+    if(this->isVisible())
+    {
+        this->hide();
+        this->showFullScreen();
+    }
+}
+
+void SelectionOverlay::showEvent(QShowEvent *e)
+{
+    grabKeyboard();
+    grabMouse();
 }
 
 void SelectionOverlay::hideEvent(QHideEvent *e)
@@ -438,20 +481,24 @@ void SelectionOverlay::resizeLeft(QPoint &mousePos, QRect &rbGeometryBeforeResiz
 {
     selection.moveTo(mousePos.x(), selection.y());
     selection.setSize(QSize(rbGeometryBeforeResize.width() - (mousePos.x()- rbGeometryBeforeResize.x()), selection.height()));
+    selection = selection.intersected(this->rect());
 }
 
 void SelectionOverlay::resizeTop(QPoint &mousePos, QRect &rbGeometryBeforeResize)
 {
     selection.moveTo(selection.x(), mousePos.y());
     selection.setSize(QSize(selection.width(), rbGeometryBeforeResize.height() - (mousePos.y()- rbGeometryBeforeResize.y())));
+    selection = selection.intersected(this->rect());
 }
 
 void SelectionOverlay::resizeRight(QPoint &mousePos, QRect &rbGeometryBeforeResize)
 {
     selection.setSize(QSize(mousePos.x() - rbGeometryBeforeResize.x() , selection.height()));
+    selection = selection.intersected(this->rect());
 }
 
 void SelectionOverlay::resizeBottom(QPoint &mousePos, QRect &rbGeometryBeforeResize)
 {
     selection.setSize(QSize(selection.width(), mousePos.y() - rbGeometryBeforeResize.y()));
+    selection = selection.intersected(this->rect());
 }

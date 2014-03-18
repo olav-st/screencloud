@@ -21,7 +21,6 @@
 SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     QSystemTrayIcon(parent)
 {
-    overlay = NULL;
     setToolTip("ScreenCloud - Idle");
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     // load icon
@@ -80,7 +79,6 @@ SystemTrayIcon::~SystemTrayIcon()
     delete preferencesAct;
     delete quitAct;
     delete askMeAct;
-    delete overlay;
     delete prefDialog;
 }
 
@@ -349,6 +347,12 @@ void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
     {
         saveScreenshot();
     }
+    capturing = false;
+}
+
+void SystemTrayIcon::selectionCanceled()
+{
+    capturing = false;
 }
 
 void SystemTrayIcon::captureWindow()
@@ -405,37 +409,19 @@ void SystemTrayIcon::quitApplication()
 
 void SystemTrayIcon::openSelectionOverlay()
 {
-    if(overlay == NULL)
+    SelectionOverlay* overlay = new SelectionOverlay();
+    overlay->setAttribute(Qt::WA_DeleteOnClose);
+    if(!capturing)
     {
-        overlay = new SelectionOverlay();
-    }
-    if(!overlay->isVisible())
-    {
-        overlay->resetRubberBand();
         //Set attributes for fullscreen
         overlay->setFocusPolicy( Qt::StrongFocus );
-        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-        if(QApplication::desktop()->screenCount() > 1)
-        {
-            overlay->setWindowFlags(overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
-        }
+        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
         overlay->setWindowState(Qt::WindowFullScreen | Qt::WindowActive);
-        //Figure out which screen we want to use
-        QRect screenGeom = QApplication::desktop()->geometry();
-        //Grab a full screenshot to work with
-        fullScreenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
-        //Show the fullScreenshot in fullscreen with an overlay
-        overlay->setScreenshot(fullScreenshot);
         //Move the widget to the screen where the mouse is and resize it
         overlay->showFullScreen();
-        overlay->setGeometry(screenGeom);
-        overlay->resize(screenGeom.width(), screenGeom.height());
         connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
-        if(QApplication::desktop()->screenCount() > 1)
-        {
-            overlay->grabKeyboard();
-            overlay->grabMouse();
-        }
+        connect(overlay, SIGNAL(selectionCanceled()), this, SLOT(selectionCanceled()));
+        capturing = true;
     }
 }
 
