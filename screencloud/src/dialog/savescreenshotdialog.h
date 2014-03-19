@@ -49,6 +49,9 @@ private slots:
     void on_buttonBox_rejected();
     void thumbnailClicked();
 
+protected:
+    void changeEvent (QEvent* e);
+
 private:
     Ui::SaveScreenshotDialog *ui;
     UploadManager* uploadManager;

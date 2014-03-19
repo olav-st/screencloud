@@ -211,6 +211,7 @@ bool PluginManager::uninstallPlugins(QStringList& shortnames)
 
 void PluginManager::cancelInstallation()
 {
+    INFO("Canceling all requests");
     busy = false;
     for(int i = 0; i < netReplies.count(); i++)
     {

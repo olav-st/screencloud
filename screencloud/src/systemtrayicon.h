@@ -115,6 +115,7 @@ private slots:
     void screenshotSaved(QString url);
     void screenshotSavingError(QString errorMessage);
     void setAppProxy();
+    void pluginsUpdated();
 
 };
 

@@ -29,6 +29,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     updater = new Updater(this);
     connect(updater, SIGNAL(versionNumberRecieved(QString,bool)), this, SLOT(gotVersionNumber(QString,bool)));
+    connect(updater, SIGNAL(pluginsUpdated()), this, SLOT(pluginsUpdated()));
     this->uploadManager = uManager;
     hotkeyFilter = new HotkeyEventFilter(this);
     //Hotkey signals
@@ -452,6 +453,13 @@ void PreferencesDialog::replyFinished(QNetworkReply *reply)
     }
 }
 
+void PreferencesDialog::pluginsUpdated()
+{
+    uploadManager->reloadServices();
+    ui->list_uploaders->setModel(NULL);
+    ui->list_uploaders->setModel(uploadManager->listModel());
+}
+
 void PreferencesDialog::on_button_checkForUpdates_clicked()
 {
     updater->checkForUpdates(Updater::ForceNotification); //Force a notification
@@ -503,9 +511,7 @@ void PreferencesDialog::on_button_plugins_clicked()
 {
     PluginDialog p(this);
     p.exec();
-    uploadManager->reloadServices();
-    ui->list_uploaders->setModel(NULL);
-    ui->list_uploaders->setModel(uploadManager->listModel());
+    pluginsUpdated();
 }
 
 void PreferencesDialog::on_button_restoreDefaults_clicked()

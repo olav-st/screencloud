@@ -62,6 +62,7 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
     uploading = false;
     //Check for new version
+    connect(&updater, SIGNAL(pluginsUpdated()), this, SLOT(pluginsUpdated()));
     if(autoCheckUpdates)
     {
         updater.checkForUpdates();
@@ -529,4 +530,9 @@ void SystemTrayIcon::setAppProxy()
             INFO(tr("Setting app proxy to: ") + hostname + ":" + QString::number(port));
         }
     }
+}
+
+void SystemTrayIcon::pluginsUpdated()
+{
+    prefDialog->pluginsUpdated();
 }

@@ -96,6 +96,7 @@ private:
 public slots:
     void dialogFinished(int r);
     void comboboxImageFormatChanged(int item);
+    void pluginsUpdated();
 private slots:
     void recordHotkey(QTableWidgetItem* item);
     void keyRecorded(Qt::Key key, int keycode, Qt::KeyboardModifiers modifiers);

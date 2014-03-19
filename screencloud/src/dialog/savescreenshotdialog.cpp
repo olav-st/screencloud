@@ -102,11 +102,11 @@ void SaveScreenshotDialog::updateUi()
         }else {
             ui->label_error->setText("This saving method is not configured. Press the settings button to configure it");
         }
-        ui->buttonBox->setEnabled(false);
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     }else
     {
         ui->label_error->setVisible(false);
-        ui->buttonBox->setEnabled(true);
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }
     if(currentUploaderShortname == "screencloud")
     {
@@ -148,6 +148,15 @@ void SaveScreenshotDialog::thumbnailClicked()
     PaintDialog p(this, screenshotFull);
     p.exec();
     */
+}
+
+void SaveScreenshotDialog::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::ActivationChange && this->isActiveWindow())
+    {
+        updateUi();
+    }
+    QDialog::changeEvent(e);
 }
 
 QString SaveScreenshotDialog::getUploaderShortname()

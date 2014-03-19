@@ -170,7 +170,7 @@ void PluginDialog::replyFinished(QNetworkReply *reply)
     {
         //No error in request
         addDefaultNodes();
-        QDomDocument doc("response");
+        QDomDocument doc("plugins");
         if(!doc.setContent(replyText))
         {
             WARNING("Failed to get plugin list from " + reply->request().url().toString() + ".\n Failed to parse reply as XML");
@@ -197,6 +197,7 @@ void PluginDialog::pluginInstalled(QString name)
 
 void PluginDialog::pluginInstallError(QString errorText)
 {
+    WARNING("Failed to update plugins! " + errorText);
     QMessageBox::critical(this, tr("Failed to install plugin!"), errorText);
 }
 
@@ -214,6 +215,7 @@ void PluginDialog::on_button_downloadFromURL_clicked()
     if(ok && !URL.isEmpty())
     {
         QProgressDialog progressDialog(tr("Installing plugin from URL..."), tr("Cancel"), 0, 4, this);
+        progressDialog.setWindowTitle("Installing Plugin");
         progressDialog.setWindowModality(Qt::WindowModal);
         progressDialog.setAutoReset(true);
         progressDialog.setAutoClose(true);
@@ -253,6 +255,7 @@ void PluginDialog::on_combo_mirror_currentIndexChanged(int index)
 void PluginDialog::on_buttonBox_accepted()
 {
     QProgressDialog progressDialog("Installing plugins...", "Cancel", 0, 0);
+    progressDialog.setWindowTitle("Installing Plugins");
     connect(pluginManager, SIGNAL(installationProgress(int)), &progressDialog, SLOT(setValue(int)));
     connect(pluginManager, SIGNAL(installationProgress(int)), this, SLOT(progressUpdate(int)));
     connect(pluginManager, SIGNAL(installationError(QString)), &progressDialog, SLOT(close()));

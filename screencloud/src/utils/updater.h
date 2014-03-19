@@ -24,6 +24,9 @@
 #include <QSettings>
 #include <utils/OS.h>
 #include <dialog/downloadupdatedialog.h>
+#include <QStringList>
+#include <plugin/pluginmanager.h>
+#include <QProgressDialog>
 
 class Updater : public QObject
 {
@@ -33,21 +36,29 @@ public:
     virtual ~Updater();
     void loadSettings();
     void checkForUpdates(int flag = 0);
-    void showUpdateNotification();
 
 private:
     QNetworkAccessManager *manager;
-    QString token, tokenSecret;
+    PluginManager* pluginManager;
     bool notifyUpdates;
     QString latestVersion;
+    int numPluginsUpdating;
+
 public:
     const static int NoNotification = 1;
     const static int ForceNotification = 2;
 signals:
     void newVersionAvailable(QString versionNumber);
     void versionNumberRecieved(QString versionNumber, bool outdated);
+    void pluginsUpdated();
+    void updateProgessRange(int, int);
 
 public slots:
+    void showUpdateNotification();
+    void showPluginUpdateNotification(QStringList plugins, QStringList urls);
+    void cancelPluginUpdate();
+    void pluginInstallError(QString error);
+    void progressUpdate(int);
     void replyFinished(QNetworkReply* reply);
 
 };
