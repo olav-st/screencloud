@@ -1,6 +1,6 @@
 Format: 1.0
 Source: screencloud
-Version: 1.1.3
+Version: 1.1.3-2
 Binary: screencloud
 Maintainer: Olav Sortand Thoresen <olav.s.th@gmail.com>
 Architecture: any
