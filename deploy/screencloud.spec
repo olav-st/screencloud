@@ -7,13 +7,13 @@ License:        GPL-2.0
 Group:          Productivity/Networking/Other
 Summary:        Easy to use screenshot sharing application
 Version:        1.1.3
-Release:        2
+Release:        3
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source:         %{name}-%{version}.tar.gz	
 Url:            http://screencloud.net
 
 BuildRequires: gcc-c++ cmake
-
+AutoReq: no
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
 BuildRequires: libqt4-devel libqxt-devel quazip-devel python-devel
