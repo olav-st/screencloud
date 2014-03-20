@@ -63,9 +63,17 @@ int main(int argc, char *argv[])
         //Setup the python interpreter
         PythonQt::init(PythonQt::RedirectStdOut);
         PythonQt_init_QtBindings();
+
+        PythonQt::self()->getMainModule().evalScript("import sys"); //Required for addSysPath on some systems
+        if(PythonQt::self()->hadError())
+        {
+            WARNING("Failed to import sys module. Check your Python installation.");
+            QMessageBox::critical(NULL, "Failed to import sys", "Failed to import sys module. Check your Python installation.");
+        }
+
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib-native");
-        //Global vars
+
         if(cmdline_args.contains("--cli") || cmdline_args.contains("-c"))
         {
             //Running in CLI mode, do not show GUI
