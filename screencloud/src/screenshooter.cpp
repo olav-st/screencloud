@@ -80,15 +80,17 @@ const QImage &ScreenShooter::captureWindow(WId windowID)
 #ifdef Q_OS_MACX
     captureWindowBorders = true;
 #endif
-
-    WId id = QxtWindowSystem::activeWindow();
+    if(windowID <= 0)
+    {
+        windowID = QxtWindowSystem::activeWindow();
+    }
     QPixmap pixmap;
     if(captureWindowBorders)
     {
-        QRect winGeom = QxtWindowSystem::windowGeometry(id);
+        QRect winGeom = QxtWindowSystem::windowGeometry(windowID);
         pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), winGeom.x(), winGeom.y(), winGeom.width(),winGeom.height());
     }else {
-        pixmap = QPixmap::grabWindow(id);
+        pixmap = QPixmap::grabWindow(windowID);
     }
     setScreenshot(pixmap.toImage());
     return screenshot;

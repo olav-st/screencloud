@@ -33,11 +33,7 @@ int main(int argc, char *argv[])
 {
         QtSingleApplication a(argc, argv);
         int retcode;
-        if(a.isRunning())
-        {
-            QMessageBox::critical(NULL, QObject::tr("Running instance detected"), QObject::tr("ScreenCloud is already running. Please close the running instance before starting a new one."));
-            return 1;
-        }
+
         a.setOrganizationName("screencloud");
         a.setApplicationName("ScreenCloud");
         a.setQuitOnLastWindowClosed(false);
@@ -138,27 +134,25 @@ int main(int argc, char *argv[])
             }
             UploadManager up;
             QString serviceShortname = up.getDefaultService();
-            if(serviceShortname.isEmpty())
+            if(cmdline_args.contains("--service") || cmdline_args.contains("-s"))
             {
-                if(cmdline_args.contains("--service") || cmdline_args.contains("-s"))
+                int serviceNameIndex = cmdline_args.indexOf("--service");
+                if(serviceNameIndex == -1)
                 {
-                    int serviceNameIndex = cmdline_args.indexOf("--service");
-                    if(serviceNameIndex == -1)
-                    {
-                        serviceNameIndex = cmdline_args.indexOf("-s");
-                    }
-                    serviceNameIndex += 1;
-                    serviceShortname = cmdline_args.at(serviceNameIndex);
-                }else
-                {
-                    CRITICAL("No --service set and no default was found.");
-                    return 1;
+                    serviceNameIndex = cmdline_args.indexOf("-s");
                 }
+                serviceNameIndex += 1;
+                serviceShortname = cmdline_args.at(serviceNameIndex);
             }
             up.upload(screenshot, serviceShortname, up.getUploader(serviceShortname)->getFilename(), true);
             retcode = 0;
         }else
         {
+            if(a.isRunning())
+            {
+                QMessageBox::critical(NULL, QObject::tr("Running instance detected"), QObject::tr("ScreenCloud is already running. Please close the running instance before starting a new one."));
+                return 1;
+            }
             //Show GUI
             if(firstRun)
             {
