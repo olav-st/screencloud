@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <utils/log.h>
 #include <QDir>
+#include <QImage>
 #include <utils/OS.h>
 #include <QDesktopServices>
 #include <screenshooter.h>
@@ -26,8 +27,6 @@
 #include <firstrunwizard/firstrunwizard.h>
 #include <PythonQt.h>
 #include <PythonQt_QtBindings.h>
-#include <uploaders/uploader.h>
-#include <QMetaType>
 
 int main(int argc, char *argv[])
 {
@@ -117,6 +116,28 @@ int main(int argc, char *argv[])
                 }else
                 {
                     CRITICAL("No window id provided.");
+                    return 1;
+                }
+            }else if(cmdline_args.contains("--file") || cmdline_args.contains("-f"))
+            {
+                int filePathIndex = cmdline_args.indexOf("--file");
+                if(filePathIndex == -1)
+                {
+                    filePathIndex = cmdline_args.indexOf("-f");
+                }
+                filePathIndex += 1;
+                if(filePathIndex > 0 && filePathIndex < cmdline_args.count())
+                {
+                    QString filePath = cmdline_args.at(filePathIndex);
+                    if(!screenshot.load(filePath))
+                    {
+                        CRITICAL("Failed to read file " + filePath);
+                        return 1;
+                    }
+                    INFO("Using file " + filePath);
+                }else
+                {
+                    CRITICAL("No file path set.");
                     return 1;
                 }
             }
