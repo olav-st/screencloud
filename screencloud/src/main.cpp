@@ -47,12 +47,20 @@ int main(int argc, char *argv[])
         QStringList cmdline_args = a.arguments();
         if(cmdline_args.contains("--help") || cmdline_args.contains("-h") )
         {
-            INFO(QObject::tr("USAGE: screencloud [-v|-c|-s|-w|-a]"));
+            qDebug() << "USAGE: screencloud -c [-fs|-w|-a|-f] -s [service]\n\n"
+                        "  -c, --cli                Enable CLI mode\n"
+                        "  -f, --fullscreen         Capture full screen\n"
+                        "  -w, --window <id>        Capture window with <id>\n"
+                        "  -a, --area <x,y,w,h>     Capture an area of the screen\n"
+                        "  -fl, --file <filename>   Upload <filename> instead of capturing screen\n"
+                        "  -s, --service <name>     Service to upload to. Defaults to 'screencloud' or 'clipboard'\n\n"
+                        "  -v, --version            Print version number to the console\n"
+                        "  -h, --help               Show this help screen\n";
             return 0;
         }
         if(cmdline_args.contains("--version") || cmdline_args.contains("-v") )
         {
-            INFO(QObject::tr("ScreenCloud version ") + QString(VERSION) + "(" + QString(OPERATING_SYSTEM) + ")");
+            INFO(QObject::tr("ScreenCloud version ") + QString(VERSION) + " (" + QString(OPERATING_SYSTEM) + ")");
             return 0;
         }
         //Setup the python interpreter
@@ -118,12 +126,12 @@ int main(int argc, char *argv[])
                     CRITICAL("No window id provided.");
                     return 1;
                 }
-            }else if(cmdline_args.contains("--file") || cmdline_args.contains("-f"))
+            }else if(cmdline_args.contains("--file") || cmdline_args.contains("-fl"))
             {
                 int filePathIndex = cmdline_args.indexOf("--file");
                 if(filePathIndex == -1)
                 {
-                    filePathIndex = cmdline_args.indexOf("-f");
+                    filePathIndex = cmdline_args.indexOf("-fl");
                 }
                 filePathIndex += 1;
                 if(filePathIndex > 0 && filePathIndex < cmdline_args.count())
