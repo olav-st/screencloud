@@ -366,7 +366,7 @@ void SelectionOverlay::drawRubberband(QPainter *painter, const QRect &rect, cons
     QPen pen(color, lineSize, Qt::SolidLine, Qt::SquareCap);
     painter->setPen(pen);
     int offset = -(lineSize / 2);
-    if(selection.width() > 0 && selection.height() > 0);
+    if(selection.width() > 0 && selection.height() > 0)
     {
         QRect drawRect = rect;
         drawRect.setSize(rect.size() - QSize(offset, offset));
