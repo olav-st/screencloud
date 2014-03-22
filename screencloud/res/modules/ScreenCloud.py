@@ -1,4 +1,5 @@
 from PythonQt.QtCore import QSettings
+from PythonQt.QtGui import QDesktopServices
 import os, string
 from md5 import md5
 from random import randint
@@ -30,6 +31,9 @@ def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()
 	if(includeFileExtension and extension not in name):
 		name += extension
 	return name
+	
+def getPluginDir():
+	return QDesktopServices.storageLocation(QDesktopServices.DataLocation) + "/plugins"
 
 def setUrl(url):
 	global clipboardUrl
