@@ -257,8 +257,7 @@ if(UNIX AND NOT APPLE)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/64x64/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/64x64/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/128x128/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #install copyright and changelog
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "
-${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.gz" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.Debian.gz" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #Install binaries
@@ -284,9 +283,8 @@ if(APPLE)
     install(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns")
     install(DIRECTORY "${QT_PLUGINS_DIR}/iconengines" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns")
     #install qt.conf
-    #install qt.conf
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-    #use custom Info.plistURRENT_SOURCE_DIR}/res/In
+    #use custom Info.plist
     set_target_properties(screencloud PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/res/Info.plist")
     #install icons
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
