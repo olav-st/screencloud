@@ -110,7 +110,7 @@ void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls
         msgBox.addButton(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::Yes);
-        msgBox.setText(tr("Found updates for plugin(s): '") + plugins.join("', '") + tr("'.\nDo you want to update them?"));
+        msgBox.setText(tr("Found updates for plugin(s): <b>") + plugins.join("</b>, <b>") + tr("</b>. Do you want to update?"));
         if(msgBox.exec() == QMessageBox::Yes)
         {
             numPluginsUpdating = plugins.count();
