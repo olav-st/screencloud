@@ -737,6 +737,8 @@
             <ComponentRef Id="PYCRYPTOINIT" />
         </Feature>
         <UI />
+		<Icon Id="ScreenCloud.exe" SourceFile="..\ScreenCloud\\ScreenCloud.exe"/>
+		<Property Id="ARPPRODUCTICON" Value="ScreenCloud.exe" />
         <Icon Id="DesktopIcon.exe" SourceFile="..\ScreenCloud\\ScreenCloud.exe" />
         <Icon Id="StartMenuIcon.exe" SourceFile="..\ScreenCloud\\ScreenCloud.exe" />
         <Property Id="WIXUI_INSTALLDIR" Value="SCREENCLOUD" />
