@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         QStringList cmdline_args = a.arguments();
         if(cmdline_args.contains("--help") || cmdline_args.contains("-h") )
         {
-            qDebug() << "USAGE: screencloud -c [-fs|-w|-a|-f] -s [service]\n\n"
+            qDebug() << "USAGE: screencloud -c [-f|-w|-a|-fl] -s [service]\n\n"
                         "  -c, --cli                Enable CLI mode\n"
                         "  -f, --fullscreen         Capture full screen\n"
                         "  -w, --window <id>        Capture window with <id>\n"
