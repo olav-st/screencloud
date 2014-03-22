@@ -46,7 +46,20 @@ void DownloadUpdateDialog::startDownload(QString version)
         tmpFile->remove();
     }
     INFO("Saving installer to " + tmpFile->fileName());
-    QNetworkRequest downloadRequest("https://screencloud.net/files/" + QString(UPDATE_CHANNEL) + "/ScreenCloud-" + version + "-" + QString(ARCH) + ".msi");
+    QNetworkRequest downloadRequest("https://screencloud.net/files/windows/ScreenCloud-" + version + "-" + QString(ARCH) + ".msi");
+    QNetworkReply* r = netManager->get(downloadRequest);
+    connect(r, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
+    INFO("Downloading " + downloadRequest.url().toString());
+#endif
+#ifdef Q_OS_MACX
+    tmpFile = new QFile(QDir::tempPath() + "/" + "ScreenCloud-" + version + ".dmg", this);
+    if(tmpFile->exists())
+    {
+        INFO("Removing existing dmg " + tmpFile->fileName());
+        tmpFile->remove();
+    }
+    INFO("Saving dmg to " + tmpFile->fileName());
+    QNetworkRequest downloadRequest("https://screencloud.net/files/mac/ScreenCloud-" + version + ".dmg");
     QNetworkReply* r = netManager->get(downloadRequest);
     connect(r, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
     INFO("Downloading " + downloadRequest.url().toString());
@@ -88,7 +101,11 @@ void DownloadUpdateDialog::updateDataTransferProgress(qint64 done, qint64 total)
 void DownloadUpdateDialog::launchInstaller()
 {
     QProcess* process = new QProcess();
+#ifdef Q_OS_WIN
     QString program = "msiexec /i " + QDir::toNativeSeparators(tmpFile->fileName()) + " /qr";
+#else
+    QString program = "open " + QDir::toNativeSeparators(tmpFile->fileName());
+#endif
     INFO("Starting new process: " + program);
     process->start(program);
     QCoreApplication::exit(0);

@@ -83,7 +83,10 @@ void Updater::showUpdateNotification()
         msgBox.setText(tr("There's a new version of ScreenCloud available. Do you want to download it?"));
 #endif
 #ifdef Q_OS_MACX
-        msgBox.setText(tr("There's a new version of ScreenCloud available. You can download it from the <b>Mac App Store</b> or the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>."));
+        msgBox.addButton(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        msgBox.setText(tr("There's a new version of ScreenCloud available. Do you want to download it?"));
 #endif
 #ifdef Q_OS_LINUX
         msgBox.setText(tr("There's a new version of ScreenCloud available. You can download it from the <b>Ubuntu Software Center</b> or the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>."));
