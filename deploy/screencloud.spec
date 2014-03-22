@@ -6,8 +6,8 @@ Name:           screencloud
 License:        GPL-2.0
 Group:          Productivity/Networking/Other
 Summary:        Easy to use screenshot sharing application
-Version:        1.1.3
-Release:        5
+Version:        1.1.4
+Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.gz	
 Url:            http://screencloud.net
@@ -102,7 +102,12 @@ ln -sf /opt/screencloud/screencloud.sh $RPM_BUILD_ROOT/usr/bin/screencloud
 /usr/bin/screencloud
  
 %changelog
-* Sat Mar 1 2014 Olav S Thoresen <olav.s.th@gmail.com> - 1.1.3
+* Sat Mar 22 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.1.4
+- Better multi monitor support
+- Added check for plugin updates
+- Better cli interface
+
+* Sat Mar 1 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.1.3
 - New plugin format (python plugins)
 - All URLs use https by default
 - Removed various dependencies
