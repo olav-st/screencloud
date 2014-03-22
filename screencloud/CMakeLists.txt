@@ -243,11 +243,11 @@ qt4_wrap_cpp( screencloud_SOURCES_MOC ${screencloud_HEADERS_MOC} )
 # include headers produced by uic
 include_directories( ${CMAKE_BINARY_DIR} )
 
-add_executable( screencloud WIN32 ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
+add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
 target_link_libraries( screencloud ${REQUIRED_LIBS} ${OPTIONAL_LIBS})
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
     set(CMAKE_INSTALL_PREFIX "/opt")
     #Install icons and desktop file
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.desktop" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/applications/" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
@@ -257,7 +257,8 @@ if(UNIX)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/64x64/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/64x64/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/icons/hicolor/128x128/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #install copyright and changelog
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "
+${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.gz" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.Debian.gz" DESTINATION "${CMAKE_INSTALL_PREFIX}/../usr/share/doc/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #Install binaries
@@ -269,4 +270,28 @@ if(UNIX)
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #Install sfx
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
-endif(UNIX)
+endif(UNIX AND NOT APPLE)
+if(APPLE)
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+    install(TARGETS screencloud BUNDLE DESTINATION ${CMAKE_BINARY_DIR})
+    #install libraries
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/PythonQt/libPythonQt.dylib" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/MacOS")
+    #install python modules
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    #Install sfx
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    #Install Qt plugins
+    install(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns")
+    install(DIRECTORY "${QT_PLUGINS_DIR}/iconengines" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns")
+    #install qt.conf
+    #install qt.conf
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    #use custom Info.plistURRENT_SOURCE_DIR}/res/In
+    set_target_properties(screencloud PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/res/Info.plist")
+    #install icons
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    install(CODE "
+    include(BundleUtilities)
+    fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"\")
+    ")
+endif(APPLE)

@@ -76,6 +76,10 @@ int main(int argc, char *argv[])
 
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib-native");
+#ifdef Q_OS_MACX
+        PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules");
+        PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules"  + QDir::separator() + "python-stdlib-native");
+#endif
 
         if(cmdline_args.contains("--cli") || cmdline_args.contains("-c"))
         {
