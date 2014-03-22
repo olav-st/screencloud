@@ -79,13 +79,7 @@ void PreferencesDialog::loadSettings()
     windowHotkeyStr = settings.value("captureWindow", QString("Shift+Alt+3")).toString();
     settings.endGroup();
     settings.beginGroup("updates");
-#ifdef Q_OS_WIN
-        autoCheckUpdates = settings.value("check-updates-automatically", true).toBool();
-#elif defined(Q_OS_LINUX) && !defined(UBUNTU_SOFTWARE_CENTER)
-        autoCheckUpdates = settings.value("check-updates-automatically", true).toBool();
-#else
-        autoCheckUpdates = settings.value("check-updates-automatically", false).toBool();
-#endif
+    autoCheckUpdates = settings.value("check-updates-automatically", true).toBool();
     settings.endGroup();
     //Proxy settings
     settings.beginGroup("network");

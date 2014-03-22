@@ -33,13 +33,7 @@ void Updater::loadSettings()
 {
     QSettings settings("screencloud", "ScreenCloud");
     settings.beginGroup("updates");
-#ifdef Q_OS_WIN
     notifyUpdates = settings.value("check-updates-automatically", true).toBool();
-#elif defined(Q_OS_LINUX) && !defined(UBUNTU_SOFTWARE_CENTER)
-    notifyUpdates = settings.value("check-updates-automatically", true).toBool();
-#else
-    notifyUpdates = settings.value("check-updates-automatically", false).toBool();
-#endif
     settings.endGroup();
 }
 
