@@ -7,9 +7,9 @@ License:        GPL-2.0
 Group:          Productivity/Networking/Other
 Summary:        Easy to use screenshot sharing application
 Version:        1.1.3
-Release:        3
+Release:        5
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Source:         %{name}-%{version}.tar.gz	
+Source0:        %{name}-%{version}.tar.gz	
 Url:            http://screencloud.net
 
 BuildRequires: gcc-c++ cmake
@@ -45,21 +45,23 @@ Authors:
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}/%{name}
 
  
 %build
-cmake ./ $(cat screencloud-apikeys.txt)
+cmake -DCONSUMER_KEY_SCREENCLOUD=53ed3030cea02e0ea0d9810b53a1d44304f468911 -DCONSUMER_SECRET_SCREENCLOUD=704aead054f3727e0191a4ccd220fd30
 %{__make} %{?jobs:-j%jobs}
  
 %install
 %make_install
+mkdir -p $RPM_BUILD_ROOT/usr/bin
+ln -sf /opt/screencloud/screencloud.sh $RPM_BUILD_ROOT/usr/bin/screencloud
 
 %clean
- 
+
 %files
 %defattr(-,root,root,-)
-%{_datadir}/doc/screencloud
+%dir %{_datadir}/doc/%{name}
 %{_datadir}/doc/%{name}/copyright
 %{_datadir}/doc/%{name}/changelog.gz
 
@@ -81,16 +83,23 @@ cmake ./ $(cat screencloud-apikeys.txt)
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 %{_datadir}/icons/hicolor/128x128/apps/%{name}.png
 
-/opt/%{name}
+%dir /opt/%{name}
 /opt/%{name}/%{name}
 /opt/%{name}/%{name}.sh
 /opt/%{name}/libPythonQt.so
-/opt/%{name}/sfx
+%dir /opt/%{name}/sfx
 /opt/%{name}/sfx/notification.wav
 /opt/%{name}/sfx/shutter.wav
-/opt/%{name}/modules
+%dir /opt/%{name}/modules
 /opt/%{name}/modules/ScreenCloud.py
+%dir /opt/%{name}/modules/Crypto
+/opt/%{name}/modules/Crypto/empty
 
+%exclude /opt/%{name}/modules/ScreenCloud.pyc
+%exclude /opt/%{name}/modules/ScreenCloud.pyo
+
+%dir /usr/bin
+/usr/bin/screencloud
  
 %changelog
 * Sat Mar 1 2014 Olav S Thoresen <olav.s.th@gmail.com> - 1.1.3

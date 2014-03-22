@@ -1,7 +1,7 @@
 # Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
 pkgname=screencloud
 pkgver=1.1.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Easy to use screenshot sharing application."
 arch=('i686 x86_64')
 url="https://screencloud.net/"
@@ -10,16 +10,16 @@ depends=('qt4' 'quazip' 'libqxt' 'python2')
 makedepends=('cmake' 'gcc' 'qt4' 'quazip' 'libqxt' 'python2' 'mesa-libgl')
 options=('emptydirs')
 source=("$pkgname-$pkgver.tar.gz")
-md5sums=("bd606940fffeceb3e048b79db19fd3b1")
+md5sums=("SKIP")
 install=screencloud.install
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
-  cmake ./ $(< $srcdir/$pkgname-$pkgver/screencloud-apikeys.txt)
+  cd "$srcdir/$pkgname-$pkgver/$pkgname"
+  cmake -DCONSUMER_KEY_SCREENCLOUD=53ed3030cea02e0ea0d9810b53a1d44304f468911 -DCONSUMER_SECRET_SCREENCLOUD=704aead054f3727e0191a4ccd220fd30
   make
 }
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/$pkgname-$pkgver/$pkgname"
   make DESTDIR="$pkgdir/" install
   #Create a symlink in /usr/bin
   mkdir -p $pkgdir/usr/bin

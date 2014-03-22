@@ -1,0 +1,13 @@
+<services>
+  <service name="tar_scm">
+    <param name="versionprefix">1.1.3</param>
+    <param name="url">https://github.com/olav-st/screencloud.git</param>
+    <param name="scm">git</param>
+    <param name="filename">screencloud</param>
+  </service>
+  <service name="recompress">
+    <param name="file">*screencloud*.tar</param>
+    <param name="compression">gz</param>
+  </service>
+  <service name="set_version"/>
+</services>

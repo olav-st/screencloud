@@ -15,8 +15,7 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 	
-	cmake ./ $(shell cat $(CURDIR)/screencloud-apikeys.txt)
-	make
+	(cd screencloud; cmake -DCONSUMER_KEY_SCREENCLOUD=53ed3030cea02e0ea0d9810b53a1d44304f468911 -DCONSUMER_SECRET_SCREENCLOUD=704aead054f3727e0191a4ccd220fd30; make)
 
 	touch build-stamp
 
@@ -25,7 +24,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 
-	make clean || true
+	(cd screencloud; make clean || true)
 
 	dh_clean
 
@@ -34,10 +33,8 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	make install DESTDIR=/usr/src/packages/BUILD/debian/screencloud
-	mkdir -p /usr/src/packages/BUILD/debian/screencloud/usr/bin/
-	ln -s /usr/src/packages/BUILD/debian/screencloud/opt/screencloud/screencloud.sh /usr/src/packages/BUILD/debian/screencloud/usr/bin/screencloud
+	
+	(cd screencloud; make install DESTDIR=/usr/src/packages/BUILD/debian/screencloud)
 	
 binary-indep: build install
 
