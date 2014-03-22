@@ -240,10 +240,16 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
         this->close();
     }else if(event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
-        this->moveToScreen(currentScreenNumber + 1);
+        if(QApplication::desktop()->screenCount() > 1)
+        {
+            this->moveToScreen(currentScreenNumber + 1);
+        }
     }else if(event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
-        this->moveToScreen(currentScreenNumber - 1);
+        if(QApplication::desktop()->screenCount() > 1)
+        {
+            this->moveToScreen(currentScreenNumber - 1);
+        }
     }
     QWidget::keyReleaseEvent(event);
 }
