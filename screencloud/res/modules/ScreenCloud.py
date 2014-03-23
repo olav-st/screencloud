@@ -27,7 +27,7 @@ def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()
 		name = string.Formatter().vformat(name, (), var_dict)
 	except ValueError:
 		pass
-	extension = ".png"
+	extension = "." + getScreenshotFormat()
 	if(includeFileExtension and extension not in name):
 		name += extension
 	return name
