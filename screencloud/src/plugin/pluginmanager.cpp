@@ -338,6 +338,10 @@ bool PluginManager::copyFolder(QString sourceFolder, QString destFolder)
     if(!sourceDir.exists())
         return false;
     QDir destDir(destFolder);
+    if(destDir.exists())
+    {
+        removeDir(destDir.path());
+    }
     if(!destDir.exists())
     {
         destDir.mkdir(destFolder);
