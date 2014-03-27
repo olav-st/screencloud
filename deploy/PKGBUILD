@@ -6,9 +6,12 @@ pkgdesc="Easy to use screenshot sharing application."
 arch=('i686 x86_64')
 url="https://screencloud.net/"
 license=('gpl-2')
+
 depends=('qt4' 'quazip' 'libqxt' 'python2')
 makedepends=('cmake' 'gcc' 'qt4' 'quazip' 'libqxt' 'python2' 'mesa-libgl')
+optdepends=('python2-crypto: required for SFTP support')
 options=('emptydirs')
+
 source=("$pkgname-$pkgver.tar.gz")
 md5sums=("SKIP")
 install=screencloud.install
