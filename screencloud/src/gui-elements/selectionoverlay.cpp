@@ -449,7 +449,7 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     QRect screenGeom = QApplication::desktop()->screenGeometry(currentScreenNumber);
     setGeometry(screenGeom);
     screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
-    if(screenshot.rect() != screenGeom)
+    if(screenshot.size() != screenGeom.size())
     {
         INFO("Scaling screenshot to fit screenGeom");
         screenshot = screenshot.scaled(screenGeom.size());
