@@ -447,8 +447,13 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     }
     currentScreenNumber = screenNumber;
     QRect screenGeom = QApplication::desktop()->screenGeometry(currentScreenNumber);
-    screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
     setGeometry(screenGeom);
+    screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
+    if(screenshot.rect() != screenGeom)
+    {
+        INFO("Scaling screenshot to fit screenGeom");
+        screenshot = screenshot.scaled(screenGeom.size());
+    }
     selection = QRect(0,0,0,0);
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
     startedDrawingRubberBand = false;
