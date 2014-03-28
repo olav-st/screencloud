@@ -7,7 +7,7 @@ License:        GPL-2.0
 Group:          Productivity/Networking/Other
 Summary:        Easy to use screenshot sharing application
 Version:        1.1.4
-Release:        1
+Release:        2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.gz	
 Url:            http://screencloud.net
@@ -98,7 +98,6 @@ ln -sf /opt/screencloud/screencloud.sh $RPM_BUILD_ROOT/usr/bin/screencloud
 %exclude /opt/%{name}/modules/ScreenCloud.pyc
 %exclude /opt/%{name}/modules/ScreenCloud.pyo
 
-%dir /usr/bin
 /usr/bin/screencloud
  
 %changelog
