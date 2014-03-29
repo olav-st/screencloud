@@ -227,7 +227,10 @@ bool PythonQtSignalReceiver::removeSignalHandler(const char* signal, PyObject* c
       }
     }
   }
-  if ((foundCount>0) && (sigId == _destroyedSignal1Id) || (sigId == _destroyedSignal2Id)) {
+
+// olav  if ((foundCount>0) && (sigId == _destroyedSignal1Id) || (sigId == _destroyedSignal2Id)) {
+
+  if ((foundCount>0) && ((sigId == _destroyedSignal1Id) || (sigId == _destroyedSignal2Id))) {
     _destroyedSignalCount -= foundCount;
     if (_destroyedSignalCount==0) {
       // make ourself child of QObject again, to get deleted when the object gets deleted
