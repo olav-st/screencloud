@@ -22,10 +22,10 @@ DEL usermessage.vbs
 ::copy ..\..\..\Screencloud-build-desktop-Qt_4_7_4_for_Desktop_-_MinGW_4_4__Qt_SDK__Release\release\ScreenCloud.exe ScreenCloud\ScreenCloud.exe
 
 ::Strip all binaries
-cd ScreenCloud
+cd bin
 print "Stripping binaries..."
 strip --strip-unneeded libPythonQt.dll
-strip --strip-unneeded ScreenCloud.exe
+strip --strip-unneeded screencloud.exe
 cd ..
 ::Set the version number in the wix file
 copy wix\ScreenCloud.wxs wix\ScreenCloud.wxs.backup
@@ -42,4 +42,4 @@ move wix\ScreenCloud.wxs.temp wix\ScreenCloud.wxs
 
 mkdir installers\%update_channel%\%version%
 copy wix\ScreenCloud.msi installers\%update_channel%\%version%\ScreenCloud-%version%-%arch%.msi
-pause
+echo "Finished building installer"

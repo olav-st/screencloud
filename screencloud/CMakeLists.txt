@@ -231,10 +231,18 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
 )
 
 if(WIN32)
-    set(OPTIONAL_LIBS ${OPTIONAL_LIBS}
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ws2_32
     )
 endif(WIN32)
+
+#Find OpenSSL (for use later)
+find_package(OpenSSL)
+if(OPENSSL_FOUND)
+    message(STATUS "OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+else(OPENSSL_FOUND)
+    message(WARNING "Could not find OpenSSL libs. They are not required for compiling, but needs to be available at runtime.")
+endif(OPENSSL_FOUND)
 
 qt4_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
 qt4_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
@@ -245,7 +253,11 @@ include_directories( ${CMAKE_BINARY_DIR} )
 
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
-target_link_libraries( screencloud ${REQUIRED_LIBS} ${OPTIONAL_LIBS})
+target_link_libraries( screencloud ${REQUIRED_LIBS})
+
+#Copy required files to build dir
+add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res/modules $<TARGET_FILE_DIR:screencloud>)
+add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res/sfx $<TARGET_FILE_DIR:screencloud>)
 
 if(UNIX AND NOT APPLE)
     set(CMAKE_INSTALL_PREFIX "/opt")
@@ -293,3 +305,17 @@ if(APPLE)
     fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"\")
     ")
 endif(APPLE)
+if(WIN32)
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/screencloud.exe" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    #get the required qt plugins
+    install(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    install(DIRECTORY "${QT_PLUGINS_DIR}/iconengines" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    #copy libeay32 and ssleay32
+    install(FILES ${OPENSSL_LIBRARIES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    #copy other dependencies with fixup_bundle
+    install(CODE "
+    include(BundleUtilities)
+    fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"\")")
+    install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat \")")
+endif(WIN32)

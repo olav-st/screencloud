@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="ScreenCloud" Language="1033" Version="VERSIONNUMBERNOTSET" Manufacturer="Olav Sortland Thoresen" UpgradeCode="C80D60EB-D743-4756-9B33-A62B31FD64D5">
+        <Package Description="ScreenCloud" InstallerVersion="200" Compressed="yes" />
+        <Media Id="1" Cabinet="screencloud.cab" EmbedCab="yes" CompressionLevel="high" />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Id="SCREENCLOUD" Name="ScreenCloud">
+                    <Component Id="SCREENCLOUD.EXE" DiskId="1" Guid="57C15E17-C360-431A-B5CB-B0D22642AA62">
+                        <File Id="SCREENCLOUD.EXE" Name="ScreenCloud.exe" Source="..\bin\screencloud.exe" KeyPath="yes">
+                            <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="ScreenCloud" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
+                            <Shortcut Id="ExeShortcut" Directory="ProgramMenuDir" Name="ScreenCloud" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" />
+                        </File>
+                    </Component>
+                    <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589">
+                        <File Id="LIBEAY32.DLL" Name="libeay32.dll" Source="..\bin\libeay32.dll" />
+                        <File Id="LIBGCC_S_DW2_1.DLL" Name="libgcc_s_dw2-1.dll" Source="..\bin\libgcc_s_dw2-1.dll" />
+                        <File Id="LIBSTDC___6.DLL" Name="libstdc++-6.dll" Source="..\bin\libstdc++-6.dll" />
+                        <File Id="QXTCORE.DLL" Name="QxtCore.dll" Source="..\bin\QxtCore.dll" />
+                        <File Id="QXTGUI.DLL" Name="QxtGui.dll" Source="..\bin\QxtGui.dll" />
+                        <File Id="SSLEAY32.DLL" Name="ssleay32.dll" Source="..\bin\ssleay32.dll" />
+                        <File Name="libquazip.dll" Id="LIBQUAZIP.DLL" Source="..\bin\libquazip.dll" />
+                        <File Id="LIBPYTHONQT.DLL" Name="libPythonQt.dll" Source="..\bin\libPythonQt.dll" />
+                        <File Id="LIBPYTHON27.DLL" Name="libpython2.7.dll" Source="..\bin\libpython2.7.dll">
+                        </File>
+                    </Component>
+                    <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545">
+                        <File Id="QTCORE4.DLL" Name="QtCore4.dll" Source="..\bin\QtCore4.dll" />
+                        <File Id="QTGUI4.DLL" Name="QtGui4.dll" Source="..\bin\QtGui4.dll" />
+                        <File Id="QTNETWORK4.DLL" Name="QtNetwork4.dll" Source="..\bin\QtNetwork4.dll" />
+                        <File Id="QTXML4.DLL" Name="QtXml4.dll" Source="..\bin\QtXml4.dll" />
+                        <File Id="QTMULTIMEDIA4.DLL" Name="QtMultimedia4.dll" Source="..\bin\QtMultimedia4.dll" />
+                    </Component>
+                    <Component Id="LIBPYTHON27.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
+                        <File Id="LIBPYTHON27.ZIP" Name="libpython2.7.zip" Source="..\libpython2.7.zip" />
+                    </Component>
+                    <Component Id="PY_STARTUP_MODULES" Guid="2A819964-FADA-4E56-A828-99953937CB7C">
+                        <File Id="FUNCTOOLS.PYD" Name="_functools.pyd" Source="..\dll\_functools.pyd" />
+                        <File Id="LOCALE.PYD" Name="_locale.pyd" Source="..\dll\_locale.pyd" />
+                        <File Id="OPERATOR.PYD" Name="operator.pyd" Source="..\dll\operator.pyd" />
+                        <File Id="ZLIB.PYD" Name="zlib.pyd" Source="..\dll\zlib.pyd" />
+                    </Component>
+                    <Directory Id="SFX" Name="sfx">
+                        <Component Id="NOTIFICATION.WAV" DiskId="1" Guid="95EC1C92-1A9C-47D1-9234-BF3C08D190FC">
+                            <File Id="NOTIFICATION.WAV" Name="notification.wav" Source="..\sfx\notification.wav" />
+                        </Component>
+                        <Component Id="SHUTTER.WAV" DiskId="1" Guid="EBDCA7F4-1562-475B-B677-D1FC73E0AAC4">
+                            <File Id="SHUTTER.WAV" Name="shutter.wav" Source="..\sfx\shutter.wav" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="ICONENGINES" Name="iconengines">
+                        <Component Id="ICONENGINES" Guid="DE3EE756-E1D9-4908-8FEA-87EAAD6CBC95">
+                            <File Name="qsvgicon4.dll" Id="QSVGICON4.DLL" Source="..\bin\iconengines\qsvgicon4.dll" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="IMAGEFORMATS" Name="imageformats">
+                        <Component Id="IMAGEFORMATS" Guid="70A45777-D415-4469-90C1-4452FFAFCCC4">
+                            <File Id="QJPEG4.DLL" Name="qjpeg4.dll" Source="..\bin\imageformats\qjpeg4.dll" />
+                            <File Id="QGIF4.DLL" Name="qgif4.dll" Source="..\bin\imageformats\qgif4.dll" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="MODULES" Name="modules">
+                        <Component Id="SCREENCLOUD.PY" Guid="01FA92FA-8DBF-45DD-B526-88CA19A069A7">
+                            <File Id="SCREENCLOUD.PY" Name="ScreenCloud.py" Source="..\modules\ScreenCloud.py" />
+                        </Component>
+                        <Directory Id="CRYPTO" Name="Crypto">
+                            <Component Id="PCT_WARNINGS.PY" DiskId="1" Guid="35A43B28-F101-4274-98F8-A386F98102BE" Feature="DefaultFeature">
+                                <File Id="PCT_WARNINGS.PY" Name="pct_warnings.py" Source="..\modules\Crypto\pct_warnings.py" />
+                            </Component>
+                            <Component Id="PCT_WARNINGS.PYC" DiskId="1" Guid="396AB3CF-A1E2-443D-8DCC-825B0CBD24D0" Feature="DefaultFeature">
+                                <File Id="PCT_WARNINGS.PYC" Name="pct_warnings.pyc" Source="..\modules\Crypto\pct_warnings.pyc" />
+                            </Component>
+                            <Component Id="__INIT__.PY" DiskId="1" Guid="0FD92431-92D9-45CE-B1B8-86DC138980A9" Feature="DefaultFeature">
+                                <File Id="__INIT__.PY" Name="__init__.py" Source="..\modules\Crypto\__init__.py" />
+                            </Component>
+                            <Component Id="__INIT__.PYC" DiskId="1" Guid="3D7CAF7B-833A-40FC-BFAF-724A74C31D7B" Feature="DefaultFeature">
+                                <File Id="__INIT__.PYC" Name="__init__.pyc" Source="..\modules\Crypto\__init__.pyc" />
+                            </Component>
+                            <Directory Id="CIPHER" Name="Cipher">
+                                <Component Id="AES.PY" DiskId="1" Guid="07D662B3-B7BA-4126-B0D6-18152F515949" Feature="DefaultFeature">
+                                    <File Id="AES.PY" Name="AES.py" Source="..\modules\Crypto\Cipher\AES.py" />
+                                </Component>
+                                <Component Id="AES.PYC" DiskId="1" Guid="E1D6CACD-070E-4837-85C4-80028B8BD58C" Feature="DefaultFeature">
+                                    <File Id="AES.PYC" Name="AES.pyc" Source="..\modules\Crypto\Cipher\AES.pyc" />
+                                </Component>
+                                <Component Id="ARC2.PY" DiskId="1" Guid="99E8EB55-5D73-4BF2-B266-A5DB3B65C6BA" Feature="DefaultFeature">
+                                    <File Id="ARC2.PY" Name="ARC2.py" Source="..\modules\Crypto\Cipher\ARC2.py" />
+                                </Component>
+                                <Component Id="ARC4.PY" DiskId="1" Guid="47361416-EDA8-408B-B204-ADB34CD2A33A" Feature="DefaultFeature">
+                                    <File Id="ARC4.PY" Name="ARC4.py" Source="..\modules\Crypto\Cipher\ARC4.py" />
+                                </Component>
+                                <Component Id="ARC4.PYC" DiskId="1" Guid="704DFE8D-51BA-4DC5-B3FE-3C3D40A850A2" Feature="DefaultFeature">
+                                    <File Id="ARC4.PYC" Name="ARC4.pyc" Source="..\modules\Crypto\Cipher\ARC4.pyc" />
+                                </Component>
+                                <Component Id="BLOCKALGO.PY" DiskId="1" Guid="0C814658-4F3F-4005-A161-DE852F633512" Feature="DefaultFeature">
+                                    <File Id="BLOCKALGO.PY" Name="blockalgo.py" Source="..\modules\Crypto\Cipher\blockalgo.py" />
+                                </Component>
+                                <Component Id="BLOCKALGO.PYC" DiskId="1" Guid="AC72DCBB-BD74-4341-AE96-3DEB6E6ADE8F" Feature="DefaultFeature">
+                                    <File Id="BLOCKALGO.PYC" Name="blockalgo.pyc" Source="..\modules\Crypto\Cipher\blockalgo.pyc" />
+                                </Component>
+                                <Component Id="BLOWFISH.PY" DiskId="1" Guid="AB7C8E75-0C12-4AB6-BC0B-201044764425" Feature="DefaultFeature">
+                                    <File Id="BLOWFISH.PY" Name="Blowfish.py" Source="..\modules\Crypto\Cipher\Blowfish.py" />
+                                </Component>
+                                <Component Id="BLOWFISH.PYC" DiskId="1" Guid="CE13A79D-7248-4824-B1E2-BCA84158CED5" Feature="DefaultFeature">
+                                    <File Id="BLOWFISH.PYC" Name="Blowfish.pyc" Source="..\modules\Crypto\Cipher\Blowfish.pyc" />
+                                </Component>
+                                <Component Id="CAST.PY" DiskId="1" Guid="A0814B59-E293-4882-929F-986391F9DFD0" Feature="DefaultFeature">
+                                    <File Id="CAST.PY" Name="CAST.py" Source="..\modules\Crypto\Cipher\CAST.py" />
+                                </Component>
+                                <Component Id="DES.PY" DiskId="1" Guid="5058651E-3BEE-4FA2-A0C6-46FEE64081B7" Feature="DefaultFeature">
+                                    <File Id="DES.PY" Name="DES.py" Source="..\modules\Crypto\Cipher\DES.py" />
+                                </Component>
+                                <Component Id="DES3.PY" DiskId="1" Guid="CC580644-D575-4248-92FE-BF72B621430D" Feature="DefaultFeature">
+                                    <File Id="DES3.PY" Name="DES3.py" Source="..\modules\Crypto\Cipher\DES3.py" />
+                                </Component>
+                                <Component Id="DES3.PYC" DiskId="1" Guid="1566546A-D720-4BA7-9847-A25FB7F753D2" Feature="DefaultFeature">
+                                    <File Id="DES3.PYC" Name="DES3.pyc" Source="..\modules\Crypto\Cipher\DES3.pyc" />
+                                </Component>
+                                <Component Id="PKCS1_OAEP.PY" DiskId="1" Guid="0BDA9D7F-119C-483E-8C99-9220BA96CEF7" Feature="DefaultFeature">
+                                    <File Id="PKCS1_OAEP.PY" Name="PKCS1_OAEP.py" Source="..\modules\Crypto\Cipher\PKCS1_OAEP.py" />
+                                </Component>
+                                <Component Id="PKCS1_V1_5.PY" DiskId="1" Guid="F7ED3C17-2044-4114-9296-9BE6A29730AB" Feature="DefaultFeature">
+                                    <File Id="PKCS1_V1_5.PY" Name="PKCS1_v1_5.py" Source="..\modules\Crypto\Cipher\PKCS1_v1_5.py" />
+                                </Component>
+                                <Component Id="XOR.PY" DiskId="1" Guid="743E4040-C230-41E8-A54C-2FAD3C8F5C39" Feature="DefaultFeature">
+                                    <File Id="XOR.PY" Name="XOR.py" Source="..\modules\Crypto\Cipher\XOR.py" />
+                                </Component>
+                                <Component Id="_AES.PYD" DiskId="1" Guid="FFE4CB25-80F1-4DA3-9D4D-1FF624A9EE6F" Feature="DefaultFeature">
+                                    <File Id="_AES.PYD" Name="_AES.pyd" Source="..\modules\Crypto\Cipher\_AES.pyd" />
+                                </Component>
+                                <Component Id="_ARC2.PYD" DiskId="1" Guid="7CD3AA5F-6763-4E43-8272-967B0508CEB8" Feature="DefaultFeature">
+                                    <File Id="_ARC2.PYD" Name="_ARC2.pyd" Source="..\modules\Crypto\Cipher\_ARC2.pyd" />
+                                </Component>
+                                <Component Id="_ARC4.PYD" DiskId="1" Guid="CC3C4C8C-99C6-4040-8FBA-27B534EEB6AC" Feature="DefaultFeature">
+                                    <File Id="_ARC4.PYD" Name="_ARC4.pyd" Source="..\modules\Crypto\Cipher\_ARC4.pyd" />
+                                </Component>
+                                <Component Id="_BLOWFISH.PYD" DiskId="1" Guid="FE6A4E85-ABBF-4813-A3CD-C3F8810CA036" Feature="DefaultFeature">
+                                    <File Id="_BLOWFISH.PYD" Name="_Blowfish.pyd" Source="..\modules\Crypto\Cipher\_Blowfish.pyd" />
+                                </Component>
+                                <Component Id="_CAST.PYD" DiskId="1" Guid="6FEBD46C-C04F-42FE-982A-3E9A9E1D9C3D" Feature="DefaultFeature">
+                                    <File Id="_CAST.PYD" Name="_CAST.pyd" Source="..\modules\Crypto\Cipher\_CAST.pyd" />
+                                </Component>
+                                <Component Id="_DES.PYD" DiskId="1" Guid="A0C75AE5-1530-4D9C-A0B4-AC9D4CF951B1" Feature="DefaultFeature">
+                                    <File Id="_DES.PYD" Name="_DES.pyd" Source="..\modules\Crypto\Cipher\_DES.pyd" />
+                                </Component>
+                                <Component Id="_DES3.PYD" DiskId="1" Guid="4CBF22C3-3DD5-4A0F-A3C9-5C91D48A4C7C" Feature="DefaultFeature">
+                                    <File Id="_DES3.PYD" Name="_DES3.pyd" Source="..\modules\Crypto\Cipher\_DES3.pyd" />
+                                </Component>
+                                <Component Id="_XOR.PYD" DiskId="1" Guid="046C19FF-D9BD-4FCA-8861-FAAC29B038E4" Feature="DefaultFeature">
+                                    <File Id="_XOR.PYD" Name="_XOR.pyd" Source="..\modules\Crypto\Cipher\_XOR.pyd" />
+                                </Component>
+                                <Component Id="__INIT__.PY_1" DiskId="1" Guid="956DE78E-11B3-47DD-8CDD-8AC18D097D7D" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_1" Name="__init__.py" Source="..\modules\Crypto\Cipher\__init__.py" />
+                                </Component>
+                                <Component Id="__INIT__.PYC_1" DiskId="1" Guid="D559F1BA-0E00-4D31-99EE-429D17ED01C3" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PYC_1" Name="__init__.pyc" Source="..\modules\Crypto\Cipher\__init__.pyc" />
+                                </Component>
+                            </Directory>
+                            <Directory Id="HASH" Name="Hash">
+                                <Component Id="HASHALGO.PY" DiskId="1" Guid="0BC89C10-3F25-4747-BFE4-759FD2222082" Feature="DefaultFeature">
+                                    <File Id="HASHALGO.PY" Name="hashalgo.py" Source="..\modules\Crypto\Hash\hashalgo.py" />
+                                </Component>
+                                <Component Id="HASHALGO.PYC" DiskId="1" Guid="64950F2A-1915-44F7-8CAA-E3477420337B" Feature="DefaultFeature">
+                                    <File Id="HASHALGO.PYC" Name="hashalgo.pyc" Source="..\modules\Crypto\Hash\hashalgo.pyc" />
+                                </Component>
+                                <Component Id="HMAC.PY" DiskId="1" Guid="4F48E809-87CF-4BDF-8F68-0D93238ECC78" Feature="DefaultFeature">
+                                    <File Id="HMAC.PY" Name="HMAC.py" Source="..\modules\Crypto\Hash\HMAC.py" />
+                                </Component>
+                                <Component Id="HMAC.PYC" DiskId="1" Guid="07423581-3175-4FFE-9936-DAC06E0C9BCC" Feature="DefaultFeature">
+                                    <File Id="HMAC.PYC" Name="HMAC.pyc" Source="..\modules\Crypto\Hash\HMAC.pyc" />
+                                </Component>
+                                <Component Id="MD2.PY" DiskId="1" Guid="89D7ABFA-0385-4650-AEC1-4ED2D5408017" Feature="DefaultFeature">
+                                    <File Id="MD2.PY" Name="MD2.py" Source="..\modules\Crypto\Hash\MD2.py" />
+                                </Component>
+                                <Component Id="MD4.PY" DiskId="1" Guid="F1278863-D50D-435A-9BD9-C9F1A51A0796" Feature="DefaultFeature">
+                                    <File Id="MD4.PY" Name="MD4.py" Source="..\modules\Crypto\Hash\MD4.py" />
+                                </Component>
+                                <Component Id="MD5.PY" DiskId="1" Guid="267A36BD-1F75-4B84-897E-032847353294" Feature="DefaultFeature">
+                                    <File Id="MD5.PY" Name="MD5.py" Source="..\modules\Crypto\Hash\MD5.py" />
+                                </Component>
+                                <Component Id="MD5.PYC" DiskId="1" Guid="B437240C-8511-4D17-80CA-EC5545B2ABD5" Feature="DefaultFeature">
+                                    <File Id="MD5.PYC" Name="MD5.pyc" Source="..\modules\Crypto\Hash\MD5.pyc" />
+                                </Component>
+                                <Component Id="RIPEMD.PY" DiskId="1" Guid="0563853F-6B4C-4167-BF2F-2A4618A2AA6A" Feature="DefaultFeature">
+                                    <File Id="RIPEMD.PY" Name="RIPEMD.py" Source="..\modules\Crypto\Hash\RIPEMD.py" />
+                                </Component>
+                                <Component Id="SHA.PY" DiskId="1" Guid="D71EAB86-CD21-4562-890D-A5007E88F5F6" Feature="DefaultFeature">
+                                    <File Id="SHA.PY" Name="SHA.py" Source="..\modules\Crypto\Hash\SHA.py" />
+                                </Component>
+                                <Component Id="SHA.PYC" DiskId="1" Guid="8C2C0B41-67A6-4649-9D77-F3ED83A3ADB1" Feature="DefaultFeature">
+                                    <File Id="SHA.PYC" Name="SHA.pyc" Source="..\modules\Crypto\Hash\SHA.pyc" />
+                                </Component>
+                                <Component Id="SHA224.PY" DiskId="1" Guid="F6FD468B-D9C0-4E14-8AC9-3F81DF07537B" Feature="DefaultFeature">
+                                    <File Id="SHA224.PY" Name="SHA224.py" Source="..\modules\Crypto\Hash\SHA224.py" />
+                                </Component>
+                                <Component Id="SHA256.PY" DiskId="1" Guid="D8E70868-A2FD-4C3C-BF9A-07A0283639A2" Feature="DefaultFeature">
+                                    <File Id="SHA256.PY" Name="SHA256.py" Source="..\modules\Crypto\Hash\SHA256.py" />
+                                </Component>
+                                <Component Id="SHA256.PYC" DiskId="1" Guid="7C0201B1-83DF-4787-933F-ACDE15D29C8A" Feature="DefaultFeature">
+                                    <File Id="SHA256.PYC" Name="SHA256.pyc" Source="..\modules\Crypto\Hash\SHA256.pyc" />
+                                </Component>
+                                <Component Id="SHA384.PY" DiskId="1" Guid="5077D9EE-87A6-4FA6-92A7-99F1DA00BA43" Feature="DefaultFeature">
+                                    <File Id="SHA384.PY" Name="SHA384.py" Source="..\modules\Crypto\Hash\SHA384.py" />
+                                </Component>
+                                <Component Id="SHA512.PY" DiskId="1" Guid="5DDD4E2C-97D1-442E-A11D-1AF16695EFD8" Feature="DefaultFeature">
+                                    <File Id="SHA512.PY" Name="SHA512.py" Source="..\modules\Crypto\Hash\SHA512.py" />
+                                </Component>
+                                <Component Id="_MD2.PYD" DiskId="1" Guid="F47574E1-155F-4CA1-B277-C8EDD1A605AB" Feature="DefaultFeature">
+                                    <File Id="_MD2.PYD" Name="_MD2.pyd" Source="..\modules\Crypto\Hash\_MD2.pyd" />
+                                </Component>
+                                <Component Id="_MD4.PYD" DiskId="1" Guid="E817DD09-5327-4579-999E-3AACEEAC00A0" Feature="DefaultFeature">
+                                    <File Id="_MD4.PYD" Name="_MD4.pyd" Source="..\modules\Crypto\Hash\_MD4.pyd" />
+                                </Component>
+                                <Component Id="_RIPEMD160.PYD" DiskId="1" Guid="A9B4D37B-9792-4C6E-BBB6-7A33EE5817D3" Feature="DefaultFeature">
+                                    <File Id="_RIPEMD160.PYD" Name="_RIPEMD160.pyd" Source="..\modules\Crypto\Hash\_RIPEMD160.pyd" />
+                                </Component>
+                                <Component Id="_SHA224.PYD" DiskId="1" Guid="1C91256A-466E-4867-A015-509E69927EF1" Feature="DefaultFeature">
+                                    <File Id="_SHA224.PYD" Name="_SHA224.pyd" Source="..\modules\Crypto\Hash\_SHA224.pyd" />
+                                </Component>
+                                <Component Id="_SHA256.PYD" DiskId="1" Guid="DD382F67-36F6-42E9-A488-29C668DB6398" Feature="DefaultFeature">
+                                    <File Id="_SHA256.PYD" Name="_SHA256.pyd" Source="..\modules\Crypto\Hash\_SHA256.pyd" />
+                                </Component>
+                                <Component Id="_SHA384.PYD" DiskId="1" Guid="1C3C9413-448C-446E-BBBB-84DE1727263A" Feature="DefaultFeature">
+                                    <File Id="_SHA384.PYD" Name="_SHA384.pyd" Source="..\modules\Crypto\Hash\_SHA384.pyd" />
+                                </Component>
+                                <Component Id="_SHA512.PYD" DiskId="1" Guid="63AFE2BF-6FB7-46F3-9298-C2E874F058BD" Feature="DefaultFeature">
+                                    <File Id="_SHA512.PYD" Name="_SHA512.pyd" Source="..\modules\Crypto\Hash\_SHA512.pyd" />
+                                </Component>
+                                <Component Id="__INIT__.PY_2" DiskId="1" Guid="8BE354FC-0463-4C93-BB9A-E93744EEE529" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_2" Name="__init__.py" Source="..\modules\Crypto\Hash\__init__.py" />
+                                </Component>
+                                <Component Id="__INIT__.PYC_2" DiskId="1" Guid="BBB35A4E-2A1C-4878-9C64-AA889BCF28ED" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PYC_2" Name="__init__.pyc" Source="..\modules\Crypto\Hash\__init__.pyc" />
+                                </Component>
+                            </Directory>
+                            <Directory Id="PROTOCOL" Name="Protocol">
+                                <Component Id="ALLORNOTHING.PY" DiskId="1" Guid="1DA84FBE-832A-4DA9-A8C3-7532B1E19949" Feature="DefaultFeature">
+                                    <File Id="ALLORNOTHING.PY" Name="AllOrNothing.py" Source="..\modules\Crypto\Protocol\AllOrNothing.py" />
+                                </Component>
+                                <Component Id="CHAFFING.PY" DiskId="1" Guid="5F6D33BD-DBC6-4D71-A68F-DAE91F95C019" Feature="DefaultFeature">
+                                    <File Id="CHAFFING.PY" Name="Chaffing.py" Source="..\modules\Crypto\Protocol\Chaffing.py" />
+                                </Component>
+                                <Component Id="KDF.PY" DiskId="1" Guid="AF48680E-5399-4895-8BB1-6875BC393A43" Feature="DefaultFeature">
+                                    <File Id="KDF.PY" Name="KDF.py" Source="..\modules\Crypto\Protocol\KDF.py" />
+                                </Component>
+                                <Component Id="__INIT__.PY_3" DiskId="1" Guid="29058A7B-F468-402B-9186-94BA98636F6E" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_3" Name="__init__.py" Source="..\modules\Crypto\Protocol\__init__.py" />
+                                </Component>
+                            </Directory>
+                            <Directory Id="PUBLICKEY" Name="PublicKey">
+                                <Component Id="DSA.PY" DiskId="1" Guid="7107C826-C559-4095-B54B-C3D02354E60A" Feature="DefaultFeature">
+                                    <File Id="DSA.PY" Name="DSA.py" Source="..\modules\Crypto\PublicKey\DSA.py" />
+                                </Component>
+                                <Component Id="DSA.PYC" DiskId="1" Guid="F805A730-57A2-425E-B3FB-9D57C3287443" Feature="DefaultFeature">
+                                    <File Id="DSA.PYC" Name="DSA.pyc" Source="..\modules\Crypto\PublicKey\DSA.pyc" />
+                                </Component>
+                                <Component Id="ELGAMAL.PY" DiskId="1" Guid="3EC7DE53-4286-4158-AEF6-E0B5B7C92C0E" Feature="DefaultFeature">
+                                    <File Id="ELGAMAL.PY" Name="ElGamal.py" Source="..\modules\Crypto\PublicKey\ElGamal.py" />
+                                </Component>
+                                <Component Id="PUBKEY.PY" DiskId="1" Guid="B6B6A1F2-89E0-4378-A692-2AF399CAF0D4" Feature="DefaultFeature">
+                                    <File Id="PUBKEY.PY" Name="pubkey.py" Source="..\modules\Crypto\PublicKey\pubkey.py" />
+                                </Component>
+                                <Component Id="PUBKEY.PYC" DiskId="1" Guid="191FFCB9-8E42-4E24-998D-8D9FD795DA82" Feature="DefaultFeature">
+                                    <File Id="PUBKEY.PYC" Name="pubkey.pyc" Source="..\modules\Crypto\PublicKey\pubkey.pyc" />
+                                </Component>
+                                <Component Id="RSA.PY" DiskId="1" Guid="052D026D-C53C-419B-BA4D-F48B3F1C6B6B" Feature="DefaultFeature">
+                                    <File Id="RSA.PY" Name="RSA.py" Source="..\modules\Crypto\PublicKey\RSA.py" />
+                                </Component>
+                                <Component Id="RSA.PYC" DiskId="1" Guid="BAD59236-9549-489F-A825-41B39EF122FF" Feature="DefaultFeature">
+                                    <File Id="RSA.PYC" Name="RSA.pyc" Source="..\modules\Crypto\PublicKey\RSA.pyc" />
+                                </Component>
+                                <Component Id="_DSA.PY" DiskId="1" Guid="958B23E5-7453-4035-AB22-BBE5350BAEB6" Feature="DefaultFeature">
+                                    <File Id="_DSA.PY" Name="_DSA.py" Source="..\modules\Crypto\PublicKey\_DSA.py" />
+                                </Component>
+                                <Component Id="_DSA.PYC" DiskId="1" Guid="6625EC7F-4AEA-4819-8BF4-65B258DAC6B3" Feature="DefaultFeature">
+                                    <File Id="_DSA.PYC" Name="_DSA.pyc" Source="..\modules\Crypto\PublicKey\_DSA.pyc" />
+                                </Component>
+                                <Component Id="_FASTMATH.PYD" DiskId="1" Guid="B45659A1-992F-4744-83E7-4E1CF99436CE" Feature="DefaultFeature">
+                                    <File Id="_FASTMATH.PYD" Name="_fastmath.pyd" Source="..\modules\Crypto\PublicKey\_fastmath.pyd" />
+                                </Component>
+                                <Component Id="_RSA.PY" DiskId="1" Guid="5FB61797-67DE-4348-86DE-A8B66CD04CA5" Feature="DefaultFeature">
+                                    <File Id="_RSA.PY" Name="_RSA.py" Source="..\modules\Crypto\PublicKey\_RSA.py" />
+                                </Component>
+                                <Component Id="_RSA.PYC" DiskId="1" Guid="2A3A5D7D-B18C-43A7-9A6E-197EF8183CC2" Feature="DefaultFeature">
+                                    <File Id="_RSA.PYC" Name="_RSA.pyc" Source="..\modules\Crypto\PublicKey\_RSA.pyc" />
+                                </Component>
+                                <Component Id="_SLOWMATH.PY" DiskId="1" Guid="618DDE4D-2B79-4383-9B6F-6BC26113DF48" Feature="DefaultFeature">
+                                    <File Id="_SLOWMATH.PY" Name="_slowmath.py" Source="..\modules\Crypto\PublicKey\_slowmath.py" />
+                                </Component>
+                                <Component Id="_SLOWMATH.PYC" DiskId="1" Guid="EC3E6A79-5338-4F11-9CBB-4AD12B0E0C03" Feature="DefaultFeature">
+                                    <File Id="_SLOWMATH.PYC" Name="_slowmath.pyc" Source="..\modules\Crypto\PublicKey\_slowmath.pyc" />
+                                </Component>
+                                <Component Id="__INIT__.PY_4" DiskId="1" Guid="A0C7C52E-198E-4826-A6EF-AE77AF6E2CFE" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_4" Name="__init__.py" Source="..\modules\Crypto\PublicKey\__init__.py" />
+                                </Component>
+                                <Component Id="__INIT__.PYC_3" DiskId="1" Guid="87A1BC90-AE7C-4FC3-82D0-DD41C1207537" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PYC_3" Name="__init__.pyc" Source="..\modules\Crypto\PublicKey\__init__.pyc" />
+                                </Component>
+                            </Directory>
+                            <Directory Id="RANDOM" Name="Random">
+                                <Component Id="RANDOM.PY" DiskId="1" Guid="8DF46933-A7B6-4B67-9725-D15A87707FC1" Feature="DefaultFeature">
+                                    <File Id="RANDOM.PY" Name="random.py" Source="..\modules\Crypto\Random\random.py" />
+                                </Component>
+                                <Component Id="_USERFRIENDLYRNG.PY" DiskId="1" Guid="ABBF2502-A7FF-4193-B98E-F69F23009F24" Feature="DefaultFeature">
+                                    <File Id="_USERFRIENDLYRNG.PY" Name="_UserFriendlyRNG.py" Source="..\modules\Crypto\Random\_UserFriendlyRNG.py" />
+                                </Component>
+                                <Component Id="_USERFRIENDLYRNG.PYC" DiskId="1" Guid="8FAC59DB-6A9E-4D81-9D80-4A3B66B2A65C" Feature="DefaultFeature">
+                                    <File Id="_USERFRIENDLYRNG.PYC" Name="_UserFriendlyRNG.pyc" Source="..\modules\Crypto\Random\_UserFriendlyRNG.pyc" />
+                                </Component>
+                                <Component Id="__INIT__.PY_5" DiskId="1" Guid="E476BDD6-A49E-4D71-8DED-393AFB008FC2" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_5" Name="__init__.py" Source="..\modules\Crypto\Random\__init__.py" />
+                                </Component>
+                                <Component Id="__INIT__.PYC_4" DiskId="1" Guid="DD14C434-058A-4FCF-81CD-A9BEACF2071C" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PYC_4" Name="__init__.pyc" Source="..\modules\Crypto\Random\__init__.pyc" />
+                                </Component>
+                                <Directory Id="FORTUNA" Name="Fortuna">
+                                    <Component Id="FORTUNAACCUMULATOR.PY" DiskId="1" Guid="11DB8330-FAAA-43D0-923D-F4590B191F12" Feature="DefaultFeature">
+                                        <File Id="FORTUNAACCUMULATOR.PY" Name="FortunaAccumulator.py" Source="..\modules\Crypto\Random\Fortuna\FortunaAccumulator.py" />
+                                    </Component>
+                                    <Component Id="FORTUNAACCUMULATOR.PYC" DiskId="1" Guid="BC624199-1E49-46F3-826B-67C8B250EC55" Feature="DefaultFeature">
+                                        <File Id="FORTUNAACCUMULATOR.PYC" Name="FortunaAccumulator.pyc" Source="..\modules\Crypto\Random\Fortuna\FortunaAccumulator.pyc" />
+                                    </Component>
+                                    <Component Id="FORTUNAGENERATOR.PY" DiskId="1" Guid="00A815BD-27EB-4378-9E96-EA4177C3125B" Feature="DefaultFeature">
+                                        <File Id="FORTUNAGENERATOR.PY" Name="FortunaGenerator.py" Source="..\modules\Crypto\Random\Fortuna\FortunaGenerator.py" />
+                                    </Component>
+                                    <Component Id="FORTUNAGENERATOR.PYC" DiskId="1" Guid="F0CB2B82-FB39-4329-8542-D0995C065890" Feature="DefaultFeature">
+                                        <File Id="FORTUNAGENERATOR.PYC" Name="FortunaGenerator.pyc" Source="..\modules\Crypto\Random\Fortuna\FortunaGenerator.pyc" />
+                                    </Component>
+                                    <Component Id="SHAD256.PY" DiskId="1" Guid="133F2587-34BB-41CC-B22D-CE1D251CD6CD" Feature="DefaultFeature">
+                                        <File Id="SHAD256.PY" Name="SHAd256.py" Source="..\modules\Crypto\Random\Fortuna\SHAd256.py" />
+                                    </Component>
+                                    <Component Id="SHAD256.PYC" DiskId="1" Guid="AD9EEF15-64CC-4751-972B-E217FB50FF55" Feature="DefaultFeature">
+                                        <File Id="SHAD256.PYC" Name="SHAd256.pyc" Source="..\modules\Crypto\Random\Fortuna\SHAd256.pyc" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_6" DiskId="1" Guid="43205396-8499-4191-A75E-735B9E94C119" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_6" Name="__init__.py" Source="..\modules\Crypto\Random\Fortuna\__init__.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PYC_5" DiskId="1" Guid="34143AFC-3F0C-4F94-BCDC-4035A9CEDC67" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PYC_5" Name="__init__.pyc" Source="..\modules\Crypto\Random\Fortuna\__init__.pyc" />
+                                    </Component>
+                                </Directory>
+                                <Directory Id="OSRNG" Name="OSRNG">
+                                    <Component Id="FALLBACK.PY" DiskId="1" Guid="CA9FE828-4B9B-48BD-85F4-8DA75B999B69" Feature="DefaultFeature">
+                                        <File Id="FALLBACK.PY" Name="fallback.py" Source="..\modules\Crypto\Random\OSRNG\fallback.py" />
+                                    </Component>
+                                    <Component Id="NT.PY" DiskId="1" Guid="6AD637F1-E25C-4278-9DF1-AAC8852F1FE2" Feature="DefaultFeature">
+                                        <File Id="NT.PY" Name="nt.py" Source="..\modules\Crypto\Random\OSRNG\nt.py" />
+                                    </Component>
+                                    <Component Id="NT.PYC" DiskId="1" Guid="F71281AE-C8EE-4B27-9AF8-A63B04D1A11A" Feature="DefaultFeature">
+                                        <File Id="NT.PYC" Name="nt.pyc" Source="..\modules\Crypto\Random\OSRNG\nt.pyc" />
+                                    </Component>
+                                    <Component Id="POSIX.PY" DiskId="1" Guid="2C513EA9-1119-4B1E-95DB-75797BDAA680" Feature="DefaultFeature">
+                                        <File Id="POSIX.PY" Name="posix.py" Source="..\modules\Crypto\Random\OSRNG\posix.py" />
+                                    </Component>
+                                    <Component Id="RNG_BASE.PY" DiskId="1" Guid="9316E088-ED5E-4133-AA96-5F09D59BCB7E" Feature="DefaultFeature">
+                                        <File Id="RNG_BASE.PY" Name="rng_base.py" Source="..\modules\Crypto\Random\OSRNG\rng_base.py" />
+                                    </Component>
+                                    <Component Id="RNG_BASE.PYC" DiskId="1" Guid="11330A2B-4CE2-4094-B9F0-E287F45279EB" Feature="DefaultFeature">
+                                        <File Id="RNG_BASE.PYC" Name="rng_base.pyc" Source="..\modules\Crypto\Random\OSRNG\rng_base.pyc" />
+                                    </Component>
+                                    <Component Id="WINRANDOM.PYD" DiskId="1" Guid="C10776E8-67E5-404F-BF2E-1B90F7E1ED04" Feature="DefaultFeature">
+                                        <File Id="WINRANDOM.PYD" Name="winrandom.pyd" Source="..\modules\Crypto\Random\OSRNG\winrandom.pyd" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_7" DiskId="1" Guid="1F193399-B562-47B2-9546-A49849710D47" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_7" Name="__init__.py" Source="..\modules\Crypto\Random\OSRNG\__init__.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PYC_6" DiskId="1" Guid="C948C333-7AE8-424A-831D-F78B4FA470E0" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PYC_6" Name="__init__.pyc" Source="..\modules\Crypto\Random\OSRNG\__init__.pyc" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+                            <Directory Id="SELFTEST" Name="SelfTest">
+                                <Component Id="ST_COMMON.PY" DiskId="1" Guid="5543CD35-753A-4F89-A681-7D0971B80C6E" Feature="DefaultFeature">
+                                    <File Id="ST_COMMON.PY" Name="st_common.py" Source="..\modules\Crypto\SelfTest\st_common.py" />
+                                </Component>
+                                <Component Id="__INIT__.PY_8" DiskId="1" Guid="AEDE491B-1EFF-406A-B252-487FE2485EB8" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_8" Name="__init__.py" Source="..\modules\Crypto\SelfTest\__init__.py" />
+                                </Component>
+                                <Directory Id="CIPHER_1" Name="Cipher">
+                                    <Component Id="COMMON.PY" DiskId="1" Guid="5ED5F730-DD14-4BAB-AD81-0C07093BAFE1" Feature="DefaultFeature">
+                                        <File Id="COMMON.PY" Name="common.py" Source="..\modules\Crypto\SelfTest\Cipher\common.py" />
+                                    </Component>
+                                    <Component Id="TEST_AES.PY" DiskId="1" Guid="F41F398E-EE9F-4162-992F-307827D4CFE3" Feature="DefaultFeature">
+                                        <File Id="TEST_AES.PY" Name="test_AES.py" Source="..\modules\Crypto\SelfTest\Cipher\test_AES.py" />
+                                    </Component>
+                                    <Component Id="TEST_ARC2.PY" DiskId="1" Guid="0902D41D-F6FA-4638-9AB5-3BBB7CCF149D" Feature="DefaultFeature">
+                                        <File Id="TEST_ARC2.PY" Name="test_ARC2.py" Source="..\modules\Crypto\SelfTest\Cipher\test_ARC2.py" />
+                                    </Component>
+                                    <Component Id="TEST_ARC4.PY" DiskId="1" Guid="0B1D5883-56DD-47A3-8C3F-16FBD690518A" Feature="DefaultFeature">
+                                        <File Id="TEST_ARC4.PY" Name="test_ARC4.py" Source="..\modules\Crypto\SelfTest\Cipher\test_ARC4.py" />
+                                    </Component>
+                                    <Component Id="TEST_BLOWFISH.PY" DiskId="1" Guid="323658A2-29DD-4C43-A880-067099B80E63" Feature="DefaultFeature">
+                                        <File Id="TEST_BLOWFISH.PY" Name="test_Blowfish.py" Source="..\modules\Crypto\SelfTest\Cipher\test_Blowfish.py" />
+                                    </Component>
+                                    <Component Id="TEST_CAST.PY" DiskId="1" Guid="4982B136-EBC0-469F-BF9B-632B05329E31" Feature="DefaultFeature">
+                                        <File Id="TEST_CAST.PY" Name="test_CAST.py" Source="..\modules\Crypto\SelfTest\Cipher\test_CAST.py" />
+                                    </Component>
+                                    <Component Id="TEST_DES.PY" DiskId="1" Guid="0425AA8A-6477-43C1-9F47-E8314D0EEEFE" Feature="DefaultFeature">
+                                        <File Id="TEST_DES.PY" Name="test_DES.py" Source="..\modules\Crypto\SelfTest\Cipher\test_DES.py" />
+                                    </Component>
+                                    <Component Id="TEST_DES3.PY" DiskId="1" Guid="16EE89D1-D766-450B-9874-28A6AE586710" Feature="DefaultFeature">
+                                        <File Id="TEST_DES3.PY" Name="test_DES3.py" Source="..\modules\Crypto\SelfTest\Cipher\test_DES3.py" />
+                                    </Component>
+                                    <Component Id="TEST_PKCS1_15.PY" DiskId="1" Guid="26E393B5-2EE3-4E4B-9A2E-028A4E2AAD3C" Feature="DefaultFeature">
+                                        <File Id="TEST_PKCS1_15.PY" Name="test_pkcs1_15.py" Source="..\modules\Crypto\SelfTest\Cipher\test_pkcs1_15.py" />
+                                    </Component>
+                                    <Component Id="TEST_PKCS1_OAEP.PY" DiskId="1" Guid="7B89AE73-5A3E-43A2-84A4-36076FC60265" Feature="DefaultFeature">
+                                        <File Id="TEST_PKCS1_OAEP.PY" Name="test_pkcs1_oaep.py" Source="..\modules\Crypto\SelfTest\Cipher\test_pkcs1_oaep.py" />
+                                    </Component>
+                                    <Component Id="TEST_XOR.PY" DiskId="1" Guid="35CF76D0-03F8-464D-AABA-F6643B1E3B7F" Feature="DefaultFeature">
+                                        <File Id="TEST_XOR.PY" Name="test_XOR.py" Source="..\modules\Crypto\SelfTest\Cipher\test_XOR.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_9" DiskId="1" Guid="CE816049-9DEE-414A-BD33-64D6FF23F4F8" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_9" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Cipher\__init__.py" />
+                                    </Component>
+                                </Directory>
+                                <Directory Id="HASH_1" Name="Hash">
+                                    <Component Id="COMMON.PY_1" DiskId="1" Guid="CBC60148-DF41-4F23-81A6-76B78CBA8C57" Feature="DefaultFeature">
+                                        <File Id="COMMON.PY_1" Name="common.py" Source="..\modules\Crypto\SelfTest\Hash\common.py" />
+                                    </Component>
+                                    <Component Id="TEST_HMAC.PY" DiskId="1" Guid="0319510C-64E7-411E-BD85-FBA1B461A285" Feature="DefaultFeature">
+                                        <File Id="TEST_HMAC.PY" Name="test_HMAC.py" Source="..\modules\Crypto\SelfTest\Hash\test_HMAC.py" />
+                                    </Component>
+                                    <Component Id="TEST_MD2.PY" DiskId="1" Guid="08020BFE-E4F4-4819-ADCA-139C55C53C76" Feature="DefaultFeature">
+                                        <File Id="TEST_MD2.PY" Name="test_MD2.py" Source="..\modules\Crypto\SelfTest\Hash\test_MD2.py" />
+                                    </Component>
+                                    <Component Id="TEST_MD4.PY" DiskId="1" Guid="67CD1E72-019F-47A2-908D-4B654BBB056B" Feature="DefaultFeature">
+                                        <File Id="TEST_MD4.PY" Name="test_MD4.py" Source="..\modules\Crypto\SelfTest\Hash\test_MD4.py" />
+                                    </Component>
+                                    <Component Id="TEST_MD5.PY" DiskId="1" Guid="EF2D3B8D-F283-4CDC-8BE4-F9AAC67810CA" Feature="DefaultFeature">
+                                        <File Id="TEST_MD5.PY" Name="test_MD5.py" Source="..\modules\Crypto\SelfTest\Hash\test_MD5.py" />
+                                    </Component>
+                                    <Component Id="TEST_RIPEMD.PY" DiskId="1" Guid="CCBEFB56-6254-4D4F-AB3C-B9118CAB56E4" Feature="DefaultFeature">
+                                        <File Id="TEST_RIPEMD.PY" Name="test_RIPEMD.py" Source="..\modules\Crypto\SelfTest\Hash\test_RIPEMD.py" />
+                                    </Component>
+                                    <Component Id="TEST_SHA.PY" DiskId="1" Guid="72ADCF06-BC82-4F2B-986E-BE137BDF52C7" Feature="DefaultFeature">
+                                        <File Id="TEST_SHA.PY" Name="test_SHA.py" Source="..\modules\Crypto\SelfTest\Hash\test_SHA.py" />
+                                    </Component>
+                                    <Component Id="TEST_SHA224.PY" DiskId="1" Guid="0B7F4E8F-6F31-48FB-B386-CEEEF03A7932" Feature="DefaultFeature">
+                                        <File Id="TEST_SHA224.PY" Name="test_SHA224.py" Source="..\modules\Crypto\SelfTest\Hash\test_SHA224.py" />
+                                    </Component>
+                                    <Component Id="TEST_SHA256.PY" DiskId="1" Guid="8F215D6C-9D31-4686-B7A9-4D67FE20B470" Feature="DefaultFeature">
+                                        <File Id="TEST_SHA256.PY" Name="test_SHA256.py" Source="..\modules\Crypto\SelfTest\Hash\test_SHA256.py" />
+                                    </Component>
+                                    <Component Id="TEST_SHA384.PY" DiskId="1" Guid="35C64786-0764-414D-8378-353A8971F523" Feature="DefaultFeature">
+                                        <File Id="TEST_SHA384.PY" Name="test_SHA384.py" Source="..\modules\Crypto\SelfTest\Hash\test_SHA384.py" />
+                                    </Component>
+                                    <Component Id="TEST_SHA512.PY" DiskId="1" Guid="565D00C7-C0CA-41B9-A52F-6FBA2E8F89BB" Feature="DefaultFeature">
+                                        <File Id="TEST_SHA512.PY" Name="test_SHA512.py" Source="..\modules\Crypto\SelfTest\Hash\test_SHA512.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_10" DiskId="1" Guid="6453EAEA-3BED-4676-B505-A6F36E1A3E1A" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_10" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Hash\__init__.py" />
+                                    </Component>
+                                </Directory>
+                                <Directory Id="PROTOCOL_1" Name="Protocol">
+                                    <Component Id="TEST_ALLORNOTHING.PY" DiskId="1" Guid="1AA55E9F-C8E5-48A8-A5F1-3CDE39FCCE96" Feature="DefaultFeature">
+                                        <File Id="TEST_ALLORNOTHING.PY" Name="test_AllOrNothing.py" Source="..\modules\Crypto\SelfTest\Protocol\test_AllOrNothing.py" />
+                                    </Component>
+                                    <Component Id="TEST_CHAFFING.PY" DiskId="1" Guid="F6A9A251-97FE-46CE-B922-FCACCE245E11" Feature="DefaultFeature">
+                                        <File Id="TEST_CHAFFING.PY" Name="test_chaffing.py" Source="..\modules\Crypto\SelfTest\Protocol\test_chaffing.py" />
+                                    </Component>
+                                    <Component Id="TEST_KDF.PY" DiskId="1" Guid="A6E617A9-4598-432E-8ADF-6AC9A9BD856E" Feature="DefaultFeature">
+                                        <File Id="TEST_KDF.PY" Name="test_KDF.py" Source="..\modules\Crypto\SelfTest\Protocol\test_KDF.py" />
+                                    </Component>
+                                    <Component Id="TEST_RFC1751.PY" DiskId="1" Guid="F82491BB-02B6-47C6-A3AA-FE7F622845EC" Feature="DefaultFeature">
+                                        <File Id="TEST_RFC1751.PY" Name="test_rfc1751.py" Source="..\modules\Crypto\SelfTest\Protocol\test_rfc1751.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_11" DiskId="1" Guid="9F6E4462-DBBC-43DF-9B9D-56407A33ADD9" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_11" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Protocol\__init__.py" />
+                                    </Component>
+                                </Directory>
+                                <Directory Id="PUBLICKEY_1" Name="PublicKey">
+                                    <Component Id="TEST_DSA.PY" DiskId="1" Guid="E3FE4181-63C7-4153-952C-CAA005F15123" Feature="DefaultFeature">
+                                        <File Id="TEST_DSA.PY" Name="test_DSA.py" Source="..\modules\Crypto\SelfTest\PublicKey\test_DSA.py" />
+                                    </Component>
+                                    <Component Id="TEST_ELGAMAL.PY" DiskId="1" Guid="E1F3F05A-461C-402F-B295-E51114DF96EC" Feature="DefaultFeature">
+                                        <File Id="TEST_ELGAMAL.PY" Name="test_ElGamal.py" Source="..\modules\Crypto\SelfTest\PublicKey\test_ElGamal.py" />
+                                    </Component>
+                                    <Component Id="TEST_IMPORTKEY.PY" DiskId="1" Guid="90DFC557-51E9-4FE0-A685-8C1FA5BBAEC5" Feature="DefaultFeature">
+                                        <File Id="TEST_IMPORTKEY.PY" Name="test_importKey.py" Source="..\modules\Crypto\SelfTest\PublicKey\test_importKey.py" />
+                                    </Component>
+                                    <Component Id="TEST_RSA.PY" DiskId="1" Guid="8AD62151-013C-4470-ACFF-0A12FE7C7C5F" Feature="DefaultFeature">
+                                        <File Id="TEST_RSA.PY" Name="test_RSA.py" Source="..\modules\Crypto\SelfTest\PublicKey\test_RSA.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_12" DiskId="1" Guid="DBC876F0-2785-400A-96C0-1D973CDDEE4C" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_12" Name="__init__.py" Source="..\modules\Crypto\SelfTest\PublicKey\__init__.py" />
+                                    </Component>
+                                </Directory>
+                                <Directory Id="RANDOM_1" Name="Random">
+                                    <Component Id="TEST_RANDOM.PY" DiskId="1" Guid="7F4E7D9C-3229-4D4A-92D8-55E436FA4CFC" Feature="DefaultFeature">
+                                        <File Id="TEST_RANDOM.PY" Name="test_random.py" Source="..\modules\Crypto\SelfTest\Random\test_random.py" />
+                                    </Component>
+                                    <Component Id="TEST_RPOOLCOMPAT.PY" DiskId="1" Guid="EA7558B9-AFF3-41B3-9C7E-9AB0C518A66D" Feature="DefaultFeature">
+                                        <File Id="TEST_RPOOLCOMPAT.PY" Name="test_rpoolcompat.py" Source="..\modules\Crypto\SelfTest\Random\test_rpoolcompat.py" />
+                                    </Component>
+                                    <Component Id="TEST__USERFRIENDLYRNG.PY" DiskId="1" Guid="750A7ACA-F680-4769-8D37-859F81B1CFE2" Feature="DefaultFeature">
+                                        <File Id="TEST__USERFRIENDLYRNG.PY" Name="test__UserFriendlyRNG.py" Source="..\modules\Crypto\SelfTest\Random\test__UserFriendlyRNG.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_13" DiskId="1" Guid="3F364C55-8D59-4270-AF20-BDD5043B410F" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_13" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Random\__init__.py" />
+                                    </Component>
+                                    <Directory Id="FORTUNA_1" Name="Fortuna">
+                                        <Component Id="TEST_FORTUNAACCUMULATOR.PY" DiskId="1" Guid="AD0B4637-5534-4864-91A4-25D85ED8D87A" Feature="DefaultFeature">
+                                            <File Id="TEST_FORTUNAACCUMULATOR.PY" Name="test_FortunaAccumulator.py" Source="..\modules\Crypto\SelfTest\Random\Fortuna\test_FortunaAccumulator.py" />
+                                        </Component>
+                                        <Component Id="TEST_FORTUNAGENERATOR.PY" DiskId="1" Guid="7CF2C7D2-EBAF-41F4-811C-C4FECB58E966" Feature="DefaultFeature">
+                                            <File Id="TEST_FORTUNAGENERATOR.PY" Name="test_FortunaGenerator.py" Source="..\modules\Crypto\SelfTest\Random\Fortuna\test_FortunaGenerator.py" />
+                                        </Component>
+                                        <Component Id="TEST_SHAD256.PY" DiskId="1" Guid="09C1F3BD-01F0-4875-9CA4-926683CBABE9" Feature="DefaultFeature">
+                                            <File Id="TEST_SHAD256.PY" Name="test_SHAd256.py" Source="..\modules\Crypto\SelfTest\Random\Fortuna\test_SHAd256.py" />
+                                        </Component>
+                                        <Component Id="__INIT__.PY_14" DiskId="1" Guid="27B4BB59-1E53-436B-99BD-828A8A354B6F" Feature="DefaultFeature">
+                                            <File Id="__INIT__.PY_14" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Random\Fortuna\__init__.py" />
+                                        </Component>
+                                    </Directory>
+                                    <Directory Id="OSRNG_1" Name="OSRNG">
+                                        <Component Id="TEST_FALLBACK.PY" DiskId="1" Guid="02401D72-B422-484A-8A7C-11CA5B6F71B1" Feature="DefaultFeature">
+                                            <File Id="TEST_FALLBACK.PY" Name="test_fallback.py" Source="..\modules\Crypto\SelfTest\Random\OSRNG\test_fallback.py" />
+                                        </Component>
+                                        <Component Id="TEST_GENERIC.PY" DiskId="1" Guid="D408977D-BDE6-4A44-820A-A6343D6610AE" Feature="DefaultFeature">
+                                            <File Id="TEST_GENERIC.PY" Name="test_generic.py" Source="..\modules\Crypto\SelfTest\Random\OSRNG\test_generic.py" />
+                                        </Component>
+                                        <Component Id="TEST_NT.PY" DiskId="1" Guid="0DD206D1-8373-4329-A135-4E6ADF314296" Feature="DefaultFeature">
+                                            <File Id="TEST_NT.PY" Name="test_nt.py" Source="..\modules\Crypto\SelfTest\Random\OSRNG\test_nt.py" />
+                                        </Component>
+                                        <Component Id="TEST_POSIX.PY" DiskId="1" Guid="50DB0941-BF5A-43F5-BD58-D923793F310F" Feature="DefaultFeature">
+                                            <File Id="TEST_POSIX.PY" Name="test_posix.py" Source="..\modules\Crypto\SelfTest\Random\OSRNG\test_posix.py" />
+                                        </Component>
+                                        <Component Id="TEST_WINRANDOM.PY" DiskId="1" Guid="C0252BF0-D435-410E-B085-141C8BCD3931" Feature="DefaultFeature">
+                                            <File Id="TEST_WINRANDOM.PY" Name="test_winrandom.py" Source="..\modules\Crypto\SelfTest\Random\OSRNG\test_winrandom.py" />
+                                        </Component>
+                                        <Component Id="__INIT__.PY_15" DiskId="1" Guid="B7EEFB5E-2265-49E2-9599-2B07D4599142" Feature="DefaultFeature">
+                                            <File Id="__INIT__.PY_15" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Random\OSRNG\__init__.py" />
+                                        </Component>
+                                    </Directory>
+                                </Directory>
+                                <Directory Id="SIGNATURE" Name="Signature">
+                                    <Component Id="TEST_PKCS1_15.PY_1" DiskId="1" Guid="7B3F55E8-EDE6-41EF-9D54-E62BD1E1537D" Feature="DefaultFeature">
+                                        <File Id="TEST_PKCS1_15.PY_1" Name="test_pkcs1_15.py" Source="..\modules\Crypto\SelfTest\Signature\test_pkcs1_15.py" />
+                                    </Component>
+                                    <Component Id="TEST_PKCS1_PSS.PY" DiskId="1" Guid="B33BAF64-3B32-4C18-9813-CB7450F460E1" Feature="DefaultFeature">
+                                        <File Id="TEST_PKCS1_PSS.PY" Name="test_pkcs1_pss.py" Source="..\modules\Crypto\SelfTest\Signature\test_pkcs1_pss.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_16" DiskId="1" Guid="CCE1E269-AE38-400C-9C46-2BCC9CB5A571" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_16" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Signature\__init__.py" />
+                                    </Component>
+                                </Directory>
+                                <Directory Id="UTIL" Name="Util">
+                                    <Component Id="TEST_ASN1.PY" DiskId="1" Guid="7BA0C1D6-30CB-4966-8FC8-7589419A9A1B" Feature="DefaultFeature">
+                                        <File Id="TEST_ASN1.PY" Name="test_asn1.py" Source="..\modules\Crypto\SelfTest\Util\test_asn1.py" />
+                                    </Component>
+                                    <Component Id="TEST_COUNTER.PY" DiskId="1" Guid="262B111A-49BC-44CA-8314-4E316B1AD62E" Feature="DefaultFeature">
+                                        <File Id="TEST_COUNTER.PY" Name="test_Counter.py" Source="..\modules\Crypto\SelfTest\Util\test_Counter.py" />
+                                    </Component>
+                                    <Component Id="TEST_NUMBER.PY" DiskId="1" Guid="AC53F134-3BF4-4F64-9E06-473115E7C447" Feature="DefaultFeature">
+                                        <File Id="TEST_NUMBER.PY" Name="test_number.py" Source="..\modules\Crypto\SelfTest\Util\test_number.py" />
+                                    </Component>
+                                    <Component Id="TEST_WINRANDOM.PY_1" DiskId="1" Guid="D3127539-DD6E-4550-9592-C40398AE0E10" Feature="DefaultFeature">
+                                        <File Id="TEST_WINRANDOM.PY_1" Name="test_winrandom.py" Source="..\modules\Crypto\SelfTest\Util\test_winrandom.py" />
+                                    </Component>
+                                    <Component Id="__INIT__.PY_17" DiskId="1" Guid="DDFFBA45-D7E4-454C-A837-9B04F794F7C4" Feature="DefaultFeature">
+                                        <File Id="__INIT__.PY_17" Name="__init__.py" Source="..\modules\Crypto\SelfTest\Util\__init__.py" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+                            <Directory Id="SIGNATURE_1" Name="Signature">
+                                <Component Id="PKCS1_PSS.PY" DiskId="1" Guid="05243395-75D4-4DC6-9D24-09DD29F528E8" Feature="DefaultFeature">
+                                    <File Id="PKCS1_PSS.PY" Name="PKCS1_PSS.py" Source="..\modules\Crypto\Signature\PKCS1_PSS.py" />
+                                </Component>
+                                <Component Id="PKCS1_V1_5.PY_1" DiskId="1" Guid="CE4BCD0D-9E3B-485E-9D0A-3764FDC3DFDB" Feature="DefaultFeature">
+                                    <File Id="PKCS1_V1_5.PY_1" Name="PKCS1_v1_5.py" Source="..\modules\Crypto\Signature\PKCS1_v1_5.py" />
+                                </Component>
+                                <Component Id="__INIT__.PY_18" DiskId="1" Guid="3079E89A-1876-4199-B8D2-14983C08F8AE" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_18" Name="__init__.py" Source="..\modules\Crypto\Signature\__init__.py" />
+                                </Component>
+                            </Directory>
+                            <Directory Id="UTIL_1" Name="Util">
+                                <Component Id="ASN1.PY" DiskId="1" Guid="65A00107-08AD-4645-9BC5-1B8C5B43B0A5" Feature="DefaultFeature">
+                                    <File Id="ASN1.PY" Name="asn1.py" Source="..\modules\Crypto\Util\asn1.py" />
+                                </Component>
+                                <Component Id="ASN1.PYC" DiskId="1" Guid="57FB04E7-EDA3-4A78-B8EC-320806BB1BCC" Feature="DefaultFeature">
+                                    <File Id="ASN1.PYC" Name="asn1.pyc" Source="..\modules\Crypto\Util\asn1.pyc" />
+                                </Component>
+                                <Component Id="COUNTER.PY" DiskId="1" Guid="5A1E5558-834E-4528-9909-3FF5988E7DC9" Feature="DefaultFeature">
+                                    <File Id="COUNTER.PY" Name="Counter.py" Source="..\modules\Crypto\Util\Counter.py" />
+                                </Component>
+                                <Component Id="COUNTER.PYC" DiskId="1" Guid="D2EBA357-F89B-4051-938F-19B87CD38940" Feature="DefaultFeature">
+                                    <File Id="COUNTER.PYC" Name="Counter.pyc" Source="..\modules\Crypto\Util\Counter.pyc" />
+                                </Component>
+                                <Component Id="NUMBER.PY" DiskId="1" Guid="396BF760-D9E6-4EF6-B65C-C9DA386C5624" Feature="DefaultFeature">
+                                    <File Id="NUMBER.PY" Name="number.py" Source="..\modules\Crypto\Util\number.py" />
+                                </Component>
+                                <Component Id="NUMBER.PYC" DiskId="1" Guid="42B6B9E2-F643-442F-9B75-2663FF7636C0" Feature="DefaultFeature">
+                                    <File Id="NUMBER.PYC" Name="number.pyc" Source="..\modules\Crypto\Util\number.pyc" />
+                                </Component>
+                                <Component Id="PY21COMPAT.PY" DiskId="1" Guid="EB0088F0-147B-404A-AD6B-D47898F644A1" Feature="DefaultFeature">
+                                    <File Id="PY21COMPAT.PY" Name="py21compat.py" Source="..\modules\Crypto\Util\py21compat.py" />
+                                </Component>
+                                <Component Id="PY3COMPAT.PY" DiskId="1" Guid="6B81EDC5-3F7A-4820-B79C-970B4D6E892C" Feature="DefaultFeature">
+                                    <File Id="PY3COMPAT.PY" Name="py3compat.py" Source="..\modules\Crypto\Util\py3compat.py" />
+                                </Component>
+                                <Component Id="PY3COMPAT.PYC" DiskId="1" Guid="51CDBB8E-5C56-42BA-87C4-9B68DCCF09D6" Feature="DefaultFeature">
+                                    <File Id="PY3COMPAT.PYC" Name="py3compat.pyc" Source="..\modules\Crypto\Util\py3compat.pyc" />
+                                </Component>
+                                <Component Id="RANDPOOL.PY" DiskId="1" Guid="60CE4DE5-B7ED-4588-B00D-3D24257898EB" Feature="DefaultFeature">
+                                    <File Id="RANDPOOL.PY" Name="randpool.py" Source="..\modules\Crypto\Util\randpool.py" />
+                                </Component>
+                                <Component Id="RFC1751.PY" DiskId="1" Guid="C2F90E89-3AE1-4CE0-9D57-9D9F78E2323C" Feature="DefaultFeature">
+                                    <File Id="RFC1751.PY" Name="RFC1751.py" Source="..\modules\Crypto\Util\RFC1751.py" />
+                                </Component>
+                                <Component Id="STRXOR.PYD" DiskId="1" Guid="E8C88B85-797A-4448-980D-155D136FBA1D" Feature="DefaultFeature">
+                                    <File Id="STRXOR.PYD" Name="strxor.pyd" Source="..\modules\Crypto\Util\strxor.pyd" />
+                                </Component>
+                                <Component Id="WINRANDOM.PY" DiskId="1" Guid="DBA47D47-998E-4E48-BC79-D8BDD261E6B5" Feature="DefaultFeature">
+                                    <File Id="WINRANDOM.PY" Name="winrandom.py" Source="..\modules\Crypto\Util\winrandom.py" />
+                                </Component>
+                                <Component Id="_COUNTER.PYD" DiskId="1" Guid="53CAE96F-44F7-445D-945D-95A6925582C4" Feature="DefaultFeature">
+                                    <File Id="_COUNTER.PYD" Name="_counter.pyd" Source="..\modules\Crypto\Util\_counter.pyd" />
+                                </Component>
+                                <Component Id="_NUMBER_NEW.PY" DiskId="1" Guid="7B5B531D-47CB-49CA-BDF6-2106B4B4C9F7" Feature="DefaultFeature">
+                                    <File Id="_NUMBER_NEW.PY" Name="_number_new.py" Source="..\modules\Crypto\Util\_number_new.py" />
+                                </Component>
+                                <Component Id="_NUMBER_NEW.PYC" DiskId="1" Guid="347F18A1-80EB-4D8F-A024-E1185F670078" Feature="DefaultFeature">
+                                    <File Id="_NUMBER_NEW.PYC" Name="_number_new.pyc" Source="..\modules\Crypto\Util\_number_new.pyc" />
+                                </Component>
+                                <Component Id="__INIT__.PY_19" DiskId="1" Guid="694B128D-61B2-4BAA-8342-DE82808DD674" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PY_19" Name="__init__.py" Source="..\modules\Crypto\Util\__init__.py" />
+                                </Component>
+                                <Component Id="__INIT__.PYC_7" DiskId="1" Guid="3A618BE4-F0D5-4B69-A66B-017462022B3A" Feature="DefaultFeature">
+                                    <File Id="__INIT__.PYC_7" Name="__init__.pyc" Source="..\modules\Crypto\Util\__init__.pyc" />
+                                </Component>
+                            </Directory>
+                        </Directory>
+                        <Directory Id="PYTHONSTDLIBNATIVE" Name="python-stdlib-native">
+                            <Component Id="PYTHON_NATIVES" Guid="6F46F737-0386-44E5-A8F6-5F687123A2B1">
+                                <File Id="SOCKET.PYD" Name="_socket.pyd" Source="..\dll\_socket.pyd" />
+                                <File Id="HASHLIB.PYD" Name="_hashlib.pyd" Source="..\dll\_hashlib.pyd" />
+                                <File Id="SSL.PYD" Name="_ssl.pyd" Source="..\dll\_ssl.pyd" />
+                                <File Id="CTYPES.PYD" Name="_ctypes.pyd" Source="..\dll\_ctypes.pyd" />
+                                <File Id="CSV.pyd" Name="_csv.pyd" Source="..\dll\_csv.pyd" />
+                                <File Id="IO.PYD" Name="_io.pyd" Source="..\dll\_io.pyd" />
+                                <File Id="JSON.PYD" Name="_json.pyd" Source="..\dll\_json.pyd" />
+                                <File Id="RANDOM.PYD" Name="_random.pyd" Source="..\dll\_random.pyd" />
+                                <File Id="SUBPROCESS.PYD" Name="_subprocess.pyd" Source="..\dll\_subprocess.pyd" />
+                                <File Id="ARRAY.PYD" Name="array.pyd" Source="..\dll\array.pyd" />
+                                <File Id="CMATH.PYD" Name="cmath.pyd" Source="..\dll\cmath.pyd" />
+                                <File Id="DATETIME.PYD" Name="datetime.pyd" Source="..\dll\datetime.pyd" />
+                                <File Id="FUTUREBUILTINS.PYD" Name="future_builtins.pyd" Source="..\dll\future_builtins.pyd" />
+                                <File Id="MATH.PYD" Name="math.pyd" Source="..\dll\math.pyd" />
+                                <File Id="TIME.PYD" Name="time.pyd" Source="..\dll\time.pyd" />
+                                <File Id="UNICODEDATA.PYD" Name="unicodedata.pyd" Source="..\dll\unicodedata.pyd" />
+                                <File Id="COLLECTIONS.PYD" Name="_collections.pyd" Source="..\dll\_collections.pyd" />
+                                <File Id="CODECSCN.PYD" Name="_codecs_cn.pyd" Source="..\dll\_codecs_cn.pyd" />
+                                <File Id="CODECSHK.PYD" Name="_codecs_hk.pyd" Source="..\dll\_codecs_hk.pyd" />
+                                <File Id="CODECSISO2022.PYD" Name="_codecs_iso2022.pyd" Source="..\dll\_codecs_iso2022.pyd" />
+                                <File Id="CODECSJP.PYD" Name="_codecs_jp.pyd" Source="..\dll\_codecs_jp.pyd" />
+                                <File Id="CODECSKR.PYD" Name="_codecs_kr.pyd" Source="..\dll\_codecs_kr.pyd" />
+                                <File Id="CODECSTW.PYD" Name="_codecs_tw.pyd" Source="..\dll\_codecs_tw.pyd" />
+                                <File Id="BINASCII.PYD" Name="binascii.pyd" Source="..\dll\binascii.pyd" />
+                                <File Id="ITERTOOLS.PYD" Name="itertools.pyd" Source="..\dll\itertools.pyd" />
+                                <File Id="CRYPT.PYD" Name="crypt.pyd" Source="..\dll\crypt.pyd" />
+                                <File Id="MSVCRT.PYD" Name="msvcrt.pyd" Source="..\dll\msvcrt.pyd" />
+                                <File Id="PYEXPAT.PYD" Name="pyexpat.pyd" Source="..\dll\pyexpat.pyd" />
+                                <File Id="SELECT.PYD" Name="select.pyd" Source="..\dll\select.pyd" />
+                                <File Id="ELEMENTTREE.PYD" Name="_elementtree.pyd" Source="..\dll\_elementtree.pyd" />
+                                <File Id="HEAPQ.PYD" Name="_heapq.pyd" Source="..\dll\_heapq.pyd" />
+                                <File Id="STRUCT.PYD" Name="_struct.pyd" Source="..\dll\_struct.pyd" />
+                                <File Id="WINREG.PYD" Name="_winreg.pyd" Source="..\dll\_winreg.pyd" />
+                                <File Id="CSTRINGIO.PYD" Name="cStringIO.pyd" Source="..\dll\cStringIO.pyd" />
+                                <File Id="MULTIBYTECODEC.PYD" Name="_multibytecodec.pyd" Source="..\dll\_multibytecodec.pyd" />
+                            </Component>
+                        </Directory>
+                    </Directory>
+                </Directory>
+            </Directory>
+            <Directory Id="DesktopFolder" />
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ProgramMenuDir" Name="ScreenCloud">
+                    <Component Id="StartMenuShortcuts" Guid="9FF5795F-7345-490B-920E-9AAEE82B05E1">
+                        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+                        <Shortcut Id="UninstallProduct" Name="Uninstall ScreenCloud" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="LocalAppDataFolder" Name="AppData">
+                <Component Id="RemoveSettings" Guid="506D5042-14AA-44F5-BDD4-5E7B0AC60CE6">
+                    <RemoveRegistryKey Action="removeOnUninstall" Id="RemoveAppSettings" Key="Software\screencloud" Root="HKCU" />
+                    <RemoveRegistryKey Action="removeOnUninstall" Id="RemoveStartupKey" Key="Software\Microsoft\Windows\CurrentVersion\Run\ScreenCloud" Root="HKCU" />
+                    <Condition>PREVIOUSVERSIONISINSTALLED=""</Condition>
+                    <RegistryValue KeyPath="yes" Root="HKCU" Key="Software\screencloud\screencloud-app\installed" Type="integer" Value="1" />
+                </Component>
+            </Directory>
+        </Directory>
+        <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+            <ComponentRef Id="SCREENCLOUD.EXE" />
+            <ComponentRef Id="NOTIFICATION.WAV" />
+            <ComponentRef Id="SHUTTER.WAV" />
+            <ComponentRef Id="StartMenuShortcuts" />
+            <ComponentRef Id="DLLS" />
+            <ComponentRef Id="QTDLLS" />
+            <ComponentRef Id="RemoveSettings" />
+            <ComponentRef Id="ICONENGINES" />
+            <ComponentRef Id="IMAGEFORMATS" />
+            <ComponentRef Id="SCREENCLOUD.PY" />
+            <ComponentRef Id="LIBPYTHON27.ZIP" />
+            <ComponentRef Id="PYTHON_NATIVES" />
+            <ComponentRef Id="PY_STARTUP_MODULES" />
+        </Feature>
+        <UI />
+        <Icon Id="ScreenCloud.exe" SourceFile="..\ScreenCloud.exe" />
+        <Property Id="ARPPRODUCTICON" Value="ScreenCloud.exe" />
+        <Icon Id="DesktopIcon.exe" SourceFile="..\ScreenCloud.exe" />
+        <Icon Id="StartMenuIcon.exe" SourceFile="..\ScreenCloud.exe" />
+        <Property Id="WIXUI_INSTALLDIR" Value="SCREENCLOUD" />
+        <WixVariable Id="WixUIBannerBmp" Value="Binary\banner.jpg" />
+        <WixVariable Id="WixUIDialogBmp" Value="Binary\dialog.jpg" />
+        <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+        <Binary Id="dialogbmp" SourceFile="Binary\dialog.jpg" />
+        <Binary Id="bannerbmp" SourceFile="Binary\banner.jpg" />
+        <UIRef Id="WixUI_InstallDir" />
+        <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+        <Upgrade Id="C80D60EB-D743-4756-9B33-A62B31FD64D5">
+            <UpgradeVersion Minimum="0.0.1" Maximum="VERSIONNUMBERNOTSET" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
+        </Upgrade>
+        <InstallExecuteSequence>
+            <RemoveExistingProducts After="InstallFinalize" />
+        </InstallExecuteSequence>
+        <CustomAction Id="StartAppOnExit" FileKey="SCREENCLOUD.EXE" ExeCommand="" Execute="immediate" Impersonate="yes" Return="asyncNoWait" />
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch ScreenCloud when setup exits." />
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+        <UI>
+            <Publish Dialog="ExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 AND NOT Installed</Publish>
+        </UI>
+    </Product>
+</Wix>
