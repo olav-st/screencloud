@@ -175,6 +175,7 @@ include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
 #required qt modules
 set( QT_USE_QTNETWORK TRUE)
 set( QT_USE_QTXML TRUE )
+set( QT_USE_QTSVG TRUE )
 find_package(QtMobility COMPONENTS MultimediaKit)
 if(QT_MOBILITY_FOUND)
     MESSAGE(STATUS "Using QtMobility to provide QAudioOutput.")
@@ -311,11 +312,13 @@ if(WIN32)
     #get the required qt plugins
     install(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
     install(DIRECTORY "${QT_PLUGINS_DIR}/iconengines" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    file(GLOB_RECURSE QT_PLUGINS_IMAGEFORMATS "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    file(GLOB_RECURSE QT_PLUGINS_ICONENGINES "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
     #copy libeay32 and ssleay32
     install(FILES ${OPENSSL_LIBRARIES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
     #copy other dependencies with fixup_bundle
     install(CODE "
     include(BundleUtilities)
-    fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"\")")
+    fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"${QT_PLUGINS_IMAGEFORMATS} ${QT_PLUGINS_ICONENGINES}\" \"\")")
     install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat \")")
 endif(WIN32)

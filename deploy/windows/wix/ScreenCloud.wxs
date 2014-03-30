@@ -30,6 +30,7 @@
                         <File Id="QTNETWORK4.DLL" Name="QtNetwork4.dll" Source="..\bin\QtNetwork4.dll" />
                         <File Id="QTXML4.DLL" Name="QtXml4.dll" Source="..\bin\QtXml4.dll" />
                         <File Id="QTMULTIMEDIA4.DLL" Name="QtMultimedia4.dll" Source="..\bin\QtMultimedia4.dll" />
+                        <File Id="QTSVG.DLL" Name="QtSvg4.dll" Source="..\bin\QtSvg4.dll" />
                     </Component>
                     <Component Id="LIBPYTHON27.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
                         <File Id="LIBPYTHON27.ZIP" Name="libpython2.7.zip" Source="..\libpython2.7.zip" />
