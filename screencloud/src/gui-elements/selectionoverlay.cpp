@@ -452,7 +452,7 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     if(screenshot.size() != screenGeom.size())
     {
         INFO("Scaling screenshot to fit screenGeom");
-        screenshot = screenshot.scaled(screenGeom.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        screenshot = screenshot.scaled(screenGeom.size(), Qt::KeepAspectRatio);
     }
     selection = QRect(0,0,0,0);
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
