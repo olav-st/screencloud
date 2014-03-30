@@ -685,7 +685,7 @@
                 </Directory>
             </Directory>
             <Directory Id="LocalAppDataFolder" Name="AppData">
-                <Component Id="RemoveSettings" Guid="506D5042-14AA-44F5-BDD4-5E7B0AC60CE6">
+                <Component Id="RemoveSettings" Guid="506D5042-14AA-44F5-BDD4-5E7B0AC60CE6" NeverOverwrite="yes">
                     <RemoveRegistryKey Action="removeOnUninstall" Id="RemoveAppSettings" Key="Software\screencloud" Root="HKCU" />
                     <RemoveRegistryKey Action="removeOnUninstall" Id="RemoveStartupKey" Key="Software\Microsoft\Windows\CurrentVersion\Run\ScreenCloud" Root="HKCU" />
                     <Condition>PREVIOUSVERSIONISINSTALLED=""</Condition>
