@@ -1,6 +1,6 @@
 # Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
 pkgname=screencloud
-pkgver=1.1.4
+pkgver=1.1.5
 pkgrel=1
 pkgdesc="Easy to use screenshot sharing application."
 arch=('i686 x86_64')

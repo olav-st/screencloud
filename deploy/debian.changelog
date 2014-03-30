@@ -1,3 +1,10 @@
+screencloud (1.1.5) unstable; urgency=low
+
+  * Fixed plugin update check
+  * Added changelog button to update notifications
+
+ -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sun, 30 Mar 2014 16:44:45 -0000
+
 screencloud (1.1.4) unstable; urgency=low
 
   * Better multi monitor support
