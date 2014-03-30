@@ -36,6 +36,7 @@ PluginDialog::PluginDialog(QWidget *parent) :
 
 PluginDialog::~PluginDialog()
 {
+    delete busyOverlay;
     delete ui;
     delete pluginManager;
 }

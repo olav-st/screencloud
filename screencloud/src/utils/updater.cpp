@@ -70,6 +70,7 @@ void Updater::showUpdateNotification()
         QMessageBox msgBox;
         msgBox.setWindowTitle(tr("Update available"));
         msgBox.setIcon(QMessageBox::Information);
+        QPushButton changelogBtn("Changelog");
 #ifdef Q_OS_WIN
         msgBox.addButton(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
@@ -85,6 +86,10 @@ void Updater::showUpdateNotification()
 #ifdef Q_OS_LINUX
         msgBox.setText(tr("There's a new version of ScreenCloud available. You can download it from the <b>Ubuntu Software Center</b> or the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>."));
 #endif
+        msgBox.addButton(&changelogBtn, QMessageBox::HelpRole);
+        changelogBtn.disconnect(); //Make sure changelog button dosen't close the dialog
+        connect(&changelogBtn, SIGNAL(clicked()), this, SLOT(showChangelog()));
+
         int selection = msgBox.exec();
         if(selection == QMessageBox::Yes)
         {
@@ -130,6 +135,12 @@ void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls
             numPluginsUpdating = 0;
         }
     }
+}
+
+void Updater::showChangelog()
+{
+    ChangelogDialog changelog;
+    changelog.exec();
 }
 
 void Updater::cancelPluginUpdate()

@@ -30,6 +30,7 @@ set( screencloud_SOURCES
     src/dialog/savescreenshotdialog.cpp
     src/dialog/plugindialog.cpp
     src/dialog/logindialog.cpp
+    src/dialog/changelogdialog.cpp
     src/plugin/pluginmanager.cpp
     src/firstrunwizard/activatepage.cpp
     src/firstrunwizard/finishedpage.cpp
@@ -75,6 +76,7 @@ set( screencloud_HEADERS_MOC
     src/dialog/savescreenshotdialog.h
     src/dialog/plugindialog.h
     src/dialog/logindialog.h
+    src/dialog/changelogdialog.h
     src/firstrunwizard/activatepage.h
     src/firstrunwizard/finishedpage.h
     src/firstrunwizard/firstrunwizard.h
@@ -116,6 +118,7 @@ set( screencloud_FORMS
     src/dialog/savescreenshotdialog.ui
     src/dialog/plugindialog.ui
     src/dialog/logindialog.ui
+    src/dialog/changelogdialog.ui
 )
 
 set( screencloud_RESOURCES

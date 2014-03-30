@@ -24,9 +24,11 @@
 #include <QSettings>
 #include <utils/OS.h>
 #include <dialog/downloadupdatedialog.h>
+#include <dialog/changelogdialog.h>
 #include <QStringList>
 #include <plugin/pluginmanager.h>
 #include <QProgressDialog>
+#include <QPushButton>
 
 class Updater : public QObject
 {
@@ -56,6 +58,7 @@ signals:
 public slots:
     void showUpdateNotification();
     void showPluginUpdateNotification(QStringList plugins, QStringList urls);
+    void showChangelog();
     void cancelPluginUpdate();
     void pluginInstallError(QString error);
     void progressUpdate(int);
