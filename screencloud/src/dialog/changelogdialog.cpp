@@ -24,7 +24,10 @@ void ChangelogDialog::showEvent(QShowEvent *e)
 {
     busyOverlay->show();
     QNetworkRequest getChangelogReq;
-    getChangelogReq.setUrl(QUrl("https://api.screencloud.net/1.0/changelog"));
+    QUrl url = QUrl("https://api.screencloud.net/1.0/updates/changelog");
+    url.addQueryItem("installed-version", VERSION);
+    url.addQueryItem("os", OS_SHORTNAME);
+    getChangelogReq.setUrl(url);
     netManager.get(getChangelogReq);
 }
 

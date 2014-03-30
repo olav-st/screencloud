@@ -7,6 +7,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <utils/OS.h>
 
 namespace Ui {
 class ChangelogDialog;
