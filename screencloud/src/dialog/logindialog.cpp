@@ -35,7 +35,7 @@ void LoginDialog::on_button_login_clicked()
 {
     serverQueryFinished = false;
     serverQueryError = false;
-    ui->label_message->setText("Connecting to server...");
+    ui->label_message->setText(tr("Connecting to server..."));
     QString token, tokenSecret;
     QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create body request parameters
@@ -60,7 +60,7 @@ void LoginDialog::on_button_login_clicked()
     }
     if(serverQueryError)
     {
-        WARNING(url.toString() + " returned error");
+        WARNING(url.toString() + tr(" returned error"));
     }else
     {
         this->accept();
@@ -68,7 +68,7 @@ void LoginDialog::on_button_login_clicked()
 }
 void LoginDialog::replyFinished(QNetworkReply *reply)
 {
-    ui->label_message->setText("Reading response from server...");
+    ui->label_message->setText(tr("Reading response from server..."));
     QString replyText = reply->readAll();
     INFO(replyText);
     if(reply->error() != QNetworkReply::NoError)
@@ -76,17 +76,17 @@ void LoginDialog::replyFinished(QNetworkReply *reply)
         serverQueryError = true;
         if(reply->error() == QNetworkReply::ContentAccessDenied || reply->error() == QNetworkReply::AuthenticationRequiredError)
         {
-            ui->label_message->setText("<font color='red'>Your email/password combination was incorrect or account is not activated</font>");
+            ui->label_message->setText(tr("<font color='red'>Your email/password combination was incorrect or account is not activated</font>"));
         }else
         {
-            ui->label_message->setText("<font color='red'>Login failed. Please check your email, password and internet connection.</font>");
+            ui->label_message->setText(tr("<font color='red'>Login failed. Please check your email, password and internet connection.</font>"));
         }
-        WARNING(reply->request().url().toString() + " returned: " + replyText);
+        WARNING(reply->request().url().toString() + tr(" returned: ") + replyText);
 
     }else
     {
         //No error in request
-        ui->label_message->setText("Logged in...");
+        ui->label_message->setText(tr("Logged in..."));
         //Save to qsettings
         QUrl replyParams = QUrl("?" + replyText);
         QSettings settings("screencloud", "ScreenCloud");

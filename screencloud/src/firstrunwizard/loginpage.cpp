@@ -29,7 +29,7 @@ LoginPage::LoginPage(QWidget *parent) :
     input_email->setValidator(new QRegExpValidator(QRegExp(".*@.*"), this));
     input_password = new QLineEdit(this);
     input_password->setEchoMode(QLineEdit::Password);
-    label_forgotPassword = new QLabel("<a href=\"https://screencloud.net/users/forgot_password\">Forgot password?</a>", this);
+    label_forgotPassword = new QLabel(tr("<a href=\"https://screencloud.net/users/forgot_password\">Forgot password?</a>"), this);
     label_forgotPassword->setOpenExternalLinks(true);
     label_message = new QLabel(this);
     label_message->setWordWrap(true);
@@ -92,17 +92,17 @@ bool LoginPage::validatePage()
 
 void LoginPage::replyFinished(QNetworkReply *reply)
 {
-    label_message->setText("Reading response from server...");
+    label_message->setText(tr("Reading response from server..."));
     QString replyText = reply->readAll();
     if(reply->error() != QNetworkReply::NoError)
     {
         serverQueryError = true;
         if(reply->error() == QNetworkReply::ContentAccessDenied || reply->error() == QNetworkReply::AuthenticationRequiredError)
         {
-            label_message->setText("<font color='red'>Your email/password combination was incorrect or account is not activated</font>");
+            label_message->setText(tr("<font color='red'>Your email/password combination was incorrect or account is not activated</font>"));
         }else
         {
-            label_message->setText("<font color='red'>Login failed. Please check your email, password and internet connection.</font>");
+            label_message->setText(tr("<font color='red'>Login failed. Please check your email, password and internet connection.</font>"));
         }
         WARNING(reply->request().url().toString() + " returned: " + replyText);
 

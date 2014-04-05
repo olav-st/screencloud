@@ -18,9 +18,9 @@ IntroPage::IntroPage()
 {
     setTitle(tr("Introduction"));
     //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark1.png"));
-    radiobtn_newAccount = new QRadioButton("I'm new to ScreenCloud", this);
-    radiobtn_haveAccount = new QRadioButton("I already have a ScreenCloud account", this);
-    rabiobtn_noAccount = new QRadioButton("I want to use ScreenCloud without an account", this);
+    radiobtn_newAccount = new QRadioButton(tr("I'm new to ScreenCloud"), this);
+    radiobtn_haveAccount = new QRadioButton(tr("I already have a ScreenCloud account"), this);
+    rabiobtn_noAccount = new QRadioButton(tr("I want to use ScreenCloud without an account"), this);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(radiobtn_newAccount);
@@ -52,7 +52,7 @@ bool IntroPage::validatePage()
         QMessageBox msgBox;
         msgBox.addButton(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
-        msgBox.setText("Are you sure that you want to use ScreenCloud without an account? You will not be able to share screenshots on screencloud.net.");
+        msgBox.setText(tr("Are you sure that you want to use ScreenCloud without an account? You will not be able to share screenshots on screencloud.net."));
         msgBox.setIcon(QMessageBox::Information);
         int selection = msgBox.exec();
         if(selection == QMessageBox::Yes)

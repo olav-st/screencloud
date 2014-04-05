@@ -23,7 +23,6 @@ ClipboardUploader::ClipboardUploader(QObject *parent) :
     name = "Clipboard";
     shortname = "clipboard";
     icon = QIcon::fromTheme("edit-copy", QIcon(":/uploaders/clipboard.png"));
-    //clipboard = qApp->clipboard();
     loadSettings();
 }
 

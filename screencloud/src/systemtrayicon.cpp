@@ -21,7 +21,7 @@
 SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     QSystemTrayIcon(parent)
 {
-    setToolTip("ScreenCloud - Idle");
+    setToolTip(tr("ScreenCloud - Idle"));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
     // load icon
     if(color.isEmpty())
@@ -37,8 +37,8 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
 #endif
     if(systrayIconNormal.isNull())
     {
-        WARNING("Failed to load tray icon. Make sure QtSvg is installed.");
-        QMessageBox::warning(NULL, "Failed to load tray icon.", "Failed to load tray icon. Make sure QtSvg is installed.");
+        WARNING(tr("Failed to load tray icon. Make sure QtSvg is installed."));
+        QMessageBox::warning(NULL, tr("Failed to load tray icon."), tr("Failed to load tray icon. Make sure QtSvg is installed."));
     }
     if(QIcon::hasThemeIcon("screencloud-idle"))
     {
@@ -258,7 +258,7 @@ void SystemTrayIcon::saveScreenshot(QString name, QString uploaderShortname)
     updateSystrayMenu();
     uploading = true;
     setIcon(systrayIconUploading);
-    setToolTip("ScreenCloud - Uploading");
+    setToolTip(tr("ScreenCloud - Uploading"));
     if(uploaderShortname.isEmpty())
     {
         uploaderShortname = currentUploaderShortname;
@@ -452,7 +452,6 @@ void SystemTrayIcon::uploaderMenuItemChecked(bool checked)
     {
         //Ask me
         showSaveDialog = true;
-        currentUploaderShortname == "";
     }else
     {
         showSaveDialog = false;

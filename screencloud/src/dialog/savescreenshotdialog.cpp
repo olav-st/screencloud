@@ -77,7 +77,7 @@ void SaveScreenshotDialog::setupUi()
     if(uploadManager->getUploader(currentUploaderShortname)->isConfigured() == false)
     {
         ui->label_error->setVisible(true);
-        ui->label_error->setText("This saving method is not configured. Press the settings button to configure it");
+        ui->label_error->setText(tr("This saving method is not configured. Press the settings button to configure it."));
         ui->buttonBox->setEnabled(false);
     }else
     {
@@ -98,9 +98,9 @@ void SaveScreenshotDialog::updateUi()
         ui->label_error->setVisible(true);
         if(currentUploaderShortname == "screencloud")
         {
-            ui->label_error->setText("You are not logged in to ScreenCloud. You can log in from the preferences menu.");
+            ui->label_error->setText(tr("You are not logged in to ScreenCloud. You can log in from the preferences menu."));
         }else {
-            ui->label_error->setText("This saving method is not configured. Press the settings button to configure it");
+            ui->label_error->setText(tr("This saving method is not configured. Press the settings button to configure it"));
         }
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     }else

@@ -18,9 +18,9 @@ FinishedPage::FinishedPage(QWidget *parent) :
     QWizardPage(parent)
 {
     setTitle(tr("All done!"));
-    label_text = new QLabel("You are now ready to start using ScreenCloud. If you want to, ScreenCloud can start automatically when your computer starts:");
+    label_text = new QLabel(tr("You are now ready to start using ScreenCloud. If you want to, ScreenCloud can start automatically when your computer starts:"));
     label_text->setWordWrap(true);
-    checkbox_runOnStartup = new QCheckBox("Start ScreenCloud when my computer starts");
+    checkbox_runOnStartup = new QCheckBox(tr("Start ScreenCloud when my computer starts"));
 
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(label_text);

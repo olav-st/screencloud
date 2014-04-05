@@ -18,17 +18,17 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWizardPage(parent)
 {
     setTitle(tr("Keyboard shortcuts"));
-    label_text = new QLabel("ScreenCloud uses 3 shorcuts for screen capture. You can change them to your liking in the preferences. The default shortcuts are:");
+    label_text = new QLabel(tr("ScreenCloud uses 3 shorcuts for screen capture. You can change them to your liking in the preferences. The default shortcuts are:"));
     label_text->setWordWrap(true);
-    label_fullscreen = new QLabel("<b>Capture fullscreen</b>", this);
+    label_fullscreen = new QLabel(tr("<b>Capture fullscreen</b>"), this);
     QPixmap fullscreenPixmap(":/shortcuts/fullscreen.png");
     image_fullscreen = new QLabel(this);
     image_fullscreen->setPixmap(fullscreenPixmap);
-    label_selection = new QLabel("<b>Capture selection</b>", this);
+    label_selection = new QLabel(tr("<b>Capture selection</b>"), this);
     QPixmap selectionPixmap(":/shortcuts/selection.png");
     image_selection = new QLabel(this);
     image_selection->setPixmap(selectionPixmap);
-    label_window = new QLabel("<b>Capture active window</b>", this);
+    label_window = new QLabel(tr("<b>Capture active window</b>"), this);
     QPixmap windowPixmap(":/shortcuts/window.png");
     image_window = new QLabel(this);
     image_window->setPixmap(windowPixmap);

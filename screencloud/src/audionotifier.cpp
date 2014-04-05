@@ -27,7 +27,7 @@ AudioNotifier::AudioNotifier(QObject *parent)
     format.setSampleType(QAudioFormat::SignedInt);
 
     if (!info.isFormatSupported(format)) {
-        WARNING("Audio format not supported by backend. Trying nearest format.");
+        WARNING(tr("Audio format not supported by backend. Trying nearest format."));
         format = info.nearestFormat(format);
     }
 
@@ -35,7 +35,7 @@ AudioNotifier::AudioNotifier(QObject *parent)
     connect(audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioStateChanged(QAudio::State)));
     if(audioOutput->error() != QAudio::NoError)
     {
-        WARNING("Error while creating audio output. Code: " + QString::number(audioOutput->error()) + " Device: " + info.deviceName());
+        WARNING(tr("Error while creating audio output. Code: ") + QString::number(audioOutput->error()) + tr(" Device: ") + info.deviceName());
     }
 }
 
@@ -77,20 +77,20 @@ void AudioNotifier::play(QString file)
         }
         if(audioOutput == NULL)
         {
-            WARNING("Failed to play " + file + " audioOutput == NULL");
+            WARNING(tr("Failed to play ") + file + " audioOutput == NULL");
         }else if (!audioFile.exists())
         {
-            WARNING(file + " does not exist.");
+            WARNING(file + tr(" does not exist."));
         }else if(!audioFile.isOpen())
         {
-            WARNING(file + " is not open.");
+            WARNING(file + tr(" is not open."));
         }else
         {
             audioOutput->start(&audioFile);
         }
         if(audioOutput->error() != QAudio::NoError)
         {
-            WARNING("Error while playing " + file + ". Code: " + QString::number(audioOutput->error()));
+            WARNING(tr("Error while playing ") + file + tr(". Code: ") + QString::number(audioOutput->error()));
         }
     }
 }
@@ -99,6 +99,6 @@ void AudioNotifier::audioStateChanged(QAudio::State state)
 {
     if(audioOutput->error() != QAudio::NoError)
     {
-        WARNING("Error while playing audio. Code: " + QString::number(audioOutput->error()));
+        WARNING(tr("Error while playing audio. Code: ") + QString::number(audioOutput->error()));
     }
 }

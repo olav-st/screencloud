@@ -270,13 +270,13 @@ void PreferencesDialog::getUserInfo()
 }
 void PreferencesDialog::validateHotkey(QTableWidgetItem* item)
 {
-    INFO("Validating hotkey");
+    INFO(tr("Validating hotkey"));
     if(item->flags() & Qt::ItemIsSelectable) //Only validate cells with hotkeys in them
     {
         QKeySequence keySeq = QKeySequence(item->text());
         QString keySeqString = keySeq.toString();
         if (keySeqString.isEmpty() || (keySeqString.count(QRegExp("[!@#$%^&*()_\"]")) > 0)) {
-            WARNING("Failed to validate hotkey(" + keySeqString +"). Resetting to " + oldHotkeyText);
+            WARNING(tr("Failed to validate hotkey(") + keySeqString + tr("). Resetting to ") + oldHotkeyText);
             item->setText(oldHotkeyText);
             this->setFocus(Qt::OtherFocusReason);
             editingHotkeyField = false;
@@ -312,11 +312,11 @@ void PreferencesDialog::recordHotkey(QTableWidgetItem* item)
     if(item->flags() & Qt::ItemIsSelectable)
     {
         keysRecorded = 0;
-        if(!item->text().isEmpty() && item->text() != "Press a key combination...")
+        if(!item->text().isEmpty() && item->text() != tr("Press a key combination..."))
         {
             oldHotkeyText = item->text();
         }
-        item->setText("Press a key combination...");
+        item->setText(tr("Press a key combination..."));
         editingHotkeyField = true;
         ui->table_hotkeys->currentItem()->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     }
@@ -379,7 +379,7 @@ void PreferencesDialog::hotkeyItemChanged(QTableWidgetItem *current, QTableWidge
 {
     if(previous != NULL)
     {
-        if(!current->text().isEmpty() && current->text() != "Press a key combination...")
+        if(!current->text().isEmpty() && current->text() != tr("Press a key combination..."))
         {
             validateHotkey(previous);
             editingHotkeyField = false;
@@ -409,7 +409,7 @@ void PreferencesDialog::replyFinished(QNetworkReply *reply)
         //Parse servers response
         QDomDocument doc("error");
         if (!doc.setContent(replyText)) {
-            ui->label_screenshots->setText("<font color='red'>Failed to parse response from server</font>");
+            ui->label_screenshots->setText(tr("<font color='red'>Failed to parse response from server</font>"));
             return;
         }
         QDomElement docElem = doc.documentElement();
@@ -417,7 +417,7 @@ void PreferencesDialog::replyFinished(QNetworkReply *reply)
         ui->label_screenshots->setText("<font color='red'>" + message.text() + "</font>");
         if(message.text().isNull())
         {
-            ui->label_screenshots->setText("<font color='red'>Failed to parse response from server</font>");
+            ui->label_screenshots->setText(tr("<font color='red'>Failed to parse response from server</font>"));
         }
 
     }else
@@ -437,12 +437,12 @@ void PreferencesDialog::replyFinished(QNetworkReply *reply)
             ui->label_accountType->setText("Premium");
         }else
         {
-            ui->label_accountType->setText("Free (<a href=\"https://screencloud.net/premium/\">upgrade</a>)");
+            ui->label_accountType->setText(tr("Free (<a href=\"https://screencloud.net/premium/\">upgrade</a>)"));
             ui->label_accountType->setOpenExternalLinks(true);
         }
         if(screenshots.text().length() == 0)
         {
-            ui->label_screenshots->setText("<font color='red'>Failed to parse response from server!</font>");
+            ui->label_screenshots->setText(tr("<font color='red'>Failed to parse response from server!</font>"));
         }
     }
 }
@@ -543,7 +543,7 @@ void PreferencesDialog::on_comboBox_proxyType_currentIndexChanged(int index)
 
 void PreferencesDialog::on_button_aboutqt_clicked()
 {
-    QMessageBox::aboutQt(this, "About Qt");
+    QMessageBox::aboutQt(this, tr("About Qt"));
 
 }
 
@@ -594,7 +594,7 @@ void PreferencesDialog::on_button_logout_clicked()
     QMessageBox msgBox;
     msgBox.addButton(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
-    msgBox.setText("Are you sure that you want to log out? This will remove the saved account details and quit the application.");
+    msgBox.setText(tr("Are you sure that you want to log out? This will remove the saved account details and quit the application."));
     msgBox.setIcon(QMessageBox::Information);
     int selection = msgBox.exec();
     if(selection == QMessageBox::Yes)

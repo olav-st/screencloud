@@ -70,8 +70,8 @@ int main(int argc, char *argv[])
         PythonQt::self()->getMainModule().evalScript("import sys"); //Required for addSysPath on some systems
         if(PythonQt::self()->hadError())
         {
-            WARNING("Failed to import sys module. Check your Python installation.");
-            QMessageBox::critical(NULL, "Failed to import sys", "Failed to import sys module. Check your Python installation.");
+            WARNING(QObject::tr("Failed to import sys module. Check your Python installation."));
+            QMessageBox::critical(NULL, QObject::tr("Failed to import sys"), QObject::tr("Failed to import sys module. Check your Python installation."));
         }
 
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
@@ -102,12 +102,12 @@ int main(int argc, char *argv[])
                 if(areaGeomIndex > 0 && areaGeomIndex < cmdline_args.count())
                 {
                     QString areaString = cmdline_args.at(areaGeomIndex);
-                    INFO("Grabbing area (" + areaString + ")");
+                    INFO(QObject::tr("Grabbing area (") + areaString + ")");
                     QRect area(QPoint(areaString.split(",")[0].toUInt(), areaString.split(",")[1].toUInt()), QSize(areaString.split(",")[2].toUInt(), areaString.split(",")[3].toUInt()));
                     screenshot = screenShooter.captureSelection(area);
                 }else
                 {
-                    CRITICAL("No area provided. Format: --area x,y,width,height. Example: --area 0,0,640,480");
+                    CRITICAL(QObject::tr("No area provided. Format: --area x,y,width,height. Example: --area 0,0,640,480"));
                     return 1;
                 }
             }
@@ -123,11 +123,11 @@ int main(int argc, char *argv[])
                 if(winIdIndex > 0 && winIdIndex < cmdline_args.count())
                 {
                     WId windowId = (WId)cmdline_args.at(winIdIndex).toInt();
-                    INFO("Grabbing window with id " + QString::number((int)windowId));
+                    INFO(QObject::tr("Grabbing window with id ") + QString::number((int)windowId));
                     screenshot = screenShooter.captureWindow(windowId);
                 }else
                 {
-                    CRITICAL("No window id provided.");
+                    CRITICAL(QObject::tr("No window id provided."));
                     return 1;
                 }
             }else if(cmdline_args.contains("--file") || cmdline_args.contains("-fl"))
@@ -143,13 +143,13 @@ int main(int argc, char *argv[])
                     QString filePath = cmdline_args.at(filePathIndex);
                     if(!screenshot.load(filePath))
                     {
-                        CRITICAL("Failed to read file " + filePath);
+                        CRITICAL(QObject::tr("Failed to read file ") + filePath);
                         return 1;
                     }
-                    INFO("Using file " + filePath);
+                    INFO(QObject::tr("Using file ") + filePath);
                 }else
                 {
-                    CRITICAL("No file path set.");
+                    CRITICAL(QObject::tr("No file path set."));
                     return 1;
                 }
             }
@@ -158,10 +158,10 @@ int main(int argc, char *argv[])
                 //Default to fullscreen
                 if(!cmdline_args.contains("--fullscreen") && !cmdline_args.contains("-f"))
                 {
-                    INFO("No --area or --window set. Defaulting to fullscreen.");
+                    INFO(QObject::tr("No --area or --window set. Defaulting to fullscreen."));
                 }else
                 {
-                    INFO("Capturing fullscreen.")
+                    INFO(QObject::tr("Capturing fullscreen."))
                 }
                 screenshot = screenShooter.captureFullscreen();
             }

@@ -65,7 +65,7 @@ void Startup::setRunOnStartup(bool runOnStartup)
     {
         if(!autostartFile.exists())
         {
-            INFO("Installing autostart file to " + autostartLocation);
+            INFO(QObject::tr("Installing autostart file to ") + autostartLocation);
             autostartFile.open(QFile::WriteOnly);
             autostartFile.write(desktopFileContents.toLocal8Bit());
             autostartFile.close();
@@ -75,7 +75,7 @@ void Startup::setRunOnStartup(bool runOnStartup)
     {
         if(autostartFile.exists())
         {
-            INFO("Removing autostart file " + autostartFile.fileName());
+            INFO(QObject::tr("Removing autostart file ") + autostartFile.fileName());
             autostartFile.remove();
         }
     }

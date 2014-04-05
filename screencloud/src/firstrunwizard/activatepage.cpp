@@ -25,7 +25,7 @@ ActivatePage::ActivatePage(QWidget *parent) :
     serverQueryError = false;
     //Setup GUI
     setTitle(tr("Activate your account"));
-    label_activation = new QLabel("Before you can start using your new ScreenCloud account, you need to activate it. An activation link has been sent to your email address. Click the link and you should be good to go!", this);
+    label_activation = new QLabel(tr("Before you can start using your new ScreenCloud account, you need to activate it. An activation link has been sent to your email address. Click the link and you should be good to go!"), this);
     label_activation->setWordWrap(true);
     label_message = new QLabel(this);
     label_message->setWordWrap(true);
@@ -56,7 +56,7 @@ bool ActivatePage::checkUserActivated(int user_id)
 {
     serverQueryFinished = false;
     serverQueryError = false;
-    label_message->setText("Logging in...");
+    label_message->setText(tr("Logging in..."));
     QString url( "https://api.screencloud.net/1.0/users/check_activated.xml");
 
     QString token, tokenSecret;
@@ -87,24 +87,24 @@ void ActivatePage::replyFinished(QNetworkReply *reply)
         //Parse servers response
         QDomDocument doc("error");
         if (!doc.setContent(replyText)) {
-            label_message->setText("<font color='red'>Failed to parse response from server</font>");
+            label_message->setText(tr("<font color='red'>Failed to parse response from server</font>"));
             return;
         }
         QDomElement docElem = doc.documentElement();
         QDomElement message = docElem.firstChildElement("message");
-        label_message->setText("<font color='red'>" + message.text() + "</font>");
+        label_message->setText(tr("<font color='red'>") + message.text() + "</font>");
         if(message.text().isNull())
         {
-            label_message->setText("<font color='red'>Failed to parse response from server</font>");
+            label_message->setText(tr("<font color='red'>Failed to parse response from server</font>"));
         }
-        WARNING(reply->request().url().toString() + " returned: " + replyText);
+        WARNING(reply->request().url().toString() + tr(" returned: ") + replyText);
 
     }else
     {
         //No error in request
         QDomDocument doc("reply");
         if (!doc.setContent(replyText)) {
-            label_message->setText("<font color='red'>Failed to parse response from server!</font>");
+            label_message->setText(tr("<font color='red'>Failed to parse response from server!</font>"));
             return;
         }
         QDomElement docElem = doc.documentElement();
@@ -113,7 +113,7 @@ void ActivatePage::replyFinished(QNetworkReply *reply)
         if(activatedElem.text().isEmpty())
         {
            serverQueryError = true;
-           label_message->setText("<font color='red'>Your account has not been activated yet.</font>");
+           label_message->setText(tr("<font color='red'>Your account has not been activated yet.</font>"));
         }
     }
     serverQueryFinished = true;
@@ -124,7 +124,7 @@ bool ActivatePage::getAccessToken()
     serverQueryFinished = false;
     serverQueryError = false;
     disconnect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-    label_message->setText("Requesting key...");
+    label_message->setText(tr("Requesting key..."));
 
     QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create a request parameters map
@@ -152,7 +152,7 @@ bool ActivatePage::getAccessToken()
         QString replyText = reply->readAll();
         if(replyText.isEmpty())
         {
-            label_message->setText("<font color='red'>Failed to get credentials. Empty reply from server.</font>");
+            label_message->setText(tr("<font color='red'>Failed to get credentials. Empty reply from server.</font>"));
             return false;
         }
         INFO(reply->request().url().toString() + " returned: " + replyText);
@@ -167,7 +167,7 @@ bool ActivatePage::getAccessToken()
         return true;
     }else
     {
-        label_message->setText("<font color='red'>OAuth error</font>");
+        label_message->setText(tr("<font color='red'>OAuth error</font>"));
         return false;
     }
     return false;

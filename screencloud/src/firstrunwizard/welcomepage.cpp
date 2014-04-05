@@ -18,7 +18,7 @@ WelcomePage::WelcomePage(QWidget *parent) :
     QWizardPage(parent)
 {
     setTitle(tr("Welcome to ScreenCloud"));
-    label_text = new QLabel("ScreenCloud will run in the system tray on your computer. This icon gives you access to the ScreenCloud features.");
+    label_text = new QLabel(tr("ScreenCloud will run in the system tray on your computer. This icon gives you access to the ScreenCloud features."));
     label_text->setWordWrap(true);
     QPixmap systrayPixmap(QString(":/images/tutorial_systemtray_") + OS_SHORTNAME + ".png");
     image_systray = new QLabel(this);

@@ -45,11 +45,11 @@ void PluginDialog::setupUi()
 {
     stdModel.clear();
     stdModel.setColumnCount(2);
-    categoryOnline = new QStandardItem("Online");
-    categoryLocal = new QStandardItem("Local");
+    categoryOnline = new QStandardItem(tr("Online"));
+    categoryLocal = new QStandardItem(tr("Local"));
     QStringList headerLabels;
-    headerLabels.append("Name");
-    headerLabels.append("Enabled");
+    headerLabels.append(tr("Name"));
+    headerLabels.append(tr("Enabled"));
     stdModel.setHorizontalHeaderLabels(headerLabels);
     ui->tree_plugins->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tree_plugins->setIconSize(QSize(32,32));
@@ -163,8 +163,8 @@ void PluginDialog::replyFinished(QNetworkReply *reply)
             QDomElement message = docElem.firstChildElement("message");
             if(!message.text().isEmpty())
             {
-                WARNING("Failed to get plugin list from server. Error was: " + message.text());
-                QMessageBox::warning(this, "Failed to get plugin list", "Failed to get plugin list from server.\nError was: " + message.text());
+                WARNING(tr("Failed to get plugin list from server. Error was: ") + message.text());
+                QMessageBox::warning(this, tr("Failed to get plugin list"), tr("Failed to get plugin list from server.\nError was: ") + message.text());
             }
         }
     }else
@@ -174,8 +174,8 @@ void PluginDialog::replyFinished(QNetworkReply *reply)
         QDomDocument doc("plugins");
         if(!doc.setContent(replyText))
         {
-            WARNING("Failed to get plugin list from " + reply->request().url().toString() + ".\n Failed to parse reply as XML");
-            QMessageBox::warning(this, "Failed to get plugin list", "Failed to get plugin list from " + reply->request().url().toString() + ". Failed to parse reply as XML.");
+            WARNING(tr("Failed to get plugin list from ") + reply->request().url().toString() + tr(".\n Failed to parse reply as XML"));
+            QMessageBox::warning(this, tr("Failed to get plugin list"), tr("Failed to get plugin list from ") + reply->request().url().toString() + tr(". Failed to parse reply as XML."));
         }
         QDomElement docElem = doc.documentElement();
         QDomNode pluginNode = docElem.firstChild();
@@ -192,20 +192,20 @@ void PluginDialog::replyFinished(QNetworkReply *reply)
 
 void PluginDialog::pluginInstalled(QString name)
 {
-    QMessageBox::information(this, "Plugin installed!", "The <b>" + name + "</b> plugin was successfully installed!");
+    QMessageBox::information(this, tr("Plugin installed!"), tr("The <b>") + name + tr("</b> plugin was successfully installed!"));
     pluginsInstalledOrRemoved = true;
 }
 
 void PluginDialog::pluginInstallError(QString errorText)
 {
-    WARNING("Failed to update plugins! " + errorText);
+    WARNING(tr("Failed to update plugins! ") + errorText);
     QMessageBox::critical(this, tr("Failed to install plugin!"), errorText);
 }
 
 void PluginDialog::cancelInstallation()
 {
     //pluginManager->busy = false;
-    INFO("Installation canceled by user");
+    INFO(tr("Installation canceled by user"));
     pluginManager->cancelInstallation();
 }
 
@@ -216,7 +216,7 @@ void PluginDialog::on_button_downloadFromURL_clicked()
     if(ok && !URL.isEmpty())
     {
         QProgressDialog progressDialog(tr("Installing plugin from URL..."), tr("Cancel"), 0, 4, this);
-        progressDialog.setWindowTitle("Installing Plugin");
+        progressDialog.setWindowTitle(tr("Installing Plugin"));
         progressDialog.setWindowModality(Qt::WindowModal);
         progressDialog.setAutoReset(true);
         progressDialog.setAutoClose(true);
@@ -255,8 +255,8 @@ void PluginDialog::on_combo_mirror_currentIndexChanged(int index)
 
 void PluginDialog::on_buttonBox_accepted()
 {
-    QProgressDialog progressDialog("Installing plugins...", "Cancel", 0, 0);
-    progressDialog.setWindowTitle("Installing Plugins");
+    QProgressDialog progressDialog(tr("Installing plugins..."), tr("Cancel"), 0, 0);
+    progressDialog.setWindowTitle(tr("Installing Plugins"));
     connect(pluginManager, SIGNAL(installationProgress(int)), &progressDialog, SLOT(setValue(int)));
     connect(pluginManager, SIGNAL(installationProgress(int)), this, SLOT(progressUpdate(int)));
     connect(pluginManager, SIGNAL(installationError(QString)), &progressDialog, SLOT(close()));

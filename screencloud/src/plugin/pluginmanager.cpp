@@ -57,7 +57,7 @@ void PluginManager::loadPlugins()
            QDomDocument doc("metadata");
            if(!doc.setContent(xmlString))
            {
-               WARNING("Failed to parse XML:" + xmlFile.fileName());
+               WARNING(tr("Failed to parse XML:") + xmlFile.fileName());
            }
            QDomElement docElem = doc.documentElement();
            QString name = docElem.firstChildElement("name").text();
@@ -70,7 +70,7 @@ void PluginManager::loadPlugins()
            pluginsFound++;
        }
    }
-   INFO("Loaded " + QString::number(pluginsFound) + " plugin(s)");
+   INFO(tr("Loaded ") + QString::number(pluginsFound) + tr(" plugin(s)"));
 }
 
 void PluginManager::unloadPlugins()
@@ -92,12 +92,12 @@ void PluginManager::unloadPlugins()
             pluginsUnloaded ++;
         }else
         {
-            WARNING("Casting failed");
+            WARNING(tr("Casting failed"));
         }
         ++it;
     }
     uploaderPlugins.clear();
-    INFO("Unloaded " + QString::number(pluginsUnloaded) + " plugin(s)");
+    INFO(tr("Unloaded ") + QString::number(pluginsUnloaded) + tr(" plugin(s)"));
 }
 
 void PluginManager::reloadPlugins()
@@ -168,7 +168,7 @@ QString PluginManager::pythonQtInputCallback(void *callData)
         *text = "Input:";
     }
     d.setLabelText(*text);
-    d.setWindowTitle("Input Required");
+    d.setWindowTitle(tr("Input Required"));
     d.setModal(false);
     d.show();
     d.raise();
@@ -183,7 +183,7 @@ void PluginManager::installPlugins(QStringList &urls)
     currentProgress = 0;
     for(int i = 0; i < urls.size(); i++)
     {
-        INFO(QString("[1/4] Downloading archive for plugin from: " + urls.at(i) + "..."));
+        INFO(tr("[1/4] Downloading archive for plugin from: ") + urls.at(i) + "...");
         //Download the plugin archive from url
         QUrl zipUrl = NetworkUtils::checkUrlForRedirect(QUrl(urls.at(i)));
         QNetworkRequest request(zipUrl);
@@ -200,10 +200,10 @@ bool PluginManager::uninstallPlugins(QStringList& shortnames)
 {
     for(int i = 0; i < shortnames.size(); i++)
     {
-        INFO("Deleting " + PluginManager::pluginPath() + shortnames.at(i));
+        INFO(tr("Deleting ") + PluginManager::pluginPath() + shortnames.at(i));
         if(!removeDir(PluginManager::pluginPath() + shortnames.at(i)))
         {
-            WARNING("Failed to delete directory: " + PluginManager::pluginPath() + shortnames.at(i));
+            WARNING(tr("Failed to delete directory: ") + PluginManager::pluginPath() + shortnames.at(i));
         }
     }
     return true;
@@ -211,7 +211,7 @@ bool PluginManager::uninstallPlugins(QStringList& shortnames)
 
 void PluginManager::cancelInstallation()
 {
-    INFO("Canceling all requests");
+    INFO(tr("Canceling all requests"));
     busy = false;
     for(int i = 0; i < netReplies.count(); i++)
     {
@@ -230,7 +230,7 @@ void PluginManager::extractPlugin(QString zipFilename)
     QDir d;
     d.mkdir(tmpExtractPath);
     //Extract the contents of the zip file
-    INFO("[3/4] Exctracting plugin archive " + zipFilename + " to " + tmpExtractPath);
+    INFO(tr("[3/4] Exctracting plugin archive ") + zipFilename + tr(" to ") + tmpExtractPath);
     QuaZip zip(zipFilename);
     if(zip.open(QuaZip::mdUnzip))
     {
@@ -248,12 +248,12 @@ void PluginManager::extractPlugin(QString zipFilename)
         zip.close();
     }else
     {
-        WARNING("Failed to open zip file: " + zipFilename);
-        emit installationError("Failed to open zip file: " + zipFilename);
+        WARNING(tr("Failed to open zip file: ") + zipFilename);
+        emit installationError(tr("Failed to open zip file: ") + zipFilename);
     }
     if(!d.remove(zipFilename))
     {
-        WARNING("Failed to remove tmp zip file " + zipFilename);
+        WARNING(tr("Failed to remove tmp zip file ") + zipFilename);
     }
     currentProgress += 1;
     emit installationProgress(currentProgress);
@@ -282,29 +282,29 @@ void PluginManager::analyzeAndMovePlugin(QString exctractedDirPath)
         QDomDocument doc("metadata");
         if(!doc.setContent(xmlString))
         {
-            INFO("Failed to parse XML:" + xmlFile.fileName());
+            INFO(tr("Failed to parse XML:") + xmlFile.fileName());
         }
         QDomElement docElem = doc.documentElement();
         QString shortname = docElem.firstChildElement("shortname").text();
         //Copy the plugin from the temporary directory to the plugin dir
-        INFO("[4/4] Moving " + mainFileInfo.absoluteDir().absolutePath() + " to plugin dir");
+        INFO(tr("[4/4] Moving ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to plugin dir"));
         QDir dir;
         if(!copyFolder(mainFileInfo.absoluteDir().absolutePath() + "/", PluginManager::pluginPath() + shortname + "/"))
         {
-            WARNING("Failed to move " + mainFileInfo.absoluteDir().absolutePath() + " to " + PluginManager::pluginPath() + shortname);
-            emit installationError("Failed to move " + mainFileInfo.absoluteDir().absolutePath() + " to " + PluginManager::pluginPath() + shortname);
+            WARNING(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + shortname);
+            emit installationError(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + shortname);
         }
         if(!removeDir(mainFileInfo.absoluteDir().absolutePath()))
         {
-            WARNING("Failed to remove tmp dir " + mainFileInfo.absoluteDir().absolutePath());
+            WARNING(tr("Failed to remove tmp dir ") + mainFileInfo.absoluteDir().absolutePath());
         }
         currentProgress += 1;
         emit installationProgress(currentProgress);
         busy = false;
     }else
     {
-        WARNING("Could not find main.py in " + exctractedDirPath);
-        emit installationError("Could not find main.py in " + exctractedDirPath);
+        WARNING(tr("Could not find main.py in ") + exctractedDirPath);
+        emit installationError(tr("Could not find main.py in ") + exctractedDirPath);
     }
 }
 
@@ -378,7 +378,7 @@ void PluginManager::fileDownloaded(QNetworkReply *reply)
         tmpFile->open(QFile::WriteOnly);
         tmpFile->write(reply->readAll());
         tmpFile->close();
-        INFO("[2/4] File " + tmpFile->fileName() + " downloaded.");
+        INFO(tr("[2/4] File ") + tmpFile->fileName() + tr(" downloaded."));
         currentProgress += 1;
         emit installationProgress(currentProgress);
         this->extractPlugin(tmpFile->fileName());

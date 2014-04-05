@@ -42,33 +42,33 @@ void DownloadUpdateDialog::startDownload(QString version)
     tmpFile = new QFile(QDir::tempPath() + "/" + "ScreenCloud-" + version + "-" + QString(ARCH) + ".msi", this);
     if(tmpFile->exists())
     {
-        INFO("Removing existing installer " + tmpFile->fileName());
+        INFO(tr("Removing existing installer ") + tmpFile->fileName());
         tmpFile->remove();
     }
-    INFO("Saving installer to " + tmpFile->fileName());
+    INFO(tr("Saving installer to ") + tmpFile->fileName());
     QNetworkRequest downloadRequest("https://screencloud.net/files/windows/ScreenCloud-" + version + "-" + QString(ARCH) + ".msi");
     QNetworkReply* r = netManager->get(downloadRequest);
     connect(r, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
-    INFO("Downloading " + downloadRequest.url().toString());
+    INFO(tr("Downloading ") + downloadRequest.url().toString());
 #endif
 #ifdef Q_OS_MACX
     tmpFile = new QFile(QDir::tempPath() + "/" + "ScreenCloud-" + version + ".dmg", this);
     if(tmpFile->exists())
     {
-        INFO("Removing existing dmg " + tmpFile->fileName());
+        INFO(tr("Removing existing dmg ") + tmpFile->fileName());
         tmpFile->remove();
     }
-    INFO("Saving dmg to " + tmpFile->fileName());
+    INFO(tr("Saving dmg to ") + tmpFile->fileName());
     QNetworkRequest downloadRequest("https://screencloud.net/files/mac/ScreenCloud-" + version + ".dmg");
     QNetworkReply* r = netManager->get(downloadRequest);
     connect(r, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
-    INFO("Downloading " + downloadRequest.url().toString());
+    INFO(tr("Downloading ") + downloadRequest.url().toString());
 #endif
 }
 void DownloadUpdateDialog::displayErrorMessage(QString error)
 {
     WARNING(error);
-    QMessageBox::critical(this, "Failed to download update", error);
+    QMessageBox::critical(this, tr("Failed to download update"), error);
     this->close();
 }
 void DownloadUpdateDialog::downloadFinished(QNetworkReply *reply)
@@ -79,13 +79,13 @@ void DownloadUpdateDialog::downloadFinished(QNetworkReply *reply)
         tmpFile->write(reply->readAll());
         tmpFile->flush();
         tmpFile->close();
-        INFO("Successfully downloaded update");
+        INFO(tr("Successfully downloaded update"));
         ui->button_install->setEnabled(true);
         ui->button_install->setDefault(true);
     }else
     {
-        WARNING("Error while downloading update. " + reply->errorString());
-        displayErrorMessage("Error while downloading update. " + reply->errorString());
+        WARNING(tr("Error while downloading update. ") + reply->errorString());
+        displayErrorMessage(tr("Error while downloading update. ") + reply->errorString());
     }
 }
 
@@ -106,7 +106,7 @@ void DownloadUpdateDialog::launchInstaller()
 #else
     QString program = "open " + QDir::toNativeSeparators(tmpFile->fileName());
 #endif
-    INFO("Starting new process: " + program);
+    INFO(tr("Starting new process: ") + program);
     process->start(program);
     QCoreApplication::exit(0);
 }
@@ -118,8 +118,8 @@ void DownloadUpdateDialog::handleSslErrors(QNetworkReply *reply, const QList<QSs
     {
         errorString.append(errors.at(i).errorString() + ", ");
     }
-    WARNING("Got SSL errors while connecting to " + reply->request().url().host() + "." + errorString);
-    displayErrorMessage("Got SSL errors while connecting to " + reply->request().url().host() + "." + errorString);
+    WARNING(tr("Got SSL errors while connecting to ") + reply->request().url().host() + "." + errorString);
+    displayErrorMessage(tr("Got SSL errors while connecting to ") + reply->request().url().host() + "." + errorString);
 }
 
 

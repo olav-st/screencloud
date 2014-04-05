@@ -63,14 +63,14 @@ void Updater::checkForUpdates(int flag)
 }
 void Updater::showUpdateNotification()
 {
-    INFO("There is a new verision available (" + latestVersion + ")");
+    INFO(tr("There is a new verision available (") + latestVersion + ")");
     if(notifyUpdates)
     {
         //Show update message
         QMessageBox msgBox;
         msgBox.setWindowTitle(tr("Update available"));
         msgBox.setIcon(QMessageBox::Information);
-        QPushButton changelogBtn("Changelog");
+        QPushButton changelogBtn(tr("Changelog"));
 #ifdef Q_OS_WIN
         msgBox.addButton(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
@@ -103,7 +103,7 @@ void Updater::showUpdateNotification()
 
 void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls)
 {
-    INFO("Found updates for plugin(s): '" + plugins.join("', '") + "'.");
+    INFO(tr("Found updates for plugin(s): '") + plugins.join("', '") + "'.");
     if(notifyUpdates)
     {
         //Show update message
@@ -117,8 +117,8 @@ void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls
         if(msgBox.exec() == QMessageBox::Yes)
         {
             numPluginsUpdating = plugins.count();
-            QProgressDialog progressDialog("Updating plugins...", "Cancel", 0, 0);
-            progressDialog.setWindowTitle("Updating Plugins");
+            QProgressDialog progressDialog(tr("Updating plugins..."), tr("Cancel"), 0, 0);
+            progressDialog.setWindowTitle(tr("Updating Plugins"));
             connect(pluginManager, SIGNAL(installationProgress(int)), &progressDialog, SLOT(setValue(int)));
             connect(pluginManager, SIGNAL(installationProgress(int)), this, SLOT(progressUpdate(int)));
             connect(pluginManager, SIGNAL(installationError(QString)), &progressDialog, SLOT(close()));
@@ -146,13 +146,13 @@ void Updater::showChangelog()
 
 void Updater::cancelPluginUpdate()
 {
-    INFO("Installation canceled by user");
+    INFO(tr("Installation canceled by user"));
     pluginManager->cancelInstallation();
 }
 
 void Updater::pluginInstallError(QString error)
 {
-    WARNING("Failed to update plugins! " + error);
+    WARNING(tr("Failed to update plugins! ") + error);
     QMessageBox::critical(NULL, tr("Failed to update plugins!"), error);
 }
 
@@ -179,9 +179,9 @@ void Updater::replyFinished(QNetworkReply *reply)
             if(!message.text().isEmpty())
             {
                 QMessageBox msgBox;
-                msgBox.setWindowTitle("Failed to check for updates");
+                msgBox.setWindowTitle(tr("Failed to check for updates"));
                 msgBox.setIcon(QMessageBox::Warning);
-                msgBox.setText("Failed to check for updates.\nError was: " + message.text());
+                msgBox.setText(tr("Failed to check for updates.\nError was: ") + message.text());
                 msgBox.exec();
             }
         }
@@ -191,8 +191,8 @@ void Updater::replyFinished(QNetworkReply *reply)
         QDomDocument doc("plugins");
         if(!doc.setContent(replyText))
         {
-            WARNING("Failed to get plugin list from " + reply->request().url().toString() + ".\n Failed to parse reply as XML");
-            QMessageBox::warning(NULL, "Failed to get plugin list", "Failed to get plugin list from " + reply->request().url().toString() + ". Failed to parse reply as XML.");
+            WARNING(tr("Failed to get plugin list from ") + reply->request().url().toString() + tr(".\n Failed to parse reply as XML"));
+            QMessageBox::warning(NULL, tr("Failed to get plugin list"), tr("Failed to get plugin list from ") + reply->request().url().toString() + tr(". Failed to parse reply as XML."));
         }
         QDomElement docElem = doc.documentElement();
         QDomNode pluginNode = docElem.firstChild();

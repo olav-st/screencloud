@@ -20,7 +20,7 @@ NetworkUtils::NetworkUtils()
 
 QUrl NetworkUtils::checkUrlForRedirect(QUrl urlToCheck)
 {
-    INFO("Checking " + urlToCheck.toString() + " for redirect");
+    INFO(QObject::tr("Checking ") + urlToCheck.toString() + QObject::tr(" for redirect"));
     QNetworkAccessManager netManager;
     QNetworkRequest request;
     request.setUrl(urlToCheck);
@@ -34,7 +34,7 @@ QUrl NetworkUtils::checkUrlForRedirect(QUrl urlToCheck)
         int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if(statusCode == 301 || statusCode == 302) {
             QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-            INFO(urlToCheck.toString() + " redirects to " + redirectUrl.toString());
+            INFO(urlToCheck.toString() + QObject::tr(" redirects to ") + redirectUrl.toString());
             return NetworkUtils::checkUrlForRedirect(redirectUrl);
         }else {
             return urlToCheck;

@@ -59,13 +59,13 @@ void ScreenCloudUploader::upload(const QImage &screenshot, QString name)
     {
         if(!screenshot.save(buffer, format.toLatin1(), jpegQuality))
         {
-            emit uploadingError("Failed to save screenshot to buffer. Format=" + format);
+            emit uploadingError(tr("Failed to save screenshot to buffer. Format=") + format);
         }
     }else
     {
         if(!screenshot.save(buffer, format.toLatin1()))
         {
-                emit uploadingError("Failed to save screenshot to buffer. Format=" + format);
+                emit uploadingError(tr("Failed to save screenshot to buffer. Format=") + format);
         }
     }
     //Upload to screencloud
@@ -136,7 +136,7 @@ void ScreenCloudUploader::replyFinished(QNetworkReply *reply)
         //There was an error
         QDomDocument doc("error");
         if (!doc.setContent(replyText)) {
-            emit uploadingError("Failed to parse response from server");
+            emit uploadingError(tr("Failed to parse response from server"));
             return;
         }
         QDomElement docElem = doc.documentElement();
@@ -147,7 +147,7 @@ void ScreenCloudUploader::replyFinished(QNetworkReply *reply)
         //No errors
         QDomDocument doc("reply");
         if (!doc.setContent(replyText)) {
-            emit uploadingError("Failed to parse response from server");
+            emit uploadingError(tr("Failed to parse response from server"));
             return;
         }
         QDomElement docElem = doc.documentElement();

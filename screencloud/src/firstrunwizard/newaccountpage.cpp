@@ -34,7 +34,7 @@ NewAccountPage::NewAccountPage(QWidget *parent) :
     input_confirmPassword->setEchoMode(QLineEdit::Password);
     checkbox_terms = new QCheckBox(this);
     label_termsLink = new ClickableLabel();
-    label_termsLink->setText("I have read, and agree to the <a href=\"https://screencloud.net/pages/terms\">terms of service</a>");
+    label_termsLink->setText(tr("I have read, and agree to the <a href=\"https://screencloud.net/pages/terms\">terms of service</a>"));
     label_termsLink->setOpenExternalLinks(false); //We want to handle the click event
     connect(label_termsLink, SIGNAL(clicked()), checkbox_terms, SLOT(toggle()));
     connect(label_termsLink, SIGNAL(linkClicked()), checkbox_terms, SLOT(toggle()));
@@ -80,7 +80,7 @@ bool NewAccountPage::validatePage()
     //Check if passwords match
     if(input_password->text() != input_confirmPassword->text())
     {
-        label_message->setText("<font color='red'>Passwords do not match</font>");
+        label_message->setText(tr("<font color='red'>Passwords do not match</font>"));
         return false;
     }
     label_message->setText("Creating account...");
@@ -116,7 +116,7 @@ bool NewAccountPage::validatePage()
 }
 void NewAccountPage::replyFinished(QNetworkReply *reply)
 {
-    label_message->setText("Sending activation email...");
+    label_message->setText(tr("Sending activation email..."));
     QString replyText = reply->readAll();
     if(reply->error() != QNetworkReply::NoError)
     {
@@ -124,7 +124,7 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
         //Parse servers response
         QDomDocument doc("error");
         if (!doc.setContent(replyText)) {
-            label_message->setText("<font color='red'>Failed to parse response from server</font>");
+            label_message->setText(tr("<font color='red'>Failed to parse response from server</font>"));
             return;
         }
         QDomElement docElem = doc.documentElement();
@@ -132,7 +132,7 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
         label_message->setText("<font color='red'>" + message.text() + "</font>");
         if(message.text().isNull())
         {
-            label_message->setText("<font color='red'>Failed to parse response from server</font>");
+            label_message->setText(tr("<font color='red'>Failed to parse response from server</font>"));
         }
         WARNING(reply->request().url().toString() + " returned: " + replyText);
 
@@ -142,7 +142,7 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
         label_message->setText("Logged in...");
         QDomDocument doc("reply");
         if (!doc.setContent(replyText)) {
-            label_message->setText("<font color='red'>Failed to parse response from server</font>");
+            label_message->setText(tr("<font color='red'>Failed to parse response from server</font>"));
             WARNING(reply->request().url().toString() + " returned: " + replyText);
             return;
         }
@@ -153,7 +153,7 @@ void NewAccountPage::replyFinished(QNetworkReply *reply)
         hiddenInput_userId->setReadOnly(true);
         if(userId.text().length() == 0)
         {
-            label_message->setText("<font color='red'>Failed to register user. Could not read user id</font>");
+            label_message->setText(tr("<font color='red'>Failed to register user. Could not read user id</font>"));
         }
     }
     serverQueryFinished = true;

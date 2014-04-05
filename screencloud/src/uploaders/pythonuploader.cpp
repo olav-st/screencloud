@@ -30,12 +30,12 @@ PythonUploader::PythonUploader(QString name, QString shortname, QString classNam
     QFile mainScriptFile(workingDir + QDir::separator() + "main.py");
     if(!mainScriptFile.exists())
     {
-        QMessageBox::critical(0, "Error", "Failed to load plugin \"" + shortname + "\". Script file \"main.py\" does not exist.");
+        QMessageBox::critical(0, tr("Error"), tr("Failed to load plugin \"") + shortname + tr("\". Script file \"main.py\" does not exist."));
         return;
     }
     if (!mainScriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-      QMessageBox::critical(0, "Error", "Failed to load plugin \"" + shortname + "\". File main.py exists, but is not readable.");
+      QMessageBox::critical(0, tr("Error"), tr("Failed to load plugin \"") + shortname + tr("\". File main.py exists, but is not readable."));
       return;
     }
     hadPythonErr = false;
@@ -47,8 +47,8 @@ PythonUploader::PythonUploader(QString name, QString shortname, QString classNam
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
-        WARNING("Error while parsing script file " + mainScriptFile.fileName());
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Error in file: " + mainScriptFile.fileName() + "\n" + lastPythonErr);
+        WARNING(tr("Error while parsing script file ") + mainScriptFile.fileName());
+        QMessageBox::critical(NULL, tr("Script error in plugin '") + shortname + "'", tr("Error in file: ") + mainScriptFile.fileName() + "\n" + lastPythonErr);
         lastPythonErr.clear();
         hadPythonErr = false;
     }
@@ -73,8 +73,8 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
-        WARNING("Failed to call upload() in " + this->className);
-        emit uploadingError("Failed to call " + this->className + ".upload()" + "\n" + lastPythonErr);
+        WARNING(tr("Failed to call upload() in ") + this->className);
+        emit uploadingError(tr("Failed to call ") + this->className + ".upload()" + "\n" + lastPythonErr);
         lastPythonErr.clear();
         hadPythonErr = false;
         disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
@@ -109,8 +109,8 @@ void PythonUploader::showSettingsUI(QWidget *parent)
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
-        WARNING("Failed to call showSettingsUI() in " + this->className);
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call " + this->className + ".showSettingsUI()" + "\n" + lastPythonErr);
+        WARNING(tr("Failed to call showSettingsUI() in ") + this->className);
+        QMessageBox::critical(NULL, tr("Script error in plugin '") + shortname + "'", tr("Failed to call ") + this->className + ".showSettingsUI()" + "\n" + lastPythonErr);
         lastPythonErr.clear();
         hadPythonErr = false;
     }
@@ -124,8 +124,8 @@ bool PythonUploader::isConfigured()
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
-        WARNING("Failed to call isConfigured() in " + this->className);
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call " + this->className + ".isConfigured()" + "\n" + lastPythonErr);
+        WARNING(tr("Failed to call isConfigured() in ") + this->className);
+        QMessageBox::critical(NULL, tr("Script error in plugin '") + shortname + "'", tr("Failed to call ") + this->className + ".isConfigured()" + "\n" + lastPythonErr);
         lastPythonErr.clear();
         hadPythonErr = false;
         disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
@@ -142,8 +142,8 @@ QString PythonUploader::getFilename()
     if(hadPythonErr)
     {
         PythonQt::self()->handleError();
-        WARNING("Failed to call getFilename() in " + this->className);
-        QMessageBox::critical(NULL, "Script error in plugin '" + shortname + "'", "Failed to call " + this->className + ".getFilename()" + "\n" + lastPythonErr);
+        WARNING(tr("Failed to call getFilename() in ") + this->className);
+        QMessageBox::critical(NULL, tr("Script error in plugin '") + shortname + "'", tr("Failed to call ") + this->className + ".getFilename()" + "\n" + lastPythonErr);
         lastPythonErr.clear();
         hadPythonErr = false;
         disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
