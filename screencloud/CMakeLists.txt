@@ -31,6 +31,27 @@ set( screencloud_SOURCES
     src/dialog/plugindialog.cpp
     src/dialog/logindialog.cpp
     src/dialog/changelogdialog.cpp
+    src/dialog/editordialog.cpp
+    src/editor/items/ellipsegraphicsitem.cpp
+    src/editor/items/abstractgraphicsrectitem.cpp
+    src/editor/items/handlegraphicsitem.cpp
+    src/editor/items/boxgraphicsitem.cpp
+    src/editor/items/numbereditem.cpp
+    src/editor/items/boxtextgraphicsitem.cpp
+    src/editor/items/textgraphicsitem.cpp
+    src/editor/items/kaptiongraphicsitem.cpp
+    src/editor/items/arrowgraphicsitem.cpp
+    src/editor/kaptiongraphicstoolkit.cpp
+    src/editor/numberpropertytooleditor.cpp
+    src/editor/numberselector.cpp
+    src/editor/propertytooleditor.cpp
+    src/editor/scale.cpp
+    src/editor/scalepropertytooleditor.cpp
+    src/editor/snapshotcanvas.cpp
+    src/editor/colorpropertytooleditor.cpp
+    src/editor/fontpropertytooleditor.cpp
+    src/editor/graphicsitemfactory.cpp
+    src/editor/qcolorbutton.cpp
     src/plugin/pluginmanager.cpp
     src/firstrunwizard/activatepage.cpp
     src/firstrunwizard/finishedpage.cpp
@@ -77,6 +98,27 @@ set( screencloud_HEADERS_MOC
     src/dialog/plugindialog.h
     src/dialog/logindialog.h
     src/dialog/changelogdialog.h
+    src/dialog/editordialog.h
+    src/editor/items/ellipsegraphicsitem.h
+    src/editor/items/abstractgraphicsrectitem.h
+    src/editor/items/handlegraphicsitem.h
+    src/editor/items/boxgraphicsitem.h
+    src/editor/items/numbereditem.h
+    src/editor/items/boxtextgraphicsitem.h
+    src/editor/items/textgraphicsitem.h
+    src/editor/items/kaptiongraphicsitem.h
+    src/editor/items/arrowgraphicsitem.h
+    src/editor/kaptiongraphicstoolkit.h
+    src/editor/numberpropertytooleditor.h
+    src/editor/numberselector.h
+    src/editor/propertytooleditor.h
+    src/editor/scale.h
+    src/editor/scalepropertytooleditor.h
+    src/editor/snapshotcanvas.h
+    src/editor/colorpropertytooleditor.h
+    src/editor/fontpropertytooleditor.h
+    src/editor/graphicsitemfactory.h
+    src/editor/qcolorbutton.h
     src/firstrunwizard/activatepage.h
     src/firstrunwizard/finishedpage.h
     src/firstrunwizard/firstrunwizard.h
@@ -119,6 +161,7 @@ set( screencloud_FORMS
     src/dialog/plugindialog.ui
     src/dialog/logindialog.ui
     src/dialog/changelogdialog.ui
+    src/dialog/editordialog.ui
 )
 
 set( screencloud_RESOURCES

@@ -23,7 +23,8 @@ SaveScreenshotDialog::SaveScreenshotDialog(QWidget *parent, const QImage& screen
 {
     ui->setupUi(this);
     this->uploadManager = uManager;
-    this->screenshot = screenshot.scaled(330, 210, Qt::KeepAspectRatio);
+    this->screenshotFull = screenshot;
+    this->screenshotThumb = screenshot.scaled(330, 210, Qt::KeepAspectRatio);
     ui->comboBox_uploaders->setModel(uploadManager->listModel());
     loadSettings();
     setupUi();
@@ -70,9 +71,9 @@ void SaveScreenshotDialog::setupUi()
     }
     ui->comboBox_uploaders->setCurrentIndex(ui->comboBox_uploaders->model()->match(ui->comboBox_uploaders->model()->index(0,0), Qt::UserRole, currentUploaderShortname).at(0).row());
     ui->input_name->setText(uploadManager->getUploader(currentUploaderShortname)->getFilename());
-    scene.addPixmap(QPixmap::fromImage(screenshot));
+    scene.addPixmap(QPixmap::fromImage(screenshotThumb));
     ui->graphicsView->setScene(&scene);
-    ui->graphicsView->resize(screenshot.size());
+    ui->graphicsView->resize(screenshotThumb.size());
     ui->label_error->setStyleSheet("QLabel { color : red; }");
     if(uploadManager->getUploader(currentUploaderShortname)->isConfigured() == false)
     {
@@ -144,10 +145,7 @@ void SaveScreenshotDialog::on_buttonBox_rejected()
 
 void SaveScreenshotDialog::thumbnailClicked()
 {
-    /*
-    PaintDialog p(this, screenshotFull);
-    p.exec();
-    */
+    openEditor();
 }
 
 void SaveScreenshotDialog::changeEvent(QEvent *e)
@@ -172,4 +170,11 @@ bool SaveScreenshotDialog::nameChanged()
 QString SaveScreenshotDialog::getName()
 {
     return screenshotName;
+}
+
+void SaveScreenshotDialog::openEditor()
+{
+    EditorDialog e(this);
+    e.setImage(&screenshotFull);
+    e.exec();
 }

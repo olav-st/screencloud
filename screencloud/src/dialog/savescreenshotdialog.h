@@ -22,6 +22,7 @@
 #include <QImage>
 #include <uploadmanager.h>
 #include <models/uploaderslistmodel.h>
+#include <dialog/editordialog.h>
 
 namespace Ui {
     class SaveScreenshotDialog;
@@ -41,6 +42,7 @@ public:
     QString getUploaderShortname();
     bool nameChanged();
     QString getName();
+    void openEditor();
 
 private slots:
     void on_button_settings_clicked();
@@ -55,7 +57,7 @@ protected:
 private:
     Ui::SaveScreenshotDialog *ui;
     UploadManager* uploadManager;
-    QImage screenshot;
+    QImage screenshotThumb, screenshotFull;
     QGraphicsScene scene;
     QString currentUploaderShortname;
     QString screenshotName;

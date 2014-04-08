@@ -1,0 +1,48 @@
+#include "editordialog.h"
+#include "ui_editordialog.h"
+
+EditorDialog::EditorDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::EditorDialog)
+{
+    ui->setupUi(this);
+    //Try to use theme icons if available
+    /*
+    ui->arrowBtn->setIcon(QIcon::fromTheme("draw-arrow-right", ui->arrowBtn->icon()));
+    ui->boxBtn->setIcon(QIcon::fromTheme("draw-rectangle", ui->boxBtn->icon()));
+    ui->ellipseBtn->setIcon(QIcon::fromTheme("draw-circle", ui->ellipseBtn->icon()));
+    ui->textBtn->setIcon(QIcon::fromTheme("draw-text", ui->textBtn->icon()));
+    ui->numberedBtn->setIcon(QIcon::fromTheme("draw-number", ui->numberedBtn->icon()));
+    */
+
+    toolkit = new KaptionGraphicsToolkit(ui->propertyToolbar, this);
+
+    toolkit->bindButtonToGraphicsItem<ArrowGraphicsItem>(ui->arrowBtn, true);
+    toolkit->bindButtonToGraphicsItem<BoxGraphicsItem>(ui->boxBtn);
+    toolkit->bindButtonToGraphicsItem<EllipseGraphicsItem>(ui->ellipseBtn);
+    toolkit->bindButtonToGraphicsItem<NumberedItem>(ui->numberedBtn);
+    toolkit->bindButtonToGraphicsItem<BoxTextGraphicsItem>(ui->textBtn);
+
+    toolkit->bindPropertyTool(new ColorPropertyToolEditor(ui->colorBtn, this), "color");
+    toolkit->bindPropertyTool(new ScalePropertyToolEditor(ui->widthSlider, this), "size");
+    toolkit->bindPropertyTool(new FontPropertyToolEditor(ui->formatTextBtn, this), "font");
+    toolkit->bindPropertyTool(new NumberPropertyToolEditor(this), "number");
+
+    toolkit->updateUi();
+
+    ui->snapshotCanvas->setToolkit(toolkit);
+}
+
+EditorDialog::~EditorDialog()
+{
+    delete ui;
+    delete toolkit;
+}
+
+void EditorDialog::setImage(QImage *image)
+{
+    this->img = image;
+    this->pixmap = QPixmap::fromImage(*image);
+    ui->snapshotCanvas->setPixmap(this->pixmap);
+    this->adjustSize();
+}
