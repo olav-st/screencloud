@@ -17,7 +17,43 @@
 ScreenshotThumbView::ScreenshotThumbView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    setMouseTracking(true);
+    hovered = false;
+    //this->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+}
+
+void ScreenshotThumbView::drawOverlay(QPainter *painter, const QColor &color)
+{
+    painter->save();
+    QBrush rectBrush = QBrush(color, Qt::SolidPattern);
+    painter->setBrush(rectBrush);
+    painter->setPen(Qt::NoPen);
+    if(this->width() > 0 && this->height() > 0)
+    {
+        painter->drawRect(this->rect());
+    }
+    painter->restore();
+}
+
+void ScreenshotThumbView::drawText(QPainter *painter, const QColor &bgColor, const QColor &textColor)
+{
+    painter->save();
+    QBrush roundedRectBrush = QBrush(bgColor);
+    QPen roundedRectPen = QPen(roundedRectBrush, 1.0);
+    QBrush textBrush = QBrush(textColor);
+    QFont d;
+    QFont f(d.defaultFamily(), 20, QFont::Normal);
+    QRect textRect = QRect(0, 0, this->width() / 2, this->height() / 6);
+    textRect.moveCenter(this->rect().center());
+
+    painter->setBrush(roundedRectBrush);
+    painter->setPen(roundedRectPen);
+    painter->drawRoundedRect(textRect, 10.0, 10.0);
+
+    painter->setFont(f);
+    painter->setBrush(textBrush);
+    painter->setPen(QPen(textBrush, 1.0));
+    painter->drawText(this->rect(), Qt::AlignCenter, tr("Click to edit"));
+    painter->restore();
 }
 
 void ScreenshotThumbView::mouseReleaseEvent(QMouseEvent *event)
@@ -25,10 +61,29 @@ void ScreenshotThumbView::mouseReleaseEvent(QMouseEvent *event)
     emit clicked();
 }
 
-
-void ScreenshotThumbView::mouseMoveEvent(QMouseEvent *event)
+void ScreenshotThumbView::paintEvent(QPaintEvent *pe)
 {
-    //setCursor(Qt::CrossCursor);
+    QGraphicsView::paintEvent(pe);
+    if(hovered)
+    {
+        QPainter painter(viewport());
+        drawOverlay(&painter, QColor(100,100,100,60));
+        drawText(&painter, QColor(28,28,28,200), QColor(127,127,127,240));
+    }
+}
+
+void ScreenshotThumbView::enterEvent(QEvent *e)
+{
+    hovered = true;
+    this->repaint();
+    QGraphicsView::enterEvent(e);
+}
+
+void ScreenshotThumbView::leaveEvent(QEvent *e)
+{
+    hovered = false;
+    this->repaint();
+    QGraphicsView::leaveEvent(e);
 }
 
 
