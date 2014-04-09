@@ -163,7 +163,11 @@
       </widget>
      </item>
      <item>
-      <widget class="SnapshotCanvas" name="snapshotCanvas"/>
+      <widget class="SnapshotCanvas" name="snapshotCanvas">
+       <property name="renderHints">
+        <set>QPainter::Antialiasing|QPainter::HighQualityAntialiasing|QPainter::TextAntialiasing</set>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QWidget" name="rightToolbar" native="true">

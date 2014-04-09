@@ -6,7 +6,7 @@
 ColorPropertyToolEditor::ColorPropertyToolEditor(QColorButton *btn, QObject *parent)
     : PropertyToolEditor(btn, parent)
 {
-    connect(btn, SIGNAL(changed(QColor)),
+    connect(btn, SIGNAL(selected(QColor)),
             this, SLOT(changeColor(QColor)));
     connect(this, SIGNAL(valueSet(QVariant)),
             this, SLOT(setColor(QVariant)));
