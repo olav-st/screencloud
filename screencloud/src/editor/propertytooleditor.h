@@ -5,8 +5,8 @@
 #include <QVariant>
 #include <QDebug>
 #include <QEvent>
-
-class QWidget;
+#include <QWidget>
+#include <QPointer>
 
 class PropertyToolEditor : public QObject
 {
@@ -29,7 +29,7 @@ protected:
     void changeValue(const QVariant &var);
 
 private:
-    QWidget* m_widget;
+    QPointer<QWidget> m_widget;
     QVariant m_value;
 };
 
