@@ -31,7 +31,7 @@ PluginDialog::PluginDialog(QWidget *parent) :
     //connect(pluginManager, SIGNAL(pluginInstalled(QString)), this, SLOT(pluginInstalled(QString)));
     connect(this, SIGNAL(mirrorChanged(QString)), this, SLOT(setMirror(QString)));
     connect(&netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-    setMirror("https://raw.githubusercontent.com/olav-st/screencloud-plugin-list/master/plugin-list.xml");
+    setMirror(GITHUB_PLUGIN_LIST_URL);
 }
 
 PluginDialog::~PluginDialog()
@@ -141,7 +141,7 @@ void PluginDialog::setShowButtons(bool show)
 
 void PluginDialog::setMirror(QString newUrl)
 {
-    pluginListUrl = QUrl(newUrl);
+    pluginListUrl = QUrl(NetworkUtils::checkUrlForRedirect(newUrl));
     //Refresh plugin list
     setupUi();
 
@@ -249,7 +249,7 @@ void PluginDialog::on_combo_mirror_currentIndexChanged(int index)
         }
     }else
     {
-        emit mirrorChanged("https://raw.github.com/olav-st/screencloud-plugin-list/master/plugin-list.xml");
+        emit mirrorChanged(GITHUB_PLUGIN_LIST_URL);
     }
 }
 

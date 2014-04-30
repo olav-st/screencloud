@@ -56,7 +56,7 @@ void Updater::checkForUpdates(int flag)
     appUpdateCheckReq.setUrl(appVersionUrl);
     manager->get(appUpdateCheckReq);
     //Check for plugin updates
-    QUrl pluginListUrl("https://raw.github.com/olav-st/screencloud-plugin-list/master/plugin-list.xml");
+    QUrl pluginListUrl(GITHUB_PLUGIN_LIST_URL);
     QNetworkRequest pluginUpdateCheckReq;
     pluginUpdateCheckReq.setUrl(pluginListUrl);
     manager->get(pluginUpdateCheckReq);

@@ -165,6 +165,7 @@ add_definitions( -Wall )
 #Set version string and update channel
 add_definitions(-DVERSION="${VERSION_STRING}")
 add_definitions(-DUPDATE_CHANNEL="windows")
+add_definitions(-DGITHUB_PLUGIN_LIST_URL="https://raw.githubusercontent.com/olav-st/screencloud-plugin-list/master/plugin-list.xml")
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(CMAKE_EXE_LINKER_FLAGS
