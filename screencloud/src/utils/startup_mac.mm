@@ -12,7 +12,7 @@
  */
 
 #include "startup.h"
-#include <QDebug>
+#include <utils/log.h>
 #import <Foundation/Foundation.h>
 #import <ServiceManagement/ServiceManagement.h>
 
@@ -22,16 +22,23 @@ Startup::Startup()
 
 void Startup::setRunOnStartup(bool runOnStartup)
 {
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    NSURL *mainBundleURL = [[NSBundle mainBundle] bundleURL];
+    NSURL *url = [mainBundleURL URLByAppendingPathComponent: @"Contents/Library/LoginItems/ScreenCloudHelper.app"];
+    if (LSRegisterURL((CFURLRef)url, true) != noErr) {
+        WARNING("LSRegisterURL failed. URL: " + QString([[url absoluteString] UTF8String]));
+    }
+
     if(runOnStartup)
     {
         NSString *ref = @"com.screencloud.ScreenCloudHelper";
-            if (!SMLoginItemSetEnabled((CFStringRef)ref, true)) {
-                NSLog(@"SMLoginItemSetEnabled failed.");
-            }
+        if (!SMLoginItemSetEnabled((CFStringRef)ref, true)) {
+            WARNING("SMLoginItemSetEnabled(true) failed.");
+        }
     }else{
         NSString *ref = @"com.screencloud.ScreenCloudHelper";
-            if (!SMLoginItemSetEnabled((CFStringRef)ref, false)) {
-                NSLog(@"SMLoginItemSetEnabled failed.");
-            }
+        if (!SMLoginItemSetEnabled((CFStringRef)ref, false)) {
+            WARNING("SMLoginItemSetEnabled(false) failed.");
+        }
     }
 }
