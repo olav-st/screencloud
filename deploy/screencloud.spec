@@ -6,7 +6,7 @@ Name:           screencloud
 License:        GPL-2.0
 Group:          Productivity/Networking/Other
 Summary:        Easy to use screenshot sharing application
-Version:        1.1.5
+Version:        1.1.6
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.gz	
@@ -49,7 +49,7 @@ Authors:
 
  
 %build
-cmake -DCONSUMER_KEY_SCREENCLOUD=53ed3030cea02e0ea0d9810b53a1d44304f468911 -DCONSUMER_SECRET_SCREENCLOUD=704aead054f3727e0191a4ccd220fd30
+cmake
 %{__make} %{?jobs:-j%jobs}
  
 %install
@@ -101,6 +101,10 @@ ln -sf /opt/screencloud/screencloud.sh $RPM_BUILD_ROOT/usr/bin/screencloud
 /usr/bin/screencloud
  
 %changelog
+* Sun Mar 30 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.1.6
+- Fixed plugin list not loading (url has changed)
+- Made more strings translatable
+
 * Sun Mar 30 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.1.5
 - Fixed plugin update check
 - Added changelog button to update notifications

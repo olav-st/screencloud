@@ -1,6 +1,6 @@
 # Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
 pkgname=screencloud
-pkgver=1.1.5
+pkgver=1.1.6
 pkgrel=1
 pkgdesc="Easy to use screenshot sharing application."
 arch=('i686 x86_64')
@@ -18,7 +18,7 @@ install=screencloud.install
 
 build() {
   cd "$srcdir/$pkgname-$pkgver/$pkgname"
-  cmake -DCONSUMER_KEY_SCREENCLOUD=53ed3030cea02e0ea0d9810b53a1d44304f468911 -DCONSUMER_SECRET_SCREENCLOUD=704aead054f3727e0191a4ccd220fd30
+  cmake
   make
 }
 package() {

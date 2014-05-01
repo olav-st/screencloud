@@ -15,7 +15,7 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 	
-	(cd screencloud; cmake -DCONSUMER_KEY_SCREENCLOUD=53ed3030cea02e0ea0d9810b53a1d44304f468911 -DCONSUMER_SECRET_SCREENCLOUD=704aead054f3727e0191a4ccd220fd30; make)
+	(cd screencloud; cmake; make)
 
 	touch build-stamp
 

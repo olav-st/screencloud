@@ -374,7 +374,7 @@ void PluginManager::fileDownloaded(QNetworkReply *reply)
     if(reply->error() == QNetworkReply::NoError)
     {
         QFileInfo urlFileInfo = QFileInfo(reply->request().url().path());
-        tmpFile = new QFile(QDir::tempPath() + QDir::separator() + urlFileInfo.baseName() + "-current.zip");
+        tmpFile = new QFile(QDir::tempPath() + QDir::separator() + urlFileInfo.baseName() + "-" + NetworkUtils::generateNonce(6) + ".zip"); //Add some randomness to the filename to make sure its unique
         tmpFile->open(QFile::WriteOnly);
         tmpFile->write(reply->readAll());
         tmpFile->close();
