@@ -263,8 +263,11 @@ add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screenc
 target_link_libraries( screencloud ${REQUIRED_LIBS})
 
 #Copy required files to build dir
-add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res/modules $<TARGET_FILE_DIR:screencloud>)
-add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res/sfx $<TARGET_FILE_DIR:screencloud>)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
+add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/res/modules/ScreenCloud.py ${CMAKE_CURRENT_BINARY_DIR}/modules)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/sfx)
+add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/res/sfx/shutter.wav ${CMAKE_CURRENT_BINARY_DIR}/sfx)
+add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/res/sfx/notification.wav ${CMAKE_CURRENT_BINARY_DIR}/sfx)
 
 if(UNIX AND NOT APPLE)
     set(CMAKE_INSTALL_PREFIX "/opt")
