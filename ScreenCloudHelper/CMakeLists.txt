@@ -17,6 +17,11 @@ set(ICON_FILE
     icons_mac.icns
 )
 
+find_program(IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
+if (${IBTOOL} STREQUAL "IBTOOL-NOTFOUND")
+  message(SEND_ERROR "ibtool can not be found and is needed to compile the .xib files.")
+endif()
+
 add_executable(
     ScreenCloudHelper
     MACOSX_BUNDLE
@@ -49,3 +54,9 @@ target_link_libraries(ScreenCloudHelper
     "-framework CoreData"
     "-framework Foundation"
 )
+
+add_custom_command (TARGET ScreenCloudHelper POST_BUILD
+                      COMMAND ${IBTOOL} --errors --warnings --notices --output-format human-readable-text
+                              --compile ${CMAKE_CURRENT_BINARY_DIR}/\${CONFIGURATION}/ScreenCloudHelper.app/Contents/Resources/MainMenu.nib
+                             ${CMAKE_CURRENT_SOURCE_DIR}/ScreenCloudHelper/MainMenu.xib
+                      COMMENT "Compiling ScreenCloudHelper/MainMenu.xib")

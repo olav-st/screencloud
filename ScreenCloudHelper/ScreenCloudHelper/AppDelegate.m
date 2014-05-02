@@ -23,7 +23,9 @@
                            stringByDeletingLastPathComponent] // .app/Contents/Library
                           stringByDeletingLastPathComponent] // .app/Contents
                          stringByDeletingLastPathComponent];// .app
-    
+
+    NSLog(@"Starting %@", appPath);
+
     [[NSWorkspace sharedWorkspace] launchApplication:appPath];
     
     [NSApp terminate:nil];
