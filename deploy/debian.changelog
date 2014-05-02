@@ -2,6 +2,7 @@ screencloud (1.1.6) unstable; urgency=low
 
   * Fixed plugin list not loading (url has changed)
   * Made more strings translatable
+  * Fixed running on startup not working on OS X
 
  -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Thu, 1 May 2014 14:03:23 -0000
 

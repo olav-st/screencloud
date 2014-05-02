@@ -104,6 +104,7 @@ ln -sf /opt/screencloud/screencloud.sh $RPM_BUILD_ROOT/usr/bin/screencloud
 * Sun Mar 30 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.1.6
 - Fixed plugin list not loading (url has changed)
 - Made more strings translatable
+- Fixed running on startup not working on OS X
 
 * Sun Mar 30 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.1.5
 - Fixed plugin update check
