@@ -375,6 +375,8 @@ void SystemTrayIcon::openPreferencesWindow()
     prefDialog->loadSettings();
     prefDialog->setupUi();
     prefDialog->show();
+    prefDialog->raise();
+    prefDialog->activateWindow();
     connect(prefDialog, SIGNAL(finished(int)), this, SLOT(preferencesWindowFinished(int)));
 }
 
@@ -394,6 +396,8 @@ void SystemTrayIcon::openSaveDialog()
     connect(save, SIGNAL(accepted()), save, SLOT(deleteLater()));
     connect(save, SIGNAL(rejected()), save, SLOT(deleteLater()));
     save->show();
+    save->raise();
+    save->activateWindow();
 }
 
 void SystemTrayIcon::saveDialogFinished(int result)
