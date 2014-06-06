@@ -110,6 +110,7 @@ set(screencloud_HEADERS
     src/utils/arch.h
     src/utils/log.h
     src/utils/network.h
+    src/utils/delay.h
 )
 
 set( screencloud_FORMS

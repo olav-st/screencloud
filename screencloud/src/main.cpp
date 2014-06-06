@@ -20,6 +20,7 @@
 #include <QDir>
 #include <QImage>
 #include <utils/OS.h>
+#include <utils/delay.h>
 #include <QDesktopServices>
 #include <screenshooter.h>
 #include <uploadmanager.h>
@@ -204,8 +205,16 @@ int main(int argc, char *argv[])
             }
 
             //Check if there's a tray available
-            if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-                QMessageBox::critical(NULL, "System Tray not available", "ScreenCloud requires a system tray to function properly. Installing 'sni-qt' or 'indicator-application' might fix the problem.");
+            int tries = 0;
+            while(!QSystemTrayIcon::isSystemTrayAvailable()) {
+                tries++;
+                INFO("Checking for systray, try: " + QString::number(tries));
+                delay(1000);
+                if(tries > 3)
+                {
+                    QMessageBox::critical(NULL, "System Tray not available", "ScreenCloud requires a system tray to function properly. Installing 'sni-qt' or 'indicator-application' might fix the problem.");
+                    break;
+                }
             }
 
             //Show the trayicon
