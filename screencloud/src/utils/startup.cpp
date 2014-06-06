@@ -44,7 +44,7 @@ void Startup::setRunOnStartup(bool runOnStartup)
             "Comment=Capture and share screenshots easily\n"
             "Icon=screencloud\n"
             "Type=Application\n"
-            "Exec=/opt/screencloud/screencloud.sh\n"
+            "Exec=" + qApp->applicationFilePath() + ".sh\n"
             "Hidden=false\n"
             "NoDisplay=false\n"
             "X-GNOME-Autostart-enabled=true\n";
