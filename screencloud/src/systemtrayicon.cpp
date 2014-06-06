@@ -418,11 +418,6 @@ void SystemTrayIcon::openSelectionOverlay()
     overlay->setAttribute(Qt::WA_DeleteOnClose);
     if(!capturing)
     {
-        //Set attributes for fullscreen
-        overlay->setFocusPolicy( Qt::StrongFocus );
-        overlay->setWindowFlags( overlay->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-        overlay->setWindowState(Qt::WindowFullScreen | Qt::WindowActive);
-        //Move the widget to the screen where the mouse is and resize it
         overlay->showFullScreen();
         connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
         connect(overlay, SIGNAL(selectionCanceled()), this, SLOT(selectionCanceled()));

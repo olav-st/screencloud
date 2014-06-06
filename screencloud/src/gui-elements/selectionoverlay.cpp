@@ -17,7 +17,7 @@
 SelectionOverlay::SelectionOverlay(QWidget *parent) :
     QWidget(parent)
 {
-    setStyleSheet( "QGraphicsView { border-style: none; }" );
+    setWindowTitle("ScreenCloud - Selection");
     selection = QRect(0,0,0,0);
     selectionBeforeDrag = QRect(0,0,0,0);
     resizingFrom = MOUSE_OUT;
@@ -27,15 +27,30 @@ SelectionOverlay::SelectionOverlay(QWidget *parent) :
     rbDistY = 0;
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
     currentScreenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    setWindowFlags( this->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+    setFocusPolicy( Qt::StrongFocus );
     moveToScreen(currentScreenNumber);
     setMouseTracking(true);
     setCursor(crossShape);
 }
 SelectionOverlay::~SelectionOverlay()
 {
-    releaseMouse();
-    releaseKeyboard();
 }
+
+
+void SelectionOverlay::showEvent(QShowEvent *e)
+{
+    this->raise();
+    this->repaint();
+    this->activateWindow();
+    //setWindowState(Qt::WindowFullScreen);
+}
+
+void SelectionOverlay::hideEvent(QHideEvent *e)
+{
+    setWindowModality(Qt::NonModal);
+}
+
 
 void SelectionOverlay::mousePressEvent(QMouseEvent *event)
 {
@@ -447,6 +462,11 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     }
     currentScreenNumber = screenNumber;
     QRect screenGeom = QApplication::desktop()->screenGeometry(currentScreenNumber);
+    if(!screenGeom.isValid() || screenGeom.isNull())
+    {
+        WARNING("Failed to get geometry for screen " + QString::number(currentScreenNumber));
+        QMessageBox::warning(NULL, "Failed to get screen geom", "Failed to get geometry for screen " + QString::number(currentScreenNumber));
+    }
     setGeometry(screenGeom);
     screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
     if(screenshot.size() != screenGeom.size())
@@ -458,23 +478,6 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
     startedDrawingRubberBand = false;
     this->resetRubberBand();
-    if(this->isVisible())
-    {
-        this->hide();
-        this->showFullScreen();
-    }
-}
-
-void SelectionOverlay::showEvent(QShowEvent *e)
-{
-    grabKeyboard();
-    grabMouse();
-}
-
-void SelectionOverlay::hideEvent(QHideEvent *e)
-{
-    releaseMouse();
-    releaseKeyboard();
 }
 
 void SelectionOverlay::paintEvent(QPaintEvent *pe)
