@@ -60,6 +60,9 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     setContextMenu(trayMenu);
     prefDialog = new PreferencesDialog(NULL, &uploadManager);
     connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
+    overlay = new SelectionOverlay();
+    connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
+    connect(overlay, SIGNAL(selectionCanceled()), this, SLOT(selectionCanceled()));
     uploading = false;
     capturing = false;
     //Check for new version
@@ -82,6 +85,7 @@ SystemTrayIcon::~SystemTrayIcon()
     delete quitAct;
     delete askMeAct;
     delete prefDialog;
+    delete overlay;
 }
 
 
@@ -338,7 +342,7 @@ void SystemTrayIcon::captureFullScreen()
 
 void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
 {
-    disconnect(sender(), SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
+    overlay->resetRubberBand();
     QPixmap areaScreenshot = fullScreenShot.copy(rect);
     screenshot = areaScreenshot.toImage();
     notifier.play("sfx/shutter.wav");
@@ -355,6 +359,7 @@ void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
 void SystemTrayIcon::selectionCanceled()
 {
     capturing = false;
+    overlay->resetRubberBand();
 }
 
 void SystemTrayIcon::captureWindow()
@@ -415,14 +420,14 @@ void SystemTrayIcon::quitApplication()
 
 void SystemTrayIcon::openSelectionOverlay()
 {
-    SelectionOverlay* overlay = new SelectionOverlay();
-    overlay->setAttribute(Qt::WA_DeleteOnClose);
     if(!capturing)
     {
         overlay->showFullScreen();
-        connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
-        connect(overlay, SIGNAL(selectionCanceled()), this, SLOT(selectionCanceled()));
         capturing = true;
+    }else
+    {
+        overlay->raise();
+        overlay->activateWindow();
     }
 }
 

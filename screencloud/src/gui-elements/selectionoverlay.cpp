@@ -29,7 +29,6 @@ SelectionOverlay::SelectionOverlay(QWidget *parent) :
     currentScreenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
     setWindowFlags( this->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
     setFocusPolicy( Qt::StrongFocus );
-    moveToScreen(currentScreenNumber);
     setMouseTracking(true);
     setCursor(crossShape);
 }
@@ -40,6 +39,7 @@ SelectionOverlay::~SelectionOverlay()
 
 void SelectionOverlay::showEvent(QShowEvent *e)
 {
+    moveToScreen(currentScreenNumber);
     this->raise();
     this->repaint();
     this->activateWindow();

@@ -58,6 +58,7 @@ private:
     ScreenShooter screenShooter;
     PreferencesDialog* prefDialog;
     SaveScreenshotDialog* saveDialog;
+    SelectionOverlay* overlay;
     UploadManager uploadManager;
     QString currentUploaderShortname;
     QImage screenshot;
