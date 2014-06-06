@@ -17,9 +17,9 @@ Compiling
 --------------
 ScreenCloud uses the CMake build system, start off by downloading the appropriate version for your OS from the [CMake website](http://www.cmake.org/) or your distro's repositories. After installing CMake, choose the OS you're compiling on from the the list below:
 
-* [Compiling on Ubuntu](https://github.com/olav-st/screencloud/wiki/Compiling-on-Ubuntu) 
-* Compiling on Mac OS X (coming soonish)
-* Compiling on Windows (coming soonish)
+* [Compiling on Ubuntu](https://github.com/olav-st/screencloud/wiki/Compiling-on-Ubuntu)
+* [Compiling on Mac OS X (WIP)](https://github.com/olav-st/screencloud/wiki/Compiling-on-Mac-OS-X)
+* [Compiling on Windows (WIP)](https://github.com/olav-st/screencloud/wiki/Compiling-on-Windows)
 
 Roadmap
 --------------
@@ -27,6 +27,4 @@ Here's a quick list of features I've wanted to implement, but not gotten around 
 
 * Translation support
 * Built-in screenshot editor (adding arrows and text before upload)
-* Support for public key authentication for SFTP
-* ARM version
 * Qt5 port
