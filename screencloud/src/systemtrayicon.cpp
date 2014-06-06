@@ -61,6 +61,7 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     prefDialog = new PreferencesDialog(NULL, &uploadManager);
     connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
     uploading = false;
+    capturing = false;
     //Check for new version
     connect(&updater, SIGNAL(pluginsUpdated()), this, SLOT(pluginsUpdated()));
     if(autoCheckUpdates)
