@@ -192,7 +192,6 @@ int main(int argc, char *argv[])
                 FirstRunWizard wizard;
                 if(wizard.exec() != QWizard::Accepted)
                 {
-                    //delete luaState;
                     exit(0);
                 }
                 settings.setValue("first-run", false);
@@ -203,6 +202,13 @@ int main(int argc, char *argv[])
             {
                 iconColor = iconColorSwitches[0].split("=")[1];
             }
+
+            //Check if there's a tray available
+            if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                QMessageBox::critical(NULL, "System Tray not available", "ScreenCloud requires a system tray to function properly. Installing 'sni-qt' or 'indicator-application' might fix the problem.");
+            }
+
+            //Show the trayicon
             SystemTrayIcon w(NULL, iconColor);
             w.show();
 
