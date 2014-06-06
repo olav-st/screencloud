@@ -49,6 +49,7 @@ public:
     void checkIfRubberBandOutOfBounds();
     int checkMouseOverRubberBand(QPoint& mousePos);
     void resetRubberBand();
+    void updateScreenshot();
     void drawOverlay(QPainter *painter, const QColor &color);
     void drawRubberband(QPainter* painter, const QRect& rect, const QColor& color, int lineSize);
     void drawHandles(QPainter* painter, const QRect& rect, const QColor& color, int lineSize, int handleSize);

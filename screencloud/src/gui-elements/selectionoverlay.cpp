@@ -39,16 +39,15 @@ SelectionOverlay::~SelectionOverlay()
 
 void SelectionOverlay::showEvent(QShowEvent *e)
 {
-    moveToScreen(currentScreenNumber);
     this->raise();
     this->repaint();
     this->activateWindow();
-    //setWindowState(Qt::WindowFullScreen);
+    setWindowState(Qt::WindowFullScreen);
 }
 
 void SelectionOverlay::hideEvent(QHideEvent *e)
 {
-    setWindowModality(Qt::NonModal);
+    emit selectionCanceled();
 }
 
 
@@ -358,6 +357,12 @@ void SelectionOverlay::resetRubberBand()
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
 }
 
+void SelectionOverlay::updateScreenshot()
+{
+    currentScreenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    moveToScreen(currentScreenNumber); //Moving to the current screen to get a new screenshot
+}
+
 void SelectionOverlay::drawOverlay(QPainter *painter, const QColor &color)
 {
     painter->save();
@@ -467,7 +472,6 @@ void SelectionOverlay::moveToScreen(int screenNumber)
         WARNING("Failed to get geometry for screen " + QString::number(currentScreenNumber));
         QMessageBox::warning(NULL, "Failed to get screen geom", "Failed to get geometry for screen " + QString::number(currentScreenNumber));
     }
-    setGeometry(screenGeom);
     screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
     if(screenshot.size() != screenGeom.size())
     {
@@ -478,6 +482,8 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
     startedDrawingRubberBand = false;
     this->resetRubberBand();
+    setGeometry(screenGeom);
+    setWindowState(Qt::WindowFullScreen);
 }
 
 void SelectionOverlay::paintEvent(QPaintEvent *pe)

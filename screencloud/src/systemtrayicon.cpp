@@ -422,6 +422,7 @@ void SystemTrayIcon::openSelectionOverlay()
 {
     if(!capturing)
     {
+        overlay->updateScreenshot();
         overlay->showFullScreen();
         capturing = true;
     }else
