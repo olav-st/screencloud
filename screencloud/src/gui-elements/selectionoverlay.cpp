@@ -246,8 +246,8 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->matches(QKeySequence::Save) || event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
     {
-        this->close();
         emit selectionDone(selection, screenshot);
+        this->close();
     }else if(event->matches(QKeySequence::Quit) || event->key() == Qt::Key_Escape)
     {
         emit selectionCanceled();

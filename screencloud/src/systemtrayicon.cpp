@@ -342,7 +342,6 @@ void SystemTrayIcon::captureFullScreen()
 
 void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
 {
-    overlay->resetRubberBand();
     QPixmap areaScreenshot = fullScreenShot.copy(rect);
     screenshot = areaScreenshot.toImage();
     notifier.play("sfx/shutter.wav");
@@ -353,6 +352,7 @@ void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
     {
         saveScreenshot();
     }
+    overlay->resetRubberBand();
     capturing = false;
 }
 
