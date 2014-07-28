@@ -100,5 +100,7 @@ void AudioNotifier::audioStateChanged(QAudio::State state)
     if(audioOutput->error() != QAudio::NoError)
     {
         WARNING(tr("Error while playing audio. Code: ") + QString::number(audioOutput->error()));
+        audioOutput->stop();
+        audioFile.close();
     }
 }
