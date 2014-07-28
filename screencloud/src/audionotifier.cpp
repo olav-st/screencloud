@@ -54,11 +54,6 @@ void AudioNotifier::play(QString file)
     settings.endGroup();
     if(soundNotifications)
     {
-        if(audioFile.isOpen())
-        {
-            audioOutput->stop();
-            audioFile.close();
-        }
 #ifdef Q_OS_MACX
         audioFile.setFileName(QString(qApp->applicationDirPath() + "/../Resources/" + file).toLocal8Bit());
 #else
@@ -97,6 +92,11 @@ void AudioNotifier::play(QString file)
 
 void AudioNotifier::audioStateChanged(QAudio::State state)
 {
+    if(state == QAudio::IdleState)
+    {
+        audioOutput->stop();
+        audioFile.close();
+    }
     if(audioOutput->error() != QAudio::NoError)
     {
         WARNING(tr("Error while playing audio. Code: ") + QString::number(audioOutput->error()));
