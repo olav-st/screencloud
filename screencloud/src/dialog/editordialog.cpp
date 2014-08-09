@@ -1,5 +1,6 @@
 #include "editordialog.h"
 #include "ui_editordialog.h"
+#include <QScrollBar>
 
 EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
     QDialog(parent),
@@ -50,5 +51,11 @@ EditorDialog::~EditorDialog()
 void EditorDialog::dialogAccepted()
 {
     QPainter p(this->img);
-    ui->snapshotCanvas->render(&p);
+    p.setRenderHint(QPainter::Antialiasing);
+    if(ui->snapshotCanvas->isTransformed())
+    {
+        ui->snapshotCanvas->verticalScrollBar()->setValue(0);
+        ui->snapshotCanvas->horizontalScrollBar()->setValue(0);
+    }
+    ui->snapshotCanvas->render(&p, QRectF(), this->img->rect());
 }
