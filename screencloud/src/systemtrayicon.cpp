@@ -389,7 +389,7 @@ void SystemTrayIcon::preferencesWindowFinished(int result)
 
 void SystemTrayIcon::openSaveDialog()
 {
-    SaveScreenshotDialog* save = new SaveScreenshotDialog(0, screenshot, &uploadManager);
+    SaveScreenshotDialog* save = new SaveScreenshotDialog(0, &screenshot, &uploadManager);
     connect(save, SIGNAL(uploaderSelected(QString,QString)), this, SLOT(saveScreenshot(QString,QString)));
     connect(save, SIGNAL(accepted()), save, SLOT(deleteLater()));
     connect(save, SIGNAL(rejected()), save, SLOT(deleteLater()));

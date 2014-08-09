@@ -33,7 +33,7 @@ class SaveScreenshotDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SaveScreenshotDialog(QWidget *parent = 0, const QImage & screenshot = QImage(),  UploadManager* uManager = 0);
+    explicit SaveScreenshotDialog(QWidget *parent = 0, QImage* screenshot = NULL,  UploadManager* uManager = 0);
     ~SaveScreenshotDialog();
     void setupUi();
     void saveSettings();
@@ -57,7 +57,8 @@ protected:
 private:
     Ui::SaveScreenshotDialog *ui;
     UploadManager* uploadManager;
-    QImage screenshotThumb, screenshotFull;
+    QImage screenshotThumb;
+    QImage* screenshotFull;
     QGraphicsScene scene;
     QString currentUploaderShortname;
     QString screenshotName;

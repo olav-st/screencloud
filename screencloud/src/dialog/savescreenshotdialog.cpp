@@ -17,14 +17,14 @@
 #include <utils/log.h>
 //#include "editor/paintdialog.h"
 
-SaveScreenshotDialog::SaveScreenshotDialog(QWidget *parent, const QImage& screenshot, UploadManager* uManager) :
+SaveScreenshotDialog::SaveScreenshotDialog(QWidget *parent, QImage *screenshot, UploadManager* uManager) :
     QDialog(parent),
     ui(new Ui::SaveScreenshotDialog)
 {
     ui->setupUi(this);
     this->uploadManager = uManager;
     this->screenshotFull = screenshot;
-    this->screenshotThumb = screenshot.scaled(330, 210, Qt::KeepAspectRatio);
+    this->screenshotThumb = screenshot->scaled(330, 210, Qt::KeepAspectRatio);
     ui->comboBox_uploaders->setModel(uploadManager->listModel());
     loadSettings();
     setupUi();
@@ -116,6 +116,10 @@ void SaveScreenshotDialog::updateUi()
     {
         ui->button_settings->setEnabled(true);
     }
+    //Update screenshot thumb
+    this->screenshotThumb = this->screenshotFull->scaled(330, 210, Qt::KeepAspectRatio);
+    scene.clear();
+    scene.addPixmap(QPixmap::fromImage(screenshotThumb));
 }
 
 void SaveScreenshotDialog::on_button_settings_clicked()
@@ -174,7 +178,7 @@ QString SaveScreenshotDialog::getName()
 
 void SaveScreenshotDialog::openEditor()
 {
-    EditorDialog e(this);
-    e.setImage(&screenshotFull);
+    EditorDialog e(this, screenshotFull);
     e.exec();
+    updateUi();
 }

@@ -1,11 +1,12 @@
 #include "editordialog.h"
 #include "ui_editordialog.h"
 
-EditorDialog::EditorDialog(QWidget *parent) :
+EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
     QDialog(parent),
     ui(new Ui::EditorDialog)
 {
     ui->setupUi(this);
+    connect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
     //Try to use theme icons if available
     /*
     ui->arrowBtn->setIcon(QIcon::fromTheme("draw-arrow-right", ui->arrowBtn->icon()));
@@ -31,18 +32,23 @@ EditorDialog::EditorDialog(QWidget *parent) :
     toolkit->updateUi();
 
     ui->snapshotCanvas->setToolkit(toolkit);
-}
 
-EditorDialog::~EditorDialog()
-{
-    delete ui;
-    delete toolkit;
-}
-
-void EditorDialog::setImage(QImage *image)
-{
+    //Set img
     this->img = image;
     this->pixmap = QPixmap::fromImage(*image);
     ui->snapshotCanvas->setPixmap(this->pixmap);
     this->adjustSize();
+}
+
+EditorDialog::~EditorDialog()
+{
+    disconnect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
+    delete ui;
+    delete toolkit;
+}
+
+void EditorDialog::dialogAccepted()
+{
+    QPainter p(this->img);
+    ui->snapshotCanvas->render(&p);
 }

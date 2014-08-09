@@ -24,15 +24,17 @@ class EditorDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EditorDialog(QWidget *parent = 0);
+    explicit EditorDialog(QWidget *parent = 0, QImage* image = NULL);
     ~EditorDialog();
-    void setImage(QImage* image);
 
 private:
     Ui::EditorDialog *ui;
     QImage* img;
     QPixmap pixmap;
     KaptionGraphicsToolkit* toolkit;
+
+public slots:
+    void dialogAccepted();
 };
 
 #endif // EDITORDIALOG_H
