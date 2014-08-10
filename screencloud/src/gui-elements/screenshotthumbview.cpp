@@ -75,6 +75,7 @@ void ScreenshotThumbView::enterEvent(QEvent *e)
 {
     hovered = true;
     this->viewport()->update();
+    setCursor(Qt::PointingHandCursor);
     QGraphicsView::enterEvent(e);
 }
 
@@ -82,6 +83,7 @@ void ScreenshotThumbView::leaveEvent(QEvent *e)
 {
     hovered = false;
     this->viewport()->update();
+    setCursor(Qt::ArrowCursor);
     QGraphicsView::leaveEvent(e);
 }
 
