@@ -21,13 +21,20 @@ class ScreenshotThumbView : public QGraphicsView
     Q_OBJECT
 public:
     explicit ScreenshotThumbView(QWidget *parent = 0);
+    void drawOverlay(QPainter *painter, const QColor &color);
+    void drawText(QPainter *painter, const QColor &bgColor, const QColor &textColor);
+
+private:
+    bool hovered;
     
 signals:
     void clicked();
     
 public slots:
     void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent* pe);
+    void enterEvent(QEvent* e);
+    void leaveEvent(QEvent *e);
     
 };
 
