@@ -9,6 +9,7 @@ EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
     ui->setupUi(this);
     connect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
     //Try to use theme icons if available
+    ui->formatTextBtn->setIcon(QIcon::fromTheme("draw-text", ui->formatTextBtn->icon()));
     /*
     ui->arrowBtn->setIcon(QIcon::fromTheme("draw-arrow-right", ui->arrowBtn->icon()));
     ui->boxBtn->setIcon(QIcon::fromTheme("draw-rectangle", ui->boxBtn->icon()));
