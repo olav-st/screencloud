@@ -17,6 +17,9 @@ EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
     ui->numberedBtn->setIcon(QIcon::fromTheme("draw-number", ui->numberedBtn->icon()));
     */
 
+    //Set default color
+    ui->colorBtn->setColor(QColor(225, 50, 50));
+
     toolkit = new KaptionGraphicsToolkit(ui->propertyToolbar, this);
 
     toolkit->bindButtonToGraphicsItem<ArrowGraphicsItem>(ui->arrowBtn, true);
