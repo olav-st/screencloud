@@ -84,8 +84,9 @@ void Updater::showUpdateNotification()
         msgBox.setText(tr("There's a new version of ScreenCloud available. Do you want to download it?"));
 #endif
 #ifdef Q_OS_LINUX
-        msgBox.setText(tr("There's a new version of ScreenCloud available. You can download it from the <b>Ubuntu Software Center</b> or the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>."));
+        msgBox.setText(tr("There's a new version of ScreenCloud available. You can download it from the <a href=\"https://www.screencloud.net\">ScreenCloud website</a>."));
         msgBox.addButton(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
 #endif
         msgBox.addButton(&changelogBtn, QMessageBox::HelpRole);
         changelogBtn.disconnect(); //Make sure changelog button dosen't close the dialog
