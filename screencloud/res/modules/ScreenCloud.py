@@ -1,6 +1,6 @@
 from PythonQt.QtCore import QSettings
 from PythonQt.QtGui import QDesktopServices
-import os, string
+import os, string, base64
 from md5 import md5
 from random import randint
 from collections import defaultdict
@@ -21,7 +21,8 @@ def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()
 		pass
 	random_hash = md5(os.urandom(128)).hexdigest()
 	random_num = str(randint(0,9))
-	var_dict = defaultdict(str, rnd = random_num, rnd_h = random_hash)
+	random_short = base64.urlsafe_b64encode(os.urandom(6))
+	var_dict = defaultdict(str, rnd = random_num, rnd_h = random_hash, rnd_s = random_short)
 	var_dict.update(custom_vars)
 	try:
 		name = string.Formatter().vformat(name, (), var_dict)
