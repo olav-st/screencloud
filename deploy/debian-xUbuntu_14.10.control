@@ -1,0 +1,23 @@
+Source: screencloud
+Section: net
+Priority: optional
+Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
+
+Package: screencloud
+Architecture: any
+Depends: libc6, libgcc1, libstdc++6, libqt4-designer (>= 4:4.5.3), libqt4-network (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-svg (>= 4:4.5.3), libqtcore4 (>= 4:4.8.0), libqtgui4 (>= 4:4.8.0), libqtmultimediakit1, libqxt-core0, libqxt-gui0, libquazip1, libpython2.7
+Recommends: sni-qt, python-crypto
+Homepage: http://screencloud.net
+Description: Easy to use screenshot sharing application
+ ScreenCloud is an easy to use screenshot tool.
+ .
+ Take a screenshot using one of the 3 hotkeys or simply click the
+ ScreenCloud tray icon. You can choose where you want to save your screenshot.
+ .
+ If you choose to upload your screenshot to the screencloud website, a
+ link will automatically be copied to your clipboard. You can share
+ this link with your friends or colleagues via email or in an IM
+ conversation. All they have to do is click the link and look at your screenshot.
+ .
+ ScreenCloud also offers FTP and SFTP uploading if you want to use
+ your own server.
