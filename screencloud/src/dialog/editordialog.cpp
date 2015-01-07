@@ -61,5 +61,6 @@ void EditorDialog::dialogAccepted()
         ui->snapshotCanvas->verticalScrollBar()->setValue(0);
         ui->snapshotCanvas->horizontalScrollBar()->setValue(0);
     }
+    ui->snapshotCanvas->deselectItems();
     ui->snapshotCanvas->render(&p, QRectF(), this->img->rect());
 }
