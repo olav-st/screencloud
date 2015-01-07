@@ -1,3 +1,7 @@
+# fix for windows systems with python installed
+import os, sys
+sys.path = filter(lambda p: p not in (os.environ["PYTHONPATH"] or ""), sys.path)
+
 from PythonQt.QtCore import QSettings
 from PythonQt.QtGui import QDesktopServices
 import os, string, base64
