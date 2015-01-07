@@ -92,14 +92,14 @@ void AudioNotifier::play(QString file)
 
 void AudioNotifier::audioStateChanged(QAudio::State state)
 {
-    if(state == QAudio::IdleState)
-    {
-        audioOutput->stop();
-        audioFile.close();
-    }
     if(audioOutput->error() != QAudio::NoError)
     {
         WARNING(tr("Error while playing audio. Code: ") + QString::number(audioOutput->error()));
+        audioOutput->stop();
+        audioFile.close();
+    }
+    if(state == QAudio::IdleState)
+    {
         audioOutput->stop();
         audioFile.close();
     }
