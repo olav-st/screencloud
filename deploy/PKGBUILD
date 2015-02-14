@@ -3,7 +3,7 @@ pkgname=screencloud
 pkgver=1.2.0
 pkgrel=1
 pkgdesc="Easy to use screenshot sharing application."
-arch=('i686 x86_64')
+arch=('i686' 'x86_64')
 url="https://screencloud.net/"
 license=('gpl-2')
 
