@@ -101,7 +101,7 @@ ln -sf /opt/screencloud/screencloud.sh $RPM_BUILD_ROOT/usr/bin/screencloud
 /usr/bin/screencloud
  
 %changelog
-* Sat Feb 14 2014 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.2.0
+* Sat Feb 14 2015 Olav Sortland Thoresen <olav.s.th@gmail.com> - 1.2.0
 - Added screenshot editor
 - Fixed audio output sometimes crashing the application
 
