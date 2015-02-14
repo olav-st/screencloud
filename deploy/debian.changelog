@@ -1,3 +1,10 @@
+screencloud (1.2.0) unstable; urgency=low
+
+  * Added screenshot editor
+  * Fixed audio output sometimes crashing the application
+
+ -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 14 Feb 2015 14:57:30 -0000
+
 screencloud (1.1.6) unstable; urgency=low
 
   * Fixed plugin list not loading (url has changed)

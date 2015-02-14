@@ -17,9 +17,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-        <string>106</string>
+        <string>120</string>
 	<key>CFBundleShortVersionString</key>
-        <string>1.1.6</string>
+        <string>1.2.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>CFBundleExecutable</key>
