@@ -54,12 +54,15 @@ void AudioNotifier::play(QString file)
     settings.endGroup();
     if(soundNotifications)
     {
-#ifdef Q_OS_MACX
-        audioFile.setFileName(QString(qApp->applicationDirPath() + "/../Resources/" + file).toLocal8Bit());
-#else
-        audioFile.setFileName(QString(qApp->applicationDirPath() + QDir::separator() + file).toLocal8Bit());
-#endif
-        audioFile.open(QIODevice::ReadOnly);
+        if(!audioFile.isOpen())
+        {
+        #ifdef Q_OS_MACX
+                audioFile.setFileName(QString(qApp->applicationDirPath() + "/../Resources/" + file).toLocal8Bit());
+        #else
+                audioFile.setFileName(QString(qApp->applicationDirPath() + QDir::separator() + file).toLocal8Bit());
+        #endif
+                audioFile.open(QIODevice::ReadOnly);
+        }
         //Make sure we dont try to play the wav headers
         for(int i = 0; i < audioFile.size(); ++i) {
             QByteArray ba = audioFile.peek(4);
@@ -96,11 +99,9 @@ void AudioNotifier::audioStateChanged(QAudio::State state)
     {
         WARNING(tr("Error while playing audio. Code: ") + QString::number(audioOutput->error()));
         audioOutput->stop();
-        audioFile.close();
     }
     if(state == QAudio::IdleState)
     {
         audioOutput->stop();
-        audioFile.close();
     }
 }
