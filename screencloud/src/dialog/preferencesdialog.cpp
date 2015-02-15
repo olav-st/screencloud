@@ -17,6 +17,9 @@
 #include <QTabWidget>
 #include <utils/log.h>
 #include "licensesdialog.h"
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     QDialog(parent),
@@ -253,19 +256,30 @@ void PreferencesDialog::setupUi()
 
 void PreferencesDialog::getUserInfo()
 {
-    QUrl url( "https://api.screencloud.net/1.0/users/info.xml" );
+    QUrl baseUrl( "https://api.screencloud.net/1.0/users/info.xml" );
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrlQuery query(baseUrl);
+#else
+    QUrl query(baseUrl);
+#endif
     // construct the parameters string
-    url.addQueryItem("oauth_version", "1.0");
-    url.addQueryItem("oauth_signature_method", "PLAINTEXT");
-    url.addQueryItem("oauth_token", token);
-    url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-    url.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-    url.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-    url.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+    query.addQueryItem("oauth_version", "1.0");
+    query.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    query.addQueryItem("oauth_token", token);
+    query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
+    query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrl fullUrl;
+    fullUrl.setQuery(query);
+#else
+    QUrl fullUrl(query);
+#endif
     QNetworkRequest request;
-    request.setUrl(url);
+    request.setUrl(fullUrl);
     manager->get(request);
 }
 void PreferencesDialog::validateHotkey(QTableWidgetItem* item)
@@ -600,23 +614,37 @@ void PreferencesDialog::on_button_logout_clicked()
     if(selection == QMessageBox::Yes)
     {
         //Send logout request
-        QUrl url( "https://api.screencloud.net/1.0/users/logout.xml" );
+        QUrl baseUrl( "https://api.screencloud.net/1.0/users/logout.xml" );
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery query(baseUrl);
+#else
+        QUrl query(baseUrl);
+#endif
         // construct the parameters string
-        url.addQueryItem("oauth_version", "1.0");
-        url.addQueryItem("oauth_signature_method", "PLAINTEXT");
-        url.addQueryItem("oauth_token", token);
-        url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-        url.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-        url.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-        url.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+        query.addQueryItem("oauth_version", "1.0");
+        query.addQueryItem("oauth_signature_method", "PLAINTEXT");
+        query.addQueryItem("oauth_token", token);
+        query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+        query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
+        query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+        query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery bodyParams;
+        bodyParams.addQueryItem("token", token);
+        QByteArray body = bodyParams.query(QUrl::FullyEncoded).toUtf8();
+        QUrl fullUrl;
+        fullUrl.setQuery(query);
+#else
         QUrl bodyParams;
         bodyParams.addQueryItem("token", token);
         QByteArray body = bodyParams.encodedQuery();
+        QUrl fullUrl(query);
 
+#endif
         QNetworkRequest request;
-        request.setUrl(url);
+        request.setUrl(fullUrl);
         manager->post(request, body);
         userHasLoggedOut = true;
     }

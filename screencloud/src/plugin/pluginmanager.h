@@ -65,7 +65,13 @@ public:
     static bool isInstalled(QString shortname);
     static QString installedVersion(QString shortname);
     static int countInstalledPlugins();
-    static QString pluginPath() { return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins/"; }
+    static QString pluginPath() {
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/plugins/";
+#else
+        return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins/";
+#endif
+    }
     static QString pythonQtInputCallback(void *callData);
 
     QHash<QString, Uploader*> uploaderPlugins; //List of available uploader plugins

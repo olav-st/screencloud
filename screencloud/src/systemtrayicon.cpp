@@ -17,6 +17,9 @@
 #include <uploaders/scripteduploader.h>
 #endif
 #include <QNetworkProxy>
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     QSystemTrayIcon(parent)
@@ -288,18 +291,29 @@ void SystemTrayIcon::iconActivated(QSystemTrayIcon::ActivationReason reason)
 }
 void SystemTrayIcon::openDashboard()
 {
-    QUrl url("https://screencloud.net/1.0/users/redirect_dashboard");
+    QUrl baseUrl("https://screencloud.net/1.0/users/redirect_dashboard");
 
     // construct the parameters string
-    url.addQueryItem("oauth_version", "1.0");
-    url.addQueryItem("oauth_signature_method", "PLAINTEXT");
-    url.addQueryItem("oauth_token", token);
-    url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-    url.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-    url.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-    url.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrlQuery query(baseUrl);
+#else
+    QUrl query(baseUrl);
+#endif
+    query.addQueryItem("oauth_version", "1.0");
+    query.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    query.addQueryItem("oauth_token", token);
+    query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
+    query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
 
-    QDesktopServices::openUrl(url);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrl fullUrl;
+    fullUrl.setQuery(query);
+#else
+    QUrl fullUrl(query);
+#endif
+    QDesktopServices::openUrl(fullUrl);
 }
 void SystemTrayIcon::captureFullScreenAction()
 {

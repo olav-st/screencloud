@@ -1,5 +1,5 @@
 project( screencloud )
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.8)
 set(VERSION_STRING 1.2.0)
 
 
@@ -13,6 +13,8 @@ option(WITH_PLUGIN_SUPPORT "Enable plugin support" ON)
 option(MAC_APP_STORE "Disables automatic update checking for app store" OFF)
 option(UBUNTU_SOFTWARE_CENTER "Turn off automatic updating for software centre" OFF)
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
+option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
+option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" OFF)
 
 #These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
 set(CONSUMER_KEY_SCREENCLOUD "" CACHE STRING "Consumer key for screencloud.net")
@@ -23,6 +25,11 @@ add_definitions(-DCONSUMER_SECRET_SCREENCLOUD="${CONSUMER_SECRET_SCREENCLOUD}")
 if(NOT(CONSUMER_KEY_SCREENCLOUD OR CONSUMER_SECRET_SCREENCLOUD))
     MESSAGE(WARNING "ScreenCloud API keys not set, you won't be able to use the client with screencloud.net. (You'll still be able to compile)")
 endif()
+
+if(QT_USE_QT5)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+endif(QT_USE_QT5)
 
 set( screencloud_SOURCES
     src/dialog/downloadupdatedialog.cpp
@@ -238,12 +245,21 @@ else(QT_MOBILITY_FOUND)
     set( QT_USE_QTMULTIMEDIA TRUE)
 endif(QT_MOBILITY_FOUND)
 
-#Find Qt4 (required)
-find_package(Qt4 REQUIRED)
-include( ${QT_USE_FILE} )
-set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    ${QT_LIBRARIES}
-)
+#Find Qt4 or Qt5 (required)
+if(QT_USE_QT5)
+    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt5Network REQUIRED)
+    find_package(Qt5Xml REQUIRED)
+    find_package(Qt5Svg REQUIRED)
+    find_package(Qt5Multimedia REQUIRED)
+    find_package(Qt5Concurrent REQUIRED)
+else(QT_USE_QT5)
+    find_package(Qt4 REQUIRED)
+    include( ${QT_USE_FILE} )
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
+        ${QT_LIBRARIES}
+    )
+endif(QT_USE_QT5)
 
 find_package(Qxt REQUIRED)
 SET(QXT_USE_QXTCORE TRUE)
@@ -260,10 +276,13 @@ include_directories(${QUAZIP_INCLUDE_DIR})
 include_directories(${ZLIB_INCLUDE_DIRS})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
   ${QUAZIP_LIBRARY}
-  )
+)
 
-
-find_package(PythonLibs 2.6 REQUIRED)
+if(PYTHON_USE_PYTHON3)
+    find_package(PythonLibs 3.3 REQUIRED)
+else(PYTHON_USE_PYTHON3)
+    find_package(PythonLibs 2.6 REQUIRED)
+endif(PYTHON_USE_PYTHON3)
 include_directories(${PYTHON_INCLUDE_DIRS})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHON_LIBRARIES}
@@ -271,12 +290,29 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
 
 #Include PythonQt in the build
 message(STATUS "Including PythonQT in build")
-SET(PythonQt_Wrap_Qtcore ON CACHE BOOL "Make all of Qtcore available in python")
-SET(PythonQt_Wrap_Qtgui ON CACHE BOOL "Make all of Qtgui available in python")
-SET(PythonQt_Wrap_Qtuitools ON CACHE BOOL "Make all of Qtuitools available in python")
+set(PythonQt_Wrap_Qtcore ON CACHE BOOL "Make all of Qtcore available in python")
+set(PythonQt_Wrap_Qtgui ON CACHE BOOL "Make all of Qtgui available in python")
+set(PythonQt_Wrap_Qtuitools ON CACHE BOOL "Make all of Qtuitools available in python")
+
+if(QT_USE_QT5)
+    set(PythonQt_Qt5 ON CACHE BOOL "Use Qt 5.x")
+else(QT_USE_QT5)
+    set(PythonQt_Qt5 OFF CACHE BOOL "Use Qt 5.x")
+endif(QT_USE_QT5)
+
+if(PYTHON_USE_PYTHON3)
+    set(PythonQt_Python3 ON CACHE BOOL "Use Python 3.x (3.3+)")
+else(PYTHON_USE_PYTHON3)
+    set(PythonQt_Python3 OFF CACHE BOOL "Use Python 3.x (3.3+)")
+endif(PYTHON_USE_PYTHON3)
+
 add_subdirectory(src/3rdparty/PythonQt PythonQt/)
 include_directories(src/3rdparty/PythonQt/src)
-include_directories(src/3rdparty/PythonQt/generated_cpp)
+if(QT_USE_QT5)
+    include_directories(src/3rdparty/PythonQt/generated_cpp_53)
+else(QT_USE_QT5)
+    include_directories(src/3rdparty/PythonQt/generated_cpp_48)
+endif(QT_USE_QT5)
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     PythonQt
 )
@@ -295,16 +331,28 @@ else(OPENSSL_FOUND)
     message(WARNING "Could not find OpenSSL libs. They are not required for compiling, but needs to be available at runtime.")
 endif(OPENSSL_FOUND)
 
-qt4_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
-qt4_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
-qt4_wrap_cpp( screencloud_SOURCES_MOC ${screencloud_HEADERS_MOC} )
+if(QT_USE_QT5)
+    qt5_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
+    qt5_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
+elseif(QT_USE_QT5)
+    qt4_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
+    qt4_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
+    qt4_wrap_cpp( screencloud_SOURCES_MOC ${screencloud_HEADERS_MOC})
+endif(QT_USE_QT5)
 
 # include headers produced by uic
 include_directories( ${CMAKE_BINARY_DIR} )
 
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
+if(QT_USE_QT5)
+    qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent)
+endif(QT_USE_QT5)
+
 target_link_libraries( screencloud ${REQUIRED_LIBS})
+
+#Make sure PythonQt is built before screencloud
+add_dependencies(screencloud QtAll)
 
 #Copy required files to build dir
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)

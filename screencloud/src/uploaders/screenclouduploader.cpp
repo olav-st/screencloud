@@ -14,6 +14,9 @@
 
 #include "screenclouduploader.h"
 #include "QDebug"
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 ScreenCloudUploader::ScreenCloudUploader(QObject *parent) : Uploader(parent)
 {
@@ -69,18 +72,23 @@ void ScreenCloudUploader::upload(const QImage &screenshot, QString name)
         }
     }
     //Upload to screencloud
-    QUrl url( "https://api.screencloud.net/1.0/screenshots/upload.xml" );
+    QUrl baseUrl( "https://api.screencloud.net/1.0/screenshots/upload.xml" );
 
     // create request parameters
-    url.addQueryItem( "name", QUrl::toPercentEncoding(name) );
-    url.addQueryItem( "description", QUrl::toPercentEncoding("Taken on " + QDate::currentDate().toString("yyyy-MM-dd") + " at " + QTime::currentTime().toString("hh:mm") + " with the " + OPERATING_SYSTEM + " version of ScreenCloud") );
-    url.addQueryItem("oauth_version", "1.0");
-    url.addQueryItem("oauth_signature_method", "PLAINTEXT");
-    url.addQueryItem("oauth_token", token);
-    url.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-    url.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-    url.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-    url.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrlQuery query(baseUrl);
+#else
+    QUrl query(baseUrl);
+#endif
+    query.addQueryItem( "name", QUrl::toPercentEncoding(name) );
+    query.addQueryItem( "description", QUrl::toPercentEncoding("Taken on " + QDate::currentDate().toString("yyyy-MM-dd") + " at " + QTime::currentTime().toString("hh:mm") + " with the " + OPERATING_SYSTEM + " version of ScreenCloud") );
+    query.addQueryItem("oauth_version", "1.0");
+    query.addQueryItem("oauth_signature_method", "PLAINTEXT");
+    query.addQueryItem("oauth_token", token);
+    query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
+    query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
+    query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
+    query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
 
     QString mimetype = "image/" + format;
     if(format == "jpg")
@@ -110,8 +118,14 @@ void ScreenCloudUploader::upload(const QImage &screenshot, QString name)
 
     body += "\r\n--" + boundary + "--\r\n";
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrl fullUrl;
+    fullUrl.setQuery(query);
+#else
+    QUrl fullUrl(query);
+#endif
     QNetworkRequest request;
-    request.setUrl(QUrl(url));
+    request.setUrl(fullUrl);
     request.setRawHeader("Content-Type","multipart/form-data; boundary=" + boundary);
     request.setHeader(QNetworkRequest::ContentLengthHeader,body.size());
     manager->post(request, body);

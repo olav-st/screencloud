@@ -1,5 +1,8 @@
 #include "changelogdialog.h"
 #include "ui_changelogdialog.h"
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 ChangelogDialog::ChangelogDialog(QWidget *parent) :
     QDialog(parent),
@@ -24,10 +27,21 @@ void ChangelogDialog::showEvent(QShowEvent *e)
 {
     busyOverlay->show();
     QNetworkRequest getChangelogReq;
-    QUrl url = QUrl("https://api.screencloud.net/1.0/updates/changelog");
-    url.addQueryItem("installed-version", VERSION);
-    url.addQueryItem("os", OS_SHORTNAME);
-    getChangelogReq.setUrl(url);
+    QUrl baseUrl = QUrl("https://api.screencloud.net/1.0/updates/changelog");
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrlQuery query(baseUrl);
+#else
+    QUrl query(baseUrl);
+#endif
+    query.addQueryItem("installed-version", VERSION);
+    query.addQueryItem("os", OS_SHORTNAME);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrl fullUrl;
+    fullUrl.setQuery(query);
+#else
+    QUrl fullUrl(query);
+#endif
+    getChangelogReq.setUrl(fullUrl);
     netManager.get(getChangelogReq);
 }
 

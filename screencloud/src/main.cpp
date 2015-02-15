@@ -39,7 +39,11 @@ int main(int argc, char *argv[])
         a.setQuitOnLastWindowClosed(false);
         //Create data location for storing plugins if it dosen't exist
         QDir d;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        d.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/plugins");
+#else
         d.mkpath(QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins");
+#endif
         //Prepare settings
         QSettings settings("screencloud", "ScreenCloud");
         settings.setValue("config-version", "1.1");
