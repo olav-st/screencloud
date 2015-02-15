@@ -1,4 +1,0 @@
-<typesystem>
-   <load-typesystem name="typesystem_core.xml" generate="no" />
-   <load-typesystem name="typesystem_network.xml" generate="yes" />
-</typesystem>

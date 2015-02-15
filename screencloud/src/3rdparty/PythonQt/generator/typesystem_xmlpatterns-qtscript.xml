@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<typesystem package="com.trolltech.qt.xmlpatterns">
-
-  <suppress-warning text="WARNING(MetaJavaBuilder) :: unhandled enum value: ForwardAxis in QXmlNodeModelIndex::Axis" />
-  <suppress-warning text="WARNING(MetaJavaBuilder) :: unhandled enum value: ReverseAxis in QXmlNodeModelIndex::Axis" />
-
-</typesystem>
