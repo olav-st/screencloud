@@ -9,9 +9,6 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mo
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty)
 
-option(WITH_PLUGIN_SUPPORT "Enable plugin support" ON)
-option(MAC_APP_STORE "Disables automatic update checking for app store" OFF)
-option(UBUNTU_SOFTWARE_CENTER "Turn off automatic updating for software centre" OFF)
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
 
 #These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
@@ -192,15 +189,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
             res/resources_linux.qrc
     )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-
-
-if(MAC_APP_STORE)
-    add_definitions(-DMAC_APPSTORE=1)
-endif(MAC_APP_STORE)
-
-if(UBUNTU_SOFTWARE_CENTER)
-    add_definitions(-DUBUNTU_SOFTWARE_CENTER=1)
-endif(UBUNTU_SOFTWARE_CENTER)
 
 if(COLOR_OUTPUT)
     add_definitions(-DCOLOR_OUTPUT=1)
