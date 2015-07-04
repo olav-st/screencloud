@@ -5,7 +5,7 @@ Maintainer: Olav Sortland Thoresen <olav.s.th@gmail.com>
 
 Package: screencloud
 Architecture: any
-Depends: libc6, libgcc1, libstdc++6, libqt4-designer (>= 4:4.5.3), libqt4-network (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-svg (>= 4:4.5.3), libqtcore4 (>= 4:4.8.0), libqtgui4 (>= 4:4.8.0), libqtmultimediakit1, libqxt-core0, libqxt-gui0, libquazip0, libpython2.7
+Depends: libc6, libgcc1, libstdc++6, libqt4-designer (>= 4:4.5.3), libqt4-network (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-svg (>= 4:4.5.3), libqtcore4 (>= 4:4.8.0), libqtgui4 (>= 4:4.8.0), libqtmultimediakit1, libqxt-core0, libqxt-gui0, libquazip1, libpython2.7
 Recommends: sni-qt, python-crypto
 Homepage: http://screencloud.net
 Description: Easy to use screenshot sharing application
