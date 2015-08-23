@@ -289,32 +289,10 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
 )
 
 #Include PythonQt in the build
-message(STATUS "Including PythonQT in build")
-set(PythonQt_Wrap_Qtcore ON CACHE BOOL "Make all of Qtcore available in python")
-set(PythonQt_Wrap_Qtgui ON CACHE BOOL "Make all of Qtgui available in python")
-set(PythonQt_Wrap_Qtuitools ON CACHE BOOL "Make all of Qtuitools available in python")
-
-if(QT_USE_QT5)
-    set(PythonQt_Qt5 ON CACHE BOOL "Use Qt 5.x")
-else(QT_USE_QT5)
-    set(PythonQt_Qt5 OFF CACHE BOOL "Use Qt 5.x")
-endif(QT_USE_QT5)
-
-if(PYTHON_USE_PYTHON3)
-    set(PythonQt_Python3 ON CACHE BOOL "Use Python 3.x (3.3+)")
-else(PYTHON_USE_PYTHON3)
-    set(PythonQt_Python3 OFF CACHE BOOL "Use Python 3.x (3.3+)")
-endif(PYTHON_USE_PYTHON3)
-
-add_subdirectory(src/3rdparty/PythonQt PythonQt/)
-include_directories(src/3rdparty/PythonQt/src)
-if(QT_USE_QT5)
-    include_directories(src/3rdparty/PythonQt/generated_cpp_53)
-else(QT_USE_QT5)
-    include_directories(src/3rdparty/PythonQt/generated_cpp_48)
-endif(QT_USE_QT5)
+find_package(PythonQt REQUIRED)
+include_directories(${PYTHONQT_INCLUDE_DIR})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    PythonQt
+    ${PYTHONQT_LIBRARY}
 )
 
 if(WIN32)
@@ -350,9 +328,6 @@ if(QT_USE_QT5)
 endif(QT_USE_QT5)
 
 target_link_libraries( screencloud ${REQUIRED_LIBS})
-
-#Make sure PythonQt is built before screencloud
-add_dependencies(screencloud QtAll)
 
 #Copy required files to build dir
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
