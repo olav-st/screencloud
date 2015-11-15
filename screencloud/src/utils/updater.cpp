@@ -216,7 +216,7 @@ void Updater::replyFinished(QNetworkReply *reply)
         {
             QString shortname = pluginNode.firstChildElement("shortname").text();
             QString version = pluginNode.firstChildElement("version").text();
-            if(PluginManager::installedVersion(shortname) != version && PluginManager::isInstalled(shortname))
+            if(PluginManager::isInstalled(shortname) && PluginManager::installedVersion(shortname) != version)
             {
                 outdatedPlugins.append(shortname);
                 urls.append(pluginNode.firstChildElement("download").text());
