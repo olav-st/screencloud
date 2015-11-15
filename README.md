@@ -26,5 +26,4 @@ Roadmap
 Here's a quick list of features I've wanted to implement, but not gotten around to yet. Feel free to contribute to this list:
 
 * Translation support
-* Built-in screenshot editor (adding arrows and text before upload)
-* Qt5 port
+* Qt5 port (in progress, see the `qt5-port` branch)
