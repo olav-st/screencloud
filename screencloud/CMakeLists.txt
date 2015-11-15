@@ -85,16 +85,27 @@ set( screencloud_SOURCES
     src/uploadmanager.cpp
     src/utils/updater.cpp
     src/utils/network.cpp
+    src/utils/globalshortcut.cpp
     src/gui-elements/screenshotthumbview.cpp
     src/main.cpp
 )
-if(APPLE)
+if(WIN32)
+    set(screencloud_SOURCES ${screencloud_SOURCES}
+    src/utils/startup.cpp
+    src/utils/windowsystem_win.cpp
+    src/utils/globalshortcut_win.cpp
+    )
+elseif(APPLE)
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup_mac.mm
+    src/utils/windowsystem_mac.cpp
+    src/utils/globalshortcut_mac.cpp
     )
 else()
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup.cpp
+    src/utils/windowsystem_x11.cpp
+    src/utils/globalshortcut_x11.cpp
     )
 endif()  
 
@@ -150,6 +161,7 @@ set( screencloud_HEADERS_MOC
     src/gui-elements/selectionoverlay.h
     src/gui-elements/busyoverlay.h
     src/utils/updater.h
+    src/utils/globalshortcut.h
     src/gui-elements/screenshotthumbview.h
     src/systemtrayicon.h
 )
@@ -160,6 +172,7 @@ set(screencloud_HEADERS
     src/utils/log.h
     src/utils/network.h
     src/utils/delay.h
+    src/utils/windowsystem.h
 )
 
 set( screencloud_FORMS
@@ -253,6 +266,9 @@ if(QT_USE_QT5)
     find_package(Qt5Svg REQUIRED)
     find_package(Qt5Multimedia REQUIRED)
     find_package(Qt5Concurrent REQUIRED)
+    if(UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras REQUIRED)
+    endif(UNIX AND NOT APPLE)
 else(QT_USE_QT5)
     find_package(Qt4 REQUIRED)
     include( ${QT_USE_FILE} )
@@ -261,16 +277,7 @@ else(QT_USE_QT5)
     )
 endif(QT_USE_QT5)
 
-find_package(Qxt REQUIRED)
-SET(QXT_USE_QXTCORE TRUE)
-SET(QXT_USE_QXTGUI TRUE)
-include_directories(${QXT_QXTCORE_INCLUDE_DIR})
-include_directories(${QXT_QXTGUI_INCLUDE_DIR})
-set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    ${QXT_QXTCORE_LIB_RELEASE}
-    ${QXT_QXTGUI_LIB_RELEASE}
-)
-
+#Find QuaZip
 find_package(QuaZip REQUIRED)
 include_directories(${QUAZIP_INCLUDE_DIR})
 include_directories(${ZLIB_INCLUDE_DIRS})
@@ -278,6 +285,7 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
   ${QUAZIP_LIBRARY}
 )
 
+#Find Python
 if(PYTHON_USE_PYTHON3)
     find_package(PythonLibs 3.3 REQUIRED)
 else(PYTHON_USE_PYTHON3)
@@ -295,11 +303,19 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHONQT_LIBRARY}
 )
 
+#Platform specific libs
 if(WIN32)
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ws2_32
     )
 endif(WIN32)
+if(UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    include_directories(${X11_INCLUDE_DIR})
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
+      ${X11_LIBRARIES}
+    )
+endif(UNIX AND NOT APPLE)
 
 #Find OpenSSL (for use later)
 find_package(OpenSSL)
@@ -324,7 +340,7 @@ include_directories( ${CMAKE_BINARY_DIR} )
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
 if(QT_USE_QT5)
-    qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent)
+    qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent X11Extras)
 endif(QT_USE_QT5)
 
 target_link_libraries( screencloud ${REQUIRED_LIBS})

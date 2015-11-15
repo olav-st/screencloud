@@ -56,8 +56,14 @@ bool ScreenShooter::getCaptureMouseCursor()
 const QImage &ScreenShooter::captureFullscreen()
 {
     int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QScreen* screen = QApplication::screens().at(screenNumber);
+    QRect screenGeometry = screen->geometry();
+    QPixmap pixmap = screen->grabWindow(0, screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
+#else
     QRect screenGeometry = QApplication::desktop()->screenGeometry(screenNumber);
-    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->screen(screenNumber)->winId(),screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
+    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->screen(screenNumber)->winId(),screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height())
+#endif
     screenshot = pixmap.toImage();
     setScreenshot(pixmap.toImage());
     return screenshot;
@@ -65,7 +71,13 @@ const QImage &ScreenShooter::captureFullscreen()
 
 const QImage &ScreenShooter::captureSelection(const QRect &area)
 {
+    int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QScreen* screen = QApplication::screens().at(screenNumber);
+    QPixmap fullScreenShot = screen->grabWindow(0);
+#else
     QPixmap fullScreenShot = QPixmap::grabWindow(QApplication::desktop()->winId());
+#endif
     QPixmap areaScreenshot = fullScreenShot.copy(area);
     setScreenshot(areaScreenshot.toImage());
     return screenshot;
@@ -82,15 +94,26 @@ const QImage &ScreenShooter::captureWindow(WId windowID)
 #endif
     if(windowID <= 0)
     {
-        windowID = QxtWindowSystem::activeWindow();
+        windowID = WindowSystem::activeWindow();
     }
     QPixmap pixmap;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QScreen* screen = QApplication::primaryScreen();
+#endif
     if(captureWindowBorders)
     {
-        QRect winGeom = QxtWindowSystem::windowGeometry(windowID);
-        pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), winGeom.x(), winGeom.y(), winGeom.width(),winGeom.height());
+        QRect winGeom = WindowSystem::windowGeometry(windowID);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        pixmap = screen->grabWindow(windowID, winGeom.x(), winGeom.y(), winGeom.width(),winGeom.height());
+#else
+        QPixmap::grabWindow(QApplication::desktop()->winId(), winGeom.x(), winGeom.y(), winGeom.width(),winGeom.height());
+#endif
     }else {
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        pixmap = screen->grabWindow(windowID);
+#else
         pixmap = QPixmap::grabWindow(windowID);
+#endif
     }
     setScreenshot(pixmap.toImage());
     return screenshot;

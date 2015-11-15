@@ -20,7 +20,7 @@
 #include <QAction>
 #include <QSettings>
 #include <QKeySequence>
-#include <QxtGlobalShortcut>
+#include <utils/globalshortcut.h>
 #include <QList>
 #include <QMenu>
 #include <QTimer>
@@ -84,9 +84,9 @@ private:
     QKeySequence keySqSelection;
     QKeySequence keySqWindow;
     //Systray global shortcuts
-    QxtGlobalShortcut* hotkeyFullScreen;
-    QxtGlobalShortcut* hotkeySelection;
-    QxtGlobalShortcut* hotkeyWindow;
+    GlobalShortcut* hotkeyFullScreen;
+    GlobalShortcut* hotkeySelection;
+    GlobalShortcut* hotkeyWindow;
     bool showSaveDialog;
     bool uploading, capturing;
     bool showNotifications;

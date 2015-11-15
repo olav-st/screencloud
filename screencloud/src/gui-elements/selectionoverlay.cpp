@@ -466,13 +466,23 @@ void SelectionOverlay::moveToScreen(int screenNumber)
         screenNumber = 0;
     }
     currentScreenNumber = screenNumber;
-    QRect screenGeom = QApplication::desktop()->screenGeometry(currentScreenNumber);
+    QRect screenGeom;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QScreen* screen = QApplication::screens().at(currentScreenNumber);
+    screenGeom = screen->geometry();
+#else
+    screenGeom = QApplication::desktop()->screenGeometry(currentScreenNumber);
+#endif
     if(!screenGeom.isValid() || screenGeom.isNull())
     {
-        WARNING("Failed to get geometry for screen " + QString::number(currentScreenNumber));
-        QMessageBox::warning(NULL, "Failed to get screen geom", "Failed to get geometry for screen " + QString::number(currentScreenNumber));
+        WARNING(tr("Failed to get geometry for screen ") + QString::number(currentScreenNumber));
+        QMessageBox::warning(NULL, tr("Failed to get screen geom"), tr("Failed to get geometry for screen ") + QString::number(currentScreenNumber));
     }
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    screenshot = screen->grabWindow(0, screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
+#else
     screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height());
+#endif
     if(screenshot.size() != screenGeom.size())
     {
         INFO(tr("Scaling screenshot to fit screenGeom"));
