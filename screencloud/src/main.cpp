@@ -27,7 +27,7 @@
 #include <systemtrayicon.h>
 #include <firstrunwizard/firstrunwizard.h>
 #include <PythonQt.h>
-#include <PythonQt_QtBindings.h>
+
 
 int main(int argc, char *argv[])
 {
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
         }
         //Setup the python interpreter
         PythonQt::init(PythonQt::RedirectStdOut);
-        PythonQt_init_QtBindings();
+        //PythonQt_init_QtBindings(); TODO: Need to make bindings work again
 
         PythonQt::self()->getMainModule().evalScript("import sys"); //Required for addSysPath on some systems
         if(PythonQt::self()->hadError())
