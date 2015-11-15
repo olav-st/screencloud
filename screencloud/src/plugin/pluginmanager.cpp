@@ -51,23 +51,28 @@ void PluginManager::loadPlugins()
            //The main.py file exists, this is probably a plugin dir
            //Load the metadata xml file
            QFile xmlFile(subdirIterator.filePath() + QDir::separator() + "metadata.xml");
-           xmlFile.open(QFile::ReadOnly);
-           QString xmlString = xmlFile.readAll();
-           xmlFile.close();
-           QDomDocument doc("metadata");
-           if(!doc.setContent(xmlString))
+           if(xmlFile.open(QFile::ReadOnly))
            {
-               WARNING(tr("Failed to parse XML:") + xmlFile.fileName());
+               QString xmlString = xmlFile.readAll();
+               xmlFile.close();
+               QDomDocument doc("metadata");
+               if(!doc.setContent(xmlString))
+               {
+                   WARNING(tr("Failed to parse XML:") + xmlFile.fileName());
+               }
+               QDomElement docElem = doc.documentElement();
+               QString name = docElem.firstChildElement("name").text();
+               QString shortname = docElem.firstChildElement("shortname").text();
+               QString className = docElem.firstChildElement("className").text();
+               QString iconFilename = docElem.firstChildElement("icon").text();
+               //Create a PythonUploader for this plugin and add it to the list of available plugins
+               PythonUploader *l = new PythonUploader(name, shortname, className, iconFilename, NULL);
+               uploaderPlugins.insert(shortname, l);
+               pluginsFound++;
+           }else
+           {
+               WARNING(QObject::tr("File ") + mainFile.fileName() + QObject::tr(" exists, but unable to open ") + xmlFile.fileName() + "!");
            }
-           QDomElement docElem = doc.documentElement();
-           QString name = docElem.firstChildElement("name").text();
-           QString shortname = docElem.firstChildElement("shortname").text();
-           QString className = docElem.firstChildElement("className").text();
-           QString iconFilename = docElem.firstChildElement("icon").text();
-           //Create a PythonUploader for this plugin and add it to the list of available plugins
-           PythonUploader *l = new PythonUploader(name, shortname, className, iconFilename, NULL);
-           uploaderPlugins.insert(shortname, l);
-           pluginsFound++;
        }
    }
    INFO(tr("Loaded ") + QString::number(pluginsFound) + tr(" plugin(s)"));
@@ -129,15 +134,20 @@ bool PluginManager::isInstalled(QString shortname)
 QString PluginManager::installedVersion(QString shortname)
 {
     QFile metadataFile(pluginPath() + QDir::separator() + shortname + QDir::separator() + "metadata.xml");
-    metadataFile.open(QIODevice::ReadOnly);
-    QString xmlString = metadataFile.readAll();
-    metadataFile.close();
-    QDomDocument xmlDoc("metadata");
-    if(xmlDoc.setContent(xmlString))
+    if(metadataFile.open(QIODevice::ReadOnly))
     {
-        QDomElement docElem = xmlDoc.documentElement();
-        QDomElement versionElem = docElem.firstChildElement("version");
-        return versionElem.text();
+        QString xmlString = metadataFile.readAll();
+        metadataFile.close();
+        QDomDocument xmlDoc("metadata");
+        if(xmlDoc.setContent(xmlString))
+        {
+            QDomElement docElem = xmlDoc.documentElement();
+            QDomElement versionElem = docElem.firstChildElement("version");
+            return versionElem.text();
+        }
+    }else
+    {
+        WARNING(QObject::tr("Failed to get version info for plugin '") + shortname + QObject::tr("'. Unable to open ") + metadataFile.fileName());
     }
     return QString();
 }
