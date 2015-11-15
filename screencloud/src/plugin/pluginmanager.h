@@ -67,9 +67,9 @@ public:
     static int countInstalledPlugins();
     static QString pluginPath() {
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/plugins/";
+        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/plugins";
 #else
-        return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins/";
+        return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins";
 #endif
     }
     static QString pythonQtInputCallback(void *callData);
