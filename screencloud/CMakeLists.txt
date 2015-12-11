@@ -290,6 +290,11 @@ include_directories(${PYTHONQT_INCLUDE_DIR})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHONQT_LIBRARY}
 )
+find_package(PythonQt_QtAll REQUIRED)
+include_directories(${PYTHONQT_QTALL_INCLUDE_DIR})
+set(REQUIRED_LIBS ${REQUIRED_LIBS}
+    ${PYTHONQT_QTALL_LIBRARY}
+)
 
 #Platform specific libs
 if(WIN32)
