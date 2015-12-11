@@ -14,6 +14,7 @@
 
 #include "screenshooter.h"
 #include <utils/log.h>
+#include <qxtwindowsystem.h>
 
 ScreenShooter::ScreenShooter(QObject *parent) :
     QObject(parent)
@@ -94,7 +95,7 @@ const QImage &ScreenShooter::captureWindow(WId windowID)
 #endif
     if(windowID <= 0)
     {
-        windowID = WindowSystem::activeWindow();
+        windowID = QxtWindowSystem::activeWindow();
     }
     QPixmap pixmap;
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
@@ -102,7 +103,7 @@ const QImage &ScreenShooter::captureWindow(WId windowID)
 #endif
     if(captureWindowBorders)
     {
-        QRect winGeom = WindowSystem::windowGeometry(windowID);
+        QRect winGeom = QxtWindowSystem::windowGeometry(windowID);
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         pixmap = screen->grabWindow(windowID, winGeom.x(), winGeom.y(), winGeom.width(),winGeom.height());
 #else

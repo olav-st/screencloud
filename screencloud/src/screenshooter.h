@@ -20,7 +20,6 @@
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QScreen>
-#include <utils/windowsystem.h>
 
 class ScreenShooter : public QObject
 {

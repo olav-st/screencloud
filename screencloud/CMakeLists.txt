@@ -14,7 +14,7 @@ option(MAC_APP_STORE "Disables automatic update checking for app store" OFF)
 option(UBUNTU_SOFTWARE_CENTER "Turn off automatic updating for software centre" OFF)
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
 option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
-option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" OFF)
+option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
 
 #These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
 set(CONSUMER_KEY_SCREENCLOUD "" CACHE STRING "Consumer key for screencloud.net")
@@ -85,27 +85,20 @@ set( screencloud_SOURCES
     src/uploadmanager.cpp
     src/utils/updater.cpp
     src/utils/network.cpp
-    src/utils/globalshortcut.cpp
     src/gui-elements/screenshotthumbview.cpp
     src/main.cpp
 )
 if(WIN32)
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup.cpp
-    src/utils/windowsystem_win.cpp
-    src/utils/globalshortcut_win.cpp
     )
 elseif(APPLE)
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup_mac.mm
-    src/utils/windowsystem_mac.cpp
-    src/utils/globalshortcut_mac.cpp
     )
 else()
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup.cpp
-    src/utils/windowsystem_x11.cpp
-    src/utils/globalshortcut_x11.cpp
     )
 endif()  
 
@@ -161,7 +154,6 @@ set( screencloud_HEADERS_MOC
     src/gui-elements/selectionoverlay.h
     src/gui-elements/busyoverlay.h
     src/utils/updater.h
-    src/utils/globalshortcut.h
     src/gui-elements/screenshotthumbview.h
     src/systemtrayicon.h
 )
@@ -172,7 +164,6 @@ set(screencloud_HEADERS
     src/utils/log.h
     src/utils/network.h
     src/utils/delay.h
-    src/utils/windowsystem.h
 )
 
 set( screencloud_FORMS
@@ -239,22 +230,19 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-#Embed QtSingleApplication
-include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
-
 #required qt modules
 set( QT_USE_QTNETWORK TRUE)
 set( QT_USE_QTXML TRUE )
 set( QT_USE_QTSVG TRUE )
 find_package(QtMobility COMPONENTS MultimediaKit)
 if(QT_MOBILITY_FOUND)
-    MESSAGE(STATUS "Using QtMobility to provide QAudioOutput.")
+    message(STATUS "Using QtMobility to provide QAudioOutput.")
     include_directories(${QT_MOBILITY_MULTIMEDIAKIT_INCLUDE_DIR} ${QT_MOBILITY_INCLUDE_DIR})
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ${QT_MOBILITY_MULTIMEDIAKIT_LIBRARY}
     )
 else(QT_MOBILITY_FOUND)
-    MESSAGE(STATUS "Using Qt library to provide QAudioOutput.")
+    message(STATUS "Using Qt library to provide QAudioOutput.")
     set( QT_USE_QTMULTIMEDIA TRUE)
 endif(QT_MOBILITY_FOUND)
 
@@ -309,13 +297,6 @@ if(WIN32)
         ws2_32
     )
 endif(WIN32)
-if(UNIX AND NOT APPLE)
-    find_package(X11 REQUIRED)
-    include_directories(${X11_INCLUDE_DIR})
-    set(REQUIRED_LIBS ${REQUIRED_LIBS}
-      ${X11_LIBRARIES}
-    )
-endif(UNIX AND NOT APPLE)
 
 #Find OpenSSL (for use later)
 find_package(OpenSSL)
@@ -324,6 +305,11 @@ if(OPENSSL_FOUND)
 else(OPENSSL_FOUND)
     message(WARNING "Could not find OpenSSL libs. They are not required for compiling, but needs to be available at runtime.")
 endif(OPENSSL_FOUND)
+
+#Embed QtSingleApplication and LibQxt
+message(STATUS "Including QtSingleApplication and parts of LibQxt.")
+include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
+include(src/3rdparty/LibQxt/LibQxt.cmake)
 
 if(QT_USE_QT5)
     qt5_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
