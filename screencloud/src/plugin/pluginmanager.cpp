@@ -210,10 +210,10 @@ bool PluginManager::uninstallPlugins(QStringList& shortnames)
 {
     for(int i = 0; i < shortnames.size(); i++)
     {
-        INFO(tr("Deleting ") + PluginManager::pluginPath() + shortnames.at(i));
-        if(!removeDir(PluginManager::pluginPath() + shortnames.at(i)))
+        INFO(tr("Deleting ") + PluginManager::pluginPath() + QDir::separator() + shortnames.at(i));
+        if(!removeDir(PluginManager::pluginPath() + QDir::separator() + shortnames.at(i)))
         {
-            WARNING(tr("Failed to delete directory: ") + PluginManager::pluginPath() + shortnames.at(i));
+            WARNING(tr("Failed to delete directory: ") + PluginManager::pluginPath() + QDir::separator() + shortnames.at(i));
         }
     }
     return true;
@@ -299,10 +299,10 @@ void PluginManager::analyzeAndMovePlugin(QString exctractedDirPath)
         //Copy the plugin from the temporary directory to the plugin dir
         INFO(tr("[4/4] Moving ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to plugin dir"));
         QDir dir;
-        if(!copyFolder(mainFileInfo.absoluteDir().absolutePath() + "/", PluginManager::pluginPath() + shortname + "/"))
+        if(!copyFolder(mainFileInfo.absoluteDir().absolutePath() + "/", PluginManager::pluginPath() + QDir::separator() + shortname + "/"))
         {
-            WARNING(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + shortname);
-            emit installationError(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + shortname);
+            WARNING(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + QDir::separator() + shortname);
+            emit installationError(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + QDir::separator() + shortname);
         }
         if(!removeDir(mainFileInfo.absoluteDir().absolutePath()))
         {
