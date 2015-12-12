@@ -117,7 +117,7 @@ bool NewAccountPage::validatePage()
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrl fullUrl;
+    QUrl fullUrl(baseUrl);
     fullUrl.setQuery(query);
 #else
     QUrl fullUrl(query);

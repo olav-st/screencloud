@@ -50,24 +50,24 @@ void Updater::checkForUpdates(int flag)
     {
         notifyUpdates = false;
     }
-    QUrl baseVersionUrl( "https://api.screencloud.net/1.0/updates/check_version.xml" );
+    QUrl baseUrl( "https://api.screencloud.net/1.0/updates/check_version.xml" );
     // create request parameters
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrlQuery versionQuery(baseVersionUrl);
+    QUrlQuery query(baseUrl);
 #else
-    QUrl versionQuery(baseVersionUrl);
+    QUrl query(baseUrl);
 #endif
-    versionQuery.addQueryItem("version", VERSION);
-    versionQuery.addQueryItem("os", OS_SHORTNAME);
+    query.addQueryItem("version", VERSION);
+    query.addQueryItem("os", OS_SHORTNAME);
     //Send the req
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrl fullVersionUrl;
-    fullVersionUrl.setQuery(versionQuery);
+    QUrl fullUrl(baseUrl);
+    fullUrl.setQuery(query);
 #else
-    QUrl fullVersionUrl(versionQuery);
+    QUrl fullUrl(versionQuery);
 #endif
     QNetworkRequest appUpdateCheckReq;
-    appUpdateCheckReq.setUrl(fullVersionUrl);
+    appUpdateCheckReq.setUrl(fullUrl);
     manager->get(appUpdateCheckReq);
     //Check for plugin updates
     QUrl pluginListUrl(GITHUB_PLUGIN_LIST_URL);

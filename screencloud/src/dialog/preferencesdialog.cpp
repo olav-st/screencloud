@@ -273,7 +273,7 @@ void PreferencesDialog::getUserInfo()
     query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
 
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrl fullUrl;
+    QUrl fullUrl(baseUrl);
     fullUrl.setQuery(query);
 #else
     QUrl fullUrl(query);
@@ -634,7 +634,7 @@ void PreferencesDialog::on_button_logout_clicked()
         QUrlQuery bodyParams;
         bodyParams.addQueryItem("token", token);
         QByteArray body = bodyParams.query(QUrl::FullyEncoded).toUtf8();
-        QUrl fullUrl;
+        QUrl fullUrl(baseUrl);
         fullUrl.setQuery(query);
 #else
         QUrl bodyParams;

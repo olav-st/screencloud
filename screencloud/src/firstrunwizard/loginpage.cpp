@@ -123,7 +123,7 @@ void LoginPage::replyFinished(QNetworkReply *reply)
         label_message->setText("Logged in...");
         //Save to qsettings
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QUrlQuery replyParams("?" + replyText);
+        QUrlQuery replyParams("&" + replyText);
 #else
         QUrl replyParams("?" + replyText);
 #endif

@@ -101,7 +101,7 @@ void LoginDialog::replyFinished(QNetworkReply *reply)
         ui->label_message->setText(tr("Logged in..."));
         //Save to qsettings
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QUrlQuery replyParams("?" + replyText);
+        QUrlQuery replyParams("&" + replyText);
 #else
         QUrl replyParams("?" + replyText);
 #endif
