@@ -1,6 +1,6 @@
 project( screencloud )
 cmake_minimum_required(VERSION 2.8.8)
-set(VERSION_STRING 1.2.0)
+set(VERSION_STRING 1.3.0)
 
 
 #set module path
