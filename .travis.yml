@@ -1,0 +1,15 @@
+language: cpp
+compiler:
+  - gcc
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install libqxt-dev libquazip-dev qtmobility-dev python2.7-dev
+before_script:
+  - cd screencloud
+  - mkdir build
+  - cd build
+  - cmake ..
+script:
+  - make
+os:
+  - linux
