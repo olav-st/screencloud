@@ -216,10 +216,14 @@ void Updater::replyFinished(QNetworkReply *reply)
         {
             QString shortname = pluginNode.firstChildElement("shortname").text();
             QString version = pluginNode.firstChildElement("version").text();
-            if(PluginManager::isInstalled(shortname) && PluginManager::installedVersion(shortname) != version)
+            if(PluginManager::isInstalled(shortname))
             {
-                outdatedPlugins.append(shortname);
-                urls.append(pluginNode.firstChildElement("download").text());
+                INFO(tr("Plugin update check. Has version ") + PluginManager::installedVersion(shortname) + tr(" of") + " '" + shortname + "'. " + tr("Latest is ") + version);
+                if(PluginManager::installedVersion(shortname) != version)
+                {
+                    outdatedPlugins.append(shortname);
+                    urls.append(pluginNode.firstChildElement("download").text());
+                }
             }
             pluginNode = pluginNode.nextSibling();
         }
