@@ -24,8 +24,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <quazip/quazipfile.h>
-#include <quazip/quazip.h>
+#include <quazipfile.h>
+#include <quazip.h>
 #include <utils/network.h>
 #include <QDomDocument>
 #include <QInputDialog>
