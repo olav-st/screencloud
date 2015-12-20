@@ -23,5 +23,6 @@ before_script:
   - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake
 script:
   - make
+  - ./screencloud --version
 os:
   - linux
