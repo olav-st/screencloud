@@ -9,9 +9,6 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mo
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty)
 
-option(WITH_PLUGIN_SUPPORT "Enable plugin support" ON)
-option(MAC_APP_STORE "Disables automatic update checking for app store" OFF)
-option(UBUNTU_SOFTWARE_CENTER "Turn off automatic updating for software centre" OFF)
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
 option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
 option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
@@ -203,15 +200,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
             res/resources_linux.qrc
     )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-
-
-if(MAC_APP_STORE)
-    add_definitions(-DMAC_APPSTORE=1)
-endif(MAC_APP_STORE)
-
-if(UBUNTU_SOFTWARE_CENTER)
-    add_definitions(-DUBUNTU_SOFTWARE_CENTER=1)
-endif(UBUNTU_SOFTWARE_CENTER)
 
 if(COLOR_OUTPUT)
     add_definitions(-DCOLOR_OUTPUT=1)

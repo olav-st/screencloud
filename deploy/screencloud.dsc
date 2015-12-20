@@ -1,4 +1,5 @@
 Format: 1.0
+Standards-Version: 3.9.6.0
 Source: screencloud
 Version: 1.2.0-1
 Binary: screencloud
