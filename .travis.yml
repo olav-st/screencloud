@@ -12,5 +12,6 @@ before_script:
   - cmake ..
 script:
   - make
+  - ./screencloud --version
 os:
   - linux
