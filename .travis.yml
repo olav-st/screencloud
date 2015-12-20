@@ -10,11 +10,11 @@ before_install:
   - sudo apt-get install git cmake qt-latest libquazip0-dev python3.4-dev libx11-dev mesa-common-dev
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake -DPythonQt_Python3=ON
+  - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
   - make
   - sudo make install
-  - sudo ln -s /usr/local/lib/libQt5Python34_QtAll.a /usr/local/lib/libQtPython_QtAll.a
-  - sudo ln -s /usr/local/lib/libQt5Python34.a /usr/local/lib/libQtPython.a
+  - sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so
+  - sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so
   - cd ../..
 before_script:
   - cd screencloud
