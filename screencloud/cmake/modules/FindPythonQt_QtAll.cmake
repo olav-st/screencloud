@@ -4,19 +4,13 @@
 #
 
 
-find_path(PYTHONQT_QTALL_INSTALL_DIR extensions/PythonQt_QtAll/PythonQt_QtAll.h DOC "Directory where PythonQt_QtAll.h was installed.")
-find_path(PYTHONQT_QTALL_INCLUDE_DIR PythonQt_QtAll.h "${PYTHONQT_QTALL_INSTALL_DIR}/extensions/PythonQt_QtAll" DOC "Path to the PythonQt_QtAll include directory")
-find_library(PYTHONQT_QTALL_LIBRARY PythonQt_QtAll PATHS "${PYTHONQT_QTALL_INSTALL_DIR}/extensions/PythonQt_QtAll" DOC "The PythonQt_QtAll library.")
+find_path(PYTHONQT_QTALL_INSTALL_DIR include/PythonQt/PythonQt_QtAll.h DOC "Directory where PythonQt_QtAll.h was installed.")
+find_path(PYTHONQT_QTALL_INCLUDE_DIR PythonQt_QtAll.h "${PYTHONQT_QTALL_INSTALL_DIR}/include/PythonQt" DOC "Path to the PythonQt_QtAll include directory")
+find_library(PYTHONQT_QTALL_LIBRARY NAMES PythonQt_QtAll QtPython_QtAll PATHS "${PYTHONQT_QTALL_INSTALL_DIR}/extensions/PythonQt_QtAll" DOC "The PythonQt_QtAll library.")
 
 mark_as_advanced(PYTHONQT_QTALL_INSTALL_DIR)
 mark_as_advanced(PYTHONQT_QTALL_INCLUDE_DIR)
 mark_as_advanced(PYTHONQT_QTALL_LIBRARY)
-
-# On linux, also find libutil
-if(UNIX AND NOT APPLE)
-  find_library(PYTHONQT_QTALL_LIBUTIL util)
-  mark_as_advanced(PYTHONQT_QTALL_LIBUTIL)
-endif()
 
 set(PYTHONQT_QTALL_FOUND 0)
 if(PYTHONQT_QTALL_INCLUDE_DIR AND PYTHONQT_QTALL_LIBRARY)

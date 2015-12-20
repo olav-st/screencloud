@@ -11,7 +11,7 @@ endif()
 
 find_path(PYTHONQT_INSTALL_DIR include/PythonQt/PythonQt.h DOC "Directory where PythonQt was installed.")
 find_path(PYTHONQT_INCLUDE_DIR PythonQt.h "${PYTHONQT_INSTALL_DIR}/include/PythonQt" DOC "Path to the PythonQt include directory")
-find_library(PYTHONQT_LIBRARY PythonQt PATHS "${PYTHONQT_INSTALL_DIR}/lib" DOC "The PythonQt library.")
+find_library(PYTHONQT_LIBRARY NAMES PythonQt QtPython PATHS "${PYTHONQT_INSTALL_DIR}/lib" DOC "The PythonQt library.")
 
 mark_as_advanced(PYTHONQT_INSTALL_DIR)
 mark_as_advanced(PYTHONQT_INCLUDE_DIR)
