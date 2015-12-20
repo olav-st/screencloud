@@ -1,5 +1,5 @@
 project( screencloud )
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.11)
 set(VERSION_STRING 1.3.0)
 
 
