@@ -14,6 +14,9 @@
 
 #include "activatepage.h"
 #include <utils/log.h>
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 ActivatePage::ActivatePage(QWidget *parent) :
     QWizardPage(parent)
@@ -62,14 +65,22 @@ bool ActivatePage::checkUserActivated(int user_id)
     QString token, tokenSecret;
 
     // create a request parameters map
-    QUrl bodyParams;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery bodyParams;
+#else
+        QUrl bodyParams;
+#endif
     bodyParams.addQueryItem("user_id", QString::number(user_id));
     bodyParams.addQueryItem("oauth_version", "1.0");
     bodyParams.addQueryItem("oauth_signature_method", "PLAINTEXT");
     bodyParams.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
     bodyParams.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
-
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QByteArray body = bodyParams.query(QUrl::FullyEncoded).toUtf8();
+#else
     QByteArray body = bodyParams.encodedQuery();
+#endif
+
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
@@ -128,7 +139,11 @@ bool ActivatePage::getAccessToken()
 
     QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create a request parameters map
-    QUrl bodyParams;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery bodyParams;
+#else
+        QUrl bodyParams;
+#endif
     bodyParams.addQueryItem( "data[User][email]", field("register.email").toString());
     bodyParams.addQueryItem( "data[User][password]", field("register.password").toString());
     bodyParams.addQueryItem("oauth_version", "1.0");
@@ -137,7 +152,12 @@ bool ActivatePage::getAccessToken()
     bodyParams.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
     bodyParams.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
     bodyParams.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QByteArray body = bodyParams.query(QUrl::FullyEncoded).toUtf8();
+#else
     QByteArray body = bodyParams.encodedQuery();
+#endif
+
 
     QNetworkRequest request;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -156,7 +176,12 @@ bool ActivatePage::getAccessToken()
             return false;
         }
         INFO(reply->request().url().toString() + " returned: " + replyText);
-        QUrl replyParams = QUrl("?" + replyText);
+        //Save to qsettings
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery replyParams("?" + replyText);
+#else
+        QUrl replyParams("?" + replyText);
+#endif
         QSettings settings("screencloud", "ScreenCloud");
         settings.beginGroup("account");
         settings.setValue("token", replyParams.queryItemValue("oauth_token"));

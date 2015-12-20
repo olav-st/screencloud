@@ -1,7 +1,10 @@
 from PythonQt.QtCore import QSettings
 from PythonQt.QtGui import QDesktopServices
 import os, string, base64
-from md5 import md5
+try:
+	from md5 import md5
+except ImportError:
+	from hashlib import md5 #md5 has been moved to hashlib in python 3
 from random import randint
 from collections import defaultdict
 from time import strftime, localtime
@@ -16,6 +19,8 @@ def getScreenshotFormat():
 def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()):
 	try:
 		name = strftime(nameFormat.encode('utf-8'), localtime()).decode('utf-8')
+	except TypeError:
+		name = strftime(nameFormat, localtime()) #fix for python 3
 	except ValueError:
 		name = nameFormat
 		pass

@@ -28,6 +28,9 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QMessageBox>
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#include <QScreen>
+#endif
 
 #define MOUSE_OVER_LEFT 0x0
 #define MOUSE_OVER_RIGHT 0x1

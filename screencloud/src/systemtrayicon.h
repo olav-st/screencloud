@@ -20,7 +20,7 @@
 #include <QAction>
 #include <QSettings>
 #include <QKeySequence>
-#include <QxtGlobalShortcut>
+#include <qxtglobalshortcut.h>
 #include <QList>
 #include <QMenu>
 #include <QTimer>

@@ -1,6 +1,6 @@
 project( screencloud )
-cmake_minimum_required (VERSION 2.6)
-set(VERSION_STRING 1.2.0)
+cmake_minimum_required(VERSION 2.8.8)
+set(VERSION_STRING 1.3.0)
 
 
 #set module path
@@ -10,6 +10,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty)
 
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
+option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
+option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
 
 #These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
 set(CONSUMER_KEY_SCREENCLOUD "" CACHE STRING "Consumer key for screencloud.net")
@@ -20,6 +22,11 @@ add_definitions(-DCONSUMER_SECRET_SCREENCLOUD="${CONSUMER_SECRET_SCREENCLOUD}")
 if(NOT(CONSUMER_KEY_SCREENCLOUD OR CONSUMER_SECRET_SCREENCLOUD))
     MESSAGE(WARNING "ScreenCloud API keys not set, you won't be able to use the client with screencloud.net. (You'll still be able to compile)")
 endif()
+
+if(QT_USE_QT5)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+endif(QT_USE_QT5)
 
 set( screencloud_SOURCES
     src/dialog/downloadupdatedialog.cpp
@@ -78,7 +85,11 @@ set( screencloud_SOURCES
     src/gui-elements/screenshotthumbview.cpp
     src/main.cpp
 )
-if(APPLE)
+if(WIN32)
+    set(screencloud_SOURCES ${screencloud_SOURCES}
+    src/utils/startup.cpp
+    )
+elseif(APPLE)
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup_mac.mm
     )
@@ -207,68 +218,73 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-#Embed QtSingleApplication
-include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
-
 #required qt modules
 set( QT_USE_QTNETWORK TRUE)
 set( QT_USE_QTXML TRUE )
 set( QT_USE_QTSVG TRUE )
 find_package(QtMobility COMPONENTS MultimediaKit)
 if(QT_MOBILITY_FOUND)
-    MESSAGE(STATUS "Using QtMobility to provide QAudioOutput.")
+    message(STATUS "Using QtMobility to provide QAudioOutput.")
     include_directories(${QT_MOBILITY_MULTIMEDIAKIT_INCLUDE_DIR} ${QT_MOBILITY_INCLUDE_DIR})
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ${QT_MOBILITY_MULTIMEDIAKIT_LIBRARY}
     )
 else(QT_MOBILITY_FOUND)
-    MESSAGE(STATUS "Using Qt library to provide QAudioOutput.")
+    message(STATUS "Using Qt library to provide QAudioOutput.")
     set( QT_USE_QTMULTIMEDIA TRUE)
 endif(QT_MOBILITY_FOUND)
 
-#Find Qt4 (required)
-find_package(Qt4 REQUIRED)
-include( ${QT_USE_FILE} )
-set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    ${QT_LIBRARIES}
-)
+#Find Qt4 or Qt5 (required)
+if(QT_USE_QT5)
+    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt5Network REQUIRED)
+    find_package(Qt5Xml REQUIRED)
+    find_package(Qt5Svg REQUIRED)
+    find_package(Qt5Multimedia REQUIRED)
+    find_package(Qt5Concurrent REQUIRED)
+    if(UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras REQUIRED)
+    endif(UNIX AND NOT APPLE)
+else(QT_USE_QT5)
+    find_package(Qt4 REQUIRED)
+    include( ${QT_USE_FILE} )
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
+        ${QT_LIBRARIES}
+    )
+endif(QT_USE_QT5)
 
-find_package(Qxt REQUIRED)
-SET(QXT_USE_QXTCORE TRUE)
-SET(QXT_USE_QXTGUI TRUE)
-include_directories(${QXT_QXTCORE_INCLUDE_DIR})
-include_directories(${QXT_QXTGUI_INCLUDE_DIR})
-set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    ${QXT_QXTCORE_LIB_RELEASE}
-    ${QXT_QXTGUI_LIB_RELEASE}
-)
-
+#Find QuaZip
 find_package(QuaZip REQUIRED)
 include_directories(${QUAZIP_INCLUDE_DIR})
 include_directories(${ZLIB_INCLUDE_DIRS})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
   ${QUAZIP_LIBRARY}
-  )
+)
 
-
-find_package(PythonLibs 2.6 REQUIRED)
+#Find Python
+if(PYTHON_USE_PYTHON3)
+    find_package(PythonLibs 3.3 REQUIRED)
+else(PYTHON_USE_PYTHON3)
+    find_package(PythonLibs 2.6 REQUIRED)
+endif(PYTHON_USE_PYTHON3)
 include_directories(${PYTHON_INCLUDE_DIRS})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHON_LIBRARIES}
 )
 
 #Include PythonQt in the build
-message(STATUS "Including PythonQT in build")
-SET(PythonQt_Wrap_Qtcore ON CACHE BOOL "Make all of Qtcore available in python")
-SET(PythonQt_Wrap_Qtgui ON CACHE BOOL "Make all of Qtgui available in python")
-SET(PythonQt_Wrap_Qtuitools ON CACHE BOOL "Make all of Qtuitools available in python")
-add_subdirectory(src/3rdparty/PythonQt PythonQt/)
-include_directories(src/3rdparty/PythonQt/src)
-include_directories(src/3rdparty/PythonQt/generated_cpp)
+find_package(PythonQt REQUIRED)
+include_directories(${PYTHONQT_INCLUDE_DIR})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    PythonQt
+    ${PYTHONQT_LIBRARY}
+)
+find_package(PythonQt_QtAll REQUIRED)
+include_directories(${PYTHONQT_QTALL_INCLUDE_DIR})
+set(REQUIRED_LIBS ${REQUIRED_LIBS}
+    ${PYTHONQT_QTALL_LIBRARY}
 )
 
+#Platform specific libs
 if(WIN32)
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ws2_32
@@ -283,14 +299,28 @@ else(OPENSSL_FOUND)
     message(WARNING "Could not find OpenSSL libs. They are not required for compiling, but needs to be available at runtime.")
 endif(OPENSSL_FOUND)
 
-qt4_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
-qt4_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
-qt4_wrap_cpp( screencloud_SOURCES_MOC ${screencloud_HEADERS_MOC} )
+#Embed QtSingleApplication and LibQxt
+message(STATUS "Including QtSingleApplication and parts of LibQxt.")
+include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
+include(src/3rdparty/LibQxt/LibQxt.cmake)
+
+if(QT_USE_QT5)
+    qt5_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
+    qt5_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
+elseif(QT_USE_QT5)
+    qt4_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
+    qt4_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
+    qt4_wrap_cpp( screencloud_SOURCES_MOC ${screencloud_HEADERS_MOC})
+endif(QT_USE_QT5)
 
 # include headers produced by uic
 include_directories( ${CMAKE_BINARY_DIR} )
 
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
+
+if(QT_USE_QT5)
+    qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent X11Extras)
+endif(QT_USE_QT5)
 
 target_link_libraries( screencloud ${REQUIRED_LIBS})
 

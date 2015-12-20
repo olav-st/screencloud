@@ -14,6 +14,9 @@
 
 #include "loginpage.h"
 #include <utils/log.h>
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 LoginPage::LoginPage(QWidget *parent) :
     QWizardPage(parent)
@@ -64,7 +67,11 @@ bool LoginPage::validatePage()
     QString token, tokenSecret;
     QUrl url( "https://api.screencloud.net/1.0/oauth/access_token_xauth" );
     // create body request parameters
-    QUrl bodyParams;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery bodyParams;
+#else
+        QUrl bodyParams;
+#endif
     bodyParams.addQueryItem("data[User][email]", input_email->text());
     bodyParams.addQueryItem("data[User][password]", input_password->text());
     bodyParams.addQueryItem("oauth_version", "1.0");
@@ -73,7 +80,11 @@ bool LoginPage::validatePage()
     bodyParams.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD);
     bodyParams.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
     bodyParams.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QByteArray body = bodyParams.query(QUrl::FullyEncoded).toUtf8();
+#else
     QByteArray body = bodyParams.encodedQuery();
+#endif
 
     QNetworkRequest request;
     request.setUrl(url);
@@ -111,7 +122,11 @@ void LoginPage::replyFinished(QNetworkReply *reply)
         //No error in request
         label_message->setText("Logged in...");
         //Save to qsettings
-        QUrl replyParams = QUrl("?" + replyText);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QUrlQuery replyParams("&" + replyText);
+#else
+        QUrl replyParams("?" + replyText);
+#endif
         QSettings settings("screencloud", "ScreenCloud");
         settings.beginGroup("account");
         settings.setValue("token", replyParams.queryItemValue("oauth_token"));

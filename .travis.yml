@@ -3,13 +3,26 @@ compiler:
   - gcc
 before_install:
   - sudo add-apt-repository ppa:kubuntu-ppa/backports -y
+  - sudo add-apt-repository ppa:beineri/opt-qt551 -y
+  - sudo add-apt-repository ppa:george-edison55/precise-backports -y
+  - sudo add-apt-repository ppa:fkrull/deadsnakes -y
+  - sudo apt-get update -qq
+  - sudo apt-get install git cmake qt-latest libquazip0-dev python3.4-dev libx11-dev mesa-common-dev
+  - git clone https://github.com/Orochimarufan/PythonQt
+  - cd PythonQt/build
+  - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
+  - make
+  - sudo make install
+  - sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so
+  - sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so
+  - cd ../..
   - sudo apt-get update -qq
   - sudo apt-get install libqxt-dev libquazip0-dev qtmobility-dev python2.7-dev
 before_script:
   - cd screencloud
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake
 script:
   - make
 os:

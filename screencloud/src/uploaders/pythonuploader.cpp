@@ -17,7 +17,7 @@
 PythonUploader::PythonUploader(QString name, QString shortname, QString className, QString iconFilename, QObject *parent) :
     Uploader(parent)
 {
-    this->workingDir = PluginManager::pluginPath() + shortname;
+    this->workingDir = PluginManager::pluginPath() + QDir::separator() + shortname;
     this->shortname = shortname;
     this->name = name;
     this->className = className;

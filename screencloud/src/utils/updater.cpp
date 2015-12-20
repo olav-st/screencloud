@@ -13,6 +13,9 @@
 //
 
 #include "updater.h"
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    #include <QUrlQuery>
+#endif
 
 Updater::Updater(QObject *parent) :
     QObject(parent)
@@ -47,13 +50,24 @@ void Updater::checkForUpdates(int flag)
     {
         notifyUpdates = false;
     }
-    QUrl appVersionUrl( "https://api.screencloud.net/1.0/updates/check_version.xml" );
+    QUrl baseUrl( "https://api.screencloud.net/1.0/updates/check_version.xml" );
     // create request parameters
-    appVersionUrl.addQueryItem("version", VERSION);
-    appVersionUrl.addQueryItem("os", OS_SHORTNAME);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrlQuery query(baseUrl);
+#else
+    QUrl query(baseUrl);
+#endif
+    query.addQueryItem("version", VERSION);
+    query.addQueryItem("os", OS_SHORTNAME);
     //Send the req
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    QUrl fullUrl(baseUrl);
+    fullUrl.setQuery(query);
+#else
+    QUrl fullUrl(versionQuery);
+#endif
     QNetworkRequest appUpdateCheckReq;
-    appUpdateCheckReq.setUrl(appVersionUrl);
+    appUpdateCheckReq.setUrl(fullUrl);
     manager->get(appUpdateCheckReq);
     //Check for plugin updates
     QUrl pluginListUrl(GITHUB_PLUGIN_LIST_URL);
@@ -202,10 +216,14 @@ void Updater::replyFinished(QNetworkReply *reply)
         {
             QString shortname = pluginNode.firstChildElement("shortname").text();
             QString version = pluginNode.firstChildElement("version").text();
-            if(PluginManager::isInstalled(shortname) && PluginManager::installedVersion(shortname) != version)
+            if(PluginManager::isInstalled(shortname))
             {
-                outdatedPlugins.append(shortname);
-                urls.append(pluginNode.firstChildElement("download").text());
+                INFO(tr("Plugin update check. Has version ") + PluginManager::installedVersion(shortname) + tr(" of") + " '" + shortname + "'. " + tr("Latest is ") + version);
+                if(PluginManager::installedVersion(shortname) != version)
+                {
+                    outdatedPlugins.append(shortname);
+                    urls.append(pluginNode.firstChildElement("download").text());
+                }
             }
             pluginNode = pluginNode.nextSibling();
         }
