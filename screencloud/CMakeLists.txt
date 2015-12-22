@@ -335,15 +335,13 @@ if(UNIX AND NOT APPLE)
     #Use GNUInstallDirs for CMAKE_INSTALL_BINDIR etc.
     include(GNUInstallDirs)
     #Install icons
-    find_program(XDG-ICON-RESOURCE_EXECUTABLE xdg-icon-resource)
-    install(CODE "execute_process(COMMAND ${XDG-ICON-RESOURCE_EXECUTABLE} install --novendor ${CMAKE_CURRENT_SOURCE_DIR}/res/icons/screencloud.svg screencloud)")
-    install(CODE "execute_process(COMMAND ${XDG-ICON-RESOURCE_EXECUTABLE} install --novendor ${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/16x16/screencloud.png screencloud)")
-    install(CODE "execute_process(COMMAND ${XDG-ICON-RESOURCE_EXECUTABLE} install --novendor ${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/32x32/screencloud.png screencloud)")
-    install(CODE "execute_process(COMMAND ${XDG-ICON-RESOURCE_EXECUTABLE} install --novendor ${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/64x64/screencloud.png screencloud)")
-    install(CODE "execute_process(COMMAND ${XDG-ICON-RESOURCE_EXECUTABLE} install --novendor ${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png screencloud)")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/screencloud.svg" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/16x16/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/16x16/apps")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/32x32/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/apps")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/64x64/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps")
     #Install dekstop file
-    find_program(XDG-DESKTOP-MENU_EXECUTABLE xdg-desktop-menu)
-    install(CODE "execute_process(COMMAND ${XDG-DESKTOP-MENU_EXECUTABLE} install --novendor ${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.desktop)")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
     #install copyright and changelog
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "${CMAKE_INSTALL_DOCDIR}/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.gz" DESTINATION "${CMAKE_INSTALL_DOCDIR}/screencloud" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
