@@ -332,6 +332,8 @@ add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy
 add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/res/sfx/notification.wav ${CMAKE_CURRENT_BINARY_DIR}/sfx)
 
 if(UNIX AND NOT APPLE)
+    #Use GNUInstallDirs for CMAKE_INSTALL_BINDIR etc.
+    include(GNUInstallDirs)
     #Install icons
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/screencloud.svg" DESTINATION "${CMAKE_INSTALL_ICONDIR}/hicolor/scalable/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/16x16/screencloud.png" DESTINATION "${CMAKE_INSTALL_ICONDIR}/hicolor/16x16/apps" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
