@@ -42,7 +42,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     editingHotkeyField = false;
     keysRecorded = 0;
     pythonContext = PythonQt::self()->getMainModule();
-    console = new PythonQtScriptingConsole(ui->tab_debug, pythonContext);
+    console = new PythonConsole(ui->tab_debug, pythonContext);
     ui->layout_debug->addWidget(console);
     loadSettings();
     setupUi();

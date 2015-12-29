@@ -77,6 +77,7 @@ set( screencloud_SOURCES
     src/gui-elements/clickablelabel.cpp
     src/gui-elements/selectionoverlay.cpp
     src/gui-elements/busyoverlay.cpp
+    src/gui-elements/pythonconsole.cpp
     src/systemtrayicon.cpp
     src/audionotifier.cpp
     src/uploadmanager.cpp
@@ -150,6 +151,7 @@ set( screencloud_HEADERS_MOC
     src/gui-elements/clickablelabel.h
     src/gui-elements/selectionoverlay.h
     src/gui-elements/busyoverlay.h
+    src/gui-elements/pythonconsole.h
     src/utils/updater.h
     src/gui-elements/screenshotthumbview.h
     src/systemtrayicon.h

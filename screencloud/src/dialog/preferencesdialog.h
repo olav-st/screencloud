@@ -39,7 +39,7 @@
 #include <dialog/plugindialog.h>
 #include <dialog/logindialog.h>
 #include <PythonQt.h>
-#include <gui/PythonQtScriptingConsole.h>
+#include <gui-elements/pythonconsole.h>
 
 namespace Ui {
     class PreferencesDialog;
@@ -63,7 +63,7 @@ private:
     QNetworkAccessManager *manager;
     UploadManager* uploadManager;
     PythonQtObjectPtr pythonContext;
-    PythonQtScriptingConsole* console;
+    PythonConsole* console;
     //Setting values
     int jpegQuality;
     QString email;
