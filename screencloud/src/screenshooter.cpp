@@ -24,7 +24,7 @@ ScreenShooter::ScreenShooter(QObject *parent) :
 void ScreenShooter::setScreenshot(const QImage &s)
 {
     screenshot = s;
-    emit screenshotTaken();
+    Q_EMIT screenshotTaken();
 }
 
 QImage ScreenShooter::getScreenshot()
@@ -35,7 +35,7 @@ QImage ScreenShooter::getScreenshot()
 void ScreenShooter::setCaptureWindowBorders(const bool &value)
 {
     captureWindowBorders = value;
-    emit captureWindowBordersChanged();
+    Q_EMIT captureWindowBordersChanged();
 }
 
 bool ScreenShooter::getCaptureWindowBorders()
@@ -46,7 +46,7 @@ bool ScreenShooter::getCaptureWindowBorders()
 void ScreenShooter::setCaptureMouseCursor(const bool &value)
 {
     captureMouseCursor = value;
-    emit captureMouseCursorChanged();
+    Q_EMIT captureMouseCursorChanged();
 }
 
 bool ScreenShooter::getCaptureMouseCursor()

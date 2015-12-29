@@ -47,9 +47,9 @@ private:
     bool serverQueryFinished;
     bool serverQueryError;
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void replyFinished(QNetworkReply* reply);
 
 };

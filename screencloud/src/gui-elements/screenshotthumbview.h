@@ -27,10 +27,10 @@ public:
 private:
     bool hovered;
     
-signals:
+Q_SIGNALS:
     void clicked();
     
-public slots:
+public Q_SLOTS:
     void mouseReleaseEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent* pe);
     void enterEvent(QEvent* e);

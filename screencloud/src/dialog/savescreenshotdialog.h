@@ -44,7 +44,7 @@ public:
     QString getName();
     void openEditor();
 
-private slots:
+private Q_SLOTS:
     void on_button_settings_clicked();
     void on_buttonBox_accepted();
     void on_comboBox_uploaders_currentIndexChanged(int row);
@@ -64,7 +64,7 @@ private:
     QString screenshotName;
     bool loggedIn;
 
-signals:
+Q_SIGNALS:
     void uploaderSelected(QString name, QString uploaderShortname);
 };
 

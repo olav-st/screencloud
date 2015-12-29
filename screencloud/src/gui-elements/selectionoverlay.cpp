@@ -47,7 +47,7 @@ void SelectionOverlay::showEvent(QShowEvent *e)
 
 void SelectionOverlay::hideEvent(QHideEvent *e)
 {
-    emit selectionCanceled();
+    Q_EMIT selectionCanceled();
 }
 
 
@@ -246,11 +246,11 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->matches(QKeySequence::Save) || event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
     {
-        emit selectionDone(selection, screenshot);
+        Q_EMIT selectionDone(selection, screenshot);
         this->close();
     }else if(event->matches(QKeySequence::Quit) || event->key() == Qt::Key_Escape)
     {
-        emit selectionCanceled();
+        Q_EMIT selectionCanceled();
         this->close();
     }else if(event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {

@@ -74,7 +74,7 @@ private:
     void resizeRight(QPoint& mousePos, QRect& rbGeometryBeforeResize);
     void resizeBottom(QPoint& mousePos, QRect& rbGeometryBeforeResize);
 
-signals:
+Q_SIGNALS:
     void selectionDone(QRect& area, QPixmap& screenshot);
     void selectionCanceled();
     void currentScreenChanged(int newScreenNumber);
@@ -96,7 +96,7 @@ private:
     int rbDistX, rbDistY;
     int currentScreenNumber;
 
-public slots:
+public Q_SLOTS:
 
 };
 

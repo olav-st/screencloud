@@ -30,7 +30,7 @@ int NumberSelector::number() const
 
 void NumberSelector::setNumber(int val)
 {
-    emit numberChanged(m_spinBox->value());
+    Q_EMIT numberChanged(m_spinBox->value());
 }
 
 void NumberSelector::increment()

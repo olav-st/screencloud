@@ -37,10 +37,10 @@ protected:
     QIcon icon;
     bool configured;
 
-public slots:
+public Q_SLOTS:
     virtual void upload(const QImage& screenshot, QString name);
 
-signals:
+Q_SIGNALS:
     void uploadingFinished(QString url);
     void uploadingError(QString errorMessage);
     void finished();

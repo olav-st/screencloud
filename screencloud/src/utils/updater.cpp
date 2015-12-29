@@ -147,7 +147,7 @@ void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls
             {
                 qApp->processEvents(QEventLoop::WaitForMoreEvents);
             }
-            emit pluginsUpdated();
+            Q_EMIT pluginsUpdated();
             numPluginsUpdating = 0;
         }
     }
@@ -173,7 +173,7 @@ void Updater::pluginInstallError(QString error)
 
 void Updater::progressUpdate(int)
 {
-    emit updateProgessRange(0, numPluginsUpdating * 4);
+    Q_EMIT updateProgessRange(0, numPluginsUpdating * 4);
 }
 
 
@@ -245,10 +245,10 @@ void Updater::replyFinished(QNetworkReply *reply)
         bool outdated = QVariant(outdatedElem.text()).toBool();
         if(outdated && notifyUpdates)
         {
-            emit newVersionAvailable(latestVersion);
+            Q_EMIT newVersionAvailable(latestVersion);
             showUpdateNotification();
         }
-        emit versionNumberRecieved(latestVersion, outdated);
+        Q_EMIT versionNumberRecieved(latestVersion, outdated);
     }
 }
 

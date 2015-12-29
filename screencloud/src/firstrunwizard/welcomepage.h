@@ -28,9 +28,9 @@ private:
     QLabel* label_text;
     QLabel* image_systray;
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

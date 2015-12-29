@@ -34,9 +34,9 @@ private:
     QLabel* label_window;
     QLabel* image_window;
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

@@ -28,9 +28,9 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
 private:
     QList<Uploader*> *uploaders;
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

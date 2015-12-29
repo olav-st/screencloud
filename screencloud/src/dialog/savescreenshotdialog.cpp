@@ -133,7 +133,7 @@ void SaveScreenshotDialog::on_buttonBox_accepted()
 {
     screenshotName = ui->input_name->text();
     saveSettings();
-    emit uploaderSelected(screenshotName, currentUploaderShortname);
+    Q_EMIT uploaderSelected(screenshotName, currentUploaderShortname);
 }
 
 void SaveScreenshotDialog::on_comboBox_uploaders_currentIndexChanged(int row)

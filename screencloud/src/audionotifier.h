@@ -34,7 +34,7 @@ private:
     QAudioFormat format;
     QFile audioFile;
 
-public slots:
+public Q_SLOTS:
     void audioStateChanged(QAudio::State state);
 
 };

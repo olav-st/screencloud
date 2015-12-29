@@ -112,12 +112,12 @@ void KaptionGraphicsToolkit::selectItem(const QString &className, bool upt)
     m_selectedItemClassName = className;
     updateGraphicsItemButtonsCheckedState();
     if (upt) updatePropertyToolbar(m_selectedItemClassName);
-    emit itemSelected();
+    Q_EMIT itemSelected();
 }
 
 void KaptionGraphicsToolkit::updatePropertyValue(const QString &property)
 {
-    emit propertyValueChanged(property, m_propertiesMap.value(property)->value());
+    Q_EMIT propertyValueChanged(property, m_propertiesMap.value(property)->value());
 }
 
 void KaptionGraphicsToolkit::deselectItem()

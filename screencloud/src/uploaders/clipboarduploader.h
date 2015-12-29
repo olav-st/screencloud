@@ -27,9 +27,9 @@ public:
     void showSettingsUI(QWidget* parent);
     bool isConfigured();
     QString getFilename();
-signals:
+Q_SIGNALS:
     
-public slots:
+public Q_SLOTS:
     void upload(const QImage& screenshot, QString name);
     
 };

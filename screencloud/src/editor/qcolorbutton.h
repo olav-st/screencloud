@@ -12,11 +12,11 @@ public:
     //! Returns the currently selected color.
     QColor color() const;
 
-public slots:
+public Q_SLOTS:
     //! Sets the currently selected color.
     void setColor(const QColor & color);
 
-signals:
+Q_SIGNALS:
     void selected(const QColor & color);
 protected:
     void paintEvent(QPaintEvent *);

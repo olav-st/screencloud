@@ -31,9 +31,9 @@ private:
     QLabel* label_text;
     QCheckBox* checkbox_runOnStartup;
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

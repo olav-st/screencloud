@@ -49,13 +49,13 @@ private:
 public:
     const static int NoNotification = 1;
     const static int ForceNotification = 2;
-signals:
+Q_SIGNALS:
     void newVersionAvailable(QString versionNumber);
     void versionNumberRecieved(QString versionNumber, bool outdated);
     void pluginsUpdated();
     void updateProgessRange(int, int);
 
-public slots:
+public Q_SLOTS:
     void showUpdateNotification();
     void showPluginUpdateNotification(QStringList plugins, QStringList urls);
     void showChangelog();

@@ -475,7 +475,7 @@ void PreferencesDialog::on_button_checkForUpdates_clicked()
 
 void PreferencesDialog::on_button_dashboard_clicked()
 {
-    emit openDashboardPressed();
+    Q_EMIT openDashboardPressed();
 }
 
 void PreferencesDialog::on_list_uploaders_doubleClicked(const QModelIndex &index)

@@ -43,9 +43,9 @@ private:
 public:
     QString workingDir;
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void upload(const QImage& screenshot, QString name);
     QString getFilename();
     void pythonError(QString err);

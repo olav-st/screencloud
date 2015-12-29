@@ -76,7 +76,7 @@ WId QxtWindowSystem::findWindow(const QString& title)
 {
     Window result = 0;
     WindowList list = windows();
-    foreach (const Window &wid, list)
+    Q_FOREACH (const Window &wid, list)
     {
         if (windowTitle(wid) == title)
         {

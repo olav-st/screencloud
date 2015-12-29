@@ -121,7 +121,7 @@ void UploadManager::uploaderFinished(QString url)
     disconnect(sender(), SIGNAL(uploadingError(QString)), this, SLOT(uploaderError(QString)));
     uploadFinished = true;
     INFO("URL: " + url);
-    emit finished(url);
+    Q_EMIT finished(url);
 }
 
 void UploadManager::uploaderError(QString errorMessage)
@@ -130,5 +130,5 @@ void UploadManager::uploaderError(QString errorMessage)
     disconnect(sender(), SIGNAL(uploadingError(QString)), this, SLOT(uploaderError(QString)));
     uploadFinished = true;
     WARNING(errorMessage);
-    emit error(errorMessage);
+    Q_EMIT error(errorMessage);
 }

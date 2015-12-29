@@ -30,7 +30,7 @@ Uploader::~Uploader()
 
 void Uploader::upload(const QImage &screenshot, QString name)
 {
-    emit finished();
+    Q_EMIT finished();
 }
 
 QString& Uploader::getName()

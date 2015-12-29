@@ -33,7 +33,7 @@ bool HotkeyEventFilter::eventFilter(QObject *obj, QEvent *event)
         // Checking for key combinations
         Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
 
-        emit keyRecorded(key, keycode, modifiers);
+        Q_EMIT keyRecorded(key, keycode, modifiers);
     } else {
         // standard event processing
         return QObject::eventFilter(obj, event);

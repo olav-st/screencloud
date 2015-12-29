@@ -47,7 +47,7 @@ private:
     QFile* tmpFile;
     int id_connect,id_login, id_cd_folder, id_cd_version, id_get, id_close;
 
-private slots:
+private Q_SLOTS:
     void updateDataTransferProgress(qint64 done, qint64 total);
     void downloadFinished(QNetworkReply *reply);
     void launchInstaller();

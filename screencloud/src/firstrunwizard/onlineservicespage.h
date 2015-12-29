@@ -19,9 +19,9 @@ private:
     PluginDialog* pluginDialog;
     QVBoxLayout* layout;
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

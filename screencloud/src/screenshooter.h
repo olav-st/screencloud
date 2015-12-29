@@ -44,7 +44,7 @@ public:
     const QImage& captureSelection(const QRect &area);
     const QImage& captureWindow(WId windowID = 0);
 
-signals:
+Q_SIGNALS:
     void screenshotTaken();
     void captureWindowBordersChanged();
     void captureMouseCursorChanged();

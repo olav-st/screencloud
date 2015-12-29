@@ -26,9 +26,9 @@ class PythonConsole : public QTextEdit
 public:
     explicit PythonConsole(QWidget *parent, PythonQtObjectPtr pythonContext);
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void stdOut(const QString& text);
     void stdErr(const QString& text);
     void keyPressEvent (QKeyEvent * e);

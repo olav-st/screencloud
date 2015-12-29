@@ -22,11 +22,11 @@ class ClickableLabel : public QLabel
 public:
     explicit ClickableLabel(QLabel *parent = 0);
 
-signals:
+Q_SIGNALS:
     void clicked();
     void linkClicked();
     
-public slots:
+public Q_SLOTS:
     void linkIsActivated(QString link);
 
 protected:

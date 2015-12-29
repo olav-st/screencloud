@@ -36,9 +36,9 @@ public:
     enum { Page_Intro, Page_Login, Page_NewAccount, Page_Activate, Page_Welcome, Page_KeyboardShortcuts, Page_OnlineServices, Page_Finished };
 private:
     QPixmap background;
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

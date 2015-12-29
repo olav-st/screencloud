@@ -24,12 +24,12 @@ ClickableLabel::ClickableLabel(QLabel *parent) :
 
 void ClickableLabel::mouseReleaseEvent(QMouseEvent *ev)
 {
-    emit clicked();
+    Q_EMIT clicked();
     QLabel::mouseReleaseEvent(ev);
 }
 
 void ClickableLabel::linkIsActivated(QString link)
 {
-    emit linkClicked();
+    Q_EMIT linkClicked();
     QDesktopServices::openUrl(QUrl(link));
 }

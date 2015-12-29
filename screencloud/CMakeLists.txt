@@ -207,8 +207,10 @@ if(COLOR_OUTPUT)
     add_definitions(-DCOLOR_OUTPUT=1)
 endif(COLOR_OUTPUT)
 
-# enable warnings
+#enable warnings
 add_definitions( -Wall )
+#disable qt keywords to avoid conflicts with python and others
+add_definitions(-DQT_NO_KEYWORDS)
 #Set version string and update channel
 add_definitions(-DVERSION="${VERSION_STRING}")
 add_definitions(-DUPDATE_CHANNEL="windows")

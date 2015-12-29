@@ -45,7 +45,7 @@ void PropertyToolEditor::setValue(const QVariant &var)
     if (var == m_value) return;
 
     m_value = var;
-    emit valueSet(m_value);
+    Q_EMIT valueSet(m_value);
 }
 
 inline
@@ -60,7 +60,7 @@ void PropertyToolEditor::changeValue(const QVariant &var)
     if (var == m_value) return;
 
     m_value = var;
-    emit valueChanged(m_value);
+    Q_EMIT valueChanged(m_value);
 }
 
 #endif // PROPERTYTOOLEDITOR_H

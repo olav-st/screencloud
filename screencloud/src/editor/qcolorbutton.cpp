@@ -41,7 +41,7 @@ void QColorButton::nextCheckState()
     connect(dialog, SIGNAL(currentColorChanged(QColor)), SLOT(setColor(const QColor &)));
 
     if (dialog->exec() == QDialog::Accepted) {
-        emit selected(col);
+        Q_EMIT selected(col);
     }else{
         setColor(savedColor);
     }

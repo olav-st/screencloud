@@ -44,7 +44,7 @@ void ClipboardUploader::upload(const QImage &screenshot, QString name)
 {
     qApp->clipboard()->setImage(screenshot);
     this->uploadingFinished("");
-    emit finished();
+    Q_EMIT finished();
 }
 
 void ClipboardUploader::showSettingsUI(QWidget *parent)

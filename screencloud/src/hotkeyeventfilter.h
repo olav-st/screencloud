@@ -28,9 +28,9 @@ public:
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
-signals:
+Q_SIGNALS:
     void keyRecorded(Qt::Key key, int keycode, Qt::KeyboardModifiers modifiers);
-public slots:
+public Q_SLOTS:
 
 };
 

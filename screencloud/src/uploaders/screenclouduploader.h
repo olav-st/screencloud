@@ -47,9 +47,9 @@ private:
     bool loggedIn;
     QByteArray bufferArray;
     QBuffer* buffer;
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void upload(const QImage& screenshot, QString name);
     void replyFinished(QNetworkReply* reply);
 

@@ -28,7 +28,7 @@ private:
     BusyOverlay* busyOverlay;
     QHBoxLayout *overlayLayout;
 
-private slots:
+private Q_SLOTS:
     void replyFinished(QNetworkReply* reply);
 };
 

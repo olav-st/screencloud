@@ -39,7 +39,7 @@ public:
     void parsePluginNode(QDomNode node);
     bool pluginsChanged();
     
-public slots:
+public Q_SLOTS:
     void setShowButtons(bool show);
     void setMirror(QString newUrl);
     void replyFinished(QNetworkReply* reply);
@@ -64,7 +64,7 @@ private:
     QStringList toUninstall;
     bool pluginsInstalledOrRemoved;
 
-signals:
+Q_SIGNALS:
     void mirrorChanged(QString);
     void updateProgessRange(int, int);
 };

@@ -42,7 +42,7 @@ private:
     bool serverQueryFinished;
     bool serverQueryError;
 
-private slots:
+private Q_SLOTS:
     void replyFinished(QNetworkReply* reply);
     void on_button_login_clicked();
 };

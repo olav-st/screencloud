@@ -76,13 +76,13 @@ public:
 
     QHash<QString, Uploader*> uploaderPlugins; //List of available uploader plugins
 
-signals:
+Q_SIGNALS:
     void installationProgress(int);
     void pluginInstalled(QString);
     void installationError(QString);
     void installationCanceled();
 
-public slots:
+public Q_SLOTS:
     void fileDownloaded(QNetworkReply* reply);
     void pythonStdOut(QString out);
     void pythonStdErr(QString err);

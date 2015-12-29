@@ -199,7 +199,7 @@ void PluginManager::installPlugins(QStringList &urls)
         QNetworkRequest request(zipUrl);
         netReplies.append(netManager.get(request));
         currentProgress += 1;
-        emit installationProgress(currentProgress);
+        Q_EMIT installationProgress(currentProgress);
         busy = true;
         while (busy) {
            qApp->processEvents(QEventLoop::WaitForMoreEvents);
@@ -228,7 +228,7 @@ void PluginManager::cancelInstallation()
         netReplies.at(i)->abort();
     }
     netReplies.clear();
-    emit installationCanceled();
+    Q_EMIT installationCanceled();
 }
 
 
@@ -259,14 +259,14 @@ void PluginManager::extractPlugin(QString zipFilename)
     }else
     {
         WARNING(tr("Failed to open zip file: ") + zipFilename);
-        emit installationError(tr("Failed to open zip file: ") + zipFilename);
+        Q_EMIT installationError(tr("Failed to open zip file: ") + zipFilename);
     }
     if(!d.remove(zipFilename))
     {
         WARNING(tr("Failed to remove tmp zip file ") + zipFilename);
     }
     currentProgress += 1;
-    emit installationProgress(currentProgress);
+    Q_EMIT installationProgress(currentProgress);
     analyzeAndMovePlugin(tmpExtractPath);
 }
 
@@ -302,19 +302,19 @@ void PluginManager::analyzeAndMovePlugin(QString exctractedDirPath)
         if(!copyFolder(mainFileInfo.absoluteDir().absolutePath() + "/", PluginManager::pluginPath() + QDir::separator() + shortname + "/"))
         {
             WARNING(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + QDir::separator() + shortname);
-            emit installationError(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + QDir::separator() + shortname);
+            Q_EMIT installationError(tr("Failed to move ") + mainFileInfo.absoluteDir().absolutePath() + tr(" to ") + PluginManager::pluginPath() + QDir::separator() + shortname);
         }
         if(!removeDir(mainFileInfo.absoluteDir().absolutePath()))
         {
             WARNING(tr("Failed to remove tmp dir ") + mainFileInfo.absoluteDir().absolutePath());
         }
         currentProgress += 1;
-        emit installationProgress(currentProgress);
+        Q_EMIT installationProgress(currentProgress);
         busy = false;
     }else
     {
         WARNING(tr("Could not find main.py in ") + exctractedDirPath);
-        emit installationError(tr("Could not find main.py in ") + exctractedDirPath);
+        Q_EMIT installationError(tr("Could not find main.py in ") + exctractedDirPath);
     }
 }
 
@@ -390,7 +390,7 @@ void PluginManager::fileDownloaded(QNetworkReply *reply)
         tmpFile->close();
         INFO(tr("[2/4] File ") + tmpFile->fileName() + tr(" downloaded."));
         currentProgress += 1;
-        emit installationProgress(currentProgress);
+        Q_EMIT installationProgress(currentProgress);
         this->extractPlugin(tmpFile->fileName());
     }
     netReplies.removeOne(reply);

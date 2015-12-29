@@ -33,7 +33,7 @@ private:
     QPixmap pixmap;
     KaptionGraphicsToolkit* toolkit;
 
-public slots:
+public Q_SLOTS:
     void dialogAccepted();
 };
 

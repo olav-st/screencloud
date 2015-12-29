@@ -36,12 +36,12 @@ private:
     bool uploadFinished;
     QString lastScreenshotName;
 
-signals:
+Q_SIGNALS:
     void finished(QString url);
     void error(QString errorMessage);
     void startUpload(const QImage& screenshot);
 
-public slots:
+public Q_SLOTS:
     void uploaderFinished(QString url);
     void uploaderError(QString errorMessage);
 

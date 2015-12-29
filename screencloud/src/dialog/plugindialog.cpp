@@ -247,14 +247,14 @@ void PluginDialog::on_combo_mirror_currentIndexChanged(int index)
         QString url = QInputDialog::getText(this, tr("Enter URL"),tr("URL to plugin-list.xml:"), QLineEdit::Normal,"");
         if(!url.isEmpty())
         {
-            emit mirrorChanged(url);
+            Q_EMIT mirrorChanged(url);
         }else
         {
             ui->combo_mirror->setCurrentIndex(0);
         }
     }else
     {
-        emit mirrorChanged(GITHUB_PLUGIN_LIST_URL);
+        Q_EMIT mirrorChanged(GITHUB_PLUGIN_LIST_URL);
     }
 }
 
@@ -305,5 +305,5 @@ void PluginDialog::on_buttonBox_accepted()
 
 void PluginDialog::progressUpdate(int)
 {
-    emit updateProgessRange(0, toInstallUrls.size() * 4);
+    Q_EMIT updateProgessRange(0, toInstallUrls.size() * 4);
 }

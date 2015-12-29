@@ -14,9 +14,9 @@ class BusyOverlay : public QProgressBar
 public:
     explicit BusyOverlay(QWidget *parent = 0);
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
 
 };
 

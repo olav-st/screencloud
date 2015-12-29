@@ -95,7 +95,7 @@ private:
     AudioNotifier notifier;
     bool useProxy, autodetectProxy;
     QNetworkProxy proxy;
-private slots:
+private Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void openDashboard();
     void captureFullScreenAction();

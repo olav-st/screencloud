@@ -74,7 +74,7 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
     {
         PythonQt::self()->handleError();
         WARNING(tr("Failed to call upload() in ") + this->className);
-        emit uploadingError(tr("Failed to call ") + this->className + ".upload()" + "\n" + lastPythonErr);
+        Q_EMIT uploadingError(tr("Failed to call ") + this->className + ".upload()" + "\n" + lastPythonErr);
         lastPythonErr.clear();
         hadPythonErr = false;
         disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
@@ -84,7 +84,7 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
     if(success)
     {
         QString url = moduleObj.getVariable("ScreenCloud.clipboardUrl").toString();
-        emit uploadingFinished(url);
+        Q_EMIT uploadingFinished(url);
     }else
     {
         QString errorString = moduleObj.getVariable("ScreenCloud.uploadingError").toString();
@@ -92,13 +92,13 @@ void PythonUploader::upload(const QImage &screenshot, QString name)
         {
             errorString = tr("Unknown error");
         }
-        emit uploadingError(errorString);
+        Q_EMIT uploadingError(errorString);
     }
     //Clean up
     disconnect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(pythonError(QString)));
     moduleObj.evalScript("ScreenCloud.clipboardUrl = None");
     moduleObj.evalScript("ScreenCloud.uploadingError = None");
-    emit finished();
+    Q_EMIT finished();
 }
 
 void PythonUploader::showSettingsUI(QWidget *parent)

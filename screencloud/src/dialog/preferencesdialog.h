@@ -93,11 +93,11 @@ private:
     QString proxyUsername;
     QString proxyPassword;
     QString proxyType;
-public slots:
+public Q_SLOTS:
     void dialogFinished(int r);
     void comboboxImageFormatChanged(int item);
     void pluginsUpdated();
-private slots:
+private Q_SLOTS:
     void recordHotkey(QTableWidgetItem* item);
     void keyRecorded(Qt::Key key, int keycode, Qt::KeyboardModifiers modifiers);
     void hotkeyItemChanged(QTableWidgetItem * current, QTableWidgetItem * previous);
@@ -118,7 +118,7 @@ private slots:
     void on_list_uploaders_clicked(const QModelIndex &index);
     void on_button_settings_clicked();
 
-signals:
+Q_SIGNALS:
     void openDashboardPressed();
 };
 

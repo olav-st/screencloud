@@ -57,7 +57,7 @@ void ScreenshotThumbView::drawText(QPainter *painter, const QColor &bgColor, con
 
 void ScreenshotThumbView::mouseReleaseEvent(QMouseEvent *event)
 {
-    emit clicked();
+    Q_EMIT clicked();
 }
 
 void ScreenshotThumbView::paintEvent(QPaintEvent *pe)
