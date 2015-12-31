@@ -63,7 +63,7 @@ const QImage &ScreenShooter::captureFullscreen()
     QPixmap pixmap = screen->grabWindow(0, screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
 #else
     QRect screenGeometry = QApplication::desktop()->screenGeometry(screenNumber);
-    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->screen(screenNumber)->winId(),screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height())
+    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->screen(screenNumber)->winId(),screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
 #endif
     screenshot = pixmap.toImage();
     setScreenshot(pixmap.toImage());
