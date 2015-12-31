@@ -64,7 +64,7 @@ void Updater::checkForUpdates(int flag)
     QUrl fullUrl(baseUrl);
     fullUrl.setQuery(query);
 #else
-    QUrl fullUrl(versionQuery);
+    QUrl fullUrl(query);
 #endif
     QNetworkRequest appUpdateCheckReq;
     appUpdateCheckReq.setUrl(fullUrl);
