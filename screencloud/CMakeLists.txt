@@ -12,6 +12,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty)
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
 option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
 option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
+option(DISABLE_QT_KEYWORDS "Disable Qt keywords (for example 'slots') to avoid conflicts" OFF)
 
 #These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
 set(CONSUMER_KEY_SCREENCLOUD "" CACHE STRING "Consumer key for screencloud.net")
@@ -210,7 +211,9 @@ endif(COLOR_OUTPUT)
 #enable warnings
 add_definitions( -Wall )
 #disable qt keywords to avoid conflicts with python and others
-add_definitions(-DQT_NO_KEYWORDS)
+if(DISABLE_QT_KEYWORDS)
+    add_definitions(-DQT_NO_KEYWORDS)
+endif(DISABLE_QT_KEYWORDS)
 #Set version string and update channel
 add_definitions(-DVERSION="${VERSION_STRING}")
 add_definitions(-DUPDATE_CHANNEL="windows")
