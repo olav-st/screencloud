@@ -27,7 +27,12 @@
 #include <systemtrayicon.h>
 #include <firstrunwizard/firstrunwizard.h>
 #include <PythonQt.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
 #include <PythonQt_QtAll.h>
+#else
+#include <PythonQt_QtBindings.h>
+#endif
 
 
 int main(int argc, char *argv[])
@@ -71,7 +76,11 @@ int main(int argc, char *argv[])
         }
         //Setup the python interpreter
         PythonQt::init(PythonQt::RedirectStdOut);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         PythonQt_QtAll::init();
+#else
+        PythonQt_init_QtBindings();
+#endif
 
         PythonQt::self()->getMainModule().evalScript("import sys"); //Required for addSysPath on some systems
         if(PythonQt::self()->hadError())
