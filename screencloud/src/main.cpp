@@ -28,7 +28,7 @@
 #include <firstrunwizard/firstrunwizard.h>
 #include <PythonQt.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#ifdef PYTHONQT_QTALL_FOUND
 #include <PythonQt_QtAll.h>
 #else
 #include <PythonQt_QtBindings.h>
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         }
         //Setup the python interpreter
         PythonQt::init(PythonQt::RedirectStdOut);
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#ifdef PYTHONQT_QTALL_FOUND
         PythonQt_QtAll::init();
 #else
         PythonQt_init_QtBindings();

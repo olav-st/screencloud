@@ -277,20 +277,24 @@ set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHON_LIBRARIES}
 )
 
-#Include PythonQt in the build
+#Find PythonQt
 find_package(PythonQt REQUIRED)
 include_directories(${PYTHONQT_INCLUDE_DIR})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHONQT_LIBRARY}
 )
-
-if(QT_USE_QT5)
-    find_package(PythonQt_QtAll REQUIRED)
+#Try to find PythonQt_QtAll. If not found, PythonQt_QtBindings will be used
+find_package(PythonQt_QtAll)
+if(PYTHONQT_QTALL_FOUND)
+    message(STATUS "Using PythonQt_QtAll for Qt bindings.")
     include_directories(${PYTHONQT_QTALL_INCLUDE_DIR})
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         ${PYTHONQT_QTALL_LIBRARY}
     )
-endif(QT_USE_QT5)
+    add_definitions(-DPYTHONQT_QTALL_FOUND=1)
+else(PYTHONQT_QTALL_FOUND)
+    message(STATUS "Using PythonQt_QtBindings (old) for Qt bindings.")
+endif(PYTHONQT_QTALL_FOUND)
 
 #Platform specific libs
 if(WIN32)
