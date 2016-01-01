@@ -79,11 +79,15 @@ int main(int argc, char *argv[])
 #endif
 
         PythonQt::self()->getMainModule().evalScript("import sys"); //Required for addSysPath on some systems
+        /*
+         * Commented out since it causes build errors on some systems
+         *
         if(PythonQt::self()->hadError())
         {
             WARNING(QObject::tr("Failed to import sys module. Check your Python installation."));
             QMessageBox::critical(NULL, QObject::tr("Failed to import sys"), QObject::tr("Failed to import sys module. Check your Python installation."));
         }
+        */
 
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib-native");
