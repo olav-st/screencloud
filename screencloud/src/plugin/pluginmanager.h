@@ -66,8 +66,10 @@ public:
     static QString installedVersion(QString shortname);
     static int countInstalledPlugins();
     static QString pluginPath() {
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5,4,0)
         return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/plugins";
+#elif QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/plugins";
 #else
         return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/plugins";
 #endif

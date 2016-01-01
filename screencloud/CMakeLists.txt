@@ -225,22 +225,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-#required qt modules
-set( QT_USE_QTNETWORK TRUE)
-set( QT_USE_QTXML TRUE )
-set( QT_USE_QTSVG TRUE )
-find_package(QtMobility COMPONENTS MultimediaKit)
-if(QT_MOBILITY_FOUND)
-    message(STATUS "Using QtMobility to provide QAudioOutput.")
-    include_directories(${QT_MOBILITY_MULTIMEDIAKIT_INCLUDE_DIR} ${QT_MOBILITY_INCLUDE_DIR})
-    set(REQUIRED_LIBS ${REQUIRED_LIBS}
-        ${QT_MOBILITY_MULTIMEDIAKIT_LIBRARY}
-    )
-else(QT_MOBILITY_FOUND)
-    message(STATUS "Using Qt library to provide QAudioOutput.")
-    set( QT_USE_QTMULTIMEDIA TRUE)
-endif(QT_MOBILITY_FOUND)
-
 #Find Qt4 or Qt5 (required)
 if(QT_USE_QT5)
     find_package(Qt5Widgets REQUIRED)
@@ -253,6 +237,20 @@ if(QT_USE_QT5)
         find_package(Qt5X11Extras REQUIRED)
     endif(UNIX AND NOT APPLE)
 else(QT_USE_QT5)
+    set( QT_USE_QTNETWORK TRUE)
+    set( QT_USE_QTXML TRUE )
+    set( QT_USE_QTSVG TRUE )
+    find_package(QtMobility COMPONENTS MultimediaKit)
+    if(QT_MOBILITY_FOUND)
+        message(STATUS "Using QtMobility to provide QAudioOutput.")
+        include_directories(${QT_MOBILITY_MULTIMEDIAKIT_INCLUDE_DIR} ${QT_MOBILITY_INCLUDE_DIR})
+        set(REQUIRED_LIBS ${REQUIRED_LIBS}
+            ${QT_MOBILITY_MULTIMEDIAKIT_LIBRARY}
+        )
+    else(QT_MOBILITY_FOUND)
+        message(STATUS "Using Qt library to provide QAudioOutput.")
+        set( QT_USE_QTMULTIMEDIA TRUE)
+    endif(QT_MOBILITY_FOUND)
     find_package(Qt4 REQUIRED)
     include( ${QT_USE_FILE} )
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
