@@ -5,7 +5,7 @@ compiler:
   - gcc
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install git cmake qtbase5-dev qt5-default libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev
+  - sudo apt-get install -y git cmake qtbase5-dev qt5-default libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev
 before_script:
   - cd screencloud
   - mkdir build-qt5 build-qt4
@@ -14,15 +14,15 @@ script:
   - cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF
   - make
   - cd ../build-qt5
-  - sudo apt-get purge libpythonqt2-dev
+  - sudo apt-get purge libpythonqt-dev
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
+  - cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
   - sudo make install
   - cd ../..
   - sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so
   - sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so
-  - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake
+  - cmake ..
   - make
 os:
   - linux
