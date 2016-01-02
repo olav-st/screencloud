@@ -14,7 +14,7 @@ script:
   - cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF
   - make
   - cd ../build-qt5
-  - sudo apt-get purge libpythonqt-dev
+  - sudo apt-get purge -y libpythonqt-dev
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
   - cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
