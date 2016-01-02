@@ -16,20 +16,17 @@ before_install:
 before_script:
   - cd screencloud
   - mkdir build-qt5 build-qt4
+script:
   - cd build-qt5
   - sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so
   - sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so
   - cmake .. -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake
-  - cd ../build-qt4
+  - make
   - sudo rm /usr/local/lib/libQtPython_QtAll.so
   - sudo rm /usr/local/lib/libQtPython.so
+  - cd ../build-qt4
   - sudo apt-get install libpythonqt2-dev
   - cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF
-  - cd ..
-script:
-  - cd build-qt5
-  - make
-  - cd ../build-qt4
   - make
 os:
   - linux
