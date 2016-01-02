@@ -404,3 +404,11 @@ if(WIN32)
     fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"${QT_PLUGINS_IMAGEFORMATS} ${QT_PLUGINS_ICONENGINES}\" \"\")")
     install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat \")")
 endif(WIN32)
+
+########### Add uninstall target ###############
+CONFIGURE_FILE(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake/cmake_uninstall.cmake"
+  IMMEDIATE @ONLY)
+ADD_CUSTOM_TARGET(uninstall
+  "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake/cmake_uninstall.cmake")
