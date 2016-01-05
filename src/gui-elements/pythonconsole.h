@@ -35,8 +35,9 @@ public Q_SLOTS:
 
 private:
     void executeCode(const QString& code);
-    void appendPrompt();
-    void appendErrorMsg(const QString& errorMsg);
+    void insertPrompt();
+    void insertNewline();
+    void insertErrorMsg(const QString& errorMsg);
 
     PythonQtObjectPtr pythonContext;
     QColor colorDefault, colorError;

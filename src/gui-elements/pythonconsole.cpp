@@ -23,17 +23,17 @@ PythonConsole::PythonConsole(QWidget *parent, PythonQtObjectPtr pythonContext) :
     connect(PythonQt::self(), SIGNAL(pythonStdOut(const QString&)), this, SLOT(stdOut(const QString&)));
     connect(PythonQt::self(), SIGNAL(pythonStdErr(const QString&)), this, SLOT(stdErr(const QString&)));
 
-    appendPrompt();
+    insertPrompt();
 }
 
 void PythonConsole::stdOut(const QString &text)
 {
-    append(text);
+    insertPlainText(text);
 }
 
 void PythonConsole::stdErr(const QString &text)
 {
-    appendErrorMsg(text);
+    insertErrorMsg(text);
 }
 
 void PythonConsole::keyPressEvent(QKeyEvent *e)
@@ -43,8 +43,9 @@ void PythonConsole::keyPressEvent(QKeyEvent *e)
     {
         QString line = toPlainText().split("\n").last();
         line.remove(prompt + " "); //Remove prompt
+        insertNewline();
         executeCode(line);
-        appendPrompt();
+        insertPrompt();
         break;
     }
     case Qt::Key_Backspace:
@@ -71,15 +72,20 @@ void PythonConsole::executeCode(const QString &code)
     }
 }
 
-void PythonConsole::appendPrompt()
+void PythonConsole::insertPrompt()
 {
-    append(QString(prompt) + " ");
+    insertPlainText(QString(prompt) + " ");
     promptEndPos = textCursor().position();
 }
 
-void PythonConsole::appendErrorMsg(const QString &errorMsg)
+void PythonConsole::insertNewline()
+{
+    append("");
+}
+
+void PythonConsole::insertErrorMsg(const QString &errorMsg)
 {
     setTextColor(colorError);
-    append(errorMsg);
+    insertPlainText(errorMsg);
     setTextColor(colorDefault);
 }
