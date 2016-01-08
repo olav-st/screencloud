@@ -14,19 +14,16 @@ set(screencloud_HEADERS_MOC ${screencloud_HEADERS_MOC}
 
 if(WIN32)
     set(screencloud_SOURCES ${screencloud_SOURCES}
-    src/utils/startup.cpp
     src/3rdparty/LibQxt/win/qxtwindowsystem_win.cpp
     src/3rdparty/LibQxt/win/qxtglobalshortcut_win.cpp
     )
 elseif(APPLE)
     set(screencloud_SOURCES ${screencloud_SOURCES}
-    src/utils/startup_mac.mm
     src/3rdparty/LibQxt/mac/qxtwindowsystem_mac.cpp
     src/3rdparty/LibQxt/mac/qxtglobalshortcut_mac.cpp
     )
 else()
     set(screencloud_SOURCES ${screencloud_SOURCES}
-    src/utils/startup.cpp
     src/3rdparty/LibQxt/x11/qxtwindowsystem_x11.cpp
     src/3rdparty/LibQxt/x11/qxtglobalshortcut_x11.cpp
     )
@@ -48,3 +45,6 @@ endif(UNIX AND NOT APPLE)
 if(QT_USE_QT5)
 	include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 endif(QT_USE_QT5)
+
+#Fixes some dllimport errors on windows
+add_definitions(-DQXT_STATIC=1)
