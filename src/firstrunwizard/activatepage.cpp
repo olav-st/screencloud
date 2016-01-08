@@ -1,6 +1,6 @@
 //
 // ScreenCloud - An easy to use screenshot sharing application
-// Copyright (C) 2014 Olav Sortland Thoresen <olav.s.th@gmail.com>
+// Copyright (C) 2016 Olav Sortland Thoresen <olav.s.th@gmail.com>
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
