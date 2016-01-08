@@ -202,8 +202,6 @@ if(COLOR_OUTPUT)
     add_definitions(-DCOLOR_OUTPUT=1)
 endif(COLOR_OUTPUT)
 
-#enable warnings
-add_definitions( -Wall )
 #disable qt keywords to avoid conflicts with python and others
 if(DISABLE_QT_KEYWORDS)
     add_definitions(-DQT_NO_KEYWORDS)
@@ -333,6 +331,14 @@ if(QT_USE_QT5)
 endif(QT_USE_QT5)
 
 target_link_libraries( screencloud ${REQUIRED_LIBS})
+
+#enable warnings
+if(CMAKE_COMPILER_IS_GNUCC)
+    set_property( TARGET screencloud APPEND_STRING PROPERTY COMPILE_FLAGS -Wall )
+endif ( CMAKE_COMPILER_IS_GNUCC )
+if(MSVC)
+    set_property( TARGET screencloud APPEND_STRING PROPERTY COMPILE_FLAGS /W3 )
+endif( MSVC )
 
 #Copy required files to build dir
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
