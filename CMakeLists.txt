@@ -331,7 +331,11 @@ include_directories( ${CMAKE_BINARY_DIR} )
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
 if(QT_USE_QT5)
-    qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent X11Extras)
+    if(UNIX AND NOT APPLE)
+        qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent X11Extras)
+    else(UNIX AND NOT APPLE)
+        qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent)
+    endif(UNIX AND NOT APPLE)
 endif(QT_USE_QT5)
 
 target_link_libraries( screencloud ${REQUIRED_LIBS})
