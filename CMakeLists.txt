@@ -181,28 +181,22 @@ set( screencloud_RESOURCES
         res/icons.qrc
 )
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+#Platform specific resources
+if(WIN32)
     set( screencloud_RESOURCES ${screencloud_RESOURCES}
             res/resources_win.qrc
     )
-    # resource compilation for MinGW
-    ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/screencloud.o
-                        COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.rc 
-                             -o ${CMAKE_CURRENT_BINARY_DIR}/screencloud.o )
-    SET(screencloud_SOURCES ${screencloud_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/screencloud.o)
-
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(screencloud_SOURCES ${screencloud_SOURCES} res/screencloud.rc)
+elseif(APPLE)
     set( screencloud_RESOURCES ${screencloud_RESOURCES}
             res/resources_mac.qrc
     )
     add_subdirectory(../ScreenCloudHelper/ ScreenCloudHelper)
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+else()
     set( screencloud_RESOURCES ${screencloud_RESOURCES}
             res/resources_linux.qrc
     )
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+endif()
 
 if(COLOR_OUTPUT)
     add_definitions(-DCOLOR_OUTPUT=1)
@@ -219,11 +213,11 @@ add_definitions(-DVERSION="${VERSION_STRING}")
 add_definitions(-DUPDATE_CHANNEL="windows")
 add_definitions(-DGITHUB_PLUGIN_LIST_URL="https://raw.githubusercontent.com/olav-st/screencloud-plugins/master/plugin-list.xml")
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+if(APPLE)
     set(CMAKE_EXE_LINKER_FLAGS
     "-framework Foundation -framework ServiceManagement -framework ApplicationServices"
     )
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+endif(APPLE)
 
 #Find Qt4 or Qt5 (required)
 if(QT_USE_QT5)
