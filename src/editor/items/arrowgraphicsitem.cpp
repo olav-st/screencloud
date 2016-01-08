@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES //Fix for visual studio
+#include <cmath>
+
 #include "arrowgraphicsitem.h"
 
 #include <QGraphicsPathItem>
@@ -12,7 +15,6 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsDropShadowEffect>
 #include <QColor>
-#include <cmath>
 #include "editor/scale.h"
 #include "handlegraphicsitem.h"
 
