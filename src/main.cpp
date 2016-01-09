@@ -90,7 +90,10 @@ int main(int argc, char *argv[])
         */
 
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
+#ifdef Q_OS_WIN
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib-native");
+		PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "Crypto.zip");
+#endif
 #ifdef Q_OS_MACX
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules"  + QDir::separator() + "python-stdlib-native");
