@@ -35,8 +35,8 @@
                         <File Id="QT5OPENGL.DLL" Name="Qt5OpenGL.dll" Source="..\bin\Qt5OpenGL.dll" />
                         <File Id="QT5SVG.DLL" Name="Qt5Svg.dll" Source="..\bin\Qt5Svg.dll" />
                     </Component>
-                    <Component Id="LIBPYTHON35.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
-                        <File Id="LIBPYTHON35.ZIP" Name="libpython3.5.zip" Source="..\libpython3.5.zip" />
+                    <Component Id="PYTHON35.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
+                        <File Id="PYTHON35.ZIP" Name="python3.5.zip" Source="..\python3.5.zip" />
                     </Component>
                     <Component Id="PY_STARTUP_MODULES" Guid="2A819964-FADA-4E56-A828-99953937CB7C">
                         <File Id="LZMA.PYD" Name="_lzma.pyd" Source="..\DLLs\_lzma.pyd" />
@@ -136,7 +136,7 @@
             <ComponentRef Id="ICONENGINES" />
             <ComponentRef Id="IMAGEFORMATS" />
             <ComponentRef Id="SCREENCLOUD.PY" />
-            <ComponentRef Id="LIBPYTHON35.ZIP" />
+            <ComponentRef Id="PYTHON35.ZIP" />
             <ComponentRef Id="PYTHON_NATIVES" />
             <ComponentRef Id="PY_STARTUP_MODULES" />
             <ComponentRef Id="CRYPTO" />
