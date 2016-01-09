@@ -1,6 +1,17 @@
-set version=0.0.0
+::Default values
+set version="0.0.0"
 set update_channel=windows
 set arch=x86
+
+if not "%1"=="" (
+	set version=%1
+)
+if not "%2"=="" (
+	set update_channel=%2
+)
+if not "%3"=="" (
+	set arch=%3
+)
 
 if not exist BatchSubstitute.bat (
 	echo "This script requires BatchSubstitute.bat"
@@ -8,23 +19,12 @@ if not exist BatchSubstitute.bat (
 	exit
 )
 
-ECHO WScript.Echo InputBox( "Enter version number", "versionNumberInput", "" ) >usermessage.vbs
-FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo usermessage.vbs') DO SET versionNumberInput=%%A
-set version=%versionNumberInput%
-DEL usermessage.vbs
-
-ECHO WScript.Echo InputBox( "Enter update channel", "updateChannelInput", "windows" )>usermessage.vbs
-FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo usermessage.vbs') DO SET updateChannelInput=%%A
-set update_channel=%updateChannelInput%
-DEL usermessage.vbs
-
-::del ScreenCloud\ScreenCloud.exe
-::copy ..\..\..\Screencloud-build-desktop-Qt_4_7_4_for_Desktop_-_MinGW_4_4__Qt_SDK__Release\release\ScreenCloud.exe ScreenCloud\ScreenCloud.exe
+where /q candle || ECHO Cound not find candle.exe from wix. Needs to be in your PATH. && EXIT /B
+where /q light || ECHO Cound not find light.exe from wix. Needs to be in your PATH. && EXIT /B
 
 ::Strip all binaries
 cd bin
-print "Stripping binaries..."
-strip --strip-unneeded libPythonQt.dll
+echo "Stripping binaries..."
 strip --strip-unneeded screencloud.exe
 cd ..
 ::Set the version number in the wix file

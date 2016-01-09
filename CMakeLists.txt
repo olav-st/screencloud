@@ -225,8 +225,19 @@ if(QT_USE_QT5)
     find_package(Qt5Svg REQUIRED)
     find_package(Qt5Multimedia REQUIRED)
     find_package(Qt5Concurrent REQUIRED)
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
+        Qt5::Widgets
+        Qt5::Network
+        Qt5::Xml
+        Qt5::Svg
+        Qt5::Multimedia
+        Qt5::Concurrent
+    )
     if(UNIX AND NOT APPLE)
         find_package(Qt5X11Extras REQUIRED)
+        set(REQUIRED_LIBS ${REQUIRED_LIBS}        
+            Qt5::X11Extras
+        )
     endif(UNIX AND NOT APPLE)
 else(QT_USE_QT5)
     set( QT_USE_QTNETWORK TRUE)
@@ -264,7 +275,7 @@ if(PYTHON_USE_PYTHON3)
 else(PYTHON_USE_PYTHON3)
     find_package(PythonLibs 2.6 REQUIRED)
 endif(PYTHON_USE_PYTHON3)
-include_directories(${PYTHON_INCLUDE_DIRS})
+include_directories(${PYTHON_INCLUDE_DIR})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
     ${PYTHON_LIBRARIES}
 )
@@ -322,14 +333,6 @@ include_directories( ${CMAKE_BINARY_DIR} )
 
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
-if(QT_USE_QT5)
-    if(UNIX AND NOT APPLE)
-        qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent X11Extras)
-    else(UNIX AND NOT APPLE)
-        qt5_use_modules(screencloud Widgets Network Xml Svg Multimedia Concurrent)
-    endif(UNIX AND NOT APPLE)
-endif(QT_USE_QT5)
-
 target_link_libraries( screencloud ${REQUIRED_LIBS})
 
 #enable warnings
@@ -339,6 +342,9 @@ endif ( CMAKE_COMPILER_IS_GNUCC )
 if(MSVC)
     set_property( TARGET screencloud APPEND_STRING PROPERTY COMPILE_FLAGS /W3 )
 endif( MSVC )
+
+#set version of binary
+set_target_properties(screencloud PROPERTIES VERSION ${VERSION_STRING})
 
 #Copy required files to build dir
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
@@ -393,20 +399,45 @@ if(APPLE)
     ")
 endif(APPLE)
 if(WIN32)
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/screencloud.exe" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
-    #get the required qt plugins
-    install(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
-    install(DIRECTORY "${QT_PLUGINS_DIR}/iconengines" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
-    file(GLOB_RECURSE QT_PLUGINS_IMAGEFORMATS "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
-    file(GLOB_RECURSE QT_PLUGINS_ICONENGINES "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
-    #copy libeay32 and ssleay32
-    install(FILES ${OPENSSL_LIBRARIES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
-    #copy other dependencies with fixup_bundle
-    install(CODE "
-    include(BundleUtilities)
-    fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"${QT_PLUGINS_IMAGEFORMATS} ${QT_PLUGINS_ICONENGINES}\" \"\")")
-    install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat \")")
+    if(NOT QT_USE_QT5)
+        message(ERROR "Install target no longer supports Qt 4!")
+    else()
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/screencloud.exe" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+        #Find dirs for the libs we're linking against
+        foreach(LIB ${REQUIRED_LIBS})
+            if(LIB MATCHES "Qt5::")
+                get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
+            endif()
+            get_filename_component(LIB_DIR ${LIB} DIRECTORY)
+            set(LIB_DIRS ${LIB_DIRS}
+                ${LIB_DIR}
+                )
+        endforeach()
+        #Hack to make fixup_bundle work on win 10
+        set(LIB_DIRS ${LIB_DIRS}
+            "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
+        )
+        #Hack to make sure OpenSSL dlls are found
+        set(RUNTIME_LIBS ${RUNTIME_LIBS}
+            ${OPENSSL_INCLUDE_DIR}/../bin/libeay32.dll
+            ${OPENSSL_INCLUDE_DIR}/../bin/ssleay32.dll
+        )
+        install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+        #Copy required qt plugins
+        get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
+        get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
+        get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
+        install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats")
+        install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines")
+        #Copy pythons dlls dir
+        install(DIRECTORY ${PYTHON_INCLUDE_DIR}/../DLLs DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+        #Use fixup_bundle to copy dlls
+        install(CODE "
+        include(BundleUtilities)
+        fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"${LIB_DIRS}\")")
+        install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows x86 \")")
+    endif()
 endif(WIN32)
 
 ########### Add uninstall target ###############
