@@ -22,6 +22,9 @@ elseif(APPLE)
     src/3rdparty/LibQxt/mac/qxtwindowsystem_mac.cpp
     src/3rdparty/LibQxt/mac/qxtglobalshortcut_mac.cpp
     )
+    set(screencloud_HEADERS ${screencloud_HEADERS}
+        src/3rdparty/LibQxt/mac/qxtwindowsystem_mac.h
+    )
 else()
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/3rdparty/LibQxt/x11/qxtwindowsystem_x11.cpp
