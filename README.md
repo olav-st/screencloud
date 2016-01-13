@@ -10,8 +10,8 @@ Features
 --------------
 * Open Source and cross-platform(Windows, Mac & Linux)  
 * Fast and easy: Snap a photo, paste the link, done!
-* Plugin support, save to Dropbox, Imgur, Ubuntu One...
-* Available from the [Ubuntu Software Centre](https://apps.ubuntu.com/cat/applications/screencloud/) and the [Mac App Store](https://itunes.apple.com/us/app/screencloud/id527048885?ls=1&mt=12)
+* Plugin support, save to Dropbox, Imgur, etc.
+* Built in screenshot editor.
 
 Compiling
 --------------
@@ -19,11 +19,10 @@ ScreenCloud uses the CMake build system, start off by downloading the appropriat
 
 * [Compiling on Ubuntu](https://github.com/olav-st/screencloud/wiki/Compiling-on-Ubuntu)
 * [Compiling on Mac OS X (WIP)](https://github.com/olav-st/screencloud/wiki/Compiling-on-Mac-OS-X)
-* [Compiling on Windows (WIP)](https://github.com/olav-st/screencloud/wiki/Compiling-on-Windows)
+* [Compiling on Windows](https://github.com/olav-st/screencloud/wiki/Compiling-on-Windows)
 
 Roadmap
 --------------
 Here's a quick list of features I've wanted to implement, but not gotten around to yet. Feel free to contribute to this list:
 
 * Translation support
-* Qt5 port (in progress, see the `qt5-port` branch)
