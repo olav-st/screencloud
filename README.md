@@ -18,7 +18,7 @@ Compiling
 ScreenCloud uses the CMake build system, start off by downloading the appropriate version for your OS from the [CMake website](http://www.cmake.org/) or your distro's repositories. After installing CMake, choose the OS you're compiling on from the the list below:
 
 * [Compiling on Ubuntu](https://github.com/olav-st/screencloud/wiki/Compiling-on-Ubuntu)
-* [Compiling on Mac OS X (WIP)](https://github.com/olav-st/screencloud/wiki/Compiling-on-Mac-OS-X)
+* [Compiling on Mac OS X](https://github.com/olav-st/screencloud/wiki/Compiling-on-Mac-OS-X)
 * [Compiling on Windows](https://github.com/olav-st/screencloud/wiki/Compiling-on-Windows)
 
 Roadmap
