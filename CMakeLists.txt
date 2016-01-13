@@ -191,7 +191,7 @@ elseif(APPLE)
     set( screencloud_RESOURCES ${screencloud_RESOURCES}
             res/resources_mac.qrc
     )
-    add_subdirectory(../ScreenCloudHelper/ ScreenCloudHelper)
+    add_subdirectory(ScreenCloudHelper/ ScreenCloudHelper)
 else()
     set( screencloud_RESOURCES ${screencloud_RESOURCES}
             res/resources_linux.qrc
