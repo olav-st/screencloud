@@ -80,6 +80,7 @@ WId QxtWindowSystem::activeWindow()
 
 QString QxtWindowSystem::windowTitle(WId window)
 {
+    /*
     CGSValue windowTitle;
     CGError err(noErr);
     static CGSConnection connection = _CGSDefaultConnection();
@@ -94,6 +95,10 @@ QString QxtWindowSystem::windowTitle(WId window)
 
     // this is UTF8 encoded
     return QCFString::toQString((CFStringRef)windowTitle);
+    */
+    #warning windowTitle() removed since it uses a private function
+
+    return QString();
 }
 
 QRect QxtWindowSystem::windowGeometry(WId window)

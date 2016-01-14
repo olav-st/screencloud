@@ -42,7 +42,12 @@ if(UNIX AND NOT APPLE)
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
       ${X11_LIBRARIES}
     )
-endif(UNIX AND NOT APPLE)
+elseif(APPLE)
+    find_library(CARBON_LIBRARY Carbon)
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}
+      ${CARBON_LIBRARY}
+    )
+endif()
 
 #We need access to the private gui api when using qt5
 if(QT_USE_QT5)
