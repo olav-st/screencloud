@@ -1,6 +1,5 @@
 project(ScreenCloudHelper)
-cmake_minimum_required (VERSION 2.6)
-set(CMAKE_C_FLAGS "-x objective-c")
+cmake_minimum_required (VERSION 2.8.12)
 
 set(ScreenCloudHelper_HEADERS
     ScreenCloudHelper/AppDelegate.h
@@ -54,6 +53,10 @@ target_link_libraries(ScreenCloudHelper
     "-framework CoreData"
     "-framework Foundation"
 )
+
+#install login helper
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+install(TARGETS ScreenCloudHelper BUNDLE DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Library/LoginItems")
 
 add_custom_command (TARGET ScreenCloudHelper POST_BUILD
                       COMMAND ${IBTOOL} --errors --warnings --notices --output-format human-readable-text
