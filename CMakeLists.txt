@@ -1,5 +1,5 @@
 project( screencloud )
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.12)
 set(VERSION_STRING 1.3.0)
 
 
@@ -239,6 +239,12 @@ if(QT_USE_QT5)
             Qt5::X11Extras
         )
     endif(UNIX AND NOT APPLE)
+    if(APPLE)
+        find_package(Qt5DBus REQUIRED)
+        set(REQUIRED_LIBS ${REQUIRED_LIBS}        
+            Qt5::DBus
+        )
+    endif(APPLE)
 else(QT_USE_QT5)
     set( QT_USE_QTNETWORK TRUE)
     set( QT_USE_QTXML TRUE )
@@ -376,27 +382,62 @@ if(UNIX AND NOT APPLE)
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_DATADIR}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endif(UNIX AND NOT APPLE)
 if(APPLE)
-    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
-    install(TARGETS screencloud BUNDLE DESTINATION ${CMAKE_BINARY_DIR})
-    #install libraries
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/PythonQt/libPythonQt.dylib" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/MacOS")
-    #install python modules
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-    #Install sfx
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-    #Install Qt plugins
-    install(DIRECTORY "${QT_PLUGINS_DIR}/imageformats" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns")
-    install(DIRECTORY "${QT_PLUGINS_DIR}/iconengines" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns")
-    #install qt.conf
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-    #use custom Info.plist
-    set_target_properties(screencloud PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/res/Info.plist")
-    #install icons
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-    install(CODE "
-    include(BundleUtilities)
-    fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"\")
-    ")
+    if(NOT QT_USE_QT5)
+        message(ERROR "Install target no longer supports Qt 4!")
+    else()
+        set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+        install(TARGETS screencloud BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX})
+        #install python modules
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+        #Install sfx
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+        #Copy required qt plugins
+        get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
+        get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
+        get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
+        get_target_property(COCOAPLUGIN_LOCATION Qt5::QCocoaIntegrationPlugin LOCATION)
+        install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/imageformats")
+        install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/iconengines")
+        install(FILES ${COCOAPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/platforms")
+        #install qt.conf
+        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+        #add Info.plist
+        set_target_properties(screencloud PROPERTIES
+            MACOSX_BUNDLE_INFO_STRING "Simple screenshot sharing application."
+            MACOSX_BUNDLE_ICON_FILE "icons_mac.icns"
+            MACOSX_BUNDLE_GUI_IDENTIFIER "ScreenCloud"
+            MACOSX_BUNDLE_LONG_VERSION_STRING "ScreenCloud Version ${VERSION_STRING}"
+            MACOSX_BUNDLE_BUNDLE_NAME "ScreenCloud"
+            MACOSX_BUNDLE_SHORT_VERSION_STRING ${VERSION_STRING}
+            MACOSX_BUNDLE_BUNDLE_VERSION ${VERSION_STRING}
+            MACOSX_BUNDLE_COPYRIGHT "Copyright 2016, Olav Sortland Thoresen. All Rights Reserved."
+            MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/res/Info.plist.in"
+        )
+        #install icons
+        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+        #Find paths to required libs
+        foreach(LIB ${REQUIRED_LIBS})
+            if(LIB MATCHES "Qt5::")
+                get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
+            endif()
+            get_filename_component(LIB_DIR ${LIB} DIRECTORY)
+            if(LIB_DIR MATCHES ".*framework$") #Only match paths ending in .framework
+                get_filename_component(LIB_DIR ${LIB_DIR} DIRECTORY) #get parent dir
+            endif()
+            set(LIB_DIRS ${LIB_DIRS}
+                ${LIB_DIR}
+                )
+        endforeach()
+        #We set rpath manually later
+        set(CMAKE_SKIP_RPATH ON)
+        #Use fixup_bundle to copy libs
+        install(CODE "
+        include(BundleUtilities)
+        fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"${LIB_DIRS}\")
+        ")
+        #Hack to make qt plugin loading work
+        install(CODE "execute_process(COMMAND install_name_tool -add_rpath @executable_path/../Frameworks ${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/MacOS/screencloud)")
+    endif()
 endif(APPLE)
 if(WIN32)
     if(NOT QT_USE_QT5)
