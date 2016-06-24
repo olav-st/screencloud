@@ -39,7 +39,11 @@ def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()
 	return name
 	
 def getPluginDir():
-	return QDesktopServices.storageLocation(QDesktopServices.DataLocation) + "/plugins"
+	try:
+		return QDesktopServices.storageLocation(QDesktopServices.DataLocation) + "/plugins"
+	except AttributeError:
+		from PythonQt.QtCore import QStandardPaths
+		return QStandardPaths.writableLocation(QStandardPaths.DataLocation) + "/plugins"
 
 def setUrl(url):
 	global clipboardUrl
