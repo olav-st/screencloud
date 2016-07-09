@@ -7,7 +7,7 @@ fi
 #Check for light icon themes
 if [[ "$ICON_THEME" == *light* ]]
 then
-    LD_LIBRARY_PATH=/opt/screencloud /opt/screencloud/screencloud --icon-color=black "$@"
+    screencloud --icon-color=black "$@"
 else
-    LD_LIBRARY_PATH=/opt/screencloud /opt/screencloud/screencloud "$@"
+    screencloud "$@"
 fi
