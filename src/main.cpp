@@ -79,15 +79,16 @@ int main(int argc, char *argv[])
 #endif
 
         PythonQt::self()->getMainModule().evalScript("import sys"); //Required for addSysPath on some systems
+#if PYTHONQT_QTALL_FOUND
         /*
-         * Commented out since it causes build errors on some systems
-         *
+         * We assume that hadError() will work if PythonQt is new enough to use Qt_All
+         */
         if(PythonQt::self()->hadError())
         {
             WARNING(QObject::tr("Failed to import sys module. Check your Python installation."));
             QMessageBox::critical(NULL, QObject::tr("Failed to import sys"), QObject::tr("Failed to import sys module. Check your Python installation."));
         }
-        */
+#endif
 
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules");
 #ifdef Q_OS_WIN
