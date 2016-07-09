@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
             return 0;
         }
         //Setup the python interpreter
-        PythonQt::init(PythonQt::RedirectStdOut);
+        PythonQt::init();
 #ifdef PYTHONQT_QTALL_FOUND
         PythonQt_QtAll::init();
 #else
