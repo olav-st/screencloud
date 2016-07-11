@@ -94,10 +94,15 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_WIN
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "python-stdlib-native");
 		PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "modules"  + QDir::separator() + "Crypto.zip");
-#endif
-#ifdef Q_OS_MACX
+#elif Q_OS_MACX
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules"  + QDir::separator() + "python-stdlib-native");
+#else
+        QStringList dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+        for(QString path: dataLocations)
+        {
+            PythonQt::self()->addSysPath(path + QDir::separator() + "screencloud" + QDir::separator() + "modules");
+        }
 #endif
 
         if(cmdline_args.contains("--cli") || cmdline_args.contains("-c"))
