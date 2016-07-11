@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
         QStringList dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
         #else
         QStringList dataLocations;
-        dataLocations.append(QDesktopServices::storageLocation(QDesktopServices::GenericDataLocation));
+        dataLocations.append(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
         #endif
         QString path;
         Q_FOREACH(path, dataLocations)
