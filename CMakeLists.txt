@@ -179,6 +179,7 @@ set( screencloud_FORMS
 
 set( screencloud_RESOURCES
         res/icons.qrc
+        res/sounds.qrc
 )
 
 #Platform specific resources
@@ -355,9 +356,6 @@ set_target_properties(screencloud PROPERTIES VERSION ${VERSION_STRING})
 #Copy required files to build dir
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
 add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/res/modules/ScreenCloud.py ${CMAKE_CURRENT_BINARY_DIR}/modules)
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/sfx)
-add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/res/sfx/shutter.wav ${CMAKE_CURRENT_BINARY_DIR}/sfx)
-add_custom_command(TARGET screencloud PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/res/sfx/notification.wav ${CMAKE_CURRENT_BINARY_DIR}/sfx)
 
 if(UNIX AND NOT APPLE)
     #Use GNUInstallDirs for CMAKE_INSTALL_BINDIR etc.
@@ -378,8 +376,6 @@ if(UNIX AND NOT APPLE)
     install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.sh" DESTINATION "${CMAKE_INSTALL_BINDIR}")
     #install python modules
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_DATADIR}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
-    #Install sfx
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_DATADIR}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endif(UNIX AND NOT APPLE)
 if(APPLE)
     if(NOT QT_USE_QT5)
@@ -389,8 +385,6 @@ if(APPLE)
         install(TARGETS screencloud BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX})
         #install python modules
         install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-        #Install sfx
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/sfx" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
         #Copy required qt plugins
         get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
         get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)

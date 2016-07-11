@@ -20,6 +20,7 @@
 #include <utils/log.h>
 #include <QDir>
 #include <QApplication>
+#include <QQueue>
 
 class AudioNotifier : public QObject
 {
@@ -33,6 +34,10 @@ private:
     QAudioOutput* audioOutput;
     QAudioFormat format;
     QFile audioFile;
+    QQueue<QString> queue;
+
+protected:
+    void playNextFromQueue();
 
 public Q_SLOTS:
     void audioStateChanged(QAudio::State state);

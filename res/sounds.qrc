@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file alias="shutter.wav">sfx/shutter.wav</file>
+        <file alias="notification.wav">sfx/notification.wav</file>
+    </qresource>
+</RCC>

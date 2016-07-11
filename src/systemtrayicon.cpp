@@ -344,7 +344,7 @@ void SystemTrayIcon::captureWindowAction()
 void SystemTrayIcon::captureFullScreen()
 {
     screenshot = screenShooter.captureFullscreen();
-    notifier.play("sfx/shutter.wav");
+    notifier.play(":/sounds/shutter.wav");
     if(showSaveDialog)
     {
         openSaveDialog();
@@ -358,7 +358,7 @@ void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
 {
     QPixmap areaScreenshot = fullScreenShot.copy(rect);
     screenshot = areaScreenshot.toImage();
-    notifier.play("sfx/shutter.wav");
+    notifier.play(":/sounds/shutter.wav");
     if(showSaveDialog)
     {
         openSaveDialog();
@@ -379,7 +379,7 @@ void SystemTrayIcon::selectionCanceled()
 void SystemTrayIcon::captureWindow()
 {
     screenshot = screenShooter.captureWindow();
-    notifier.play("sfx/shutter.wav");
+    notifier.play(":/sounds/shutter.wav");
     if(showSaveDialog)
     {
         openSaveDialog();
@@ -501,7 +501,7 @@ void SystemTrayIcon::screenshotSaved(QString url)
             showMessage(tr("Upload finished"), uploadManager.getLastScreenshotName() + tr(" was saved!"));
         }
     }
-    notifier.play("sfx/notification.wav");
+    notifier.play(":/sounds/notification.wav");
 }
 
 void SystemTrayIcon::screenshotSavingError(QString errorMessage)

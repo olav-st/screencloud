@@ -58,24 +58,20 @@ void AudioNotifier::play(QString file)
     settings.endGroup();
     if(soundNotifications)
     {
+        queue.enqueue(file);
+        playNextFromQueue();
+    }
+}
+
+void AudioNotifier::playNextFromQueue()
+{
+    if(queue.size() > 0 && !audioFile.isOpen())
+    {
+        QString file = queue.dequeue();
         if(!audioFile.isOpen())
         {
-        #ifdef Q_OS_MACX
-                audioFile.setFileName(QString(qApp->applicationDirPath() + "/../Resources/" + file).toLocal8Bit());
-        #else
-                audioFile.setFileName(QString(qApp->applicationDirPath() + QDir::separator() + file).toLocal8Bit());
-        #endif
-                audioFile.open(QIODevice::ReadOnly);
-        }
-        //Make sure we dont try to play the wav headers
-        for(int i = 0; i < audioFile.size(); ++i) {
-            QByteArray ba = audioFile.peek(4);
-            if (ba == "data") {
-                audioFile.read(8);
-                break;
-            } else {
-                audioFile.read(1);
-            }
+            audioFile.setFileName(file);
+            audioFile.open(QIODevice::ReadOnly);
         }
         if(audioOutput == NULL)
         {
@@ -88,6 +84,16 @@ void AudioNotifier::play(QString file)
             WARNING(file + tr(" is not open."));
         }else
         {
+            //Make sure we dont try to play the wav headers
+            for(int i = 0; i < audioFile.size(); ++i) {
+                QByteArray ba = audioFile.peek(4);
+                if (ba == "data") {
+                    audioFile.read(8);
+                    break;
+                } else {
+                    audioFile.read(1);
+                }
+            }
             audioOutput->start(&audioFile);
         }
         if(audioOutput->error() != QAudio::NoError)
@@ -106,6 +112,7 @@ void AudioNotifier::audioStateChanged(QAudio::State state)
     }
     if(state == QAudio::IdleState)
     {
-        audioOutput->stop();
+        audioFile.close();
+        playNextFromQueue();
     }
 }
