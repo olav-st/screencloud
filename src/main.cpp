@@ -99,7 +99,8 @@ int main(int argc, char *argv[])
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules"  + QDir::separator() + "python-stdlib-native");
 #else
         QStringList dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
-        for(QString path: dataLocations)
+        QString path;
+        Q_FOREACH(path, dataLocations)
         {
             PythonQt::self()->addSysPath(path + QDir::separator() + "screencloud" + QDir::separator() + "modules");
         }
