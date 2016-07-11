@@ -107,7 +107,8 @@ int main(int argc, char *argv[])
         #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         QStringList dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
         #else
-        QStringList dataLocations = [QDesktopServices::storageLocation(QDesktopServices::GenericDataLocation)];
+        QStringList dataLocations;
+        dataLocations.append(QDesktopServices::storageLocation(QDesktopServices::GenericDataLocation));
         #endif
         QString path;
         Q_FOREACH(path, dataLocations)
