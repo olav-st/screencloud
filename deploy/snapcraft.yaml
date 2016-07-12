@@ -33,7 +33,7 @@ parts:
       - python2.7-dev
     stage-packages:
       - openssl
-      - python2.7-minimal
+      - python-paramiko # For the SFTP plugin
       - libpython2.7-stdlib
       - libqt5x11extras5
       - libqt5multimedia5
@@ -72,3 +72,9 @@ parts:
       src/pythonqt-code-428-trunk/extensions/PythonQt_QtAll/*.h: usr/include/PythonQt/extensions/PythonQt_QtAll/
       build/pythonqt-code-428-trunk/lib/*: usr/lib/
     after: [pythonqt]
+
+  snapd-xdg-open:
+    source: https://github.com/ubuntu-core/snapd-xdg-open.git
+    plugin: copy
+    files:
+      data/xdg-open: bin/xdg-open
