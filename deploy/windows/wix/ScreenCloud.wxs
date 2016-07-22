@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" Name="ScreenCloud" Language="1033" Version="VERSIONNUMBERNOTSET" Manufacturer="Olav Sortland Thoresen" UpgradeCode="C80D60EB-D743-4756-9B33-A62B31FD64D5">
-        <Package Description="ScreenCloud" InstallerVersion="200" Compressed="yes" />
+        <Package Description="ScreenCloud" InstallerVersion="301" Compressed="yes" />
         <Media Id="1" Cabinet="screencloud.cab" EmbedCab="yes" CompressionLevel="high" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
@@ -15,14 +15,12 @@
                     <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589">
                         <File Id="LIBEAY32.DLL" Name="libeay32.dll" Source="..\bin\libeay32.dll" />
                         <File Id="SSLEAY32.DLL" Name="ssleay32.dll" Source="..\bin\ssleay32.dll" />
-                        <File Name="quazip.dll" Id="QUAZIP.DLL" Source="..\bin\quazip.dll" />
+                        <File Name="quazip5.dll" Id="QUAZIP.DLL" Source="..\bin\quazip5.dll" />
                         <File Id="PYTHONQT.DLL" Name="PythonQt.dll" Source="..\bin\PythonQt.dll" />
                         <File Id="PYTHON35.DLL" Name="python35.dll" Source="..\bin\python35.dll">
                         </File>
                         <File Id="PYTHONQT_QTALL.DLL" Name="PythonQt_QtAll.dll" Source="..\bin\PythonQt_QtAll.dll" />
-                        <File Id="ICUDT54.DLL" Name="icudt54.dll" Source="..\bin\icudt54.dll" />
-                        <File Id="ICUIN54.DLL" Name="icuin54.dll" Source="..\bin\icuin54.dll" />
-                        <File Id="ICUUC54.DLL" Name="icuuc54.dll" Source="..\bin\icuuc54.dll" />
+                        <File Id="ZLIB1.DLL" Name="zlib1.dll" Source="..\bin\zlib1.dll" />
                     </Component>
                     <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545">
                         <File Id="QTCORE" Name="Qt5Core.dll" Source="..\bin\Qt5Core.dll" />
@@ -34,21 +32,19 @@
                         <File Id="QT5MULTIMEDIAWIDGETS.DLL" Name="Qt5MultimediaWidgets.dll" Source="..\bin\Qt5MultimediaWidgets.dll" />
                         <File Id="QT5OPENGL.DLL" Name="Qt5OpenGL.dll" Source="..\bin\Qt5OpenGL.dll" />
                         <File Id="QT5SVG.DLL" Name="Qt5Svg.dll" Source="..\bin\Qt5Svg.dll" />
+                        <File Id="QT5PRINTSUPPORT.DLL" Name="Qt5PrintSupport.dll" Source="..\bin\Qt5PrintSupport.dll" />
+                        <File Id="QT5QML.DLL" Name="Qt5Qml.dll" Source="..\bin\Qt5Qml.dll" />
+                        <File Id="QT5QUICK.DLL" Name="Qt5Quick.dll" Source="..\bin\Qt5Quick.dll" />
+                        <File Id="QT5QUICKWIDGETS.DLL" Name="Qt5QuickWidgets.dll" Source="..\bin\Qt5QuickWidgets.dll" />
+                        <File Id="QT5SQL.DLL" Name="Qt5Sql.dll" Source="..\bin\Qt5Sql.dll" />
+                        <File Id="QT5XMLPATTERNS.DLL" Name="Qt5XmlPatterns.dll" Source="..\bin\Qt5XmlPatterns.dll" />
                     </Component>
                     <Component Id="PYTHON35.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
-                        <File Id="PYTHON35.ZIP" Name="python3.5.zip" Source="..\python3.5.zip" />
+                        <File Id="PYTHON35.ZIP" Name="python35.zip" Source="..\python35.zip" />
                     </Component>
                     <Component Id="PY_STARTUP_MODULES" Guid="2A819964-FADA-4E56-A828-99953937CB7C">
                         <File Id="LZMA.PYD" Name="_lzma.pyd" Source="..\DLLs\_lzma.pyd" />
                     </Component>
-                    <Directory Id="SFX" Name="sfx">
-                        <Component Id="NOTIFICATION.WAV" DiskId="1" Guid="95EC1C92-1A9C-47D1-9234-BF3C08D190FC">
-                            <File Id="NOTIFICATION.WAV" Name="notification.wav" Source="..\sfx\notification.wav" />
-                        </Component>
-                        <Component Id="SHUTTER.WAV" DiskId="1" Guid="EBDCA7F4-1562-475B-B677-D1FC73E0AAC4">
-                            <File Id="SHUTTER.WAV" Name="shutter.wav" Source="..\sfx\shutter.wav" />
-                        </Component>
-                    </Directory>
                     <Directory Id="ICONENGINES" Name="iconengines">
                         <Component Id="ICONENGINES" Guid="DE3EE756-E1D9-4908-8FEA-87EAAD6CBC95">
                             <File Name="qsvgicon.dll" Id="QSVGICON.DLL" Source="..\bin\iconengines\qsvgicon.dll" />
@@ -104,6 +100,16 @@
                             </Component>
                         </Directory>
                     </Directory>
+                    <Directory Id="AUDIO" Name="audio">
+                        <Component Guid="F814613D-80E9-42CB-9AD0-F51F712C2342" Id="AUDIO">
+                            <File Id="QTAUDIO_WINDOWS.DLL" Name="qtaudio_windows.dll" Source="..\bin\audio\qtaudio_windows.dll" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="PLATFORMS" Name="platforms">
+                        <Component Guid="324673D5-8C7F-4337-A7FA-D5D24B4A1563" Id="PLATFORMS">
+                            <File Id="QWINDOWS.DLL" Name="qwindows.dll" Source="..\bin\platforms\qwindows.dll" />
+                        </Component>
+                    </Directory>
                 </Directory>
             </Directory>
             <Directory Id="DesktopFolder" />
@@ -125,10 +131,14 @@
                 </Component>
             </Directory>
         </Directory>
+        <DirectoryRef Id="TARGETDIR">
+            <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0"/>
+        </DirectoryRef>
+        <Feature Id="VCRedist" Title="Visual C++ 14.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+            <MergeRef Id="VCRedist"/>
+        </Feature>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
             <ComponentRef Id="SCREENCLOUD.EXE" />
-            <ComponentRef Id="NOTIFICATION.WAV" />
-            <ComponentRef Id="SHUTTER.WAV" />
             <ComponentRef Id="StartMenuShortcuts" />
             <ComponentRef Id="DLLS" />
             <ComponentRef Id="QTDLLS" />
@@ -140,6 +150,8 @@
             <ComponentRef Id="PYTHON_NATIVES" />
             <ComponentRef Id="PY_STARTUP_MODULES" />
             <ComponentRef Id="CRYPTO" />
+            <ComponentRef Id="AUDIO" />
+            <ComponentRef Id="PLATFORMS" />
         </Feature>
         <UI />
         <Icon Id="ScreenCloud.exe" SourceFile="..\ScreenCloud.exe" />
