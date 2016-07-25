@@ -463,8 +463,12 @@ if(WIN32)
         get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
         get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
         get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
+        get_target_property(WINDOWSPLATFORMPLUGIN_LOCATION Qt5::QWindowsIntegrationPlugin LOCATION)
+        get_target_property(WINDOWSAUDIOPLUGIN_LOCATION Qt5::QWindowsAudioPlugin  LOCATION)
         install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats")
         install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines")
+        install(FILES ${WINDOWSPLATFORMPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/platforms")
+        install(FILES ${WINDOWSAUDIOPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/audio")
         #Copy pythons dlls dir
         install(DIRECTORY ${PYTHON_INCLUDE_DIR}/../DLLs DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
         #Use fixup_bundle to copy dlls
