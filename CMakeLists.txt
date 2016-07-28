@@ -390,9 +390,11 @@ if(APPLE)
         get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
         get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
         get_target_property(COCOAPLUGIN_LOCATION Qt5::QCocoaIntegrationPlugin LOCATION)
+        get_target_property(QCOREAUDIO_LOCATION Qt5::CoreAudioPlugin LOCATION)
         install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/imageformats")
         install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/iconengines")
         install(FILES ${COCOAPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/platforms")
+        install(FILES ${QCOREAUDIO_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/audio")
         #install qt.conf
         install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
         #add Info.plist
