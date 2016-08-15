@@ -9,5 +9,5 @@ Type=Application
 Exec=screencloud
 Hidden=false
 NoDisplay=false
-Categories=Internet;RemoteAccess;Graphics;2DGraphics;TrayIcon;
+Categories=Internet;Graphics;2DGraphics;TrayIcon;
 Terminal=false

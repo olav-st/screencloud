@@ -35,6 +35,7 @@ parts:
       - openssl
       - python-paramiko # For the SFTP plugin
       - libpython2.7-stdlib
+      - libqt5concurrent5
       - libqt5x11extras5
       - libqt5multimedia5
       - libqt5multimedia5-plugins
