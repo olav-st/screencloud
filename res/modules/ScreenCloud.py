@@ -26,7 +26,7 @@ def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()
 		pass
 	random_hash = md5(os.urandom(128)).hexdigest()
 	random_num = str(randint(0,9))
-	random_short = base64.urlsafe_b64encode(os.urandom(6))
+	random_short = base64.urlsafe_b64encode(os.urandom(6)).decode('utf-8')
 	var_dict = defaultdict(str, rnd = random_num, rnd_h = random_hash, rnd_s = random_short)
 	var_dict.update(custom_vars)
 	try:
@@ -37,7 +37,7 @@ def formatFilename(nameFormat, includeFileExtension = True, custom_vars = dict()
 	if(includeFileExtension and extension not in name):
 		name += extension
 	return name
-	
+
 def getPluginDir():
 	try:
 		return QDesktopServices.storageLocation(QDesktopServices.DataLocation) + "/plugins"
