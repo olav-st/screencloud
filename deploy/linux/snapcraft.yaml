@@ -3,6 +3,7 @@ version: "1.3.1"
 summary: Easy to use screenshot sharing application
 description: Take a screenshot using one of the 3 hotkeys or simply click the ScreenCloud tray icon. You can choose where you want to save your screenshot.
 confinement: devmode
+grade: devel
 
 apps:
   screencloud:
@@ -41,11 +42,10 @@ parts:
       - libqt5multimedia5-plugins
       - libglib2.0-bin
       - dconf-gsettings-backend
-    after: [pythonqt, pythonqt-install, desktop/qt5]
+    after: [pythonqt, pythonqt-install, desktop-qt5]
 
   pythonqt:
-    source: https://sourceforge.net/code-snapshots/svn/p/py/pythonqt/code/pythonqt-code-428-trunk.zip
-    source-subdir: pythonqt-code-428-trunk
+    source: svn://svn.code.sf.net/p/pythonqt/code/trunk
     plugin: qmake
     qt-version: qt5
     options: 
@@ -68,10 +68,10 @@ parts:
     plugin: copy
     source: parts/pythonqt
     files:
-      src/pythonqt-code-428-trunk/src/*.h: usr/include/PythonQt/
-      src/pythonqt-code-428-trunk/src/gui/*.h: usr/
-      src/pythonqt-code-428-trunk/extensions/PythonQt_QtAll/*.h: usr/include/PythonQt/extensions/PythonQt_QtAll/
-      build/pythonqt-code-428-trunk/lib/*: usr/lib/
+      src/src/*.h: usr/include/PythonQt/
+      src/src/gui/*.h: usr/include/PythonQt/gui
+      src/extensions/PythonQt_QtAll/*.h: usr/include/PythonQt/extensions/PythonQt_QtAll/
+      build/lib/*: usr/lib/
     after: [pythonqt]
 
   snapd-xdg-open:
@@ -79,3 +79,6 @@ parts:
     plugin: copy
     files:
       data/xdg-open: bin/xdg-open
+    stage-packages:
+      - dbus
+
