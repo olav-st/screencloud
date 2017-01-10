@@ -65,20 +65,31 @@ parts:
       - python2.7-dev
 
   pythonqt-install:
-    plugin: copy
-    source: parts/pythonqt
-    files:
-      src/src/*.h: usr/include/PythonQt/
-      src/src/gui/*.h: usr/include/PythonQt/gui
-      src/extensions/PythonQt_QtAll/*.h: usr/include/PythonQt/extensions/PythonQt_QtAll/
-      build/lib/*: usr/lib/
+    plugin: dump
+    source: parts/pythonqt/
+    organize:
+      'src/src/*.h': include/PythonQt
+      'src/src/gui/*.h': include/PythonQt/gui/
+      'src/extensions/PythonQt_QtAll/*.h': include/PythonQt/extensions/PythonQt_QtAll/
+      'build/lib/libPythonQt*': lib/
+    stage:
+        - include/PythonQt/*.h
+        - include/PythonQt/gui/*h
+        - include/PythonQt/extensions/PythonQt_QtAll/*.h
+        - lib/libPythonQt*
+    snap:
+        - lib/libPythonQt*   
     after: [pythonqt]
 
   snapd-xdg-open:
     source: https://github.com/ubuntu-core/snapd-xdg-open.git
-    plugin: copy
-    files:
+    plugin: dump
+    organize:
       data/xdg-open: bin/xdg-open
+    stage:
+      - bin/xdg-open
+    snap:
+      - bin/xdg-open
     stage-packages:
       - dbus
 
