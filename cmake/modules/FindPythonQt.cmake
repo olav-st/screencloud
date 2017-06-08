@@ -5,7 +5,9 @@
 
 find_path(PYTHONQT_INSTALL_DIR include/PythonQt/PythonQt.h DOC "Directory where PythonQt was installed.")
 find_path(PYTHONQT_INCLUDE_DIR PythonQt.h "${PYTHONQT_INSTALL_DIR}/include/PythonQt" DOC "Path to the PythonQt include directory")
-find_library(PYTHONQT_LIBRARY NAMES PythonQt QtPython PATHS "${PYTHONQT_INSTALL_DIR}/lib" DOC "The PythonQt library.")
+file(GLOB PYTHONQT_LIB_FILE LIST_DIRECTORIES false RELATIVE "${PYTHONQT_INSTALL_DIR}/lib" "${PYTHONQT_INSTALL_DIR}/lib/*PythonQt-Qt[4-9]*.so")
+string(REGEX REPLACE "^lib(.+)\\.so$" "\\1" PYTHONQT_LIB "${PYTHONQT_LIB_FILE}")
+find_library(PYTHONQT_LIBRARY NAMES PythonQt QtPython "${PYTHONQT_LIB}" PATHS "${PYTHONQT_INSTALL_DIR}/lib" DOC "The PythonQt library.")
 
 mark_as_advanced(PYTHONQT_INSTALL_DIR)
 mark_as_advanced(PYTHONQT_INCLUDE_DIR)
