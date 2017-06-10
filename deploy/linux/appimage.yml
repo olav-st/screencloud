@@ -67,5 +67,4 @@ script:
 #end
   - linuxdeployqt $BUILD_APPDIR/usr/share/applications/screencloud.desktop -bundle-non-qt-libs
   - linuxdeployqt $BUILD_APPDIR/usr/share/applications/screencloud.desktop -bundle-non-qt-libs
-  - cp $BUILD_APPDIR/usr/share/applications/screencloud.desktop $BUILD_APPDIR
   - cp $BUILD_SOURCE_DIR/screencloud*/res/icons/screencloud.svg $BUILD_APPDIR
