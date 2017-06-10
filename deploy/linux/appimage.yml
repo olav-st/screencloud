@@ -44,7 +44,7 @@ script:
 #Hotfix https://sourceforge.net/p/pythonqt/discussion/631393/thread/a9358753/
   - sed -i -e 's/PythonQt_init_QtQml(0);/\/\/PythonQt_init_QtQml(0);/g' extensions/PythonQt_QtAll/PythonQt_QtAll.cpp
   - sed -i -e 's/PythonQt_init_QtQuick(0);/\/\/PythonQt_init_QtQuick(0);/g' extensions/PythonQt_QtAll/PythonQt_QtAll.cpp
-#end hotfix
+#end
   - qmake-qt5
   - make -j4
 #Hacky way to install PythonQt. From: https://aur.archlinux.org/packages/pythonqt/
@@ -53,8 +53,8 @@ script:
   - cp src/gui/*.h /usr/include/PythonQt/gui/
   - cp extensions/PythonQt_QtAll/*.h /usr/include/PythonQt/extensions/PythonQt_QtAll/
   - mkdir -p /usr/lib
-  - cp -a lib/*.so* /usr/lib/
-#end pythonqt install
+  - cp -a lib/*.so* /usr/lib64/ || cp -a lib/*.so* /usr/lib/
+#end
   - cd $BUILD_SOURCE_DIR/screencloud*
   - mkdir build
   - cd build
@@ -62,6 +62,10 @@ script:
   - make -j4
   - make install DESTDIR=$(readlink -f $BUILD_APPDIR) ; find $BUILD_APPDIR/
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+#Fix for https://github.com/probonopd/linuxdeployqt/issues/52
+  - cp /usr/lib*/pulseaudio/* /usr/lib64/ || cp /usr/lib*/pulseaudio/* /usr/lib/
+#end
   - linuxdeployqt $BUILD_APPDIR/usr/local/share/applications/screencloud.desktop -bundle-non-qt-libs
   - linuxdeployqt $BUILD_APPDIR/usr/local/share/applications/screencloud.desktop -bundle-non-qt-libs
-  - find $BUILD_APPDIR/
+  - cp $BUILD_APPDIR/usr/local/share/applications/screencloud.desktop $BUILD_APPDIR
+  - cp $BUILD_SOURCE_DIR/screencloud*/res/icons/screencloud.svg $BUILD_APPDIR
