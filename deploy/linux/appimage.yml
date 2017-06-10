@@ -58,14 +58,14 @@ script:
   - cd $BUILD_SOURCE_DIR/screencloud*
   - mkdir build
   - cd build
-  - cmake -DPYTHON_USE_PYTHON3=OFF -DPYTHONQT_INSTALL_DIR=$BUILD_SOURCE_DIR/pythonqt -DPYTHONQT_QTALL_INSTALL_DIR=$BUILD_SOURCE_DIR/pythonqt ..
+  - cmake -DCMAKE_INSTALL_PREFIX=/usr -DPYTHON_USE_PYTHON3=OFF -DPYTHONQT_INSTALL_DIR=$BUILD_SOURCE_DIR/pythonqt -DPYTHONQT_QTALL_INSTALL_DIR=$BUILD_SOURCE_DIR/pythonqt ..
   - make -j4
   - make install DESTDIR=$(readlink -f $BUILD_APPDIR) ; find $BUILD_APPDIR/
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
 #Fix for https://github.com/probonopd/linuxdeployqt/issues/52
   - cp /usr/lib*/pulseaudio/* /usr/lib64/ || cp /usr/lib*/pulseaudio/* /usr/lib/
 #end
-  - linuxdeployqt $BUILD_APPDIR/usr/local/share/applications/screencloud.desktop -bundle-non-qt-libs
-  - linuxdeployqt $BUILD_APPDIR/usr/local/share/applications/screencloud.desktop -bundle-non-qt-libs
-  - cp $BUILD_APPDIR/usr/local/share/applications/screencloud.desktop $BUILD_APPDIR
+  - linuxdeployqt $BUILD_APPDIR/usr/share/applications/screencloud.desktop -bundle-non-qt-libs
+  - linuxdeployqt $BUILD_APPDIR/usr/share/applications/screencloud.desktop -bundle-non-qt-libs
+  - cp $BUILD_APPDIR/usr/share/applications/screencloud.desktop $BUILD_APPDIR
   - cp $BUILD_SOURCE_DIR/screencloud*/res/icons/screencloud.svg $BUILD_APPDIR
