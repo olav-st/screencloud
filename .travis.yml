@@ -16,7 +16,7 @@ script:
   - sudo apt-get purge -y libpythonqt-dev libpythonqt2.1
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - git checkout 392ffd4
+  - git checkout 750d52e
   - cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
   - sudo make install
   - cd ../..
