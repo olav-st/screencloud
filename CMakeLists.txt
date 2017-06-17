@@ -13,6 +13,7 @@ option(COLOR_OUTPUT "Use color ouput in terminal" ON)
 option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
 option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
 option(DISABLE_QT_KEYWORDS "Disable Qt keywords (for example 'slots') to avoid conflicts" OFF)
+option(PYTHONQT_IGNORE_SITE "Ignore site module when initializing PythonQt" ON)
 
 #These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
 set(CONSUMER_KEY_SCREENCLOUD "" CACHE STRING "Consumer key for screencloud.net")
@@ -202,6 +203,10 @@ endif()
 if(COLOR_OUTPUT)
     add_definitions(-DCOLOR_OUTPUT=1)
 endif(COLOR_OUTPUT)
+
+if(PYTHONQT_IGNORE_SITE)
+    add_definitions(-DPYTHONQT_IGNORE_SITE=1)
+endif(PYTHONQT_IGNORE_SITE)
 
 #disable qt keywords to avoid conflicts with python and others
 if(DISABLE_QT_KEYWORDS)

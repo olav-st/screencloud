@@ -77,7 +77,11 @@ int main(int argc, char *argv[])
             return 0;
         }
         //Setup the python interpreter
-        PythonQt::init();
+#ifdef PYTHONQT_IGNORE_SITE
+        PythonQt::init(PythonQt::RedirectStdOut | PythonQt::IgnoreSiteModule);
+#else
+        PythonQt::init(PythonQt::RedirectStdOut);
+#endif
 #ifdef PYTHONQT_QTALL_FOUND
         PythonQt_QtAll::init();
 #else
