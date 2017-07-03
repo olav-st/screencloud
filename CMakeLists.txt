@@ -373,9 +373,10 @@ if(UNIX AND NOT APPLE)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps")
     #Install dekstop file
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
-    #install copyright and changelog
+    #install copyright, changelog and metainfo
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/copyright" DESTINATION "${CMAKE_INSTALL_DOCDIR}" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/doc/changelog.gz" DESTINATION "${CMAKE_INSTALL_DOCDIR}" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/metainfo/screencloud.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATADIR}/metainfo" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
     #Install binaries
     install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.sh" DESTINATION "${CMAKE_INSTALL_BINDIR}")
