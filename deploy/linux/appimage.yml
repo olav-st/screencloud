@@ -32,6 +32,7 @@ build:
     - libquazip-qt5-devel
     - libpulse0
     - python-devel
+    - python-pycrypto
     - zlib-devel
   git:
     - https://github.com/olav-st/screencloud.git
