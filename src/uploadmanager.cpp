@@ -18,7 +18,7 @@ UploadManager::~UploadManager()
 
 void UploadManager::loadServices()
 {
-    uploaders.append(&screencloudUploader);
+    uploaders.append(&localFileUploader);
     pluginManager.loadPlugins();
     QHash<QString, Uploader*>::iterator it = pluginManager.uploaderPlugins.begin();
     while(it != pluginManager.uploaderPlugins.end())

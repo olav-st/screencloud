@@ -11,49 +11,33 @@
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
-#ifndef SCREENCLOUDUPLOADER_H
-#define SCREENCLOUDUPLOADER_H
+#ifndef LOCALFILEUPLOADER_H
+#define LOCALFILEUPLOADER_H
 
-#include "uploader.h"
-#include <QPixmap>
-#include <QSettings>
-#include <QByteArray>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QFile>
-#include <QApplication>
-#include <QDomDocument>
-#include <utils/OS.h>
-#include <utils/log.h>
-#include <QDir>
-#include <QDateTime>
-#include <utils/network.h>
-#include <QBuffer>
+#include "uploaders/uploader.h"
+#include "dialog/selectfolderdialog.h"
 
-class ScreenCloudUploader : public Uploader
+class LocalFileUploader : public Uploader
 {
     Q_OBJECT
 public:
-    explicit ScreenCloudUploader(QObject *parent = 0);
-    virtual ~ScreenCloudUploader();
+    explicit LocalFileUploader(QObject *parent = 0);
+    virtual ~LocalFileUploader();
     void loadSettings();
     void saveSettings();
+    void showSettingsUI(QWidget* parent);
     bool isConfigured();
     QString getFilename();
-private:
-    QString token, tokenSecret;
-    QNetworkAccessManager *manager;
-    int jpegQuality;
-    bool loggedIn;
-    QByteArray bufferArray;
-    QBuffer* buffer;
-Q_SIGNALS:
-
+    
 public Q_SLOTS:
     void upload(const QImage& screenshot, QString name);
-    void replyFinished(QNetworkReply* reply);
+    void onNameFormatChanged(QString newNameFormat);
 
+private:
+    QString nameFormat, folder, format;
+    int jpegQuality;
+    SelectFolderDialog* settingsDialog = NULL;
+    
 };
 
-#endif // SCREENCLOUDUPLOADER_H
- 
+#endif // LOCALFILEUPLOADER_H

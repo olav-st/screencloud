@@ -39,6 +39,7 @@ set( screencloud_SOURCES
     src/dialog/logindialog.cpp
     src/dialog/changelogdialog.cpp
     src/dialog/editordialog.cpp
+    src/dialog/selectfolderdialog.cpp
     src/editor/items/ellipsegraphicsitem.cpp
     src/editor/items/abstractgraphicsrectitem.cpp
     src/editor/items/handlegraphicsitem.cpp
@@ -71,7 +72,7 @@ set( screencloud_SOURCES
     src/firstrunwizard/onlineservicespage.cpp
     src/models/uploaderslistmodel.cpp
     src/uploaders/clipboarduploader.cpp
-    src/uploaders/screenclouduploader.cpp
+    src/uploaders/localfileuploader.cpp
     src/uploaders/pythonuploader.cpp
     src/uploaders/uploader.cpp
     src/hotkeyeventfilter.cpp
@@ -111,6 +112,7 @@ set( screencloud_HEADERS_MOC
     src/dialog/logindialog.h
     src/dialog/changelogdialog.h
     src/dialog/editordialog.h
+    src/dialog/selectfolderdialog.h
     src/editor/items/ellipsegraphicsitem.h
     src/editor/items/abstractgraphicsrectitem.h
     src/editor/items/handlegraphicsitem.h
@@ -142,7 +144,7 @@ set( screencloud_HEADERS_MOC
     src/firstrunwizard/onlineservicespage.h
     src/plugin/pluginmanager.h
     src/models/uploaderslistmodel.h
-    src/uploaders/screenclouduploader.h
+    src/uploaders/localfileuploader.h
     src/uploaders/clipboarduploader.h
     src/uploaders/pythonuploader.h
     src/uploaders/uploader.h
@@ -176,6 +178,7 @@ set( screencloud_FORMS
     src/dialog/logindialog.ui
     src/dialog/changelogdialog.ui
     src/dialog/editordialog.ui
+    src/dialog/selectfolderdialog.ui
 )
 
 set( screencloud_RESOURCES
@@ -231,6 +234,7 @@ if(QT_USE_QT5)
     find_package(Qt5Svg REQUIRED)
     find_package(Qt5Multimedia REQUIRED)
     find_package(Qt5Concurrent REQUIRED)
+    find_package(Qt5UiTools REQUIRED)
     set(REQUIRED_LIBS ${REQUIRED_LIBS}
         Qt5::Widgets
         Qt5::Network
@@ -238,6 +242,7 @@ if(QT_USE_QT5)
         Qt5::Svg
         Qt5::Multimedia
         Qt5::Concurrent
+        Qt5::UiTools
     )
     if(UNIX AND NOT APPLE)
         find_package(Qt5X11Extras REQUIRED)
@@ -255,6 +260,7 @@ else(QT_USE_QT5)
     set( QT_USE_QTNETWORK TRUE)
     set( QT_USE_QTXML TRUE )
     set( QT_USE_QTSVG TRUE )
+    SET(QT_USE_QTUITOOLS TRUE)
     find_package(QtMobility COMPONENTS MultimediaKit)
     if(QT_MOBILITY_FOUND)
         message(STATUS "Using QtMobility to provide QAudioOutput.")

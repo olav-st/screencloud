@@ -5,7 +5,7 @@
 #include <plugin/pluginmanager.h>
 #include <QSettings>
 #include <models/uploaderslistmodel.h>
-#include <uploaders/screenclouduploader.h>
+#include <uploaders/localfileuploader.h>
 #include <uploaders/clipboarduploader.h>
 #include <QtConcurrentRun>
 #include <QSettings>
@@ -31,7 +31,7 @@ private:
     QList<Uploader*> uploaders;
     UploadersListModel* uploadersModel;
     //Default uploaders
-    ScreenCloudUploader screencloudUploader;
+    LocalFileUploader localFileUploader;
     ClipboardUploader clipboardUploader;
     bool uploadFinished;
     QString lastScreenshotName;
