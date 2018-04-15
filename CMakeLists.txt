@@ -127,7 +127,6 @@ set( screencloud_HEADERS_MOC
     src/editor/fontpropertytooleditor.h
     src/editor/graphicsitemfactory.h
     src/editor/qcolorbutton.h
-    src/firstrunwizard/activatepage.h
     src/firstrunwizard/finishedpage.h
     src/firstrunwizard/firstrunwizard.h
     src/firstrunwizard/intropage.h
