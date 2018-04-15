@@ -18,16 +18,12 @@
 FirstRunWizard::FirstRunWizard(QWidget *parent) :
     QWizard(parent)
 {
-    setPage(Page_Intro, new IntroPage);
-    setPage(Page_Login, new LoginPage);
-    setPage(Page_NewAccount, new NewAccountPage);
-    setPage(Page_Activate, new ActivatePage);
     setPage(Page_Welcome, new WelcomePage);
     setPage(Page_KeyboardShortcuts, new ShortcutsPage);
     setPage(Page_OnlineServices, new OnlineServicesPage);
     setPage(Page_Finished, new FinishedPage);
 
-    setStartId(Page_Intro);
+    setStartId(Page_Welcome);
 
     setWindowTitle(tr("ScreenCloud"));
     setOptions(QWizard::CancelButtonOnLeft);

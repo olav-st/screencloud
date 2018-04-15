@@ -62,7 +62,6 @@ private:
     QGraphicsScene scene;
     QString currentUploaderShortname;
     QString screenshotName;
-    bool loggedIn;
 
 Q_SIGNALS:
     void uploaderSelected(QString name, QString uploaderShortname);

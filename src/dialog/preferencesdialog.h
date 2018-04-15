@@ -37,7 +37,6 @@
 #include <plugin/pluginmanager.h>
 #include <uploadmanager.h>
 #include <dialog/plugindialog.h>
-#include <dialog/logindialog.h>
 #include <PythonQt.h>
 #include <gui-elements/pythonconsole.h>
 
@@ -55,20 +54,15 @@ public:
     void loadSettings();
     void saveSettings();
     void setupUi();
-    void getUserInfo();
     void validateHotkey(QTableWidgetItem* item);
 
 private:
     Ui::PreferencesDialog *ui;
-    QNetworkAccessManager *manager;
     UploadManager* uploadManager;
     PythonQtObjectPtr pythonContext;
     PythonConsole* console;
     //Setting values
     int jpegQuality;
-    QString email;
-    QString token, tokenSecret;
-    bool loggedIn;
     QString fullScreenHotkeyStr, selectionHotkeyStr, windowHotkeyStr;
     QString format;
     double screenshotDelay;
@@ -82,7 +76,6 @@ private:
     Updater* updater;
     bool autoCheckUpdates;
     bool showSaveDialog;
-    bool userHasLoggedOut;
     bool soundNotifications;
 
     bool useProxy;
@@ -102,9 +95,7 @@ private Q_SLOTS:
     void keyRecorded(Qt::Key key, int keycode, Qt::KeyboardModifiers modifiers);
     void hotkeyItemChanged(QTableWidgetItem * current, QTableWidgetItem * previous);
     void gotVersionNumber(QString versionNumber, bool outdated);
-    void replyFinished(QNetworkReply* reply);
     void on_button_checkForUpdates_clicked();
-    void on_button_dashboard_clicked();
     void on_list_uploaders_doubleClicked(const QModelIndex &index);
     void on_button_plugins_clicked();
     void on_button_restoreDefaults_clicked();
@@ -112,14 +103,9 @@ private Q_SLOTS:
     void on_button_aboutqt_clicked();
     void on_button_licenses_clicked();
     void on_actionShowDebug_triggered();
-    void on_button_login_clicked();
     void on_tabWidget_currentChanged(int index);
-    void on_button_logout_clicked();
     void on_list_uploaders_clicked(const QModelIndex &index);
     void on_button_settings_clicked();
-
-Q_SIGNALS:
-    void openDashboardPressed();
 };
 
 #endif // PREFERENCESDIALOG_H

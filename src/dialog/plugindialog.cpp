@@ -88,17 +88,6 @@ void PluginDialog::buildTree()
 
 void PluginDialog::addDefaultNodes()
 {
-    QList<QStandardItem *> rowItems;
-    QStandardItem* scItem = new QStandardItem(QIcon(":/uploaders/screencloud.png"), "ScreenCloud");
-    scItem->setData("screencloud", Qt::UserRole);
-    //scItem->setEnabled(false);
-    rowItems << scItem;
-    QStandardItem* enableItem = new QStandardItem("");
-    enableItem->setCheckable(true);
-    enableItem->setCheckState(Qt::Checked);
-    enableItem->setEnabled(false);
-    rowItems << enableItem;
-    categoryOnline->appendRow(rowItems);
 }
 
 void PluginDialog::parsePluginNode(QDomNode node)

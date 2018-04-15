@@ -36,7 +36,6 @@ set( screencloud_SOURCES
     src/dialog/licensesdialog.cpp
     src/dialog/savescreenshotdialog.cpp
     src/dialog/plugindialog.cpp
-    src/dialog/logindialog.cpp
     src/dialog/changelogdialog.cpp
     src/dialog/editordialog.cpp
     src/dialog/selectfolderdialog.cpp
@@ -61,12 +60,8 @@ set( screencloud_SOURCES
     src/editor/graphicsitemfactory.cpp
     src/editor/qcolorbutton.cpp
     src/plugin/pluginmanager.cpp
-    src/firstrunwizard/activatepage.cpp
     src/firstrunwizard/finishedpage.cpp
     src/firstrunwizard/firstrunwizard.cpp
-    src/firstrunwizard/intropage.cpp
-    src/firstrunwizard/loginpage.cpp
-    src/firstrunwizard/newaccountpage.cpp
     src/firstrunwizard/shortcutspage.cpp
     src/firstrunwizard/welcomepage.cpp
     src/firstrunwizard/onlineservicespage.cpp
@@ -109,7 +104,6 @@ set( screencloud_HEADERS_MOC
     src/dialog/licensesdialog.h
     src/dialog/savescreenshotdialog.h
     src/dialog/plugindialog.h
-    src/dialog/logindialog.h
     src/dialog/changelogdialog.h
     src/dialog/editordialog.h
     src/dialog/selectfolderdialog.h
@@ -137,8 +131,6 @@ set( screencloud_HEADERS_MOC
     src/firstrunwizard/finishedpage.h
     src/firstrunwizard/firstrunwizard.h
     src/firstrunwizard/intropage.h
-    src/firstrunwizard/loginpage.h
-    src/firstrunwizard/newaccountpage.h
     src/firstrunwizard/shortcutspage.h
     src/firstrunwizard/welcomepage.h
     src/firstrunwizard/onlineservicespage.h
@@ -175,7 +167,6 @@ set( screencloud_FORMS
     src/dialog/licensesdialog.ui
     src/dialog/savescreenshotdialog.ui
     src/dialog/plugindialog.ui
-    src/dialog/logindialog.ui
     src/dialog/changelogdialog.ui
     src/dialog/editordialog.ui
     src/dialog/selectfolderdialog.ui

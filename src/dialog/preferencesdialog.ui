@@ -12,7 +12,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
+    <width>585</width>
     <height>393</height>
    </rect>
   </property>
@@ -242,171 +242,6 @@
           </layout>
          </item>
         </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab_account">
-      <attribute name="title">
-       <string>Account</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_7">
-       <item>
-        <widget class="QGroupBox" name="group_account">
-         <property name="title">
-          <string>Account</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
-          <item>
-           <layout class="QFormLayout" name="formLayout">
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_textEmail">
-              <property name="text">
-               <string>Logged in as:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="label_email">
-              <property name="text">
-               <string>test@example.com</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_textScreenshots">
-              <property name="text">
-               <string>Screenshots:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="label_screenshots">
-              <property name="text">
-               <string>Loading...</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_textAccountType">
-              <property name="text">
-               <string>Account Type:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLabel" name="label_accountType">
-              <property name="text">
-               <string>Loading...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QPushButton" name="button_logout">
-              <property name="text">
-               <string>Log out...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="button_dashboard">
-              <property name="text">
-               <string>Open Online Dashboard...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="spacer_accountButtons">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="group_notLoggedIn">
-         <property name="title">
-          <string>Not logged in</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QLabel" name="label_youAreNotLoggedIn">
-            <property name="text">
-             <string>You are not logged in to ScreenCloud.</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_loggingIn">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Logging in will allow you to share screenshots on &lt;a href=&quot;https://screencloud.net/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;screencloud.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QPushButton" name="button_login">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Log in...</string>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -1073,22 +908,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_auth</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>formWidget_ProxyAuth</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>130</x>
-     <y>184</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>220</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>slider_jpegQuality</sender>
    <signal>valueChanged(int)</signal>
    <receiver>label_qualityNumber</receiver>
@@ -1101,6 +920,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>403</x>
      <y>328</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_auth</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>formWidget_ProxyAuth</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>184</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>220</y>
     </hint>
    </hints>
   </connection>

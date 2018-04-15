@@ -28,8 +28,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     ui->setupUi(this);
     connect(this, SIGNAL(finished(int)), SLOT(dialogFinished(int)));
     connect(ui->combobox_imageFormat, SIGNAL(currentIndexChanged(int)), this, SLOT(comboboxImageFormatChanged(int)));
-    manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     updater = new Updater(this);
     connect(updater, SIGNAL(versionNumberRecieved(QString,bool)), this, SLOT(gotVersionNumber(QString,bool)));
     connect(updater, SIGNAL(pluginsUpdated()), this, SLOT(pluginsUpdated()));
@@ -47,14 +45,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     loadSettings();
     setupUi();
     updater->checkForUpdates(Updater::NoNotification);
-    userHasLoggedOut = false;
 }
 
 PreferencesDialog::~PreferencesDialog()
 {
     delete ui;
     delete hotkeyFilter;
-    delete manager;
     delete console;
 }
 void PreferencesDialog::loadSettings()
@@ -69,12 +65,6 @@ void PreferencesDialog::loadSettings()
     captureWindowBorders = settings.value("capture-window-borders", false).toBool();
     soundNotifications = settings.value("sound", true).toBool();
     showSaveDialog = settings.value("show-save-dialog", true).toBool();
-    settings.endGroup();
-    settings.beginGroup("account");
-    email = settings.value("email", "").toString();
-    token = settings.value("token", "").toString();
-    tokenSecret = settings.value("token-secret", "").toString();
-    loggedIn = settings.value("logged-in").toBool();
     settings.endGroup();
     settings.beginGroup("hotkeys");
     fullScreenHotkeyStr = settings.value("captureFullScreen", QString("Shift+Alt+1")).toString();
@@ -195,17 +185,6 @@ void PreferencesDialog::setupUi()
 #ifdef Q_OS_MACX
     ui->checkBox_windowBorders->setVisible(false);
 #endif
-    //Accuont tab
-    if(loggedIn)
-    {
-        ui->group_notLoggedIn->setVisible(false);
-        ui->group_account->setVisible(true);
-        ui->label_email->setText(email);
-    }else
-    {
-        //Hide all account info
-        ui->group_account->setVisible(false);
-    }
     //Hotkey input fields
     ui->table_hotkeys->item(0,1)->setText(fullScreenHotkeyStr);
     ui->table_hotkeys->item(1,1)->setText(selectionHotkeyStr);
@@ -254,34 +233,6 @@ void PreferencesDialog::setupUi()
     ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tab_debug));
 }
 
-void PreferencesDialog::getUserInfo()
-{
-    QUrl baseUrl( "https://api.screencloud.net/1.0/users/info.xml" );
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrlQuery query(baseUrl);
-#else
-    QUrl query(baseUrl);
-#endif
-    // construct the parameters string
-    query.addQueryItem("oauth_version", "1.0");
-    query.addQueryItem("oauth_signature_method", "PLAINTEXT");
-    query.addQueryItem("oauth_token", token);
-    query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-    query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-    query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-    query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrl fullUrl(baseUrl);
-    fullUrl.setQuery(query);
-#else
-    QUrl fullUrl(query);
-#endif
-    QNetworkRequest request;
-    request.setUrl(fullUrl);
-    manager->get(request);
-}
 void PreferencesDialog::validateHotkey(QTableWidgetItem* item)
 {
     INFO(tr("Validating hotkey"));
@@ -407,60 +358,6 @@ void PreferencesDialog::gotVersionNumber(QString versionNumber, bool outdated)
     ui->label_latestVersion->setText(versionNumber);
 }
 
-void PreferencesDialog::replyFinished(QNetworkReply *reply)
-{
-    if(userHasLoggedOut)
-    {
-        //Remove account settings
-        QSettings settings("screencloud", "ScreenCloud");
-        settings.remove("account");
-        settings.remove("first-run");
-        QCoreApplication::exit(0);
-    }
-    QString replyText = reply->readAll();
-    if(reply->error() != QNetworkReply::NoError)
-    {
-        //Parse servers response
-        QDomDocument doc("error");
-        if (!doc.setContent(replyText)) {
-            ui->label_screenshots->setText(tr("<font color='red'>Failed to parse response from server</font>"));
-            return;
-        }
-        QDomElement docElem = doc.documentElement();
-        QDomElement message = docElem.firstChildElement("message");
-        ui->label_screenshots->setText("<font color='red'>" + message.text() + "</font>");
-        if(message.text().isNull())
-        {
-            ui->label_screenshots->setText(tr("<font color='red'>Failed to parse response from server</font>"));
-        }
-
-    }else
-    {
-        //No error in request
-        QDomDocument doc("reply");
-        if (!doc.setContent(replyText)) {
-            ui->label_screenshots->setText("<font color='red'>error!</font>");
-            return;
-        }
-        QDomElement docElem = doc.documentElement();
-        QDomElement screenshots = docElem.firstChildElement("screenshots");
-        ui->label_screenshots->setText(screenshots.text());
-        QDomElement isPremium = docElem.firstChildElement("is_premium");
-        if(isPremium.text().compare("true", Qt::CaseInsensitive) == 0 || isPremium.text().toInt() == 1)
-        {
-            ui->label_accountType->setText("Premium");
-        }else
-        {
-            ui->label_accountType->setText(tr("Free (<a href=\"https://screencloud.net/premium/\">upgrade</a>)"));
-            ui->label_accountType->setOpenExternalLinks(true);
-        }
-        if(screenshots.text().length() == 0)
-        {
-            ui->label_screenshots->setText(tr("<font color='red'>Failed to parse response from server!</font>"));
-        }
-    }
-}
-
 void PreferencesDialog::pluginsUpdated()
 {
     uploadManager->reloadServices();
@@ -471,11 +368,6 @@ void PreferencesDialog::pluginsUpdated()
 void PreferencesDialog::on_button_checkForUpdates_clicked()
 {
     updater->checkForUpdates(Updater::ForceNotification); //Force a notification
-}
-
-void PreferencesDialog::on_button_dashboard_clicked()
-{
-    Q_EMIT openDashboardPressed();
 }
 
 void PreferencesDialog::on_list_uploaders_doubleClicked(const QModelIndex &index)
@@ -582,70 +474,7 @@ void PreferencesDialog::on_actionShowDebug_triggered()
         ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tab_debug));
     }
 }
-
-void PreferencesDialog::on_button_login_clicked()
-{
-    if(!loggedIn)
-    {
-        LoginDialog loginDialog(this);
-        if(loginDialog.exec() == QDialog::Accepted)
-        {
-            //Refresh after login
-            loadSettings();
-            setupUi();
-            getUserInfo();
-        }
-    }
-}
-
 void PreferencesDialog::on_tabWidget_currentChanged(int index)
 {
     saveSettings();
-}
-
-void PreferencesDialog::on_button_logout_clicked()
-{
-    QMessageBox msgBox;
-    msgBox.addButton(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.setText(tr("Are you sure that you want to log out? This will remove the saved account details and quit the application."));
-    msgBox.setIcon(QMessageBox::Information);
-    int selection = msgBox.exec();
-    if(selection == QMessageBox::Yes)
-    {
-        //Send logout request
-        QUrl baseUrl( "https://api.screencloud.net/1.0/users/logout.xml" );
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QUrlQuery query(baseUrl);
-#else
-        QUrl query(baseUrl);
-#endif
-        // construct the parameters string
-        query.addQueryItem("oauth_version", "1.0");
-        query.addQueryItem("oauth_signature_method", "PLAINTEXT");
-        query.addQueryItem("oauth_token", token);
-        query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-        query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-        query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-        query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QUrlQuery bodyParams;
-        bodyParams.addQueryItem("token", token);
-        QByteArray body = bodyParams.query(QUrl::FullyEncoded).toUtf8();
-        QUrl fullUrl(baseUrl);
-        fullUrl.setQuery(query);
-#else
-        QUrl bodyParams;
-        bodyParams.addQueryItem("token", token);
-        QByteArray body = bodyParams.encodedQuery();
-        QUrl fullUrl(query);
-
-#endif
-        QNetworkRequest request;
-        request.setUrl(fullUrl);
-        manager->post(request, body);
-        userHasLoggedOut = true;
-    }
 }

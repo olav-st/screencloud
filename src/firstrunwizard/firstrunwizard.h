@@ -16,13 +16,9 @@
 
 #include <QWizard>
 
-#include <firstrunwizard/intropage.h>
-#include <firstrunwizard/loginpage.h>
-#include <firstrunwizard/newaccountpage.h>
 #include <firstrunwizard/welcomepage.h>
 #include <firstrunwizard/shortcutspage.h>
 #include <firstrunwizard/onlineservicespage.h>
-#include <firstrunwizard/activatepage.h>
 #include <firstrunwizard/finishedpage.h>
 #include <QSettings>
 
@@ -33,7 +29,7 @@ public:
     explicit FirstRunWizard(QWidget *parent = 0);
     void accept();
 public:
-    enum { Page_Intro, Page_Login, Page_NewAccount, Page_Activate, Page_Welcome, Page_KeyboardShortcuts, Page_OnlineServices, Page_Finished };
+    enum { Page_Welcome, Page_KeyboardShortcuts, Page_OnlineServices, Page_Finished };
 private:
     QPixmap background;
 Q_SIGNALS:

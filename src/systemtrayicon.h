@@ -71,8 +71,7 @@ private:
 #endif
     QMap<QString, QAction*> submenuActions; //Key is uploaders shortname
     int screenshotDelay;
-    //systray menu actions
-    QAction* openDashboardAct;
+    //systray menu actions;
     QAction* cptFullScreenAct;
     QAction* cptSelectionAct;
     QAction* cptWindowAct;
@@ -97,7 +96,6 @@ private:
     QNetworkProxy proxy;
 private Q_SLOTS:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
-    void openDashboard();
     void captureFullScreenAction();
     void captureSelectionAction();
     void captureWindowAction();

@@ -53,9 +53,6 @@ void SaveScreenshotDialog::loadSettings()
     settings.beginGroup("main");
     currentUploaderShortname = settings.value("current-uploader", 0).toString();
     settings.endGroup();
-    settings.beginGroup("account");
-    loggedIn = settings.value("logged-in", false).toBool();
-    settings.endGroup();
 }
 
 void SaveScreenshotDialog::setupUi()

@@ -62,7 +62,6 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     createSystrayMenu();
     setContextMenu(trayMenu);
     prefDialog = new PreferencesDialog(NULL, &uploadManager);
-    connect(prefDialog, SIGNAL(openDashboardPressed()), this, SLOT(openDashboard()));
     overlay = new SelectionOverlay();
     connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
     connect(overlay, SIGNAL(selectionCanceled()), this, SLOT(selectionCanceled()));
@@ -80,7 +79,6 @@ SystemTrayIcon::~SystemTrayIcon()
 {
     delete trayMenu;
     //delete traySubmenuUploaders;
-    delete openDashboardAct;
     delete cptFullScreenAct;
     delete cptSelectionAct;
     delete cptWindowAct;
@@ -141,8 +139,6 @@ void SystemTrayIcon::createGlobalShortcuts()
 
 void SystemTrayIcon::createSystrayActions()
 {
-    openDashboardAct = new QAction(tr("Open Online Dashboard"), this);
-    connect(openDashboardAct, SIGNAL(triggered()), this, SLOT(openDashboard()));
     cptFullScreenAct = new QAction(tr("Capture Full Screen"), this);
     cptFullScreenAct->setShortcut(keySqFullScreen);
     connect(cptFullScreenAct, SIGNAL(triggered()), this, SLOT(captureFullScreenAction()));
@@ -172,8 +168,6 @@ void SystemTrayIcon::createSystrayMenu()
     trayMenu = new QMenu();
     traySubmenuUploaders = new QMenu(trayMenu);
     traySubmenuUploaders->setTitle(tr("Save to"));
-    trayMenu->addAction(openDashboardAct);
-    trayMenu->addSeparator();
     trayMenu->addAction(cptFullScreenAct);
     trayMenu->addAction(cptSelectionAct);
     trayMenu->addAction(cptWindowAct);
@@ -289,32 +283,7 @@ void SystemTrayIcon::iconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 #endif
 }
-void SystemTrayIcon::openDashboard()
-{
-    QUrl baseUrl("https://screencloud.net/1.0/users/redirect_dashboard");
 
-    // construct the parameters string
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrlQuery query(baseUrl);
-#else
-    QUrl query(baseUrl);
-#endif
-    query.addQueryItem("oauth_version", "1.0");
-    query.addQueryItem("oauth_signature_method", "PLAINTEXT");
-    query.addQueryItem("oauth_token", token);
-    query.addQueryItem("oauth_consumer_key", CONSUMER_KEY_SCREENCLOUD);
-    query.addQueryItem("oauth_signature", CONSUMER_SECRET_SCREENCLOUD + QString("&") + tokenSecret);
-    query.addQueryItem("oauth_timestamp", QString::number(QDateTime::currentDateTimeUtc().toTime_t()));
-    query.addQueryItem("oauth_nonce", NetworkUtils::generateNonce(15));
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    QUrl fullUrl(baseUrl);
-    fullUrl.setQuery(query);
-#else
-    QUrl fullUrl(query);
-#endif
-    QDesktopServices::openUrl(fullUrl);
-}
 void SystemTrayIcon::captureFullScreenAction()
 {
     if(!uploading)
@@ -391,7 +360,6 @@ void SystemTrayIcon::captureWindow()
 
 void SystemTrayIcon::openPreferencesWindow()
 {
-    prefDialog->getUserInfo();
     prefDialog->loadSettings();
     prefDialog->setupUi();
     prefDialog->show();
