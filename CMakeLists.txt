@@ -129,7 +129,6 @@ set( screencloud_HEADERS_MOC
     src/editor/qcolorbutton.h
     src/firstrunwizard/finishedpage.h
     src/firstrunwizard/firstrunwizard.h
-    src/firstrunwizard/intropage.h
     src/firstrunwizard/shortcutspage.h
     src/firstrunwizard/welcomepage.h
     src/firstrunwizard/onlineservicespage.h
