@@ -15,16 +15,6 @@ option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
 option(DISABLE_QT_KEYWORDS "Disable Qt keywords (for example 'slots') to avoid conflicts" OFF)
 option(PYTHONQT_IGNORE_SITE "Ignore site module when initializing PythonQt" ON)
 
-#These are sets of API keys used by the application. Since i cant include them in the sourcecode, you'll have to use your own when you compile
-set(CONSUMER_KEY_SCREENCLOUD "" CACHE STRING "Consumer key for screencloud.net")
-set(CONSUMER_SECRET_SCREENCLOUD "" CACHE STRING "Consumer secret for screencloud.net")
-add_definitions(-DCONSUMER_KEY_SCREENCLOUD="${CONSUMER_KEY_SCREENCLOUD}")
-add_definitions(-DCONSUMER_SECRET_SCREENCLOUD="${CONSUMER_SECRET_SCREENCLOUD}")
-
-if(NOT(CONSUMER_KEY_SCREENCLOUD OR CONSUMER_SECRET_SCREENCLOUD))
-    MESSAGE(WARNING "ScreenCloud API keys not set, you won't be able to use the client with screencloud.net. (You'll still be able to compile)")
-endif()
-
 if(QT_USE_QT5)
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
