@@ -23,6 +23,7 @@ public:
     explicit ScreenshotThumbView(QWidget *parent = 0);
     void drawOverlay(QPainter *painter, const QColor &color);
     void drawText(QPainter *painter, const QColor &bgColor, const QColor &textColor);
+    void drawEditHint(QPainter *painter, const QColor &color);
 
 private:
     bool hovered;

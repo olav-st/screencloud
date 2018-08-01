@@ -55,6 +55,22 @@ void ScreenshotThumbView::drawText(QPainter *painter, const QColor &bgColor, con
     painter->restore();
 }
 
+void ScreenshotThumbView::drawEditHint(QPainter *painter, const QColor &color)
+{
+    painter->save();
+    QBrush rectBrush = QBrush(color, Qt::SolidPattern);
+    painter->setBrush(rectBrush);
+    painter->setPen(Qt::NoPen);
+    if(this->width() > 0 && this->height() > 0)
+    {
+        QRect rect = QRect(8, this->height() - 50, 40, 40);
+        painter->drawRoundedRect(rect, 5.0, 5.0);
+        QPixmap icon = QPixmap (":/editor/editor-hint.png");
+        painter->drawPixmap(rect.x() + (rect.width() - 24) / 2, rect.y() + (rect.height() - 24) / 2, 24, 24, icon);
+    }
+    painter->restore();
+}
+
 void ScreenshotThumbView::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_EMIT clicked();
@@ -68,6 +84,10 @@ void ScreenshotThumbView::paintEvent(QPaintEvent *pe)
         QPainter painter(viewport());
         drawOverlay(&painter, QColor(100,100,100,60));
         drawText(&painter, QColor(28,28,28,200), QColor(127,127,127,240));
+    }else
+    {
+        QPainter painter(viewport());
+        drawEditHint(&painter,  QColor(28,28,28,150));
     }
 }
 
