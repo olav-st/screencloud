@@ -1,8 +1,8 @@
 # ScreenCloud [![Build Status](https://travis-ci.org/olav-st/screencloud.svg?branch=master)](https://travis-ci.org/olav-st/screencloud) 
 
-This is the source code for the ScreenCloud client. ScreenCloud is an easy to use screenshot sharing tool consisting of a cross-platform client and a sharing website: [http://screencloud.net/](http://screencloud.net/)
+This is the source code for the ScreenCloud client. ScreenCloud is an easy to use screenshot sharing tool that works on Windows, Mac and Linux. For more info, see: [http://screencloud.net/](http://screencloud.net/)
 
-You can also upload to other services, including your own FTP server, Imgur, Dropbox & Ubuntu One through the use of [plugins](https://github.com/olav-st/screencloud-plugins).
+You can also upload to other services, including your own FTP server, Imgur, Dropbox and more through the use of [plugins](https://github.com/olav-st/screencloud-plugins).
 
 ![A screenshot of the client running on Ubuntu](https://screencloud.net/img/systemtray_linux.png)
 
@@ -26,3 +26,5 @@ Roadmap
 Here's a quick list of features I've wanted to implement, but not gotten around to yet. Feel free to contribute to this list:
 
 * Translation support
+* Updating the wiki
+
