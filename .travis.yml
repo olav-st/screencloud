@@ -54,10 +54,8 @@ script:
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-        cd build-qt5;
         sudo make install DESTDIR=.;
     else
-        cd build-qt5;
         make install DESTDIR=.;
         cd ..;
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";

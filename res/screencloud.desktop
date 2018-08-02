@@ -11,3 +11,4 @@ Hidden=false
 NoDisplay=false
 Categories=Network;Graphics;2DGraphics;TrayIcon;
 Terminal=false
+OnlyShowIn=GNOME;KDE;XFCE;LXDE;LXQt;MATE;Razor;ROX;TDE;Unity;EDE;Cinnamon;Pantheon;
