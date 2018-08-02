@@ -38,8 +38,10 @@ script:
       sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)"
+      echo "$(brew --prefix qt)";
+      ls "$(brew --prefix qt)";
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)/lib/cmake";
     else
-      cmake ..
+      cmake ..;
     fi
   - make
