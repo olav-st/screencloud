@@ -8,6 +8,7 @@ matrix:
       compiler: gcc
       env: CMAKE_BUILD_TYPE=Release
     - os: osx
+      osx_image: xcode9.4
       env: CMAKE_BUILD_TYPE=Release
 
 before_install:
