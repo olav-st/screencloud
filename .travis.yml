@@ -32,7 +32,8 @@ script:
   - cd PythonQt/build
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
       git checkout 18d4c24;
-      sudo curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | sudo patch /usr/include/python2.7/pyport.h;
+      sudo cp /usr/include/python2.7/pyport.h /usr/include/python2.7/pyport.h.bak;
+      curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | sudo patch /usr/include/python2.7/pyport.h;
       cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
