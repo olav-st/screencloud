@@ -43,6 +43,7 @@ PluginDialog::~PluginDialog()
 
 void PluginDialog::setupUi()
 {
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled(false);
     stdModel.clear();
     stdModel.setColumnCount(2);
     QStringList headerLabels;
@@ -172,6 +173,8 @@ void PluginDialog::replyFinished(QNetworkReply *reply)
         stdModel.removeRow(0);
         buildTree();
     }
+    //Reenable OK button
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled(true);
 }
 
 void PluginDialog::pluginInstalled(QString name)
