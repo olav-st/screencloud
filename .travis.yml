@@ -9,7 +9,6 @@ matrix:
       env: CMAKE_BUILD_TYPE=Release
     - os: osx
       env: CMAKE_BUILD_TYPE=Release
-      osx_image: xcode8
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                 ;fi
@@ -33,6 +32,6 @@ script:
   - sudo make install
   - cd ../..
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.su             ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so             ;fi
   - cmake ..
   - make
