@@ -15,7 +15,11 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq   ;fi
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt quazip     ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+      sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev;
+      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+      chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+    fi
 before_script:
   - mkdir build-qt5 build-qt4
 script:
@@ -46,8 +50,22 @@ script:
       sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6m" -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python36.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python36_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt;
+      cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6m" -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python36.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python36_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt;
     else
-      cmake ..;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
     fi
-  - make
+  - make install DESTDIR=.
+
+after_success:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+        ls;
+        ls build-qt5;
+        echo todo;
+    else
+        unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
+        export VERSION=$(git rev-parse --short HEAD);
+        ls;
+        ls build-qt5;
+        ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/usr/share/applications/*.desktop -bundle-non-qt-libs;
+        ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/usr/share/applications/*.desktop -appimage;
+    fi
