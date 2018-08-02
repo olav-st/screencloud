@@ -13,7 +13,7 @@ option(COLOR_OUTPUT "Use color ouput in terminal" ON)
 option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
 option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
 option(DISABLE_QT_KEYWORDS "Disable Qt keywords (for example 'slots') to avoid conflicts" OFF)
-option(PYTHONQT_IGNORE_SITE "Ignore site module when initializing PythonQt" ON)
+option(PYTHONQT_IGNORE_SITE "Ignore site module when initializing PythonQt" OFF)
 
 if(QT_USE_QT5)
     set(CMAKE_AUTOMOC ON)
