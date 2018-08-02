@@ -63,10 +63,10 @@ void ScreenshotThumbView::drawEditHint(QPainter *painter, const QColor &color)
     painter->setPen(Qt::NoPen);
     if(this->width() > 0 && this->height() > 0)
     {
-        QRect rect = QRect(8, this->height() - 50, 40, 40);
+        QRect rect = QRect(8, this->height() - 42, 32, 32);
         painter->drawRoundedRect(rect, 5.0, 5.0);
         QPixmap icon = QPixmap (":/editor/editor-hint.png");
-        painter->drawPixmap(rect.x() + (rect.width() - 24) / 2, rect.y() + (rect.height() - 24) / 2, 24, 24, icon);
+        painter->drawPixmap(rect.x() + (rect.width() - 20) / 2, rect.y() + (rect.height() - 20) / 2, 20, 20, icon);
     }
     painter->restore();
 }
