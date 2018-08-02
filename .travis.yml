@@ -32,9 +32,6 @@ script:
   - cd PythonQt/build
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
       git checkout 18d4c24;
-      ls $(python3-config --prefix);
-      ls $(python3-config --prefix)/lib;
-      ls $(python3-config --prefix)/include;
       cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6m" -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
@@ -54,20 +51,18 @@ script:
   - make
 
 after_success:
-  - cd build-qt5
-  - make install DESTDIR=.
-  - cd ..
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-        ls;
-        ls build-qt5;
-        echo todo;
+        cd build-qt5;
+        sudo make install DESTDIR=.;
     else
+        cd build-qt5;
+        make install DESTDIR=.;
+        cd ..;
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
         export VERSION=$(git rev-parse --short HEAD);
-        ls;
-        ls build-qt5;
         ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/usr/share/applications/*.desktop -bundle-non-qt-libs;
         ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/usr/share/applications/*.desktop -appimage;
     fi
