@@ -87,6 +87,8 @@ void PluginDialog::parsePluginNode(QDomNode node)
 {
     QString name = node.firstChildElement("name").text();
     QString shortname = node.firstChildElement("shortname").text();
+    QString description = node.firstChildElement("description").text();
+    QString author = node.firstChildElement("author").text();
     QString iconUrl = node.firstChildElement("icon").text();
     QString category = node.firstChildElement("category").text();
     QString downloadUrl = node.firstChildElement("download").text();
@@ -98,6 +100,7 @@ void PluginDialog::parsePluginNode(QDomNode node)
     pluginItem->setData(shortname, Qt::UserRole);
     pluginItem->setData(downloadUrl, Qt::UserRole + 1);
     pluginItem->setData(version, Qt::UserRole + 2);
+    pluginItem->setToolTip(QString("<i>%1</i><br/>Version: %2<br/>Author: %3").arg(description, version, author));
     rowItems << pluginItem;
     QStandardItem* enableItem = new QStandardItem("");
     enableItem->setCheckable(true);
