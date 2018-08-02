@@ -34,7 +34,7 @@ script:
       git checkout 18d4c24;
       ls $(python2-config --prefix)/lib;
       ls $(python2-config --prefix)/include;
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python2-config --prefix)/lib/libpython2.7.dylib" -DPYTHON_INCLUDE_DIR="$(python-config --prefix)/include/python2.7m"  -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
       cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
