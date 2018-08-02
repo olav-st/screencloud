@@ -30,7 +30,11 @@ script:
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
   - git checkout ea98dd0
-  - cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+    else
+      cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+    fi
   - sudo make install
   - cd ../..
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
@@ -38,9 +42,7 @@ script:
       sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      echo "$(brew --prefix qt)";
-      ls "$(brew --prefix qt)";
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)/lib/cmake";
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)";
     else
       cmake ..;
     fi
