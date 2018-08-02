@@ -34,7 +34,7 @@ script:
       ls $(python3-config --prefix);
       ls $(python3-config --prefix)/lib;
       ls $(python3-config --prefix)/include;
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6" -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6m" -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
       cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
