@@ -29,10 +29,11 @@ script:
   - cd build-qt5
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - git checkout 18d4c24
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+      git checkout 18d4c24;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python-config --prefix)/lib/libpython*.dylib" -DPYTHON_INCLUDE_DIR="$(python-config --prefix)/include/python*" -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     else
+      git checkout ea98dd0;
       cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     fi
   - sudo make install
