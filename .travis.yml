@@ -38,7 +38,7 @@ script:
       cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
-      cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     fi
   - sudo make install
   - cd ../..
