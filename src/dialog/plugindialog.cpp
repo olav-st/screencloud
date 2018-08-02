@@ -45,8 +45,6 @@ void PluginDialog::setupUi()
 {
     stdModel.clear();
     stdModel.setColumnCount(2);
-    categoryOnline = new QStandardItem(tr("Online"));
-    categoryLocal = new QStandardItem(tr("Local"));
     QStringList headerLabels;
     headerLabels.append(tr("Name"));
     headerLabels.append(tr("Enabled"));
@@ -65,14 +63,9 @@ void PluginDialog::setupUi()
 
 void PluginDialog::buildTree()
 {
-    if(categoryOnline->hasChildren())
+    for(int i = 0; i < rows.length(); i++)
     {
-        stdModel.invisibleRootItem()->appendRow(categoryOnline);
-        ui->tree_plugins->expand(stdModel.indexFromItem(categoryOnline));
-    }
-    if(categoryLocal->hasChildren())
-    {
-        stdModel.invisibleRootItem()->appendRow(categoryLocal);
+        stdModel.invisibleRootItem()->appendRow(rows[i]);
     }
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     ui->tree_plugins->header()->setSectionResizeMode(0, QHeaderView::Stretch);
@@ -113,13 +106,7 @@ void PluginDialog::parsePluginNode(QDomNode node)
         enableItem->setCheckState(Qt::Checked);
     }
     rowItems << enableItem;
-    if(category != "local")
-    {
-        categoryOnline->appendRow(rowItems);
-    }else
-    {
-        categoryLocal->appendRow(rowItems);
-    }
+    rows.append(rowItems);
 }
 
 bool PluginDialog::pluginsChanged()
@@ -262,26 +249,22 @@ void PluginDialog::on_buttonBox_accepted()
     //Get a list of the checked or unchecked plugins
     for(int i = 0; i < stdModel.invisibleRootItem()->rowCount(); i++)
     {
-        for(int j = 0; j < stdModel.invisibleRootItem()->child(i)->rowCount(); j++)
+        qDebug() << "halla";
+        QStandardItem* item = stdModel.invisibleRootItem()->child(i);
+        qDebug() << "kis";
+        bool checked = (stdModel.invisibleRootItem()->child(item->row(), item->column() + 1)->checkState() > 0);
+        QString downloadURL = item->data(Qt::UserRole + 1).toString();
+        QString shortname = item->data(Qt::UserRole).toString();
+        QString version = item->data(Qt::UserRole + 2).toString();
+        if(checked)
         {
-            QStandardItem* item = stdModel.invisibleRootItem()->child(i)->child(j);
-            bool checked = (item->parent()->child(item->row(), item->column() + 1)->checkState() > 0);
-            QString downloadURL = item->data(Qt::UserRole + 1).toString();
-            QString shortname = item->data(Qt::UserRole).toString();
-            QString version = item->data(Qt::UserRole + 2).toString();
-            if(shortname != "screencloud")
+            if(pluginManager->installedVersion(shortname) != version)
             {
-                if(checked)
-                {
-                    if(pluginManager->installedVersion(shortname) != version)
-                    {
-                        toInstallUrls << downloadURL;
-                    }
-                }else
-                {
-                    toUninstall << shortname;
-                }
+                toInstallUrls << downloadURL;
             }
+        }else
+        {
+            toUninstall << shortname;
         }
     }
     pluginManager->uninstallPlugins(toUninstall);

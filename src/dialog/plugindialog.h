@@ -57,8 +57,7 @@ private:
     QUrl pluginListUrl;
     BusyOverlay* busyOverlay;
     QStandardItemModel stdModel;
-    QStandardItem* categoryOnline;
-    QStandardItem* categoryLocal;
+    QList<QList<QStandardItem*>> rows;
     PluginManager* pluginManager;
     QStringList toInstallUrls;
     QStringList toUninstall;
