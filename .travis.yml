@@ -14,7 +14,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                 ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq   ;fi
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5 quazip     ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt quazip     ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev ;fi
 before_script:
   - mkdir build-qt5 build-qt4
@@ -38,7 +38,7 @@ script:
       sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake .. -DCMAKE_PREFIX_PATH="$(ls -d $(brew --cellar)/qt/*/lib/cmake)" -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" -DCMAKE_EXE_LINKER_FLAGS="${CXX_LINKER_FLAGS}"
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)"
     else
       cmake ..
     fi
