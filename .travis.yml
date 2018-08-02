@@ -46,7 +46,7 @@ script:
       sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6m" -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python36.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python36_QtAll.dylib -DDPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_LIBRARY="$(python3-config --prefix)/lib/libpython3.6.dylib" -DPYTHON_INCLUDE_DIR="$(python3-config --prefix)/include/python3.6m" -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python36.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python36_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python36/PythonQt;
     else
       cmake ..;
     fi
