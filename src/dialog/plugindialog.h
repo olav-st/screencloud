@@ -57,7 +57,7 @@ private:
     QUrl pluginListUrl;
     BusyOverlay* busyOverlay;
     QStandardItemModel stdModel;
-    QList<QList<QStandardItem*>> rows;
+    QList<QList<QStandardItem*> > rows;
     PluginManager* pluginManager;
     QStringList toInstallUrls;
     QStringList toUninstall;
