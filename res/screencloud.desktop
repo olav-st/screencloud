@@ -11,4 +11,3 @@ Hidden=false
 NoDisplay=false
 Categories=Network;Graphics;2DGraphics;TrayIcon;
 Terminal=false
-OnlyShowIn=GNOME;KDE;XFCE
