@@ -1,28 +1,38 @@
 language: cpp
-sudo: required
-dist: trusty
-compiler:
-  - gcc
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Release
+    - os: osx
+      env: CMAKE_BUILD_TYPE=Release
+      osx_image: xcode8
+
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                 ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq   ;fi
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install git qt5 quazip python3 ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev ;fi
 before_script:
   - mkdir build-qt5 build-qt4
 script:
-  - cd build-qt4
-  - cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF
-  - make
-  - cd ../build-qt5
-  - sudo apt-get purge -y libpythonqt-dev libpythonqt2.1
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd build-qt4  ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make          ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..         ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get purge -y libpythonqt-dev libpythonqt2.1 ;fi
+  - cd build-qt5
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
   - git checkout ea98dd0
   - cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON
   - sudo make install
   - cd ../..
-  - sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so
-  - sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.su             ;fi
   - cmake ..
   - make
-os:
-  - linux
