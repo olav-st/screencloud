@@ -29,9 +29,9 @@ script:
   - cd build-qt5
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - git checkout ea98dd0
+  - git checkout 18d4c24
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHONQT_WITH_WEBKIT=OFF -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)";
     else
       cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     fi
