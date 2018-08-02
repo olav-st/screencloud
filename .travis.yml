@@ -32,9 +32,9 @@ script:
   - cd PythonQt/build
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
       git checkout 18d4c24;
-      sudo chmod 777 /usr/include/python2.7/pyport.h;
-      curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | sudo patch /usr/include/python2.7/pyport.h;
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
+      sudo cp -r /usr/include/python2.7 ./pythonincludes;
+      curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | patch ./pythonincludes/pyport.h;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
       cmake .. -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
@@ -42,7 +42,7 @@ script:
   - sudo make install
   - cd ../..
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
+      cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
     else
       sudo ln -s /usr/local/lib/libQt5Python34_QtAll.so /usr/local/lib/libQtPython_QtAll.so;
       sudo ln -s /usr/local/lib/libQt5Python34.so /usr/local/lib/libQtPython.so;
