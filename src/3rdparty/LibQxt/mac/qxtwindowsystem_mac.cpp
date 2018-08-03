@@ -14,11 +14,9 @@ WindowList qxt_getWindowsForPSN(ProcessSerialNumber *psn)
     WindowList wlist;
     if (!psn) return wlist;
 
-    CGError err(noErr);
-
     // get onnection for given process psn
     CGSConnection procConnection;
-    err = CGSGetConnectionIDForPSN(connection, psn, &procConnection);
+    CGError err = CGSGetConnectionIDForPSN(connection, psn, &procConnection);
     if (err != noErr) return wlist;
 
     /* get number of windows open by given process
