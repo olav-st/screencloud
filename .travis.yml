@@ -61,7 +61,8 @@ after_success:
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         sudo make install DESTDIR=.;
-        macdeployqt screencloud.app -verbose=3;
+        sudo macdeployqt screencloud.app -verbose=3;
+        sudo chown -R $(id -nu) screencloud.app;
         mkdir dmgdir;
         mv screencloud.app dmgdir/ScreenCloud.app;
         ln -s /Applications dmgdir/Applications;
