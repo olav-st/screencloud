@@ -84,6 +84,7 @@ after_success:
         chmod a+x appimagetool-x86_64.AppImage;
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
         ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
+        rm build-qt5/appdir/AppRun;
         cp res/screencloud.sh build-qt5/appdir/AppRun;
         ./appimagetool-x86_64.AppImage build-qt5/appdir;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION-x86_64.AppImage;
