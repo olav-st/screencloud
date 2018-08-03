@@ -74,7 +74,8 @@ after_success:
     else
         mkdir deploy;
         make install DESTDIR=deploy;
-        sudo cp -r /usr/lib/python3.4m deploy/lib/python3.4m;
+        sudo mkdir -p deploy/usr/lib/python3.4;
+        sudo cp -r /usr/lib/python3.4 deploy/usr/lib/python3.4;
         sudo chown -R $(id -nu) deploy;
         cd ..;
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
