@@ -72,17 +72,20 @@ after_success:
         hdiutil create -volname ScreenCloud -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION.dmg;
     else
-        mkdir deploy;
-        make install DESTDIR=deploy;
-        sudo mkdir -p deploy/usr/lib/python3.4;
-        sudo cp -r /usr/lib/python3.4/* deploy/usr/lib/python3.4/;
-        sudo chown -R $(id -nu) deploy;
+        mkdir appdir;
+        make install DESTDIR=appdir;
+        sudo mkdir -p appdir/usr/lib/python3.4;
+        sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
+        sudo chown -R $(id -nu) appdir;
         cd ..;
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
+        wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage";
+        chmod a+x appimagetool-x86_64.AppImage;
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-        ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/deploy/usr/share/applications/*.desktop -bundle-non-qt-libs;
-        ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/deploy/usr/share/applications/*.desktop -appimage;
+        ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
+        cp res/screencloud.sh build-qt5/appdir/AppRun;
+        ./appimagetool-x86_64.AppImage build-qt5/appdir;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION-x86_64.AppImage;
     fi
 
