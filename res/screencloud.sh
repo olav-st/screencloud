@@ -11,7 +11,7 @@ if [ -n "$SNAP" ]; then
 else
 	#Do the same, but for AppImage
 	HERE="$(dirname "$(readlink -f "${0}")")"
-	export PYTHONHOME="${HERE}"/usr
-	export PYTHONPATH="${HERE}"/usr/lib/python3.4
-	exec "${HERE}/usr/bin/screencloud" "$@"
+	export PYTHONHOME="${HERE}"/../../usr
+	export PYTHONPATH="${HERE}"/../../usr/lib/python3.4
+	exec "${HERE}/screencloud" "$@"
 fi
