@@ -55,12 +55,14 @@ script:
   - make
 
 after_success:
-  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         sudo make install DESTDIR=.;
-        mv screencloud.app ScreenCloud.app;
-        macdeployqt ScreenCloud.app -dmg -verbose=3
-        export DEPLOYFILE=ScreenCloud.dmg;
+        mkdir dmgdir
+        mv screencloud.app dmgdir/ScreenCloud.app;
+        macdeployqt dmgdir/ScreenCloud.app -verbose=3
+        ln -s /Applications dmgdir/Applications
+        hdiutil create -volname ScreenCloud -srcfolder dmgdir -ov -format UDZO ScreenCloud.dmg
+        export DEPLOYFILE=$(pwd)/ScreenCloud.dmg;
     else
         make install DESTDIR=.;
         cd ..;
@@ -69,7 +71,7 @@ after_success:
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
         ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/usr/share/applications/*.desktop -bundle-non-qt-libs;
         ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/usr/share/applications/*.desktop -appimage;
-        export DEPLOYFILE=ScreenCloud-x86_64.AppImage;
+        export DEPLOYFILE=$(pwd)/ScreenCloud-x86_64.AppImage;
     fi
 
 deploy:
