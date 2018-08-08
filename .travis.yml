@@ -46,9 +46,12 @@ script:
       sudo apt-get purge -y libpythonqt-dev libpythonqt2.1;
     fi
   - cd build-qt5
+  - if [[ [[ "$TRAVIS_OS_NAME" == "linux" ]] && ! -z "$QT_PPA" ]]; then
+      source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh;
+    fi
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       git checkout 18d4c24;
       sudo cp -r /usr/include/python2.7 ./pythonincludes;
       sudo chmod 777 ./pythonincludes;
@@ -56,14 +59,11 @@ script:
       cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
-      if [[ ! -z "$QT_PPA" ]]; then
-        source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh;
-      fi
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     fi
   - sudo make install
   - cd ../..
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/build/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
     else
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
@@ -77,7 +77,7 @@ after_success:
   - if [ -z "$VERSION" ]; then
       export VERSION=$(git rev-parse --short HEAD);
     fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] then
         sudo make install DESTDIR=.;
         sudo macdeployqt screencloud.app -verbose=3;
         sudo chown -R $(id -nu) screencloud.app;
