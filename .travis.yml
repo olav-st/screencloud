@@ -72,7 +72,7 @@ after_success:
   - if [ -z "$VERSION" ]; then
       export VERSION=$(git rev-parse --short HEAD);
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         sudo make install DESTDIR=.;
         sudo macdeployqt screencloud.app -verbose=3;
         sudo chown -R $(id -nu) screencloud.app;
