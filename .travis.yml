@@ -46,14 +46,13 @@ script:
     fi
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
+  - git checkout 18d4c24
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      git checkout 18d4c24;
       sudo cp -r /usr/include/python2.7 ./pythonincludes;
       sudo chmod 777 ./pythonincludes;
       curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | patch ./pythonincludes/pyport.h;
       cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON;
     else
-      git checkout b06f864;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON;
     fi
   - sudo make install
