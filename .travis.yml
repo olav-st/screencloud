@@ -46,7 +46,7 @@ script:
       sudo apt-get purge -y libpythonqt-dev libpythonqt2.1;
     fi
   - cd build-qt5
-  - if [[ [[ "$TRAVIS_OS_NAME" == "linux" ]] && ! -z "$QT_PPA" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && ! -z "$QT_PPA" ]]; then
       source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh;
     fi
   - git clone https://github.com/Orochimarufan/PythonQt
