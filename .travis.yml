@@ -23,8 +23,6 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
       sudo apt-get install -y git cmake python2.7-dev python3-dev python3-crypto libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
-    fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
     fi
 
@@ -38,11 +36,9 @@ script:
       make;
       cd ..;
       sudo apt-get purge -y libpythonqt-dev libpythonqt2.1 libquazip-dev libquazip0;
-    fi
-  - cd build-qt5
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       source /opt/qt${QT_VER}/bin/qt${QT_VER}-env.sh;
     fi
+  - cd build-qt5
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
   - git checkout 18d4c24
