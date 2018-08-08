@@ -89,8 +89,8 @@ after_success:
         make install DESTDIR=appdir;
         sudo mkdir -p appdir/usr/lib/python3.4;
         sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
-        sudo mkdir -p appdir/usr/lib/python3;
-        sudo cp -r /usr/lib/python3/* appdir/usr/lib/python3/;
+        sudo mkdir -p appdir/usr/lib/python3/dist-packages/Crypto;
+        sudo cp -r /usr/lib/python3/dist-packages/Crypto/* appdir/usr/lib/python3/dist-packages/Crypto/;
         sudo chown -R $(id -nu) appdir;
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
@@ -100,6 +100,12 @@ after_success:
         ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
         unlink appdir/AppRun;
         cp ../res/screencloud.sh appdir/AppRun;
+        rm -r appdir/usr/plugins/bearer;
+        rm -r appdir/usr/plugins/mediaservice;
+        rm -r appdir/usr/plugins/platforminputcontexts;
+        rm -r appdir/usr/plugins/printsupport;
+        rm -r appdir/usr/plugins/sqldrivers;
+        rm -r appdir/usr/plugins/xcbglintegrations;
         ./appimagetool-x86_64.AppImage appdir;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION-x86_64.AppImage;
     fi
