@@ -17,7 +17,7 @@ matrix:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && ! -z "$QT_PPA" ]]; then sudo add-apt-repository -y ppa:$QT_PPA ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && -n "$QT_PPA" ]]; then sudo add-apt-repository -y ppa:$QT_PPA ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ;fi
 
 install:
@@ -27,11 +27,11 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
       sudo apt-get install -y git cmake python2.7-dev python3-dev libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
-      if [[ ! -z "$QT_PPA" ]]; then
-        sudo apt-get install -y qt$QT_VER-meta-full;
-      else
-        sudo apt-get install -y qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev;
-      fi
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && -n "$QT_PPA" ]]; then
+      sudo apt-get install -y qt$QT_VER-meta-full;
+    else
+      sudo apt-get install -y qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev;
     fi
 
 before_script:
@@ -46,7 +46,7 @@ script:
       sudo apt-get purge -y libpythonqt-dev libpythonqt2.1;
     fi
   - cd build-qt5
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && ! -z "$QT_PPA" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && -n "$QT_PPA" ]]; then
       source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh;
     fi
   - git clone https://github.com/Orochimarufan/PythonQt
