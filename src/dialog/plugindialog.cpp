@@ -255,9 +255,7 @@ void PluginDialog::on_buttonBox_accepted()
     //Get a list of the checked or unchecked plugins
     for(int i = 0; i < stdModel.invisibleRootItem()->rowCount(); i++)
     {
-        qDebug() << "halla";
         QStandardItem* item = stdModel.invisibleRootItem()->child(i);
-        qDebug() << "kis";
         bool checked = (stdModel.invisibleRootItem()->child(item->row(), item->column() + 1)->checkState() > 0);
         QString downloadURL = item->data(Qt::UserRole + 1).toString();
         QString shortname = item->data(Qt::UserRole).toString();
