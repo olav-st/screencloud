@@ -63,7 +63,7 @@ script:
     else
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
       sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt/ -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
     fi
   - make
 
