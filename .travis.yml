@@ -38,7 +38,7 @@ script:
       cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF;
       make;
       cd ..;
-      sudo apt-get purge -y libpythonqt-dev libpythonqt2.1;
+      sudo apt-get purge -y libpythonqt-dev libpythonqt2.1 libquazip-dev libquazip0;
     fi
   - cd build-qt5
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -n "$QT_PPA" ]]; then
@@ -60,6 +60,11 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/build/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
     else
+      git clone https://github.com/stachenov/quazip;
+      cd quazip;
+      qmake;
+      sudo make install;
+      cd ..;
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
       sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt/ -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
