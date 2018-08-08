@@ -86,9 +86,9 @@ after_success:
         ls -l appdir/usr/bin;
         unlink appdir/AppRun;
         ls -l appdir/usr/bin;
-        cp res/screencloud.sh build-qt5/appdir/AppRun;
+        cp ../res/screencloud.sh appdir/AppRun;
         ls -l appdir/usr/bin;
-        ./appimagetool-x86_64.AppImage build-qt5/appdir;
+        ./appimagetool-x86_64.AppImage appdir;
         ls -l appdir/usr/bin;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION-x86_64.AppImage;
     fi
