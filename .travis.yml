@@ -6,7 +6,7 @@ matrix:
       dist: trusty
       sudo: required
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release QT_VER=56 QT_PPA=beineri/opt-qt562-trusty
+      env: CMAKE_BUILD_TYPE=Release QT_PPA=beineri/opt-qt562-trusty QT_VER=56 
     - os: osx
       osx_image: xcode9.4
       env: CMAKE_BUILD_TYPE=Release
@@ -23,7 +23,7 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y git cmake python2.7-dev python3-dev libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -n "$QT_PPA" ]]; then
-      sudo apt-get install -y qt$QT_VER-meta-minimal qt$QT_VERdeclarative qt$QT_VERimageformats qt$QT_VERmultimedia qt$QT_VERsvg qt$QT_VERwayland qt$QT_VERx11extras  qt$QT_VERxmlpatterns;
+      sudo apt-get install -y qt$QT_VER-meta-minimal qt$QT_VERdeclarative qt$QT_VERimageformats qt$QT_VERmultimedia qt$QT_VERsvg qt$QT_VERwayland qt$QT_VERx11extras qt$QT_VERxmlpatterns;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux"  && -z "$QT_PPA"  ]]; then 
       sudo apt-get install -y qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev;
