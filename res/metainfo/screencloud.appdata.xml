@@ -1,128 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-​<!-- Copyright 2017 Olav Sortland Thoresen <olav.s.th@gmail.com> -->
-​<component type="desktop-application">
-​  <id>com.screencloud.ScreenCloud</id>
-​  <metadata_license>FSFAP</metadata_license>
-​  <project_license>GPL-2.0+</project_license>
-​  <name>ScreenCloud</name>
-​  <summary>Easy to use screenshot sharing application.</summary>
-​
-​  <description>
-​    <p>
-​      Take a screenshot using one of the 3 hotkeys or simply click the ScreenCloud tray icon. You can choose where you want to save your screenshot. Several cloud services as well as local storage is supported.
-​    </p>
-​    <p>Features:</p>
-​    <ul>
-​      <li>Open Source and cross-platform(Windows, Mac & Linux)</li>
-​      <li>Fast and easy: Snap a photo, paste the link, done!</li>
-      <li>Plugin support, save to Dropbox, Imgur, etc.</li>
-      <li>Built in screenshot editor.</li>
-​    </ul>
-​  </description>
-​
-​  <launchable type="desktop-id">screencloud.desktop</launchable>
-​
-​  <screenshots>
-​    <screenshot type="default">
-​      <caption>A screenshot of the client running on Ubuntu</caption>
-​      <image>https://screencloud.net/img/systemtray_linux.png</image>
-​    </screenshot>
-​  </screenshots>
-​
-​  <url type="homepage">https://www.screencloud.net</url>
+<component type="desktop-application">
+	<id>screencloud</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-2.0+</project_license>
+	<name>ScreenCloud</name>
+	<summary>Easy to use screenshot sharing application.</summary>
+	<description>
+		<p>Take a screenshot using one of the 3 hotkeys or simply click the ScreenCloud tray icon. You can choose where you want to save your screenshot. Several cloud services as well as local storage is supported.
 
-​  <provides>
-​    <binary>screencloud</binary>
-​  </provides>
-​
-​  <releases>
-      <release version="1.3.0" date="2016-08-15">
-    ​      <description>
-            <ul>
-    ​           <li>Codebase updates, now using Qt 5 on Windows, Mac and recent Linux distributions</li>
-               <li>Update to Python 3 on Windows</li>
-               <li>Bug fixes (audio playback, etc)</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.2.0" date="2015-02-14">
-    ​      <description>
-            <ul>
-    ​           <li>Added screenshot editor</li>
-               <li>Fixed audio output sometimes crashing the application</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.1.6" date="2014-05-01">
-    ​      <description>
-            <ul>
-    ​           <li>Fixed plugin list not loading (url has changed)</li>
-               <li>Made more strings translatable</li>
-               <li>Fixed running on startup not working on OS X</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.1.5" date="2014-03-30">
-    ​      <description>
-            <ul>
-    ​           <li>Fixed plugin update check</li>
-               <li>Added changelog button to update notifications</li>
-               <li>Fixed R6034 error and Python crashes on Windows</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.1.4" date="2014-03-22">
-    ​      <description>
-            <ul>
-    ​           <li>Better multi-monitor support</li>
-               <li>Added check for plugin updates</li>
-               <li>CLI improvements</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.1.3" date="2014-03-01">
-    ​      <description>
-            <ul>
-    ​           <li>New plugin format (python plugins)</li>
-               <li>All urls are https by default</li>
-               <li>Removed a few dependencies</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.1.2" date="2012-10-02">
-    ​      <description>
-            <ul>
-    ​           <li>Added OpenSuse build service package</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.1.0" date="2012-11-20">
-    ​      <description>
-            <ul>
-    ​           <li>Added plugin support</li>
-               <li>Updated icons to match new website design</li>
-               <li>Added option to reset hotkeys to default</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.0.2" date="2012-07-09">
-    ​      <description>
-            <ul>
-    ​           <li>Added multi monitor support</li>
-               <li>Fixed sound effects not loading</li>
-               <li>Run on startup now works on Mac OS X</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.0.1" date="2012-06-26">
-    ​      <description>
-            <ul>
-    ​           <li>Date/Time settings does not revert to default</li>
-               <li>Run on startup now works on Ubuntu</li>
-            </ul>
-    ​      </description>
-    ​  </release>
-      <release version="1.0.0" date="2012-06-22">
-      </release>
-​  </releases>
-​</component>
+Features:
+Open Source and cross-platform(Windows, Mac & Linux).
+Fast and easy: Snap a photo, paste the link, done!
+Plugin support, save to Dropbox, Imgur, etc
+Built in screenshot editor.</p>
+	</description>
+	<launchable type="desktop-id">screencloud.desktop</launchable>
+	<url type="homepage">https://www.screencloud.net</url>
+	<screenshots>
+		<screenshot type="default">
+			<image>https://screencloud.net/img/systemtray_linux.png</image>
+		</screenshot>
+	</screenshots>
+	<provides>
+		<id>screencloud.desktop</id>
+	</provides>
+</component>
