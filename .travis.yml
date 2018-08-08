@@ -62,7 +62,7 @@ script:
     else
       git clone https://github.com/stachenov/quazip;
       cd quazip;
-      qmake;
+      qmake PREFIX=/usr;
       sudo make install;
       cd ..;
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
