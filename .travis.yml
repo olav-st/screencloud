@@ -6,7 +6,7 @@ matrix:
       dist: trusty
       sudo: required
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release QT_PPA=beineri/opt-qt57-trusty QT_VER=57
+      env: CMAKE_BUILD_TYPE=Release QT_PPA=beineri/opt-qt571-trusty QT_VER=57
     - os: osx
       osx_image: xcode9.4
       env: CMAKE_BUILD_TYPE=Release
