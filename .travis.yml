@@ -1,5 +1,9 @@
 language: cpp
 
+env:
+  -QT_VER=56
+  -QT_PPA=beineri/opt-qt562-trusty
+
 matrix:
   include:
     - os: linux
@@ -12,15 +16,27 @@ matrix:
       env: CMAKE_BUILD_TYPE=Release
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                 ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq   ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+      if [[ ! -z "$QT_PPA" ]]; then
+        sudo add-apt-repository -y ppa:$QT_PPA;
+      fi
+      sudo apt-get update -qq;
+    fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
       brew install qt quazip;
       export PATH="$(brew --prefix qt)/bin:$PATH";
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+      sudo apt-get install -y git cmake python2.7-dev python3-dev libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
+      if [[ ! -z "$QT_PPA" ]]; then
+        sudo apt-get install -y qt$QT_VER-meta-full;
+      else
+        sudo apt-get install -y qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev;
+      fi
+    fi
 
 before_script:
   - mkdir build-qt5 build-qt4
@@ -44,6 +60,9 @@ script:
       cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
     else
       git checkout ea98dd0;
+      if [[ ! -z "$QT_PPA" ]]; then
+        source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh
+      fi
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     fi
   - sudo make install
