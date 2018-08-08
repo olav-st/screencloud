@@ -22,7 +22,8 @@ install:
       export PATH="$(brew --prefix qt)/bin:$PATH";
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip python3-setuptools libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
+      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
+      sudo pip3 install setuptools;
       sudo pip3 install paramiko;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -n "$QT_PPA" ]]; then
