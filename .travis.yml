@@ -57,7 +57,7 @@ script:
     else
       git checkout ea98dd0;
       if [[ ! -z "$QT_PPA" ]]; then
-        source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh
+        source /opt/qt$QT_VER/bin/qt$QT_VER-env.sh;
       fi
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
     fi
