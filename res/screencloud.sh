@@ -12,7 +12,7 @@ else
 	#Do the same, but for AppImage
 	HERE="$(dirname "$(readlink -f "${0}")")"
 	export PYTHONHOME="${HERE}"/usr
-	export PYTHONPATH="${HERE}"/usr/lib/python3.4:"${HERE}"/usr/lib/python3:"${HERE}"/usr/share/screencloud/modules
+	export PYTHONPATH="${HERE}"/usr/lib/python3.4:"${HERE}"/usr/lib/python3/dist-packages:"${HERE}"/usr/share/screencloud/modules
 	cd "${HERE}/usr"
 	exec "${HERE}/usr/bin/screencloud" "$@"
 fi
