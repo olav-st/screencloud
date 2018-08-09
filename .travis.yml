@@ -73,10 +73,12 @@ after_success:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         sudo make install DESTDIR=.;
+        find .;
         sudo chown -R $(id -nu) screencloud.app;
         mkdir dmgdir;
         mv screencloud.app dmgdir/ScreenCloud.app;
         ln -s /Applications dmgdir/Applications;
+        find .;
         hdiutil create -volname ScreenCloud -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION.dmg;
     else
