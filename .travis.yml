@@ -6,21 +6,25 @@ matrix:
       dist: trusty
       sudo: required
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release
+      env: CMAKE_BUILD_TYPE=Release QT_PPA=beineri/opt-qt562-trusty QT_VER=56
     - os: osx
       osx_image: xcode9.4
       env: CMAKE_BUILD_TYPE=Release
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                 ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq   ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:$QT_PPA ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ;fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
       brew install qt quazip;
       export PATH="$(brew --prefix qt)/bin:$PATH";
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y git cmake qtbase5-dev qt5-default qtdeclarative5-dev qtbase5-private-dev libqt5svg5-dev qtmultimedia5-dev libqt5x11extras5-dev qttools5-dev libqt5webkit5-dev libqt5opengl5-dev libqt5xmlpatterns5-dev libquazip-dev zlib1g-dev python3-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev python2.7-dev ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-crypto libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
+      sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
+    fi
 
 before_script:
   - mkdir build-qt5 build-qt4
@@ -31,29 +35,34 @@ script:
       cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF;
       make;
       cd ..;
-      sudo apt-get purge -y libpythonqt-dev libpythonqt2.1;
+      sudo apt-get purge -y libpythonqt-dev libpythonqt2.1 libquazip-dev libquazip0;
+      source /opt/qt${QT_VER}/bin/qt${QT_VER}-env.sh;
     fi
   - cd build-qt5
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt/build
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      git checkout 18d4c24;
+  - git checkout 18d4c24
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo cp -r /usr/include/python2.7 ./pythonincludes;
       sudo chmod 777 ./pythonincludes;
       curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | patch ./pythonincludes/pyport.h;
-      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DBUILD_SHARED_LIBS=ON;
+      cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON;
     else
-      git checkout ea98dd0;
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DBUILD_SHARED_LIBS=ON;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON;
     fi
   - sudo make install
   - cd ../..
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/build/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
     else
+      git clone https://github.com/stachenov/quazip;
+      cd quazip;
+      qmake PREFIX=/usr;
+      sudo make install;
+      cd ..;
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
       sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt/ -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
     fi
   - make
 
@@ -62,33 +71,41 @@ after_success:
   - if [ -z "$VERSION" ]; then
       export VERSION=$(git rev-parse --short HEAD);
     fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-        sudo make install DESTDIR=.;
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        sudo make install;
         sudo macdeployqt screencloud.app -verbose=3;
         sudo chown -R $(id -nu) screencloud.app;
-        mkdir dmgdir;
-        mv screencloud.app dmgdir/ScreenCloud.app;
+        mkdir -p dmgdir/ScreenCloud.app;
+        cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
         ln -s /Applications dmgdir/Applications;
-        hdiutil create -volname ScreenCloud -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
+        hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION.dmg;
     else
         mkdir appdir;
         make install DESTDIR=appdir;
         sudo mkdir -p appdir/usr/lib/python3.4;
         sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
+        sudo mkdir -p appdir/usr/lib/python3/dist-packages/Crypto;
+        sudo cp -r /usr/lib/python3/dist-packages/Crypto/* appdir/usr/lib/python3/dist-packages/Crypto/;
         sudo chown -R $(id -nu) appdir;
-        cd ..;
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
         wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage";
         chmod a+x appimagetool-x86_64.AppImage;
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-        ./linuxdeployqt-continuous-x86_64.AppImage build-qt5/appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
-        rm build-qt5/appdir/AppRun;
-        cp res/screencloud.sh build-qt5/appdir/AppRun;
-        ./appimagetool-x86_64.AppImage build-qt5/appdir;
+        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
+        unlink appdir/AppRun;
+        cp ../res/screencloud.sh appdir/AppRun;
+        rm -r appdir/usr/plugins/bearer;
+        rm -r appdir/usr/plugins/mediaservice;
+        rm -r appdir/usr/plugins/platforminputcontexts;
+        rm -r appdir/usr/plugins/printsupport;
+        rm -r appdir/usr/plugins/sqldrivers;
+        rm -r appdir/usr/plugins/xcbglintegrations;
+        ./appimagetool-x86_64.AppImage appdir;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION-x86_64.AppImage;
     fi
+  - curl -F "file=@$DEPLOYFILE" https://file.io
 
 deploy:
   provider: releases
