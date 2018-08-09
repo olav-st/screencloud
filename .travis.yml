@@ -73,12 +73,10 @@ after_success:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         make install;
-        echo "after install" && find ./screencloud.app;
         mkdir -p dmgdir/ScreenCloud.app;
         cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
-        echo "after move" && find ./dmgdir;
         ln -s /Applications dmgdir/Applications;
-        echo "after symlink" && find ./dmgdir;
+        macdeployqt dmgdir/ScreenCloud.app -verbose=3;
         hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
         export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION.dmg;
     else
