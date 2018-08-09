@@ -72,13 +72,10 @@ after_success:
       export VERSION=$(git rev-parse --short HEAD);
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        mkdir dmgdir;
-        sudo make install DESTDIR=dmgdir;
-        echo "after install" && find ./dmgdir;
-        sudo chown -R $(id -nu) dmgdir/screencloud.app;
-        echo "after chown" && find ./dmgdir;
+        make install;
+        echo "after install" && find ./screencloud.app;
         mkdir -p dmgdir/ScreenCloud.app;
-        mv dmgdir/screencloud.app dmgdir/ScreenCloud.app;
+        cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
         echo "after move" && find ./dmgdir;
         ln -s /Applications dmgdir/Applications;
         echo "after symlink" && find ./dmgdir;
