@@ -4,12 +4,13 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-2.0+</project_license>
 	<name>ScreenCloud</name>
-	<summary>Easy to use screenshot sharing application.</summary>
+	<update_contact>olav.s.th@gmail.com</update_contact>
+	<summary>Easy to use screenshot sharing application</summary>
 	<description>
 		<p>Take a screenshot using one of the 3 hotkeys or simply click the ScreenCloud tray icon. You can choose where you want to save your screenshot. Several cloud services as well as local storage is supported.
 
 Features:
-Open Source and cross-platform(Windows, Mac & Linux).
+Open Source and cross-platform(Windows, Mac &amp; Linux).
 Fast and easy: Snap a photo, paste the link, done!
 Plugin support, save to Dropbox, Imgur, etc
 Built in screenshot editor.</p>
