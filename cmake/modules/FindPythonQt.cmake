@@ -13,7 +13,7 @@ endif()
 
 find_path(PYTHONQT_INSTALL_DIR NAMES include/PythonQt/PythonQt.h include/PythonQt5/PythonQt.h src/PythonQt.h DOC "Directory where PythonQt was installed.")
 find_path(PYTHONQT_INCLUDE_DIR PythonQt.h PATHS "${PYTHONQT_INSTALL_DIR}/include/PythonQt" "${PYTHONQT_INSTALL_DIR}/include/PythonQt5" "${PYTHONQT_INSTALL_DIR}/src" DOC "Path to the PythonQt include directory")
-file(GLOB PYTHONQT_LIB_FILE LIST_DIRECTORIES false RELATIVE "${PYTHONQT_INSTALL_DIR}/lib${LIB_SUFFIX}" "${PYTHONQT_INSTALL_DIR}/lib${LIB_SUFFIX}/*PythonQt-Qt[4-9]*.so")
+file(GLOB PYTHONQT_LIB_FILE LIST_DIRECTORIES false RELATIVE "${PYTHONQT_INSTALL_DIR}/lib${LIB_SUFFIX}" "${PYTHONQT_INSTALL_DIR}/lib${LIB_SUFFIX}/*PythonQt-Qt[4-9]*.so" "${PYTHONQT_INSTALL_DIR}/lib${LIB_SUFFIX}/${CMAKE_LIBRARY_ARCHITECTURE}/*PythonQt-Qt[4-9]*.so")
 string(REGEX REPLACE "^lib(.+)\\.so$" "\\1" PYTHONQT_LIB "${PYTHONQT_LIB_FILE}")
 find_library(PYTHONQT_LIBRARY NAMES PythonQt QtPython "${PYTHONQT_LIB}" PATHS "${PYTHONQT_INSTALL_DIR}/lib${LIB_SUFFIX}" DOC "The PythonQt library.")
 
