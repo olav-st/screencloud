@@ -1,20 +1,22 @@
 name: screencloud
-version: "1.3.1"
+version: "1.4.0"
 summary: Easy to use screenshot sharing application
 description: Take a screenshot using one of the 3 hotkeys or simply click the ScreenCloud tray icon. You can choose where you want to save your screenshot.
 confinement: devmode
 grade: devel
+base: core18
 
 apps:
   screencloud:
     command: desktop-launch screencloud.sh
     plugs: 
       - x11
+      - wayland
       - network
       - home
-      - unity7
       - opengl
       - pulseaudio
+      - desktop
       - gsettings
       - network-bind #A local port is used to check if another screencloud process is running 
 
@@ -23,7 +25,6 @@ parts:
     source: https://github.com/olav-st/screencloud.git
     source-tag: master
     plugin: cmake
-    configflags: [-DPYTHON_USE_PYTHON3=OFF] #To avoid having to patch pythonqt
     build-packages:
       - g++
       - qtbase5-private-dev
@@ -31,65 +32,20 @@ parts:
       - libqt5x11extras5-dev
       - qtmultimedia5-dev
       - libquazip5-dev
-      - python2.7-dev
+      - libpythonqt-qt5-python3-dev
+      - libpythonqt-qtall-qt5-python3-dev
+      - python3-dev
     stage-packages:
       - openssl
-      - python-paramiko # For the SFTP plugin
-      - libpython2.7-stdlib
       - libqt5concurrent5
       - libqt5x11extras5
       - libqt5multimedia5
       - libqt5multimedia5-plugins
       - libglib2.0-bin
       - dconf-gsettings-backend
-    after: [pythonqt, pythonqt-install, desktop-qt5]
-
-  pythonqt:
-    source: svn://svn.code.sf.net/p/pythonqt/code/trunk
-    plugin: qmake
-    qt-version: qt5
-    options: 
-      - LIBPATH += lib
-      - LIBPATH += ../lib
-      - LIBPATH += ../../lib
-      - LIBPATH += ../../../lib
-      - LIBPATH += ../../../../lib
-    build-packages:
-      - g++
-      - qtbase5-dev
-      - qttools5-dev
-      - qtdeclarative5-dev
-      - libqt5webkit5-dev
-      - libqt5opengl5-dev
-      - libqt5xmlpatterns5-dev
-      - python2.7-dev
-
-  pythonqt-install:
-    plugin: dump
-    source: parts/pythonqt/
-    organize:
-      'src/src/*.h': include/PythonQt
-      'src/src/gui/*.h': include/PythonQt/gui/
-      'src/extensions/PythonQt_QtAll/*.h': include/PythonQt/extensions/PythonQt_QtAll/
-      'build/lib/libPythonQt*': lib/
-    stage:
-        - include/PythonQt/*.h
-        - include/PythonQt/gui/*h
-        - include/PythonQt/extensions/PythonQt_QtAll/*.h
-        - lib/libPythonQt*
-    snap:
-        - lib/libPythonQt*   
-    after: [pythonqt]
-
-  snapd-xdg-open:
-    source: https://github.com/ubuntu-core/snapd-xdg-open.git
-    plugin: dump
-    organize:
-      data/xdg-open: bin/xdg-open
-    stage:
-      - bin/xdg-open
-    snap:
-      - bin/xdg-open
-    stage-packages:
-      - dbus
-
+      - libquazip5-1
+      - libpythonqt-qt5-python3-3
+      - libpythonqt-qtall-qt5-python3-3
+      - libpython3-stdlib
+      - python3-paramiko # For the SFTP plugin
+    after: [desktop-qt5]
