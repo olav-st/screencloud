@@ -8,6 +8,7 @@ if [ -n "$SNAP" ]; then
 	fi
 	export PYTHONPATH=$SNAP/share/screencloud/modules
 	echo "Setting PYTHONPATH=$PYTHONPATH"
+	screencloud "$@"
 else
 	#Do the same, but for AppImage
 	HERE="$(dirname "$(readlink -f "${0}")")"
