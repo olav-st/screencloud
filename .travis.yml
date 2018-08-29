@@ -106,10 +106,8 @@ after_success:
         rm -r appdir/usr/plugins/xcbglintegrations;
         ./appimagetool-x86_64.AppImage appdir;
         mkdir .snapcraft;
-        ls ../deploy/linux;
-        ln -s ../deploy/linux snap/;
-        ls;
-        ls snap;
+        mkdir snap;
+        cp ../deploy/linux/snapcraft.yaml snap/snapcraft.yaml;
         openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in ../.snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
         docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq && cd $(pwd) && snapcraft";
         curl -F "file=@screencloud_1.4.0_amd64.snap" https://file.io;
