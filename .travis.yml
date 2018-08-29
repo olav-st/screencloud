@@ -6,6 +6,8 @@ matrix:
       dist: trusty
       sudo: required
       compiler: gcc
+      services:
+        - docker
       env: CMAKE_BUILD_TYPE=Release QT_PPA=beineri/opt-qt562-trusty QT_VER=56
     - os: osx
       osx_image: xcode9.4
@@ -79,7 +81,7 @@ after_success:
         cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
         ln -s /Applications dmgdir/Applications;
         hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
-        export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION.dmg;
+        export DEPLOYPATH=$(pwd);
     else
         mkdir appdir;
         make install DESTDIR=appdir;
@@ -103,15 +105,18 @@ after_success:
         rm -r appdir/usr/plugins/sqldrivers;
         rm -r appdir/usr/plugins/xcbglintegrations;
         ./appimagetool-x86_64.AppImage appdir;
-        export DEPLOYFILE=$(pwd)/ScreenCloud-$VERSION-x86_64.AppImage;
+        ln -s ../deploy/linux snap;
+        openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in .snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
+        docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq && cd $(pwd) && snapcraft";
+        export DEPLOYPATH=$(pwd);
     fi
-  - curl -F "file=@$DEPLOYFILE" https://file.io
 
 deploy:
   provider: releases
   api_key:
     secure: xY0hOHsO6oztTs/fyKAl4FrA+6ylke3QXsAHzntIEHOt7sgVGQW/4QzJQYPwmAQAkVOssjZWdaJrFXQMFw+lYUpwZGSycPB+fDnosKYlxXFHG4rIliyG+az6ODzA0YeugFwlYAcHXx1qzBJ8gh3tHhB16ur7OQ62VdunCpG7NDtaINGMojzL4DmSfyiyOMPM4p6EcD+qaKd6dxBePXkmZ5J+YOvgfLcd1mJ94V7+WnQ66KltIaFZPewaansw/p6KAUxPXcTMyMepjcjQFQyucs4rN+9EmAaA5d0rzaucbTra1nJbJel0qWC+hcH8WF86ez8nTPFY1MGjRPZmfFGesvwUkzc3IH2w5j82BmP5x7IP+TZQ4qddM/eeWIX4WeTUKoVHHt/+iZNe6kZ7Qv8ZEzQS8/G0WHz0AyoWCKSztMFBs2XZvLPjEjhCr1HKH8ueX2zXFVRf9mpp23kjGyLzacTzSC+6xjrcp27s/fY+NH3kXw67c2tB815BqtYvWMoEZVNF1+7v0nbBOs6SaDAErLqRKOP4GKgEG+J3GvokuVmQpSzwk+v4EX4ixJm3pI6C+yFaDRc7CEtkXRFIPxesMeP2w8thIuWWNaNzRAKlxR4Dx9h4bLunsx5HDfwA9h0CszcOU2ewvrR60QExZ7fjTrIoqC/UWwjoCqFv+TlyGLU=
-  file: $DEPLOYFILE
+  file_glob: true
+  file: $DEPLOYPATH/*.{dmg,snap,AppImage}
   skip_cleanup: true
   on:
     repo: olav-st/screencloud
