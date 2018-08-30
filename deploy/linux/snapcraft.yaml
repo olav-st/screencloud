@@ -36,7 +36,6 @@ parts:
       - libqt5x11extras5-dev
       - qtmultimedia5-dev
       - qttools5-dev
-      - libquazip5-dev
       - libpythonqt-qt5-python3-dev
       - libpythonqt-qtall-qt5-python3-dev
       - python3-dev
@@ -48,7 +47,6 @@ parts:
       - libqt5multimedia5-plugins
       - libglib2.0-bin
       - dconf-gsettings-backend
-      - libquazip5-1
       - libpythonqt-qt5-python3-3
       - libpythonqt-qtall-qt5-python3-3
       - libpython3-stdlib
@@ -57,4 +55,15 @@ parts:
     override-build: |
       snapcraftctl build
       sed -i 's|Icon=screencloud|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/screencloud.svg|g' $SNAPCRAFT_PART_INSTALL/usr/share/applications/screencloud.desktop
-    after: [desktop-qt5]
+    after: [desktop-qt5, quazip]
+
+  quazip:
+    source: https://github.com/stachenov/quazip.git
+    plugin: cmake
+    configflags:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    build-packages:
+      - g++
+      - zlib1g-dev
+      - qtbase5-dev
