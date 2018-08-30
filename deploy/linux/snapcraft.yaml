@@ -59,11 +59,11 @@ parts:
 
   quazip:
     source: https://github.com/stachenov/quazip.git
-    plugin: cmake
-    configflags:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/usr
+    plugin: qmake
     build-packages:
       - g++
       - zlib1g-dev
       - qtbase5-dev
+    stage-packages:
+      - zlib1g
+      - libqt5core5a
