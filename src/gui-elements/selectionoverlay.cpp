@@ -438,7 +438,7 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
         QFont f(d.defaultFamily(), 22, QFont::Normal);
         painter->setFont(f);
         QRect helpTextRect = QRect( 0, 0, 620, 100);
-        QString helpText = tr("Draw a a rectangular area using the mouse.\nPress Enter to take a screenshot or Esc to exit.");
+        QString helpText = tr("Draw a rectangular area using the mouse.\nPress Enter to take a screenshot or Esc to exit.");
         if(QApplication::desktop()->screenCount() > 1)
         {
             helpText.append(tr("\nUse the arrow keys to switch between screens."));
