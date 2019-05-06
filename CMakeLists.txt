@@ -334,7 +334,7 @@ target_link_libraries( screencloud ${REQUIRED_LIBS})
 
 #enable warnings
 if(CMAKE_COMPILER_IS_GNUCC)
-    set_property( TARGET screencloud APPEND_STRING PROPERTY COMPILE_FLAGS -Wall )
+    set_property( TARGET screencloud APPEND_STRING PROPERTY COMPILE_FLAGS "-Wall -Wextra")
 endif ( CMAKE_COMPILER_IS_GNUCC )
 if(MSVC)
     set_property( TARGET screencloud APPEND_STRING PROPERTY COMPILE_FLAGS /W3 )

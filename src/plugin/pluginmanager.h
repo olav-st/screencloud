@@ -14,6 +14,13 @@
 #ifndef PLUGINLOADER_H
 #define PLUGINLOADER_H
 
+// https://github.com/NixOS/nixpkgs/issues/42811
+#ifdef slots
+#undef slots
+#endif
+
+#include <Python.h>
+
 #include <QObject>
 #include <uploaders/uploader.h>
 #include <QApplication>
