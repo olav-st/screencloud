@@ -1,0 +1,582 @@
+// ScreenCloud.less
+// Styles to customize the look and feel for ScreenCloud
+// -----------------------------------------------------
+
+body {
+	//background: #f9f9f9 url(../../img/white_carbonfiber.png);
+	background-color: @scGrey;
+	padding: 160px 0 80px;
+}
+
+.wf-loading {visibility: hidden;}
+
+h2 {
+	text-transform: uppercase;
+	color: @scBlue;
+}
+
+.navbar-inner {
+	#translucent > .background(darken(@scGrey,10), .9);
+	background-image: none;
+	.box-shadow(0 0 0 @white);
+}
+
+.navbar .nav > li > a {
+  color: #aaa;
+  text-shadow: none;
+  margin-right: 25px;
+  font-weight: 400;
+  .border-radius(3px);
+  font-size: @baseFontSize - 3px;
+  letter-spacing: 0.085em;
+  // font-weight: 600;
+  outline: none;
+  &:hover {
+  	color: @scGrey;
+  	background-color: #aaa;
+  }
+  [data-icon]:before {
+    font-family: 'Pictos Custom';
+    content: attr(data-icon);
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
+    vertical-align: middle;
+    font-weight: normal;
+    text-transform: lowercase;
+    margin-left: 5px;
+  }
+}
+
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+  color: @scGrey;
+  background-color: #aaa;
+}
+
+.navbar .nav {
+	padding-top: 45px;
+	padding-left: 40px;
+	text-transform: uppercase;
+}
+
+.site-title {
+	padding: 30px 0 30px;
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	float: left;
+	a {
+		background: url(../../img/screencloud-logo-newb.png) no-repeat top left;
+		display: block;
+		width: 109px;
+		height: 65px;
+	}
+}
+
+.navbar a {
+	color: #aaa;
+}
+
+.navbar .dropdown-menu a {
+	color: @grayDark;
+}
+
+.account {
+	padding-top: 45px;
+	.btn-primary {
+		color: @white;
+		background-color: @grayDarker;
+		background-image: none;
+	}
+	.btn-group.open .btn-primary.dropdown-toggle {
+	  background-color: @grayDarker;
+	}
+}
+
+.home-hero {
+	text-align: center;
+	// border-top: 1px solid @grayLighter;
+	// border-bottom: 1px solid @grayLighter;
+	margin-bottom: 60px;
+	span, em {
+		font-weight: bold;
+	}
+	h1 {
+		color: #aaa;
+		font-weight: normal;
+		padding: 30px 0 40px;
+		margin-bottom: 0;
+		font-size: 50px;
+		line-height: 1;
+		letter-spacing: -1px;
+		text-shadow: 0 -1px 0 lighten(@black, 5);
+	}
+}
+
+.video-preview {
+	text-align: center;
+	height: 280px;
+	background-color: @scPuppy;
+	text-align: center;
+	color: @scGrey;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	padding-top: 120px;
+	margin-bottom: 40px;
+	[data-icon]:before {
+	  font-family: 'Pictos Custom';
+	  content: attr(data-icon);
+	  -webkit-font-smoothing: antialiased;
+	  font-size: 260px;
+	  line-height: 200px;
+	  vertical-align: bottom;
+	  font-weight: normal;
+	  color: @scGrey;
+	  text-align: center;
+	  display: block;
+	  text-transform: lowercase;
+	}
+	p {
+		font-weight: 600;
+	}
+}
+
+.home-hero-steps {
+	list-style: none;
+	margin: 0;
+	font-size: @baseFontSize + 2;
+	li {
+		margin-bottom: @baseLineHeight * 1.9;
+	}
+	h2 {
+		font-size: 30px;
+		color: @scPuppy;
+		margin: 0;
+		text-transform: capitalize;
+		margin-bottom: @baseLineHeight / 4;
+	}
+	span {
+		background-color: @scPuppy;
+		padding: 2px;
+		margin-right: 10px;
+		.border-radius(50px);
+		width: 40px;
+		display: inline-block;
+		color: @scGrey !important;
+		text-align: center;
+		font-size: 18px;
+		line-height: 40px;
+	}
+	p {
+		margin-top: -10px;
+		padding-left: 55px;
+	}
+}
+
+#download, #features, #facts, .donate {
+	padding-top: 120px;
+}
+
+.download-bar {
+	border-top: 2px solid @grayLighter;
+	border-bottom: 2px solid @grayLighter;
+	.download-option {
+		padding: 40px 0;
+		text-align: center;
+	}
+	.download {
+		text-align: right;
+		border-right: 1px solid @grayLighter;
+		color: @gray;
+		text-transform: uppercase;
+		padding-right: 30px;
+	}
+}
+
+a.download-button {
+	display: block;
+	text-align: center;
+	background-color: @scGreen;
+	margin-bottom: 40px;
+	font-size: 40px;
+	font-weight: bold;
+	padding: 25px 0 20px;
+	text-decoration: none;
+	.border-radius(5px);
+	text-transform: uppercase;
+	letter-spacing: 2px;	
+	text-shadow: 0 -1px 0 @grayDark;
+	color: @scGrey;
+	span {
+		font-size: 16px;
+		text-transform: none;
+		display: block;
+		color: @scGrey;
+		letter-spacing: 0;
+		margin-top: 5px;
+		//text-shadow: 0 1px 0 darken(@scGreen, 20%);
+		text-shadow: none;
+		font-weight: normal;
+	}
+	&:hover {
+		color: @scGreen;
+		text-shadow: none;
+		background-color: @scGrey;
+		span {
+			color: darken(@scGrey, 15);
+		}
+	}
+}
+
+.download-bars {
+	h2 {
+		text-transform: uppercase;
+		color: @scBlue;
+	}
+}
+
+.download-os {
+	height: 80px;
+	.os {
+		float: left;
+		margin-right: 60px;
+		h3 {
+			font-size: 30px;
+			line-height: 80px;
+		}
+	}
+	background-color: @scGreen;
+	display: block;
+	text-decoration: none;
+	color: @scGrey;
+	padding: 40px;
+	border-bottom: 4px solid @scGrey;
+	&:hover {
+		background-color: @scGrey;
+		color: @scGreen;
+		.os-version {
+			display: block;
+		}
+	}
+	.os-version {
+		float: left;
+		display: none;
+		padding: 0 60px 0 0;
+		font-size: @baseFontSize - 3;
+		color: darken(@scGrey, 15);
+		margin-top: -5px;
+		h4 {
+			color: darken(@scGrey, 15);
+			text-transform: uppercase;
+		}
+		&:hover {
+			h4 {
+				color: @scGreen;
+			}
+		}
+		ul {
+			margin: 0;
+			list-style: none;
+		}
+		li {
+			float: left;
+			margin-right: 15px;
+			text-align: center;
+			&:hover {
+				color: @scGreen;
+			}
+		}
+		a {
+			text-decoration: none;
+			color: @scGreen;
+			background-color: darken(@scGrey, 15);
+			.border-radius(50px);
+			width: 40px;
+			display: block;
+			padding: 2px;
+			line-height: 40px;
+			cursor: pointer;
+			&:hover {
+				background-color: @scGreen;
+				color: @scGrey;
+			}
+		}
+		.official-dl {
+			.border-radius(5px);
+			width: auto;
+			padding: 0 10px;
+			height: 45px;
+			line-height: 45px;
+		}
+	}
+}
+
+.feature-set {
+	.clearfix();
+	h2 {
+		text-transform: uppercase;
+		color: @grayLight;
+	}
+}
+
+.feature {	
+	text-align: center;
+	[data-icon]:before {
+	  font-family: 'Pictos Custom';
+	  content: attr(data-icon);
+	  -webkit-font-smoothing: antialiased;
+	  font-size: 260px;
+	  line-height: 260px;
+	  vertical-align: bottom;
+	  font-weight: normal;
+	  color: @scOrange;
+	  text-align: center;
+	  display: block;
+	}
+	h3 {
+		margin-top: -60px;
+		padding-left: 40px;
+		font-size: 30px;
+		text-align: left;
+		color: @scOrange;
+	}
+	p {
+		text-align: justify;
+		padding: 0 40px;
+	}
+	.highlight {
+		background-color: darken(@scGrey, 10);
+		color: @scOrange;
+		padding: 0 2px;
+	}
+}
+
+.system-bar {
+	margin: 40px 0 0;
+	line-height: 34px;
+	color: lighten(@scGrey, 15%);
+	[data-icon]:before {
+	  font-family: 'Pictos Custom';
+	  content: attr(data-icon);
+	  -webkit-font-smoothing: antialiased;
+	  font-size: 22px;
+	  vertical-align: middle;
+	  font-weight: normal;
+	  // color: @scOrange;
+	  margin-right: 4px;
+	}
+	.screencloud {
+	   color: @scOrange;
+	}
+	.pull-left {
+		padding-left: 40px;
+	}
+	h3 {
+		color: @scOrange;
+		font-weight: normal;
+		padding: 40px;
+		margin-bottom: 0;
+		font-size: 48px;
+		line-height: 1.2;
+		// text-shadow: 0 -1px 0 lighten(@black, 5);
+		width: 65%;
+	}
+	ul {
+		list-style: none;
+		background-color: darken(@scGrey, 10%);
+		height: 34px;
+		margin: 0;
+		padding: 0 40px;
+		.border-radius(5px);
+		border-bottom: 2px solid @grayDarker;
+		li {
+			margin-top: 6px;
+			float: right;
+			margin-left: 30px;
+			position: relative;
+			ul {
+				background-color: darken(@scGrey, 10);
+				position: absolute;
+				font-size: @baseFontSize - 3;
+				top: 28px;
+				left: -20px;
+				list-style: none;
+				margin: 0;
+				width: 240px;
+				text-align: left;
+				padding: 0;
+				height: 240px;
+				.border-radius(0px);
+				color: @scOrange;
+				li {
+					padding: 0 20px;
+					margin: 0;
+					float: none;
+					line-height: 30px;
+					height: 30px;
+					&.divider {
+						height: 1px;
+						line-height: 1px;
+						background-color: @scGrey;
+						margin: 5px 0;
+						border-top: 1px solid @grayDarker;
+					}
+				}
+			}
+		}
+	}
+}
+
+.about {
+	background-color: @scBlue;
+	padding: 30px 40px 40px;
+	color: @grayLightest;
+	height: 120px;
+	overflow: hidden;
+	h2 {
+		color: @grayLightest;
+	}
+	[data-icon]:before {
+	  font-family: 'Pictos Custom';
+	  content: attr(data-icon);
+	  -webkit-font-smoothing: antialiased;
+	  font-size: 80px;
+	  line-height: 80px;
+	  height: 60px;
+	  vertical-align: bottom;
+	  font-weight: normal;
+	  color: @grayLightest;
+	  text-align: center;
+	  .pull-left();
+	  .border-radius(5px);
+	  margin: 0 20px 20px 0;
+	}
+	a {
+		color: @grayLightest;
+		border-bottom: 1px solid;
+		text-decoration: none;
+	}
+	p {
+		margin: 0;
+	}
+}
+
+.press, .support {
+	background-color: @scBlue;
+	padding: 30px 40px 40px;
+	color: @grayLightest;
+	overflow: hidden;
+	margin-bottom: 30px;
+	a, h2 {
+		color: @grayLightest;
+	}
+	a {
+		border-bottom: 1px solid;
+		text-decoration: none;
+	}
+	ul {
+		margin: 0;
+	}
+	p {
+		margin: 0;
+	}
+	li {
+		margin-bottom: @baseLineHeight;
+		padding-bottom: @baseLineHeight;
+		border-bottom: 1px dashed;
+		padding: 0 0 @baseLineHeight;
+		font-size: 20px;
+		line-height: 26px;
+		&:last-child {
+			border-bottom: none;
+		}
+		a {
+			border-bottom: none;
+		}
+	}
+	height: 340px;
+}
+
+.support {
+	margin-top: 30px;
+	height: 120px;
+}
+
+.donate {
+	h2 {
+		color: @scYellow;
+		line-height: 22px;
+		margin-bottom: 5px;
+	}
+}
+
+
+.btn-donate {
+	background-color: @scYellow;
+	display: block;
+	height: 80px;
+	line-height: 80px;
+	font-size: 30px;
+	text-transform: uppercase;
+	.border-radius(5px);
+	color: @scGrey;
+	text-align: center;
+	font-weight: bold;
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+	width: 100% !important;
+	border: none;
+	letter-spacing: 1px;
+	word-spacing: 10px;
+}
+
+
+.page-header {
+	h1 {
+		color: @grayLight;	
+	}
+	border-bottom: 1px solid @grayLight;
+}
+
+.screenshot_buttons {
+	.pull-right();
+	margin: 2px 0 2px 5px;
+	.icon-trash {
+		margin-left: 2px;
+	}
+}
+
+footer {
+	margin: 120px 0 60px;
+	padding-top: 30px;
+	border-top: 1px solid darken(@scGrey,15);
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 13px;
+	color: darken(@scGrey,15);
+	letter-spacing: 1px;
+}
+
+.built-by-big {
+	font-size: @baseFontSize - 6;
+	a {
+		color: @grayLight;
+	}
+}
+
+fieldset {
+	background-color: #444;
+	padding: 0 20px 20px;
+	.border-radius(5px);
+}
+
+legend {
+	border: none;
+	color: @grayLighter;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.help-block, .help-inline {
+  color: @grayLight;
+}
