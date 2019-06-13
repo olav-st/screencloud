@@ -246,8 +246,8 @@ table .span21{float:none;width:1644px;margin-left:0;}
 table .span22{float:none;width:1724px;margin-left:0;}
 table .span23{float:none;width:1804px;margin-left:0;}
 table .span24{float:none;width:1884px;margin-left:0;}
-[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("../img/icons/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;}[class^="icon-"]:last-child,[class*=" icon-"]:last-child{*margin-left:0;}
-.icon-white{background-image:url("../img/icons/glyphicons-halflings-white.png");}
+[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("../img/icons/glyphicons-halflings.png.html");background-position:14px 14px;background-repeat:no-repeat;}[class^="icon-"]:last-child,[class*=" icon-"]:last-child{*margin-left:0;}
+.icon-white{background-image:url("../img/icons/glyphicons-halflings-white.png.html");}
 .icon-baseline{vertical-align: baseline;}
 .icon-glass{background-position:0 0;}
 .icon-music{background-position:-24px 0;}
@@ -720,14 +720,14 @@ h2{text-transform:uppercase;color:#66a7e3;}
 .navbar .nav>li>a [data-icon]:before{font-family:'Pictos Custom';content:attr(data-icon);-webkit-font-smoothing:antialiased;font-size:12px;vertical-align:middle;font-weight:normal;text-transform:lowercase;margin-left:5px;}
 .navbar .nav .active>a,.navbar .nav .active>a:hover{color:#4a4a4a;background-color:#aaa;}
 .navbar .nav{padding-top:45px;padding-left:40px;text-transform:uppercase;}
-.site-title{padding:30px 0 30px;overflow:hidden;text-indent:100%;white-space:nowrap;float:left;}.site-title a{background:url(../../img/screencloud-logo-newb.png) no-repeat top left;display:block;width:109px;height:65px;}
+.site-title{padding:30px 0 30px;overflow:hidden;text-indent:100%;white-space:nowrap;float:left;}.site-title a{background:url(../img/screencloud-logo-newb.png) no-repeat top left;display:block;width:109px;height:65px;}
 .navbar a{color:#aaa;}
 .navbar .dropdown-menu a{color:#333333;}
 .account{padding-top:45px;}.account .btn-primary{color:#ffffff;background-color:#222222;background-image:none;}
 .account .btn-group.open .btn-primary.dropdown-toggle{background-color:#222222;}
 .home-hero{text-align:center;margin-bottom:60px;}.home-hero span,.home-hero em{font-weight:bold;}
 .home-hero h1{color:#aaa;font-weight:normal;padding:30px 0 40px;margin-bottom:0;font-size:50px;line-height:1;letter-spacing:-1px;text-shadow:0 -1px 0 #0d0d0d;}
-.video-preview{position:relative;text-align:center;height:280px;background-color:#e3665b;text-align:center;color:#4a4a4a;text-transform:uppercase;letter-spacing:2px;padding-top:120px;margin-bottom:40px;}.video-preview [data-icon]:before{font-family:'Pictos Custom';content:attr(data-icon);-webkit-font-smoothing:antialiased;font-size:260px;line-height:200px;vertical-align:bottom;font-weight:normal;color:#4a4a4a;text-align:center;display:block;text-transform:lowercase;}
+.video-preview{position:relative;text-align:center;height:280px;text-align:center;color:#4a4a4a;text-transform:uppercase;letter-spacing:2px;padding-top:120px;margin-bottom:40px;}.video-preview [data-icon]:before{font-family:'Pictos Custom';content:attr(data-icon);-webkit-font-smoothing:antialiased;font-size:260px;line-height:200px;vertical-align:bottom;font-weight:normal;color:#4a4a4a;text-align:center;display:block;text-transform:lowercase;}
 .video-preview p{font-weight:600;}
 .video-preview iframe{position: absolute;top:0px;left:0px;width:100%;height:100%;}
 .home-hero-steps{list-style:none;margin:0;font-size:18px;}.home-hero-steps li{margin-bottom:45.599999999999994px;}

@@ -1,125 +1,77 @@
-<?php
-header('HTTP/1.1 200 OK');
-?>
 <!DOCTYPE html>
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!-- Consider specifying the language of your content by adding the `lang` attribute to <html> -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>ScreenCloud | Home</title>
+    <title>ScreenCloud</title>
     <meta name="description" content="ScreenCloud - Easy screenshot sharing.">
     <!-- Mobile viewport optimized: h5bp.com/viewport -->
     <meta name="viewport" content="width=device-width">
-    <link href="//get.pictos.cc/fonts/1741/5" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="/css/screencloud.css" />    <link rel="stylesheet" type="text/css" href="/css/responsive.css" />
-    <script src="js/vendor/modernizr-2.5.3.min.js"></script>
+    <link href="https://get.pictos.cc/fonts/1741/5" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../css/screencloud.css" />
+    <link rel="stylesheet" type="text/css" href="../css/responsive.css" />
+    <script src="js/vendor/modernizr-2.5.3.min.js.html"></script>
 </head>
+
 <body>
     <div class="container">
-      <div class="navbar navbar-fixed-top navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <div class="navbar navbar-fixed-top navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <div class="login_or_register pull-right account hidden-phone hidden-tablet">
-	
-									<a href="/users/login">Login</a> or <a href="/users/add" class="btn btn-primary btn-large btn-register">Register</a>
-	</div>
-          <h1 class="site-title">
-            <a class="" href="/#home">ScreenCloud</a>
-          </h1>  
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li><a href="/#download">Download</a></li>
-              <li><a href="/#features">Features</a></li>
-              <li><a href="/#facts">Support</a></li>
-              <!--<li class="hidden-desktop"><a href="/users/login">Login</a></li>
-              <li class="hidden-desktop"><a href="/users/add">Register</a></li>
-              <li><a href="/premium">Premium</a></li>-->
-            </ul>
-          </div><!--/.nav-collapse -->
+                <div class="login_or_register pull-right account hidden-phone hidden-tablet">
+                    <a href="https://github.com/olav-st/screencloud" class="btn btn-primary btn-large btn-register">GitHub &#8618;</a>
+                </div>
+                <h1 class="site-title">
+                    <a class="" href="js/vendor/modernizr-2.5.3.min.js.html#home"><img src="../img/screencloud-logo.png" alt="Screencloud logo" border="0" class="logo" />ScreenCloud</a>
+                </h1>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li><a href="js/vendor/modernizr-2.5.3.min.js.html#download">Download</a></li>
+                        <li><a href="js/vendor/modernizr-2.5.3.min.js.html#features">Features</a></li>
+                        <li><a href="js/vendor/modernizr-2.5.3.min.js.html#facts">Support</a></li>
+                        <li class="hidden-desktop"><a href="https://github.com/olav-st/screencloud">GitHub &#8618;</a></li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="container">
-      <div class="row">
-        <div class="span12">
-          
-                  </div>
-      </div>
-
-      <div class="row">
-	<div class="span12">
-		<div class="page-header">
-			<h1>Download</h1>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="span3">
-		<h2>Linux | Ubuntu</h2>
-		<ul>
-			<li><a href="http://software.opensuse.org/download.html?project=home%3Aolav-st&package=screencloud">Repo (OpenSuse Build Service)</a></li>
-			<li><a href="http://download.opensuse.org/repositories/home:/olav-st/xUbuntu_16.04/i386/screencloud_1.3.0-1qt5_i386.deb">32-bit deb</a></li>
-			<li><a href="http://download.opensuse.org/repositories/home:/olav-st/xUbuntu_16.04/amd64/screencloud_1.3.0-1qt5_amd64.deb">64-bit deb</a></li>
-		</ul>
-	</div>
-	<div class="span3">
-		<h2>Linux | Other</h2>
-		<ul>
-			<li><a href="http://software.opensuse.org/download.html?project=home%3Aolav-st&package=screencloud">OpenSuse Build Service</a></li>
-		</ul>
-	</div>
-</div>
-<div class="row">
-	<br />
-	<div class="span12">
-		<h2>Mac OS X</h2>
-		<ul>
-			<li><a href="//screencloud.net/files/mac/ScreenCloud-1.3.0.dmg">OS X 10.6+</a></li>
-			<li><a href="https://sourceforge.net/projects/screencloud/files/">Mirror</a></li>
-		</ul>
-	</div>
-</div>
-<div class="row">
-	<br />
-	<div class="span12">
-		<h2>Windows</h2>
-		<ul>
-			<li><a href="//screencloud.net/files/windows/ScreenCloud-1.3.0-x86.msi">Windows XP/7/8</a></li>
-			<li><a href="https://sourceforge.net/projects/screencloud/files/">Mirror</a></li>
-		</ul>
-	</div>
-</div>
-      <footer>
-        <ul class="unstyled horizontal">
-            <li><a href="https://github.com/olav-st/screencloud">Source Code</a></li>
-            <li>|</li>
-            <li><a href="https://github.com/olav-st/screencloud/issues">Issue Tracker</a></li>
-        </ul>
-        &copy; Copyright 2017 ScreenCloud.net
-        <p class="built-by-big"><a href="http://heybigname.com" target="_new">Designed by Big Name</a>
-     </footer>
+        <div class="row">
+            <div class="span12">
+                <h1>Download</h1>
+                <hr />
+                <br />
+                <section class="download-bars">
+                    <a class="download-button" href="../files/linux/ScreenCloud-v1.4.0-x86_64.AppImage">Linux<span>AppImage</span></a>
+                    <a class="download-button" href="../files/windows/ScreenCloud-1.4.0-x86.msi">Windows<span>Installer</span></a>
+                    <a class="download-button" href="../files/mac/ScreenCloud-v1.4.0.dmg">Mac OS X<span>Disk Image</span></a>
+                    <i>Trouble downloading?</i>
+                    <ul>
+                        <li><a href="https://snapcraft.io/screencloud" class="official-dl">Download from Snap Store (Linux)</a></li>
+                        <li><a href="https://sourceforge.net/projects/screencloud/files/" class="official-dl">Download from a mirror</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
     </div>
 
-    <!-- JavaScript at the bottom for fast page loading: http://developer.yahoo.com/performance/rules.html#js_bottom -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-
-    <script type="text/javascript" src="//use.typekit.com/fnx7rwd.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-
-    <!-- scripts -->
-    <script type="text/javascript" src="//sc-cdn.scaleengine.net/js/main.js"></script>    <script type="text/javascript" src="//sc-cdn.scaleengine.net/js/plugins.js"></script>
-    <!-- Action specific scripts -->
-    <!-- end scripts -->
+    <footer>
+        &copy; Copyright
+        2019 ScreenCloud.net
+        <p class="built-by-big"><a href="http://heybigname.com" target="_new">Designed by Big Name</a> </footer>
+    </div>
 </body>
+
 </html>
