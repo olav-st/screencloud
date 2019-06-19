@@ -759,7 +759,7 @@ a.download-button:hover{color:#66e3bb;text-shadow:none;background-color:#4a4a4a;
 .system-bar .screencloud{color:#e3af66;}
 .system-bar .pull-left{padding-left:40px;}
 .system-bar h3{color:#e3af66;font-weight:normal;padding:40px;margin-bottom:0;font-size:48px;line-height:1.2;width:65%;}
-.system-bar ul{list-style:none;background-color:#313131;height:34px;margin:0;padding:0 40px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;border-bottom:2px solid #222222;}.system-bar ul li{margin-top:6px;float:right;margin-left:30px;position:relative;}.system-bar ul li ul{background-color:#313131;position:absolute;font-size:13px;top:28px;left:-20px;list-style:none;margin:0;width:240px;text-align:left;padding:0;height:240px;-webkit-border-radius:0px;-moz-border-radius:0px;border-radius:0px;color:#e3af66;}.system-bar ul li ul li{padding:0 20px;margin:0;float:none;line-height:30px;height:30px;}.system-bar ul li ul li.divider{height:1px;line-height:1px;background-color:#4a4a4a;margin:5px 0;border-top:1px solid #222222;}
+.system-bar ul{list-style:none;background-color:#313131;height:34px;margin:0;padding:0 40px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;border-bottom:2px solid #222222;}.system-bar ul li{margin-top:6px;float:right;margin-left:30px;position:relative;}.system-bar ul li ul{background-color:#313131;position:absolute;font-size:13px;top:28px;left:-20px;list-style:none;margin:0;width:240px;text-align:left;padding:0;height:200px;-webkit-border-radius:0px;-moz-border-radius:0px;border-radius:0px;color:#e3af66;}.system-bar ul li ul li{padding:0 20px;margin:0;float:none;line-height:30px;height:30px;}.system-bar ul li ul li.divider{height:1px;line-height:1px;background-color:#4a4a4a;margin:5px 0;border-top:1px solid #222222;}.system-bar ul li img{margin-bottom:5px;}
 .about{background-color:#66a7e3;padding:30px 40px 40px;color:#f8f8f8;height:120px;overflow:hidden;}.about h2{color:#f8f8f8;}
 .about [data-icon]:before{font-family:'Pictos Custom';content:attr(data-icon);-webkit-font-smoothing:antialiased;font-size:80px;line-height:80px;height:60px;vertical-align:bottom;font-weight:normal;color:#f8f8f8;text-align:center;float:left;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;margin:0 20px 20px 0;}
 .about a{color:#f8f8f8;border-bottom:1px solid;text-decoration:none;}
@@ -799,3 +799,5 @@ p.error em{font-weight:normal;line-height:110%;}
 #discount-row{margin-bottom:5px;}
 #subtotal-row{border-top:1px solid white;padding-top:5px;}
 #stats{line-height:30px;}
+section img {padding-right: 15px;}
+section h2 {padding-bottom: 24px;line-height:24px;}
