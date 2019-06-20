@@ -21,16 +21,16 @@ matrix:
       os: windows
       env:
         - CMAKE_BUILD_TYPE: Release 
-        - QT5_BASE_DIR: "C:/Qt/5.12.3/msvc2017"
-        - MSBUILD_PATH: "C:/Program Files/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+        - QT5_BASE_DIR: "'C:/Qt/5.12.3/msvc2017'"
+        - MSBUILD_PATH: "'C:/Program Files/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
         - PLATFORM: Win32
     - name: Windows (VS2017 x64)
       os: windows
       env:
         - CMAKE_BUILD_TYPE: Release 
-        - QT5_BASE_DIR: "C:/Qt/5.12.3/msvc2017_64"
-        - MSBUILD_PATH: "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
         - PLATFORM: x64
+        - QT5_BASE_DIR: "'C:/Qt/5.12.3/msvc2017_64'"
+        - MSBUILD_PATH: "'C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
@@ -38,7 +38,8 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ;fi
   - |
     if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-      export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH}
+      export PATH=$PATH:${QT5_BASE_DIR}/bin
+      export PATH=$PATH:${MSBUILD_PATH}
       # refreshenv does not seem to work in bash, so reload it manually.
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
