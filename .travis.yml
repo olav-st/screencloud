@@ -46,7 +46,7 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then 
       cinst -y --no-progress python3 openssl.light;
-      build/travis-install-qt-windows.sh;
+      tools/travis-install-qt-windows.sh;
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211;
       cd zlib-1.2.11;
