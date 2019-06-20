@@ -2,16 +2,33 @@ language: cpp
 
 matrix:
   include:
-    - os: linux
+    - name: "Linux (gcc)" 
+      os: linux
       dist: trusty
       sudo: required
       compiler: gcc
       services:
         - docker
-      env: CMAKE_BUILD_TYPE=Release QT_PPA=beineri/opt-qt562-trusty QT_VER=56
-    - os: osx
+      env: 
+        - CMAKE_BUILD_TYPE: Release 
+        - QT_PPA: beineri/opt-qt562-trusty
+        - QT_VER: 56
+    - name: "macOS (xcode 9.4)"
+      os: osx
       osx_image: xcode9.4
       env: CMAKE_BUILD_TYPE=Release
+    - name: Windows (VS2017 Win32)
+      os: windows
+      env:
+        - CMAKE_BUILD_TYPE: Release 
+        - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017
+        - PLATFORM: Win32
+    - name: Windows (VS2017 x64)
+      os: windows
+      env:
+        - CMAKE_BUILD_TYPE: Release 
+        - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017_64
+        - PLATFORM: x64
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
@@ -26,6 +43,30 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
       sudo apt-get install -y git cmake python2.7-dev python3-dev python3-crypto libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
       sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then 
+      cinst -y --no-progress python3 openssl.light;
+      build/travis-install-qt-windows.sh;
+      wget http://www.zlib.net/zlib1211.zip;
+      unzip zlib1211;
+      cd zlib-1.2.11;
+      nmake -f win32/Makefile.msc;
+      cd ..;
+      wget https://downloads.sourceforge.net/project/quazip/quazip/0.7.3/quazip-0.7.3.zip;
+      cd quazip-0.7.3;
+      cmake . -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=../zlib-1.2.11 -DZLIB_LIBRARIES=../zlib-1.2.11/zdll.lib -DQT_QTCORE_LIBRARY=${QT5_BASE_DIR}/lib/Qt5Core.lib;
+      nmake;
+      nmake install;
+      cd ..;
+      wget https://downloads.sourceforge.net/project/pythonqt/pythonqt/PythonQt-3.2/PythonQt3.2.zip;
+      unzip PythonQt3.2.zip;
+      cd PythonQt3.2;
+      set PYTHON_PATH=c:/Python37;
+      set PYTHON_LIB=c:/Python37/libs;
+      qmake CONFIG+=debug_and_release;
+      nmake all;
+      nmake install;
+      cd ..;
     fi
 
 before_script:
