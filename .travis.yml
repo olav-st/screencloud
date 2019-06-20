@@ -22,29 +22,28 @@ matrix:
       env:
         - CMAKE_BUILD_TYPE: Release 
         - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017
+        - MSBUILD_PATH: C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
         - PLATFORM: Win32
     - name: Windows (VS2017 x64)
       os: windows
       env:
         - CMAKE_BUILD_TYPE: Release 
         - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017_64
+        - MSBUILD_PATH: C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
         - PLATFORM: x64
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:$QT_PPA ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PATH=$PATH:${QT5_BASE_DIR}/bin ;fi
   - |
     if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-      # Ensure Python and the Scripts folder is available in PATH.
       # refreshenv does not seem to work in bash, so reload it manually.
-      # Entries in the Machine PATH might contain trailing slashes, drop those.
-      # Apply Process paths before Machine to ensure /bin appears before others (otherwise casher will break and stall).
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')"
       echo "PATH=$PATH"
+      export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH}
     fi
 
 install:
