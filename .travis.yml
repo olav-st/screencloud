@@ -45,9 +45,6 @@ before_install:
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')"
       echo "PATH=$PATH"
-      ls "$MSBUILD_PATH"
-      ls "$QT5_BASE_DIR"
-      ls "$QT5_BASE_DIR"/bin
     fi
 
 install:
@@ -62,6 +59,10 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then 
       cinst -y --no-progress python3 openssl.light;
       tools/travis-install-qt-windows.sh;
+      ls /c/Qt/5.12.3
+      ls /c/Qt/5.12.3/msvc2017
+      ls /c/Qt/5.12.3/msvc2017/bin
+      ls /c/Qt/5.12.3/msvc2017_64
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211;
       cd zlib-1.2.11;
