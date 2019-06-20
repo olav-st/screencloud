@@ -22,14 +22,14 @@ matrix:
       env:
         - CMAKE_BUILD_TYPE: Release 
         - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017
-        - MSBUILD_PATH: C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+        - MSBUILD_PATH: C:/Program Files/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin
         - PLATFORM: Win32
     - name: Windows (VS2017 x64)
       os: windows
       env:
         - CMAKE_BUILD_TYPE: Release 
         - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017_64
-        - MSBUILD_PATH: C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+        - MSBUILD_PATH: C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin
         - PLATFORM: x64
 
 before_install:
@@ -61,7 +61,7 @@ install:
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211;
       cd zlib-1.2.11;
-      MSBuild.exe contrib/vstudio/vc14/zlibvc.sln;
+      msbuild.exe contrib/vstudio/vc14/zlibvc.sln;
       cd ..;
       wget https://downloads.sourceforge.net/project/quazip/quazip/0.7.3/quazip-0.7.3.zip;
       unzip quazip-0.7.3.zip;
@@ -74,9 +74,9 @@ install:
       cd PythonQt3.2;
       set PYTHON_PATH=c:/Python37;
       set PYTHON_LIB=c:/Python37/libs;
-      qmake -tp vc -r PythonQt.pro CONFIG+=debug_and_release;
+      qmake.exe -tp vc -r PythonQt.pro CONFIG+=debug_and_release;
       ls;
-      MSBuild.exe PythonQt.vcxproj;
+      msbuild.exe PythonQt.vcxproj;
       cd ..;
     fi
 
