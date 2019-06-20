@@ -44,8 +44,6 @@ before_install:
       } | Select -Unique | % { cygpath $_ }) -Join ":"')"
       echo "PATH=$PATH"
       export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH}
-      #Setup aliases
-      alias msbuild=MSBuild.exe
     fi
 
 install:
@@ -63,7 +61,7 @@ install:
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211;
       cd zlib-1.2.11;
-      msbuild contrib/vstudio/vc14/zlibvc.sln;
+      MSBuild.exe contrib/vstudio/vc14/zlibvc.sln;
       cd ..;
       wget https://downloads.sourceforge.net/project/quazip/quazip/0.7.3/quazip-0.7.3.zip;
       unzip quazip-0.7.3.zip;
@@ -78,7 +76,7 @@ install:
       set PYTHON_LIB=c:/Python37/libs;
       qmake -tp vc -r PythonQt.pro CONFIG+=debug_and_release;
       ls;
-      msbuild PythonQt.vcxproj;
+      MSBuild.exe PythonQt.vcxproj;
       cd ..;
     fi
 
