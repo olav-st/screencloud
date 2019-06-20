@@ -22,7 +22,7 @@ matrix:
       env:
         - CMAKE_BUILD_TYPE: Release 
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017'"
-        - MSBUILD_PATH: "'/c/Program Files/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
+        - MSBUILD_PATH: "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
         - PLATFORM: Win32
     - name: Windows (VS2017 x64)
       os: windows
@@ -46,7 +46,8 @@ before_install:
       } | Select -Unique | % { cygpath $_ }) -Join ":"')"
       echo "PATH=$PATH"
       ls "$MSBUILD_PATH"
-      ls "QT5_BASE_DIR"
+      ls "$QT5_BASE_DIR"
+      ls "$QT5_BASE_DIR"/bin
     fi
 
 install:
