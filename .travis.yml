@@ -45,6 +45,8 @@ before_install:
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')"
       echo "PATH=$PATH"
+      ls "$MSBUILD_PATH"
+      ls "QT5_BASE_DIR"
     fi
 
 install:
