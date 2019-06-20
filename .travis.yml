@@ -34,6 +34,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:$QT_PPA ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PATH=$PATH:${QT5_BASE_DIR} ;fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
@@ -50,22 +51,22 @@ install:
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211;
       cd zlib-1.2.11;
-      nmake -f win32/Makefile.msc;
+      msbuild contrib/vstudio/vc14/zlibvc.sln;
       cd ..;
       wget https://downloads.sourceforge.net/project/quazip/quazip/0.7.3/quazip-0.7.3.zip;
+      unzip quazip-0.7.3.zip;
       cd quazip-0.7.3;
-      cmake . -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=../zlib-1.2.11 -DZLIB_LIBRARIES=../zlib-1.2.11/zdll.lib -DQT_QTCORE_LIBRARY=${QT5_BASE_DIR}/lib/Qt5Core.lib;
-      nmake;
-      nmake install;
+      cmake . -G "Visual Studio 12 2013" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=../zlib-1.2.11 -DZLIB_LIBRARIES=../zlib-1.2.11/zdll.lib -DQT_QTCORE_LIBRARY=${QT5_BASE_DIR}/lib/Qt5Core.lib;
+      cmake --build .;
       cd ..;
       wget https://downloads.sourceforge.net/project/pythonqt/pythonqt/PythonQt-3.2/PythonQt3.2.zip;
       unzip PythonQt3.2.zip;
       cd PythonQt3.2;
       set PYTHON_PATH=c:/Python37;
       set PYTHON_LIB=c:/Python37/libs;
-      qmake CONFIG+=debug_and_release;
-      nmake all;
-      nmake install;
+      qmake -tp vc -r PythonQt.pro CONFIG+=debug_and_release;
+      ls;
+      msbuild PythonQt.vcxproj;
       cd ..;
     fi
 
@@ -107,7 +108,7 @@ script:
       sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt/ -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
     fi
-  - make
+  - cmake --build .;
 
 after_success:
   - export VERSION=$TRAVIS_TAG
