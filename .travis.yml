@@ -44,6 +44,8 @@ before_install:
       } | Select -Unique | % { cygpath $_ }) -Join ":"')"
       echo "PATH=$PATH"
       export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH}
+      #Setup aliases
+      alias msbuild=MSBuild.exe
     fi
 
 install:
