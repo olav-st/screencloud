@@ -16,7 +16,8 @@ matrix:
     - name: "macOS (xcode 9.4)"
       os: osx
       osx_image: xcode9.4
-      env: CMAKE_BUILD_TYPE=Release
+      env: 
+        - CMAKE_BUILD_TYPE: Release
     - name: Windows (VS2017 Win32)
       os: windows
       env:
@@ -36,16 +37,6 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:$QT_PPA ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq ;fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
-  - |
-    if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-      export PATH=$PATH:${QT5_BASE_DIR}/bin;
-      export PATH=$PATH:${MSBUILD_PATH};
-      # refreshenv does not seem to work in bash, so reload it manually.
-      export PATH="$(powershell -Command '("Process", "Machine" | % {
-        [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
-      } | Select -Unique | % { cygpath $_ }) -Join ":"')";
-      echo "PATH=$PATH";
-    fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
@@ -58,6 +49,13 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then 
       cinst -y --no-progress python3;
+      export PATH=$PATH:${QT5_BASE_DIR}/bin;
+      export PATH=$PATH:${MSBUILD_PATH};
+      # refreshenv does not seem to work in bash, so reload it manually.
+      export PATH="$(powershell -Command '("Process", "Machine" | % {
+        [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
+      } | Select -Unique | % { cygpath $_ }) -Join ":"')";
+      echo "PATH=$PATH";
       tools/travis-install-qt-windows.sh;
       wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz;
       7z x libressl-2.9.2.tar.gz && 7z x libressl-2.9.2.tar;
@@ -121,12 +119,14 @@ script:
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
       sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt/ -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
+      make;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/build/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
+      make;
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib;
+      cmake --build .. --config $CMAKE_BUILD_TYPE; 
     fi
-  - cmake --build .. --config $CMAKE_BUILD_TYPE
 
 after_success:
   - export VERSION=$TRAVIS_TAG
