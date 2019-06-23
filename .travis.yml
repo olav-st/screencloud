@@ -38,13 +38,13 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ;fi
   - |
     if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-      export PATH=$PATH:${QT5_BASE_DIR}/bin
-      export PATH=$PATH:${MSBUILD_PATH}
+      export PATH=$PATH:${QT5_BASE_DIR}/bin;
+      export PATH=$PATH:${MSBUILD_PATH};
       # refreshenv does not seem to work in bash, so reload it manually.
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
-      } | Select -Unique | % { cygpath $_ }) -Join ":"')"
-      echo "PATH=$PATH"
+      } | Select -Unique | % { cygpath $_ }) -Join ":"')";
+      echo "PATH=$PATH";
     fi
 
 install:
@@ -70,15 +70,15 @@ install:
       unzip zlib1211.zip;
       cd zlib-1.2.11;
       cmake . -DCMAKE_INSTALL_PREFIX=$(pwd);
-      cmake --build . --config $CMAKE_BUILD_TYPE --target install
+      cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export ZLIB_BASE_DIR=$(pwd);
       cd ..;
       wget https://downloads.sourceforge.net/project/quazip/quazip/0.7.3/quazip-0.7.3.zip;
       unzip quazip-0.7.3.zip;
       cd quazip-0.7.3;
-      sed -i '/ZLIB_LIBRARIES ""/d' ./CMakeLists.txt #patch to avoid linker errors
+      sed -i '/ZLIB_LIBRARIES ""/d' ./CMakeLists.txt;
       cmake . -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DZLIB_LIBRARIES=${ZLIB_BASE_DIR}/Release/zlib.lib;
-      cmake --build . --config $CMAKE_BUILD_TYPE --target install
+      cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export QUAZIP_BASE_DIR=$(pwd);
       cd ..;
     fi
@@ -124,7 +124,7 @@ script:
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/build/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cmake ..  -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib
+      cmake ..  -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib;
     fi
   - cmake --build .. --config $CMAKE_BUILD_TYPE
 
