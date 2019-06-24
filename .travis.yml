@@ -60,7 +60,7 @@ install:
       wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz;
       7z x libressl-2.9.2.tar.gz && 7z x libressl-2.9.2.tar;
       cd libressl-2.9.2;
-      cmake . -DCMAKE_INSTALL_PREFIX=$(pwd) -DBUILD_OBJECT_LIBRARY_ONLY=OFF;
+      cmake . -DCMAKE_INSTALL_PREFIX=$(pwd);
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export OPENSSL_ROOT_DIR=$(pwd);
       cd ..;
@@ -111,6 +111,8 @@ script:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
     fi
   - export PYTHONQT_BASE_DIR=$(pwd)
+  - pwd
+  - echo ${PYTHONQT_BASE_DIR}
   - cd ..
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       git clone https://github.com/stachenov/quazip;
