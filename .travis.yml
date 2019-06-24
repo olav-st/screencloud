@@ -51,7 +51,7 @@ install:
       export PATH="$(brew --prefix qt)/bin:$PATH";
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cinst -y --no-progress python3;
+      cinst -y --no-progress python --version 3.7.0;
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
