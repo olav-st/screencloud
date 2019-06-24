@@ -111,8 +111,6 @@ script:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
     fi
   - export PYTHONQT_BASE_DIR=$(pwd)
-  - pwd
-  - echo ${PYTHONQT_BASE_DIR}
   - cd ..
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       git clone https://github.com/stachenov/quazip;
