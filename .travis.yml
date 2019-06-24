@@ -61,13 +61,12 @@ install:
       brew install qt quazip;
       export PATH="$(brew --prefix qt)/bin:$PATH";
     fi
-  - if [ "$TRAVIS_OS_NAME" == "windows" ] && [ "$PLATFORM" == "Win32" ]; then
-      cinst -y --no-progress python.x86 --version 3.7.0;
-    fi
-  - if [ "$TRAVIS_OS_NAME" == "windows" ] && [ "$PLATFORM" == "x64" ]; then
-      cinst -y --no-progress python --version 3.7.0;
-    fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      if [[ "$PLATFORM" == "Win32" ]]; then
+        cinst -y --no-progress python.x86 --version 3.7.0;
+      else
+        cinst -y --no-progress python --version 3.7.0;
+      fi;
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
