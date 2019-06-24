@@ -22,6 +22,7 @@ matrix:
       os: windows
       env:
         - PLATFORM: Win32
+        - CMAKE_GENERATOR_PLATFORM: x86
         - CMAKE_BUILD_TYPE: Release
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017'"
@@ -30,6 +31,7 @@ matrix:
       os: windows
       env:
         - PLATFORM: x64
+        - CMAKE_GENERATOR_PLATFORM: x64
         - CMAKE_BUILD_TYPE: Release 
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017_64'"
