@@ -56,13 +56,13 @@ bool ScreenShooter::getCaptureMouseCursor()
 
 const QImage &ScreenShooter::captureFullscreen()
 {
-#if QT_VERSION > QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
     QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
     qDebug() << screen->name() << screen->geometry().x() << screen->geometry().y() << screen->size().width() << screen->size().height();
     QPixmap pixmap = screen->grabWindow(0, 0, 0, screen->size().width(), screen->size().height());
 #else
     int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
-    #if QT_VERSION = QT_VERSION_CHECK(5,0,0)
+    #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         QScreen* screen = QApplication::screens().at(screenNumber);
         QRect screenGeometry = screen->geometry();
         QPixmap pixmap = screen->grabWindow(0, screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
@@ -79,7 +79,7 @@ const QImage &ScreenShooter::captureFullscreen()
 
 const QImage &ScreenShooter::captureSelection(const QRect &area)
 {
-#if QT_VERSION > QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
     QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
     qDebug() << screen->name();
     QPixmap fullScreenShot = screen->grabWindow(0, 0, 0, screen->size().width(), screen->size().height());
