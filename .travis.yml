@@ -45,7 +45,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
       brew update;
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; 
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       export PLATFORM=${PLATFORM};
       export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH};
       export CMAKE_GENERATOR_PLATFORM=${CMAKE_GENERATOR_PLATFORM};
