@@ -1,6 +1,6 @@
 /*
  * Qt Installer script for a non-interactive installation of Qt5 on Windows.
- * Installs the 64-bit package if environment variable ARCH="x64".
+ * Installs the 64-bit package if environment variable PLATFORM="x64".
  */
 
 // jshint strict:false
@@ -13,7 +13,7 @@
 // https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt5_5123/Updates.xml
 // Unfortunately it is not possible to disable deps like qt.tools.qtcreator
 var INSTALL_COMPONENTS = [
-    installer.environmentVariable("ARCH") == "x64" ?
+    installer.environmentVariable("PLATFORM") == "x64" ?
     "qt.qt5.5123.win64_msvc2017_64" :
     "qt.qt5.5123.win32_msvc2017",
 ];
