@@ -21,7 +21,7 @@ matrix:
     - name: Windows (VS2017 Win32)
       os: windows
       env:
-        - PLATFORM: x86
+        - PLATFORM: Win32
         - CMAKE_BUILD_TYPE: Release
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0 --forcex86'"
