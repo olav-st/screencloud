@@ -147,43 +147,46 @@ after_success:
       export VERSION=$(git rev-parse --short HEAD);
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        mkdir appdir;
-        make install DESTDIR=appdir;
-        sudo mkdir -p appdir/usr/lib/python3.4;
-        sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
-        sudo mkdir -p appdir/usr/lib/python3/dist-packages/Crypto;
-        sudo cp -r /usr/lib/python3/dist-packages/Crypto/* appdir/usr/lib/python3/dist-packages/Crypto/;
-        sudo chown -R $(id -nu) appdir;
-        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
-        chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
-        wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage";
-        chmod a+x appimagetool-x86_64.AppImage;
-        unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
-        unlink appdir/AppRun;
-        cp ../res/screencloud.sh appdir/AppRun;
-        rm -r appdir/usr/plugins/bearer;
-        rm -r appdir/usr/plugins/mediaservice;
-        rm -r appdir/usr/plugins/platforminputcontexts;
-        rm -r appdir/usr/plugins/printsupport;
-        rm -r appdir/usr/plugins/sqldrivers;
-        rm -r appdir/usr/plugins/xcbglintegrations;
-        ./appimagetool-x86_64.AppImage appdir;
-        mkdir .snapcraft;
-        mkdir snap;
-        cp ../deploy/linux/snapcraft.yaml snap/snapcraft.yaml;
-        openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in ../.snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
-        docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq && cd $(pwd) && snapcraft";
-        export DEPLOYPATH=$(pwd);
+      mkdir appdir;
+      make install DESTDIR=appdir;
+      sudo mkdir -p appdir/usr/lib/python3.4;
+      sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
+      sudo mkdir -p appdir/usr/lib/python3/dist-packages/Crypto;
+      sudo cp -r /usr/lib/python3/dist-packages/Crypto/* appdir/usr/lib/python3/dist-packages/Crypto/;
+      sudo chown -R $(id -nu) appdir;
+      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
+      chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
+      wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage";
+      chmod a+x appimagetool-x86_64.AppImage;
+      unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
+      ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
+      unlink appdir/AppRun;
+      cp ../res/screencloud.sh appdir/AppRun;
+      rm -r appdir/usr/plugins/bearer;
+      rm -r appdir/usr/plugins/mediaservice;
+      rm -r appdir/usr/plugins/platforminputcontexts;
+      rm -r appdir/usr/plugins/printsupport;
+      rm -r appdir/usr/plugins/sqldrivers;
+      rm -r appdir/usr/plugins/xcbglintegrations;
+      ./appimagetool-x86_64.AppImage appdir;
+      mkdir .snapcraft;
+      mkdir snap;
+      cp ../deploy/linux/snapcraft.yaml snap/snapcraft.yaml;
+      openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in ../.snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
+      docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq && cd $(pwd) && snapcraft";
+      export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        sudo make install;
-        sudo macdeployqt screencloud.app -verbose=3;
-        sudo chown -R $(id -nu) screencloud.app;
-        mkdir -p dmgdir/ScreenCloud.app;
-        cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
-        ln -s /Applications dmgdir/Applications;
-        hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
-        export DEPLOYPATH=$(pwd);
+      sudo make install;
+      sudo macdeployqt screencloud.app -verbose=3;
+      sudo chown -R $(id -nu) screencloud.app;
+      mkdir -p dmgdir/ScreenCloud.app;
+      cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
+      ln -s /Applications dmgdir/Applications;
+      hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
+      export DEPLOYPATH=$(pwd);
+    elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      cmake --build . --config $CMAKE_BUILD_TYPE --target install;
+      export DEPLOYPATH=$(pwd);
     fi
 
 deploy:
@@ -191,7 +194,7 @@ deploy:
   api_key:
     secure: xY0hOHsO6oztTs/fyKAl4FrA+6ylke3QXsAHzntIEHOt7sgVGQW/4QzJQYPwmAQAkVOssjZWdaJrFXQMFw+lYUpwZGSycPB+fDnosKYlxXFHG4rIliyG+az6ODzA0YeugFwlYAcHXx1qzBJ8gh3tHhB16ur7OQ62VdunCpG7NDtaINGMojzL4DmSfyiyOMPM4p6EcD+qaKd6dxBePXkmZ5J+YOvgfLcd1mJ94V7+WnQ66KltIaFZPewaansw/p6KAUxPXcTMyMepjcjQFQyucs4rN+9EmAaA5d0rzaucbTra1nJbJel0qWC+hcH8WF86ez8nTPFY1MGjRPZmfFGesvwUkzc3IH2w5j82BmP5x7IP+TZQ4qddM/eeWIX4WeTUKoVHHt/+iZNe6kZ7Qv8ZEzQS8/G0WHz0AyoWCKSztMFBs2XZvLPjEjhCr1HKH8ueX2zXFVRf9mpp23kjGyLzacTzSC+6xjrcp27s/fY+NH3kXw67c2tB815BqtYvWMoEZVNF1+7v0nbBOs6SaDAErLqRKOP4GKgEG+J3GvokuVmQpSzwk+v4EX4ixJm3pI6C+yFaDRc7CEtkXRFIPxesMeP2w8thIuWWNaNzRAKlxR4Dx9h4bLunsx5HDfwA9h0CszcOU2ewvrR60QExZ7fjTrIoqC/UWwjoCqFv+TlyGLU=
   file_glob: true
-  file: $DEPLOYPATH/*.{dmg,snap,AppImage}
+  file: $DEPLOYPATH/*.{dmg,snap,AppImage,msi}
   skip_cleanup: true
   on:
     repo: olav-st/screencloud
