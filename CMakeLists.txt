@@ -431,8 +431,8 @@ if(WIN32)
     if(NOT QT_USE_QT5)
         message(ERROR "Install target no longer supports Qt 4!")
     else()
+        install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
         install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
-        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/screencloud.exe" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
         #Find dirs for the libs we're linking against
         foreach(LIB ${REQUIRED_LIBS})
             if(LIB MATCHES "Qt5::")
@@ -441,11 +441,17 @@ if(WIN32)
             get_filename_component(LIB_DIR ${LIB} DIRECTORY)
             set(LIB_DIRS ${LIB_DIRS}
                 ${LIB_DIR}
+                ${LIB_DIR}/bin
+                ${LIB_DIR}/../bin
                 )
         endforeach()
         #Hack to make fixup_bundle work on win 10
         set(LIB_DIRS ${LIB_DIRS}
             "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
+        )
+        #Hack to make sure zlib dlls are found
+        set(LIB_DIRS ${LIB_DIRS}
+            ${ZLIB_INCLUDE_DIRS}/bin
         )
         #Hack to make sure OpenSSL dlls are found
         set(RUNTIME_LIBS ${RUNTIME_LIBS}
@@ -469,7 +475,7 @@ if(WIN32)
         install(CODE "
         include(BundleUtilities)
         fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"${LIB_DIRS}\")")
-        install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows x86 \")")
+        install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows ${CMAKE_GENERATOR_PLATFORM} \")")
     endif()
 endif(WIN32)
 

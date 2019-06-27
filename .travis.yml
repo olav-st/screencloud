@@ -26,7 +26,11 @@ matrix:
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0 --forcex86'"
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017'"
+        - WIX_PATH: "'/c/Program Files (x86)/WiX Toolset v3.11/bin'"
         - MSBUILD_PATH: "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
+        - OPENSSL_VERSION: 1.0.2s
+        - OPENSSL_URL: "'https://www.openssl.org/source/openssl-1.0.2s.tar.gz'"
+        - OPENSSL_BIN_URL: "'https://indy.fulgan.com/SSL/openssl-1.0.2s-i386-win32.zip'"
     - name: Windows (VS2017 x64)
       os: windows
       env:
@@ -35,7 +39,11 @@ matrix:
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0'"
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017_64'"
+        - WIX_PATH: "'/c/Program Files (x86)/WiX Toolset v3.11/bin'"
         - MSBUILD_PATH: "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
+        - OPENSSL_VERSION: 1.0.2s
+        - OPENSSL_URL: "'https://www.openssl.org/source/openssl-1.0.2s.tar.gz'"
+        - OPENSSL_BIN_URL: "'https://indy.fulgan.com/SSL/openssl-1.0.2s-x64_86-win64.zip'"
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
@@ -47,7 +55,7 @@ before_install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       export PLATFORM=${PLATFORM};
-      export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH};
+      export PATH=$PATH:${QT5_BASE_DIR}/bin:${MSBUILD_PATH}:${WIX_PATH};
       export PYTHON_PACKAGE=${PYTHON_PACKAGE};
       export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE};
     fi
@@ -63,17 +71,20 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cinst -y --no-progress ${PYTHON_PACKAGE};
+      cinst -y --no-progress wixtoolset vcredist140;
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
       echo "PATH=$PATH";
       tools/travis-install-qt-windows.sh;
-      wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz;
-      7z x libressl-2.9.2.tar.gz && 7z x libressl-2.9.2.tar;
-      cd libressl-2.9.2;
-      cmake . -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM};
-      cmake --build . --config $CMAKE_BUILD_TYPE --target install;
-      export OPENSSL_ROOT_DIR=$(pwd);
+      wget ${OPENSSL_URL};
+      7z x openssl-${OPENSSL_VERSION}.tar.gz && 7z x openssl-${OPENSSL_VERSION}.tar;
+      cd openssl-${OPENSSL_VERSION};
+      cp ssl/* include;
+      cp crypto/* include;
+      wget ${OPENSSL_BIN_URL};
+      unzip openssl-${OPENSSL_VERSION}*.zip;
+      export OPENSSL_BASE_DIR=$(pwd);
       cd ..;
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211.zip;
@@ -90,6 +101,7 @@ install:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export QUAZIP_BASE_DIR=$(pwd);
       cd ..;
+      pip install pycryptodome py2exe;
     fi
 
 before_script:
@@ -137,7 +149,7 @@ script:
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHON_INCLUDE_DIR=${PYTHON_BASE_DIR}/include -DPYTHON_LIBRARY=${PYTHON_BASE_DIR}/libs/python37.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib;
+      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHON_INCLUDE_DIR=${PYTHON_BASE_DIR}/include -DPYTHON_LIBRARY=${PYTHON_BASE_DIR}/libs/python37.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib -DOPENSSL_INCLUDE_DIR=${OPENSSL_BASE_DIR}/include -DOPENSSL_LIBRARIES=${OPENSSL_BASE_DIR}/bin;
       cmake --build . --config $CMAKE_BUILD_TYPE; 
     fi
 
@@ -185,6 +197,10 @@ after_success:
       hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      cp bin/screencloud.exe ScreenCloud.exe;
+      cp ${PYTHON_BASE_DIR}/Lib/site-packages/zipextimporter.py modules/zipextimporter.py;
+      cp ${PYTHON_BASE_DIR}/Lib/site-packages/_memimporter* modules/_memimporter.pyd;
+      7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/* ${PYTHON_BASE_DIR}/DLLS/*;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export DEPLOYPATH=$(pwd);
     fi
