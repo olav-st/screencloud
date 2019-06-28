@@ -42,9 +42,6 @@
                     <Component Id="PYTHON37.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
                         <File Id="PYTHON37.ZIP" Name="python37.zip" Source="..\python37.zip" />
                     </Component>
-                    <Component Id="PY_STARTUP_MODULES" Guid="2A819964-FADA-4E56-A828-99953937CB7C">
-                        <File Id="LZMA.PYD" Name="_lzma.pyd" Source="..\DLLs\_lzma.pyd" />
-                    </Component>
                     <Directory Id="ICONENGINES" Name="iconengines">
                         <Component Id="ICONENGINES" Guid="DE3EE756-E1D9-4908-8FEA-87EAAD6CBC95">
                             <File Name="qsvgicon.dll" Id="QSVGICON.DLL" Source="..\bin\iconengines\qsvgicon.dll" />
@@ -56,17 +53,6 @@
                             <File Id="QGIF.DLL" Name="qgif.dll" Source="..\bin\imageformats\qgif.dll" />
                         </Component>
                     </Directory>
-                    <Directory Id="MODULES" Name="modules">
-                        <Component Id="SCREENCLOUD.PY" Guid="01FA92FA-8DBF-45DD-B526-88CA19A069A7">
-                            <File Id="SCREENCLOUD.PY" Name="ScreenCloud.py" Source="..\modules\ScreenCloud.py" />
-                        </Component>
-                        <Component Id="ZIPEXTIMPORTER.PY" Guid="52EB97D9-93BC-4E05-9FC0-7DD57756C8F8">
-                            <File Id="ZIPEXTIMPORTER.PY" Name="zipextimporter.py" Source="..\modules\zipextimporter.py" />
-                        </Component>
-                        <Component Id="_MEMIMPORTER.PYD" Guid="BF01BE4E-2C03-4446-8664-641FEB5C81FE">
-                            <File Id="_MEMIMPORTER.PYD" Name="_memimporter.pyd" Source="..\modules\_memimporter.pyd" />
-                        </Component>
-                    </Directory>
                     <Directory Id="AUDIO" Name="audio">
                         <Component Guid="F814613D-80E9-42CB-9AD0-F51F712C2342" Id="AUDIO">
                             <File Id="QTAUDIO_WINDOWS.DLL" Name="qtaudio_windows.dll" Source="..\bin\audio\qtaudio_windows.dll" />
@@ -76,6 +62,12 @@
                         <Component Guid="324673D5-8C7F-4337-A7FA-D5D24B4A1563" Id="PLATFORMS">
                             <File Id="QWINDOWS.DLL" Name="qwindows.dll" Source="..\bin\platforms\qwindows.dll" />
                         </Component>
+                    </Directory>
+                    <Directory Id="PY_MODULES" Name="modules">
+                        <!-- files included by heat -->
+                    </Directory>
+                    <Directory Id="PY_DLLS" Name="DLLs">
+                        <!-- files included by heat -->
                     </Directory>
                 </Directory>
             </Directory>
@@ -112,13 +104,11 @@
             <ComponentRef Id="RemoveSettings" />
             <ComponentRef Id="ICONENGINES" />
             <ComponentRef Id="IMAGEFORMATS" />
-            <ComponentRef Id="SCREENCLOUD.PY" />
-            <ComponentRef Id="ZIPEXTIMPORTER.PY" />
-            <ComponentRef Id="_MEMIMPORTER.PYD" />
             <ComponentRef Id="PYTHON37.ZIP" />
-            <ComponentRef Id="PY_STARTUP_MODULES" />
             <ComponentRef Id="AUDIO" />
             <ComponentRef Id="PLATFORMS" />
+            <ComponentGroupRef Id="PY_MODULES" />
+            <ComponentGroupRef Id="PY_DLLS" />
         </Feature>
         <UI />
         <Icon Id="ScreenCloud.exe" SourceFile="..\bin\screencloud.exe" />

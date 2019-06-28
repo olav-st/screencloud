@@ -32,9 +32,12 @@ copy wix\ScreenCloud.wxs wix\ScreenCloud.wxs.backup
 CALL BatchSubstitute.bat "VERSIONNUMBERNOTSET" %version% wix\ScreenCloud.wxs 1> wix\ScreenCloud.wxs.temp
 move wix\ScreenCloud.wxs.temp wix\ScreenCloud.wxs
 cd wix
+::Use heat to include directories
+heat dir ..\DLLs -o DLLs.wxs -scom -frag -srd -sreg -gg -cg PY_DLLS -dr PY_DLLS -var var.PDSourceDir
+heat dir ..\modules -o modules.wxs -scom -frag -srd -sreg -gg -cg PY_MODULES -dr PY_MODULES -var var.PMSourceDir
 ::Build installer
-candle.exe ScreenCloud.wxs -ext WixUIExtension -ext WixUtilExtension
-light.exe ScreenCloud.wixobj -ext WixUIExtension -ext WixUtilExtension
+candle.exe ScreenCloud.wxs DLLs.wxs modules.wxs -dPDSourceDir=..\DLLs -dPMSourceDir=..\modules -ext WixUIExtension -ext WixUtilExtension
+light.exe ScreenCloud.wixobj DLLs.wixobj modules.wixobj -o ScreenCloud.msi -ext WixUIExtension -ext WixUtilExtension
 cd ..
 ::Unset the version number
 CALL BatchSubstitute.bat "%version%" VERSIONNUMBERNOTSET wix\ScreenCloud.wxs 1> wix\ScreenCloud.wxs.temp
