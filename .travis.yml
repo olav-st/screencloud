@@ -70,8 +70,9 @@ install:
       export PATH="$(brew --prefix qt)/bin:$PATH";
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cinst -y ${PYTHON_PACKAGE};
-      cinst -y wixtoolset;
+      powershell Install-WindowsFeature Net-Framework-Core;
+      cinst -y --no-progress ${PYTHON_PACKAGE};
+      cinst -y --no-progress wixtoolset;
       export PATH="$(powershell -Command '("Process", "Machine" | % {
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
