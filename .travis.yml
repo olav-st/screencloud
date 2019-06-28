@@ -197,6 +197,7 @@ after_success:
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cp ${PYTHON_BASE_DIR}/Lib/site-packages/zipextimporter.py modules/zipextimporter.py;
+      ls ${PYTHON_BASE_DIR}/Lib/site-packages;
       cp ${PYTHON_BASE_DIR}/Lib/site-packages/_memimporter* modules/_memimporter.pyd;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/* ${PYTHON_BASE_DIR}/DLLS/*;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
