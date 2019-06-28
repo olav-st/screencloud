@@ -196,7 +196,6 @@ after_success:
       hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cp bin/screencloud.exe ScreenCloud.exe;
       cp ${PYTHON_BASE_DIR}/Lib/site-packages/zipextimporter.py modules/zipextimporter.py;
       cp ${PYTHON_BASE_DIR}/Lib/site-packages/_memimporter* modules/_memimporter.pyd;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/* ${PYTHON_BASE_DIR}/DLLS/*;

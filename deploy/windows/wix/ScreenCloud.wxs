@@ -121,10 +121,10 @@
             <ComponentRef Id="PLATFORMS" />
         </Feature>
         <UI />
-        <Icon Id="ScreenCloud.exe" SourceFile="..\ScreenCloud.exe" />
+        <Icon Id="ScreenCloud.exe" SourceFile="..\bin\screencloud.exe" />
         <Property Id="ARPPRODUCTICON" Value="ScreenCloud.exe" />
-        <Icon Id="DesktopIcon.exe" SourceFile="..\ScreenCloud.exe" />
-        <Icon Id="StartMenuIcon.exe" SourceFile="..\ScreenCloud.exe" />
+        <Icon Id="DesktopIcon.exe" SourceFile="..\bin\screencloud.exe" />
+        <Icon Id="StartMenuIcon.exe" SourceFile="..\bin\screencloud.exe" />
         <Property Id="WIXUI_INSTALLDIR" Value="SCREENCLOUD" />
         <WixVariable Id="WixUIBannerBmp" Value="Binary\banner.jpg" />
         <WixVariable Id="WixUIDialogBmp" Value="Binary\dialog.jpg" />
