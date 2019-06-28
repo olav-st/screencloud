@@ -81,10 +81,8 @@ install:
       wget ${OPENSSL_URL};
       7z x openssl-${OPENSSL_VERSION}.tar.gz && 7z x openssl-${OPENSSL_VERSION}.tar;
       cd openssl-${OPENSSL_VERSION};
-      cp ssl/* include;
-      cp crypto/* include;
       wget ${OPENSSL_BIN_URL};
-      unzip openssl-${OPENSSL_VERSION}*.zip;
+      unzip openssl-${OPENSSL_VERSION}*.zip -d bin;
       export OPENSSL_BASE_DIR=$(pwd);
       cd ..;
       wget http://www.zlib.net/zlib1211.zip;
