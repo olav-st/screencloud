@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
         QStringList cmdline_args = a.arguments();
         if(cmdline_args.contains("--help") || cmdline_args.contains("-h") )
         {
-            qDebug() << "USAGE: screencloud -c [-f|-w|-a|-fl] -s [service]\n\n"
+            qDebug() << "USAGE: screencloud [-p] -c [-f|-w|-a|-fl] -s [service]\n\n"
+                        "  -p, --preferences        Start with preferences window open\n"
                         "  -c, --cli                Enable CLI mode\n"
                         "  -f, --fullscreen         Capture full screen\n"
                         "  -w, --window <id>        Capture window with <id>\n"
@@ -255,9 +256,11 @@ int main(int argc, char *argv[])
                     break;
                 }
             }
+            //Check if we should start with preferences window open
+            bool openPerfWindow = cmdline_args.contains("--preferences") || cmdline_args.contains("-p");
 
             //Show the trayicon
-            SystemTrayIcon w(NULL, iconColor);
+            SystemTrayIcon w(NULL, iconColor, openPerfWindow);
             w.show();
 
             retcode = a.exec();

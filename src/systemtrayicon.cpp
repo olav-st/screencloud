@@ -21,7 +21,7 @@
     #include <QUrlQuery>
 #endif
 
-SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
+SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color, bool openPerfWindow) :
     QSystemTrayIcon(parent)
 {
     setToolTip(tr("ScreenCloud - Idle"));
@@ -72,6 +72,10 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color) :
     if(autoCheckUpdates)
     {
         updater.checkForUpdates();
+    }
+    if(openPerfWindow)
+    {
+        openPreferencesWindow();
     }
 }
 
