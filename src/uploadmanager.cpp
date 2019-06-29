@@ -77,14 +77,6 @@ bool UploadManager::upload(const QImage &screenshot, QString serviceShortname, Q
 
 QString UploadManager::getDefaultService()
 {
-    QSettings settings("screencloud", "ScreenCloud");
-    settings.beginGroup("account");
-    bool loggedIn = settings.value("logged-in", false).toBool();
-    settings.endGroup();
-    if(loggedIn)
-    {
-        return "screencloud";
-    }
     return "clipboard";
 }
 
