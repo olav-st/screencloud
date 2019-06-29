@@ -12,6 +12,9 @@ if not "%2"=="" (
 if not "%3"=="" (
 	set arch=%3
 )
+if "%arch%"=="Win32" (
+    set arch=x86
+)
 
 where /q candle || ECHO Cound not find candle.exe from wix. Needs to be in your PATH. && EXIT /B
 where /q light || ECHO Cound not find light.exe from wix. Needs to be in your PATH. && EXIT /B
