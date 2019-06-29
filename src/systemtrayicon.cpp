@@ -50,6 +50,14 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color, bool openPerfWind
     {
         INFO(tr("Using bundled icon: ") + QString(":/systray/trayicon-" + color + ".svg"))
     }
+    //Specify that icons can be used as masks if using recent Qt version
+#if QT_VERSION >= QT_VERSION_CHECK(5,6,0)
+    if(color != "blue")
+    {
+        systrayIconNormal.setIsMask(true);
+        systrayIconUploading.setIsMask(true);
+    }
+#endif
     // set up and show the system tray icon
     setIcon(systrayIconNormal);
     connect(&uploadManager, SIGNAL(finished(QString)), this, SLOT(screenshotSaved(QString)));
