@@ -9,6 +9,7 @@ apps:
   screencloud:
     command: desktop-launch screencloud.sh
     desktop: usr/share/applications/screencloud.desktop
+    autostart: screencloud.desktop
     plugs: 
       - x11
       - wayland

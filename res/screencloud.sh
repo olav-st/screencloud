@@ -8,12 +8,16 @@ if [ -n "$SNAP" ]; then
 	fi
 	export PYTHONPATH=$SNAP/share/screencloud/modules
 	echo "Setting PYTHONPATH=$PYTHONPATH"
+	#Set autostart location
+	export SC_AUTOSTART_EXEC=/usr/bin/screencloud
 	screencloud "$@"
 else
 	#Do the same, but for AppImage
 	HERE="$(dirname "$(readlink -f "${0}")")"
 	export PYTHONHOME="${HERE}"/usr
 	export PYTHONPATH="${HERE}"/usr/lib/python3.4:"${HERE}"/usr/lib/python3/dist-packages:"${HERE}"/usr/share/screencloud/modules
+	#Set autostart location
+	export SC_AUTOSTART_EXEC=${APPIMAGE}
 	cd "${HERE}/usr"
 	exec "${HERE}/usr/bin/screencloud" "$@"
 fi
