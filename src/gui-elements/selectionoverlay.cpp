@@ -467,6 +467,7 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     }
     currentScreenNumber = screenNumber;
     QRect screenGeom;
+
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     QScreen* screen = QApplication::screens().at(currentScreenNumber);
     screenGeom = screen->geometry();
@@ -480,7 +481,7 @@ void SelectionOverlay::moveToScreen(int screenNumber)
     }
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     // The pixmap is deep-copied in order to save the screen state at this very moment instead if utilising Qt's implicit data sharing of the original pixmap.
-    screenshot = screen->grabWindow(0, screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height()).copy();
+    screenshot = screen->grabWindow(0, 0, 0, screenGeom.width(), screenGeom.height()).copy();
 #else
     // The pixmap is deep-copied in order to save the screen state at this very moment instead if utilising Qt's implicit data sharing of the original pixmap.
     screenshot = QPixmap::grabWindow(QApplication::desktop()->winId(), screenGeom.x(), screenGeom.y(), screenGeom.width(), screenGeom.height()).copy();
