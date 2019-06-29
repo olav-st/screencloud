@@ -185,8 +185,8 @@ after_success:
       cp ../deploy/linux/snapcraft.yaml snap/snapcraft.yaml;
       openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in ../.snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
       docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq && cd $(pwd) && snapcraft";
-      curl -F file=@$(ls | grep .snap) https://file.io;
-      curl -F file=@$(ls | grep .AppImage) https://file.io;
+      curl -F file=@$(ls | grep screencloud | grep .snap) https://file.io;
+      curl -F file=@$(ls | grep ScreenCloud | grep .AppImage) https://file.io;
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo make install;
