@@ -200,7 +200,6 @@ after_success:
       cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/Crypto modules/Crypto;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/*;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
-      curl --upload-file ./ScreenCloud*.msi https://transfer.sh/ScreenCloud.msi;
       export DEPLOYPATH=$(pwd);
     fi
 
