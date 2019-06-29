@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" Name="ScreenCloud" Language="1033" Version="VERSIONNUMBERNOTSET" Manufacturer="Olav Sortland Thoresen" UpgradeCode="C80D60EB-D743-4756-9B33-A62B31FD64D5">
-        <Package Description="ScreenCloud" InstallerVersion="301" Compressed="yes" />
+    <?include $(sys.CURRENTDIR)\Config.wxi?>
+    <Product Id="*" Name="ScreenCloud" Language="1033" Version="$(var.ProductFullVersion)" Manufacturer="Olav Sortland Thoresen" UpgradeCode="C80D60EB-D743-4756-9B33-A62B31FD64D5">
+        <Package Description="ScreenCloud" InstallerVersion="301" Compressed="yes" Manufacturer="Olav Sortland Thoresen" Platform="$(var.Platform)" />
         <Media Id="1" Cabinet="screencloud.cab" EmbedCab="yes" CompressionLevel="high" />
         <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder" Name="PFiles">
+            <Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
                 <Directory Id="SCREENCLOUD" Name="ScreenCloud">
-                    <Component Id="SCREENCLOUD.EXE" DiskId="1" Guid="57C15E17-C360-431A-B5CB-B0D22642AA62">
+                    <Component Id="SCREENCLOUD.EXE" DiskId="1" Guid="57C15E17-C360-431A-B5CB-B0D22642AA62" Win64="$(var.Win64)">
                         <File Id="SCREENCLOUD.EXE" Name="ScreenCloud.exe" Source="..\bin\screencloud.exe" KeyPath="yes">
                             <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="ScreenCloud" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
                             <Shortcut Id="ExeShortcut" Directory="ProgramMenuDir" Name="ScreenCloud" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" />
                         </File>
                     </Component>
-                    <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589">
+                    <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589" Win64="$(var.Win64)">
                         <File Id="LIBEAY32.DLL" Name="libeay32.dll" Source="..\bin\libeay32.dll" />
                         <File Id="SSLEAY32.DLL" Name="ssleay32.dll" Source="..\bin\ssleay32.dll" />
                         <File Id="QUAZIP.DLL" Name="quazip5.dll" Source="..\bin\quazip5.dll" />
@@ -22,7 +23,7 @@
                         <File Id="PYTHONQT_QTALL.DLL" Name="Qt5Python37_QtAll.dll" Source="..\bin\Qt5Python37_QtAll.dll" />
                         <File Id="ZLIB1.DLL" Name="zlib.dll" Source="..\bin\zlib.dll" />
                     </Component>
-                    <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545">
+                    <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545" Win64="$(var.Win64)">
                         <File Id="QTCORE" Name="Qt5Core.dll" Source="..\bin\Qt5Core.dll" />
                         <File Id="QTWIDGETS" Name="Qt5Widgets.dll" Source="..\bin\Qt5Widgets.dll" />
                         <File Id="QTNETWORK" Name="Qt5Network.dll" Source="..\bin\Qt5Network.dll" />
@@ -39,27 +40,27 @@
                         <File Id="QT5SQL.DLL" Name="Qt5Sql.dll" Source="..\bin\Qt5Sql.dll" />
                         <File Id="QT5XMLPATTERNS.DLL" Name="Qt5XmlPatterns.dll" Source="..\bin\Qt5XmlPatterns.dll" />
                     </Component>
-                    <Component Id="PYTHON37.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1">
+                    <Component Id="PYTHON37.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1" Win64="$(var.Win64)">
                         <File Id="PYTHON37.ZIP" Name="python37.zip" Source="..\python37.zip" />
                     </Component>
                     <Directory Id="ICONENGINES" Name="iconengines">
-                        <Component Id="ICONENGINES" Guid="DE3EE756-E1D9-4908-8FEA-87EAAD6CBC95">
+                        <Component Id="ICONENGINES" Guid="DE3EE756-E1D9-4908-8FEA-87EAAD6CBC95" Win64="$(var.Win64)">
                             <File Name="qsvgicon.dll" Id="QSVGICON.DLL" Source="..\bin\iconengines\qsvgicon.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="IMAGEFORMATS" Name="imageformats">
-                        <Component Id="IMAGEFORMATS" Guid="70A45777-D415-4469-90C1-4452FFAFCCC4">
+                        <Component Id="IMAGEFORMATS" Guid="70A45777-D415-4469-90C1-4452FFAFCCC4" Win64="$(var.Win64)">
                             <File Id="QJPEG.DLL" Name="qjpeg.dll" Source="..\bin\imageformats\qjpeg.dll" />
                             <File Id="QGIF.DLL" Name="qgif.dll" Source="..\bin\imageformats\qgif.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="AUDIO" Name="audio">
-                        <Component Guid="F814613D-80E9-42CB-9AD0-F51F712C2342" Id="AUDIO">
+                        <Component Guid="F814613D-80E9-42CB-9AD0-F51F712C2342" Id="AUDIO" Win64="$(var.Win64)">
                             <File Id="QTAUDIO_WINDOWS.DLL" Name="qtaudio_windows.dll" Source="..\bin\audio\qtaudio_windows.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="PLATFORMS" Name="platforms">
-                        <Component Guid="324673D5-8C7F-4337-A7FA-D5D24B4A1563" Id="PLATFORMS">
+                        <Component Guid="324673D5-8C7F-4337-A7FA-D5D24B4A1563" Id="PLATFORMS" Win64="$(var.Win64)">
                             <File Id="QWINDOWS.DLL" Name="qwindows.dll" Source="..\bin\platforms\qwindows.dll" />
                         </Component>
                     </Directory>
@@ -74,7 +75,7 @@
             <Directory Id="DesktopFolder" />
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ProgramMenuDir" Name="ScreenCloud">
-                    <Component Id="StartMenuShortcuts" Guid="9FF5795F-7345-490B-920E-9AAEE82B05E1">
+                    <Component Id="StartMenuShortcuts" Guid="9FF5795F-7345-490B-920E-9AAEE82B05E1" Win64="$(var.Win64)">
                         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
                         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
                         <Shortcut Id="UninstallProduct" Name="Uninstall ScreenCloud" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
@@ -82,7 +83,7 @@
                 </Directory>
             </Directory>
             <Directory Id="LocalAppDataFolder" Name="AppData">
-                <Component Id="RemoveSettings" Guid="506D5042-14AA-44F5-BDD4-5E7B0AC60CE6" NeverOverwrite="yes">
+                <Component Id="RemoveSettings" Guid="506D5042-14AA-44F5-BDD4-5E7B0AC60CE6" NeverOverwrite="yes" Win64="$(var.Win64)">
                     <RemoveRegistryKey Action="removeOnUninstall" Id="RemoveAppSettings" Key="Software\screencloud" Root="HKCU" />
                     <RemoveRegistryKey Action="removeOnUninstall" Id="RemoveStartupKey" Key="Software\Microsoft\Windows\CurrentVersion\Run\ScreenCloud" Root="HKCU" />
                     <Condition>PREVIOUSVERSIONISINSTALLED=""</Condition>
@@ -91,7 +92,7 @@
             </Directory>
         </Directory>
         <DirectoryRef Id="TARGETDIR">
-            <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />
+            <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_$(var.Platform).msm" DiskId="1" Language="0" />
         </DirectoryRef>
         <Feature Id="VCRedist" Title="Visual C++ 14.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
             <MergeRef Id="VCRedist" />
@@ -124,7 +125,7 @@
         <UIRef Id="WixUI_InstallDir" />
         <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
         <Upgrade Id="C80D60EB-D743-4756-9B33-A62B31FD64D5">
-            <UpgradeVersion Minimum="0.0.1" Maximum="VERSIONNUMBERNOTSET" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
+            <UpgradeVersion Minimum="0.0.1" Maximum="$(var.ProductFullVersion)" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
         </Upgrade>
         <InstallExecuteSequence>
             <RemoveExistingProducts After="InstallFinalize" />
