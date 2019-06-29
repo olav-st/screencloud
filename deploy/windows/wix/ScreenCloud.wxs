@@ -64,6 +64,11 @@
                             <File Id="QWINDOWS.DLL" Name="qwindows.dll" Source="..\bin\platforms\qwindows.dll" />
                         </Component>
                     </Directory>
+                    <Directory Id="STYLES" Name="styles">
+                        <Component Guid="AEE0CA66-3F28-4D96-B358-FA118230A9E7" Id="STYLES" Win64="$(var.Win64)">
+                            <File Id="QWINDOWSVISTASTYLE.DLL" Name="qwindowsvistastyle.dll" Source="..\bin\styles\qwindowsvistastyle.dll" />
+                        </Component>
+                    </Directory>
                     <Directory Id="PY_MODULES" Name="modules">
                         <!-- files included by heat -->
                     </Directory>
@@ -108,6 +113,7 @@
             <ComponentRef Id="PYTHON37.ZIP" />
             <ComponentRef Id="AUDIO" />
             <ComponentRef Id="PLATFORMS" />
+            <ComponentRef Id="STYLES" />
             <ComponentGroupRef Id="PY_MODULES" />
             <ComponentGroupRef Id="PY_DLLS" />
         </Feature>
