@@ -8,6 +8,24 @@ EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
 {
     ui->setupUi(this);
     connect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
+
+    toolkit = new KaptionGraphicsToolkit(ui->propertyToolbar, this);
+    //Set img
+    this->img = image;
+    this->pixmap = QPixmap::fromImage(*image);
+    setupUi();
+}
+
+EditorDialog::~EditorDialog()
+{
+    disconnect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
+    delete ui;
+    delete toolkit;
+}
+
+void EditorDialog::setupUi()
+{
+    setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
     //Try to use theme icons if available
     ui->formatTextBtn->setIcon(QIcon::fromTheme("draw-text", ui->formatTextBtn->icon()));
     /*
@@ -20,8 +38,6 @@ EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
 
     //Set default color
     ui->colorBtn->setColor(QColor(225, 50, 50));
-
-    toolkit = new KaptionGraphicsToolkit(ui->propertyToolbar, this);
 
     toolkit->bindButtonToGraphicsItem<ArrowGraphicsItem>(ui->arrowBtn, true);
     toolkit->bindButtonToGraphicsItem<BoxGraphicsItem>(ui->boxBtn);
@@ -37,19 +53,8 @@ EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
     toolkit->updateUi();
 
     ui->snapshotCanvas->setToolkit(toolkit);
-
-    //Set img
-    this->img = image;
-    this->pixmap = QPixmap::fromImage(*image);
     ui->snapshotCanvas->setPixmap(this->pixmap);
     this->adjustSize();
-}
-
-EditorDialog::~EditorDialog()
-{
-    disconnect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
-    delete ui;
-    delete toolkit;
 }
 
 void EditorDialog::dialogAccepted()

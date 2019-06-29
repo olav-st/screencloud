@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Editor - ScreenCloud</string>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
