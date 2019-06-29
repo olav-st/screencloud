@@ -431,8 +431,8 @@ if(WIN32)
     if(NOT QT_USE_QT5)
         message(ERROR "Install target no longer supports Qt 4!")
     else()
+        install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
         install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
-        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/screencloud.exe" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
         #Find dirs for the libs we're linking against
         foreach(LIB ${REQUIRED_LIBS})
             if(LIB MATCHES "Qt5::")
@@ -441,11 +441,17 @@ if(WIN32)
             get_filename_component(LIB_DIR ${LIB} DIRECTORY)
             set(LIB_DIRS ${LIB_DIRS}
                 ${LIB_DIR}
+                ${LIB_DIR}/bin
+                ${LIB_DIR}/../bin
                 )
         endforeach()
         #Hack to make fixup_bundle work on win 10
         set(LIB_DIRS ${LIB_DIRS}
             "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
+        )
+        #Hack to make sure zlib dlls are found
+        set(LIB_DIRS ${LIB_DIRS}
+            ${ZLIB_INCLUDE_DIRS}/bin
         )
         #Hack to make sure OpenSSL dlls are found
         set(RUNTIME_LIBS ${RUNTIME_LIBS}
@@ -458,18 +464,20 @@ if(WIN32)
         get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
         get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
         get_target_property(WINDOWSPLATFORMPLUGIN_LOCATION Qt5::QWindowsIntegrationPlugin LOCATION)
-        get_target_property(WINDOWSAUDIOPLUGIN_LOCATION Qt5::QWindowsAudioPlugin  LOCATION)
+        get_target_property(WINDOWSAUDIOPLUGIN_LOCATION Qt5::QWindowsAudioPlugin LOCATION)
+        get_target_property(WINDOWSVISTASTYLEPLUGIN_LOCATION Qt5::QWindowsVistaStylePlugin LOCATION)
         install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats")
         install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines")
         install(FILES ${WINDOWSPLATFORMPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/platforms")
         install(FILES ${WINDOWSAUDIOPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/audio")
+        install(FILES ${WINDOWSVISTASTYLEPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/styles")
         #Copy pythons dlls dir
         install(DIRECTORY ${PYTHON_INCLUDE_DIR}/../DLLs DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
         #Use fixup_bundle to copy dlls
         install(CODE "
         include(BundleUtilities)
         fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"${LIB_DIRS}\")")
-        install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows x86 \")")
+        install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows ${CMAKE_GENERATOR_PLATFORM} \")")
     endif()
 endif(WIN32)
 
