@@ -48,9 +48,9 @@ void Startup::setRunOnStartup(bool runOnStartup)
     {
         execPath = execPath + ".sh";
     }
-    else if(QFile(execPath + "-" + VERSION + "-.sh").exists())
+    else if(QFile(execPath + "-" + VERSION + ".sh").exists())
     {
-        execPath = execPath + "-" + VERSION + "-.sh";
+        execPath = execPath + "-" + VERSION + ".sh";
     }
     QString desktopFileContents = "[Desktop Entry]\n"
             "Name=ScreenCloud\n"
