@@ -25,7 +25,7 @@ cd wix
 heat dir ..\DLLs -o DLLs.wxs -scom -frag -srd -sreg -gg -cg PY_DLLS -dr PY_DLLS -var var.PDSourceDir
 heat dir ..\modules -o modules.wxs -scom -frag -srd -sreg -gg -cg PY_MODULES -dr PY_MODULES -var var.PMSourceDir
 ::Build installer
-candle.exe ScreenCloud.wxs DLLs.wxs modules.wxs -dProductFullVersion=%version% -dPlatform=%arch% -dPDSourceDir=..\DLLs -dPMSourceDir=..\modules -ext WixUIExtension -ext WixUtilExtension
+candle.exe ScreenCloud.wxs DLLs.wxs modules.wxs -arch %arch% -dProductFullVersion=%version% -dPlatform=%arch% -dPDSourceDir=..\DLLs -dPMSourceDir=..\modules -ext WixUIExtension -ext WixUtilExtension
 light.exe ScreenCloud.wixobj DLLs.wixobj modules.wixobj -o ScreenCloud.msi -ext WixUIExtension -ext WixUtilExtension
 cd ..
 
