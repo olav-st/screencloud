@@ -39,12 +39,25 @@ void Startup::setRunOnStartup(bool runOnStartup)
 
 #endif
 #ifdef Q_OS_LINUX
+    QString execPath = qApp->applicationFilePath();
+    if(getenv("SC_AUTOSTART_EXEC") != NULL)
+    {
+        execPath = QString(getenv("SC_AUTOSTART_EXEC"));
+    }
+    else if(QFile(execPath + ".sh").exists())
+    {
+        execPath = execPath + ".sh";
+    }
+    else if(QFile(execPath + "-" + VERSION + "-.sh").exists())
+    {
+        execPath = execPath + "-" + VERSION + "-.sh";
+    }
     QString desktopFileContents = "[Desktop Entry]\n"
             "Name=ScreenCloud\n"
             "Comment=Capture and share screenshots easily\n"
             "Icon=screencloud\n"
             "Type=Application\n"
-            "Exec=" + qApp->applicationFilePath() + ".sh\n"
+            "Exec=" + execPath + "\n"
             "Hidden=false\n"
             "NoDisplay=false\n"
             "X-GNOME-Autostart-enabled=true\n";
