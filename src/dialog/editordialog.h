@@ -26,6 +26,7 @@ class EditorDialog : public QDialog
 public:
     explicit EditorDialog(QWidget *parent = 0, QImage* image = NULL);
     ~EditorDialog();
+    void setupUi();
 
 private:
     Ui::EditorDialog *ui;
