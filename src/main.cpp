@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
                         "  -w, --window <id>        Capture window with <id>\n"
                         "  -a, --area <x,y,w,h>     Capture an area of the screen\n"
                         "  -fl, --file <filename>   Upload <filename> instead of capturing screen\n"
-                        "  -s, --service <name>     Service to upload to. Defaults to 'screencloud' or 'clipboard'\n\n"
+                        "  -s, --service <name>     Service to upload to. Defaults to 'clipboard'\n\n"
                         "  -v, --version            Print version number to the console\n"
                         "  -h, --help               Show this help screen\n";
             return 0;
