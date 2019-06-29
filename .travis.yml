@@ -196,6 +196,7 @@ after_success:
       cp -r screencloud.app/* dmgdir/ScreenCloud.app/;
       ln -s /Applications dmgdir/Applications;
       hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
+      curl -F file=ScreenCloud-$VERSION.dmg https://file.io;
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cp -r ${PYTHON_BASE_DIR}/DLLs DLLs;
