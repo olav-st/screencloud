@@ -43,7 +43,7 @@ class SystemTrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
-    explicit SystemTrayIcon(QObject *parent = 0, QString color = "");
+    explicit SystemTrayIcon(QObject *parent = 0, QString color = "", bool openPerfWindow = false);
     ~SystemTrayIcon();
     void loadSettings();
     void saveSettings();
