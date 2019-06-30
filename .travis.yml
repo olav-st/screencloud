@@ -201,6 +201,10 @@ after_success:
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo make install;
+      python -c "import bcrypt;print(bcrypt.__file__)";
+      python -c "import cffi;print(cffi.__file__)";
+      python -c "import cryptography;print(cryptography.__file__)";
+      python -c "import nacl;print(nacl.__file__)";
       cp -r /Library/Python/2.7/site-packages/bcrypt/* screencloud.app/Contents/Resources/modules/bcrypt;
       cp -r /Library/Python/2.7/site-packages/cffi/* screencloud.app/Contents/Resources/modules/cffi;
       cp -r /Library/Python/2.7/site-packages/_cffi_backend*.so screencloud.app/Contents/Resources/modules;
