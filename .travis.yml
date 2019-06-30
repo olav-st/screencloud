@@ -201,11 +201,11 @@ after_success:
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo make install;
-      sudo cp -R /usr/local/lib/python2.7/site-packages/bcrypt/* screencloud.app/Contents/Resources/modules/bcrypt;
-      sudo cp -R /usr/local/lib/python2.7/site-packages/cffi/* screencloud.app/Contents/Resources/modules/cffi;
+      sudo cp -R /usr/local/lib/python2.7/site-packages/bcrypt/. screencloud.app/Contents/Resources/modules/bcrypt;
+      sudo cp -R /usr/local/lib/python2.7/site-packages/cffi/. screencloud.app/Contents/Resources/modules/cffi;
       sudo cp /usr/local/lib/python2.7/site-packages/_cffi_backend*.so screencloud.app/Contents/Resources/modules;
-      sudo cp -R /usr/local/lib/python2.7/site-packages/cryptography/* screencloud.app/Contents/Resources/modules/cryptography;
-      sudo cp -R /usr/local/lib/python2.7/site-packages/nacl/* screencloud.app/Contents/Resources/modules/nacl;
+      sudo cp -R /usr/local/lib/python2.7/site-packages/cryptography/. screencloud.app/Contents/Resources/modules/cryptography;
+      sudo cp -R /usr/local/lib/python2.7/site-packages/nacl/. screencloud.app/Contents/Resources/modules/nacl;
       sudo macdeployqt screencloud.app -verbose=3;
       sudo chown -R $(id -nu) screencloud.app;
       mkdir -p dmgdir/ScreenCloud.app;
