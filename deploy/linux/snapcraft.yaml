@@ -71,10 +71,7 @@ parts:
       - libpythonqt-qt5-python3-3
       - libpythonqt-qtall-qt5-python3-3
       - libpython3-stdlib
-      - python3-bcrypt # For the SFTP plugin
-      - python3-cffi # For the SFTP plugin
-      - python3-cryptography # For the SFTP plugin
-      - python3-nacl # For the SFTP plugin
+      - python3-libssh2 # For the SFTP plugin
       - qtwayland5
       - qt5-gtk-platformtheme # for theming, font settings, cursor and to use gtk3 file chooser
     override-build: |
@@ -93,6 +90,11 @@ parts:
     stage-packages:
       - zlib1g
       - libqt5core5a
+
+  ssh2-python:
+    plugin: python
+    python-packages: 
+      - ssh2-python
   
   # The desktop-qt5 part must be included manually when using core18 base
   # See: https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml
