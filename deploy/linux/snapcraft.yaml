@@ -1,5 +1,5 @@
 name: screencloud
-version: "1.4.0"
+version: "1.5.0"
 summary: Easy to use screenshot sharing application
 description: Take a screenshot using one of the 3 hotkeys or simply click the ScreenCloud tray icon. Save your screenshot locally or upload it to the cloud! A link is automatically copied to your clipboard. 
 confinement: strict

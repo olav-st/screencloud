@@ -1,3 +1,13 @@
+screencloud (1.5.0-1qt5) unstable; urgency=low
+
+  * Add support for Python 3.7
+  * Fix corrupted screenshot error on Linux
+  * Update to Python 3.7 on Windows
+  * Fix icon color on dark menu bar on Mac OS
+  * Replace pycrypto with ssh2-python
+
+ -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sun, 30 Jun 2019 19:00:00 -0000
+
 screencloud (1.4.0-1qt5) unstable; urgency=low
 
   * Remove built-in uploader for screencloud.net
