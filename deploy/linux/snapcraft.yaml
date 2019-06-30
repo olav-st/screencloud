@@ -72,6 +72,7 @@ parts:
       - libpythonqt-qtall-qt5-python3-3
       - libpython3-stdlib
       - python3-bcrypt # For the SFTP plugin
+      - python3-cffi # For the SFTP plugin
       - python3-cryptography # For the SFTP plugin
       - python3-nacl # For the SFTP plugin
       - qtwayland5
