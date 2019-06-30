@@ -102,7 +102,7 @@ install:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export QUAZIP_BASE_DIR=$(pwd);
       cd ..;
-      pip install cryptography;
+      pip install cryptography bcrypt;
     fi
 
 before_script:
@@ -205,9 +205,11 @@ after_success:
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cp -r ${PYTHON_BASE_DIR}/DLLs DLLs;
+      cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/bcrypt modules/bcrypt;
       cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/cryptography modules/cryptography;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/*;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
+      curl --upload-file ./ScreenCloud*.msi https://transfer.sh/ScreenCloud.msi;
       export DEPLOYPATH=$(pwd);
     fi
 
