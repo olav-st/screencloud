@@ -166,8 +166,8 @@ after_success:
       sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
       sudo mkdir -p appdir/usr/lib/python3/dist-packages/bcrypt;
       sudo cp -r /usr/lib/python3/dist-packages/bcrypt/* appdir/usr/lib/python3/dist-packages/bcrypt/;
-      sudo mkdir -p appdir/usr/lib/python3/dist-packages/cryptography;
-      sudo cp -r /usr/lib/python3/dist-packages/cryptography/* appdir/usr/lib/python3/dist-packages/cryptography/;
+      sudo mkdir -p appdir/usr/lib/python3/site-packages/cryptography;
+      sudo cp -r /usr/lib/python3/site-packages/cryptography/* appdir/usr/lib/python3/site-packages/cryptography/;
       sudo chown -R $(id -nu) appdir;
       wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
       chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
