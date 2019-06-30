@@ -168,6 +168,9 @@ after_success:
       sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
       sudo mkdir -p appdir/usr/local/lib/python3.4/dist-packages/bcrypt;
       sudo cp -r /usr/local/lib/python3.4/dist-packages/bcrypt/* appdir/usr/local/lib/python3.4/dist-packages/bcrypt/;
+      sudo mkdir -p appdir/usr/local/lib/python3.4/dist-packages/cffi;
+      sudo cp -r /usr/local/lib/python3.4/dist-packages/cffi/* appdir/usr/local/lib/python3.4/dist-packages/cffi/;
+      sudo cp /usr/local/lib/python3.4/dist-packages/_cffi_backend*.so appdir/usr/local/lib/python3.4/dist-packages;
       sudo mkdir -p appdir/usr/local/lib/python3.4/dist-packages/cryptography;
       sudo cp -r /usr/local/lib/python3.4/dist-packages/cryptography/* appdir/usr/local/lib/python3.4/dist-packages/cryptography/;
       sudo mkdir -p appdir/usr/local/lib/python3.4/dist-packages/nacl;
@@ -199,6 +202,8 @@ after_success:
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo make install;
       cp -r /Library/Python/2.7/site-packages/bcrypt/* screencloud.app/Contents/Resources/modules/bcrypt;
+      cp -r /Library/Python/2.7/site-packages/cffi/* screencloud.app/Contents/Resources/modules/cffi;
+      cp -r /Library/Python/2.7/site-packages/_cffi_backend*.so screencloud.app/Contents/Resources/modules;
       cp -r /Library/Python/2.7/site-packages/cryptography/* screencloud.app/Contents/Resources/modules/cryptography;
       cp -r /Library/Python/2.7/site-packages/nacl/* screencloud.app/Contents/Resources/modules/nacl;
       sudo macdeployqt screencloud.app -verbose=3;
@@ -213,6 +218,8 @@ after_success:
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cp -r ${PYTHON_BASE_DIR}/DLLs DLLs;
       cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/bcrypt modules/bcrypt;
+      cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/cffi modules/cffi;
+      cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/_cffi_backend*.pyd modules;
       cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/cryptography modules/cryptography;
       cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/nacl modules/nacl;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/*;
