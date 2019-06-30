@@ -73,6 +73,7 @@ parts:
       - libpython3-stdlib
       - python3-bcrypt # For the SFTP plugin
       - python3-cryptography # For the SFTP plugin
+      - python3-nacl # For the SFTP plugin
       - qtwayland5
       - qt5-gtk-platformtheme # for theming, font settings, cursor and to use gtk3 file chooser
     override-build: |
