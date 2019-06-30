@@ -71,7 +71,6 @@ parts:
       - libpythonqt-qt5-python3-3
       - libpythonqt-qtall-qt5-python3-3
       - libpython3-stdlib
-      - python3-libssh2 # For the SFTP plugin
       - qtwayland5
       - qt5-gtk-platformtheme # for theming, font settings, cursor and to use gtk3 file chooser
     override-build: |
