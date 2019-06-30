@@ -1,4 +1,13 @@
-<h2>ScreenCloud 1.4.0 (2016-08-10)</h2>
+<h2>ScreenCloud 1.5.0 (2019-07-30)</h2>
+<ul>
+	<li>Add support for Python 3.7</li>
+	<li>Fix corrupted screenshot error on Linux</li>
+	<li>Update to Python 3.7 on Windows</li>
+	<li>Fix icon color on dark menu bar on Mac OS</li>
+	<li>Replace pycrypto with ssh2-python</li>
+</ul>
+<br/>
+<h2>ScreenCloud 1.4.0 (2018-08-10)</h2>
 <ul>
 	<li>Remove built-in uploader for screencloud.net</li>
 	<li>Add editor hint in "Save As" dialog</li>
