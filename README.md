@@ -1,4 +1,4 @@
-# ScreenCloud [![Build Status](https://travis-ci.org/olav-st/screencloud.svg?branch=master)](https://travis-ci.org/olav-st/screencloud) 
+# ScreenCloud [![Build Status](https://travis-ci.org/olav-st/screencloud.svg?branch=master)](https://travis-ci.org/olav-st/screencloud) [![ScreenCloud](https://snapcraft.io/screencloud/badge.svg)](https://snapcraft.io/screencloud)
 
 This is the source code for the ScreenCloud client. ScreenCloud is an easy to use screenshot sharing tool that works on Windows, Mac and Linux. For more info, see: [http://screencloud.net/](http://screencloud.net/)
 
