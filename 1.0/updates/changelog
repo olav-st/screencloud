@@ -1,4 +1,4 @@
-<h2>ScreenCloud 1.5.0 (2019-07-30)</h2>
+<h2>ScreenCloud 1.5.0 (2019-06-30)</h2>
 <ul>
 	<li>Add support for Python 3.7</li>
 	<li>Fix corrupted screenshot error on Linux</li>
