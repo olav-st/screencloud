@@ -62,8 +62,10 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-crypto libquazip-dev zlib1g-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
+      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip python3-bcrypt libquazip-dev zlib1g-dev libssl-dev libffi-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
       sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
+      sudo pip3 install --upgrade setuptools;
+      sudo pip3 install cryptography;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
       brew install qt quazip;
@@ -100,7 +102,7 @@ install:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export QUAZIP_BASE_DIR=$(pwd);
       cd ..;
-      pip install pycryptodome;
+      pip install cryptography;
     fi
 
 before_script:
@@ -162,8 +164,10 @@ after_success:
       make install DESTDIR=appdir;
       sudo mkdir -p appdir/usr/lib/python3.4;
       sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
-      sudo mkdir -p appdir/usr/lib/python3/dist-packages/Crypto;
-      sudo cp -r /usr/lib/python3/dist-packages/Crypto/* appdir/usr/lib/python3/dist-packages/Crypto/;
+      sudo mkdir -p appdir/usr/lib/python3/dist-packages/bcrypt;
+      sudo cp -r /usr/lib/python3/dist-packages/bcrypt/* appdir/usr/lib/python3/dist-packages/bcrypt/;
+      sudo mkdir -p appdir/usr/lib/python3/dist-packages/cryptography;
+      sudo cp -r /usr/lib/python3/dist-packages/cryptography/* appdir/usr/lib/python3/dist-packages/cryptography/;
       sudo chown -R $(id -nu) appdir;
       wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
       chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
@@ -201,7 +205,7 @@ after_success:
       export DEPLOYPATH=$(pwd);
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cp -r ${PYTHON_BASE_DIR}/DLLs DLLs;
-      cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/Crypto modules/Crypto;
+      cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/cryptography modules/cryptography;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/*;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export DEPLOYPATH=$(pwd);
