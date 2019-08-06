@@ -25,6 +25,10 @@ LocalFileUploader::LocalFileUploader(QObject *parent) :
     name = "Local File";
     shortname = "localfile";
     icon = QIcon::fromTheme("folder", QIcon(":/uploaders/file.png"));
+    if(!icon.availableSizes().contains(QSize(32,32)))
+    {
+        icon = QIcon(":/uploaders/file.png");
+    }
     loadSettings();
 }
 
