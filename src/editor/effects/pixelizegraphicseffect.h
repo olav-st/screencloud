@@ -8,7 +8,7 @@ class PixelizeGraphicsEffect : public QGraphicsEffect
 {
     Q_OBJECT
 public:
-    explicit PixelizeGraphicsEffect(QObject *parent = nullptr);
+    explicit PixelizeGraphicsEffect(QObject *parent = NULL);
 
     qreal pixelization() const;
 
