@@ -44,11 +44,13 @@ void EditorDialog::setupUi()
     toolkit->bindButtonToGraphicsItem<EllipseGraphicsItem>(ui->ellipseBtn);
     toolkit->bindButtonToGraphicsItem<NumberedItem>(ui->numberedBtn);
     toolkit->bindButtonToGraphicsItem<BoxTextGraphicsItem>(ui->textBtn);
+    toolkit->bindButtonToGraphicsItem<ObscureGraphicsItem>(ui->blurBtn);
 
     toolkit->bindPropertyTool(new ColorPropertyToolEditor(ui->colorBtn, this), "color");
     toolkit->bindPropertyTool(new ScalePropertyToolEditor(ui->widthSlider, this), "size");
     toolkit->bindPropertyTool(new FontPropertyToolEditor(ui->formatTextBtn, this), "font");
     toolkit->bindPropertyTool(new NumberPropertyToolEditor(this), "number");
+    toolkit->bindPropertyTool(new EffectPropertyToolEditor(ui->effectBtn, this), "effect");
 
     toolkit->updateUi();
 

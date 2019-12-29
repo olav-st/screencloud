@@ -15,17 +15,20 @@
     </qresource>
     <qresource prefix="/editor">
         <file>icons/editor/hi16-action-toolbox_arrow.png</file>
+        <file>icons/editor/hi16-action-toolbox_obscure.png</file>
         <file>icons/editor/hi16-action-toolbox_box.png</file>
         <file>icons/editor/hi16-action-toolbox_ellipse.png</file>
         <file>icons/editor/hi16-action-toolbox_number.png</file>
         <file>icons/editor/hi16-action-toolbox_text.png</file>
         <file>icons/editor/hi32-action-toolbox_arrow.png</file>
+        <file>icons/editor/hi32-action-toolbox_obscure.png</file>
         <file>icons/editor/hi32-action-toolbox_box.png</file>
         <file>icons/editor/hi32-action-toolbox_ellipse.png</file>
         <file>icons/editor/hi32-action-toolbox_number.png</file>
         <file>icons/editor/hi32-action-toolbox_text.png</file>
         <file>icons/editor/hi16-action-draw_text.png</file>
         <file>icons/editor/hi22-action-draw_text.png</file>
+        <file>icons/editor/hi22-action-change_effect.png</file>
         <file alias="editor-hint.png">icons/editor/editor-hint.png</file>
     </qresource>
 </RCC>

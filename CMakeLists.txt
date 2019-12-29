@@ -29,6 +29,7 @@ set( screencloud_SOURCES
     src/dialog/changelogdialog.cpp
     src/dialog/editordialog.cpp
     src/dialog/selectfolderdialog.cpp
+    src/editor/effects/pixelizegraphicseffect.cpp
     src/editor/items/ellipsegraphicsitem.cpp
     src/editor/items/abstractgraphicsrectitem.cpp
     src/editor/items/handlegraphicsitem.cpp
@@ -38,7 +39,9 @@ set( screencloud_SOURCES
     src/editor/items/textgraphicsitem.cpp
     src/editor/items/kaptiongraphicsitem.cpp
     src/editor/items/arrowgraphicsitem.cpp
+    src/editor/items/obscuregraphicsitem.cpp
     src/editor/kaptiongraphicstoolkit.cpp
+    src/editor/effectpropertytooleditor.cpp
     src/editor/numberpropertytooleditor.cpp
     src/editor/numberselector.cpp
     src/editor/propertytooleditor.cpp
@@ -97,6 +100,7 @@ set( screencloud_HEADERS_MOC
     src/dialog/changelogdialog.h
     src/dialog/editordialog.h
     src/dialog/selectfolderdialog.h
+    src/editor/effects/pixelizegraphicseffect.h
     src/editor/items/ellipsegraphicsitem.h
     src/editor/items/abstractgraphicsrectitem.h
     src/editor/items/handlegraphicsitem.h
@@ -106,7 +110,9 @@ set( screencloud_HEADERS_MOC
     src/editor/items/textgraphicsitem.h
     src/editor/items/kaptiongraphicsitem.h
     src/editor/items/arrowgraphicsitem.h
+    src/editor/items/obscuregraphicsitem.h
     src/editor/kaptiongraphicstoolkit.h
+    src/editor/effectpropertytooleditor.h
     src/editor/numberpropertytooleditor.h
     src/editor/numberselector.h
     src/editor/propertytooleditor.h

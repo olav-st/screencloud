@@ -5,6 +5,7 @@
 #include <editor/kaptiongraphicstoolkit.h>
 #include <editor/items/arrowgraphicsitem.h>
 #include <editor/items/boxgraphicsitem.h>
+#include <editor/items/obscuregraphicsitem.h>
 #include <editor/items/boxtextgraphicsitem.h>
 #include <editor/items/ellipsegraphicsitem.h>
 #include <editor/items/handlegraphicsitem.h>
@@ -14,6 +15,7 @@
 #include <editor/fontpropertytooleditor.h>
 #include <editor/scalepropertytooleditor.h>
 #include <editor/numberpropertytooleditor.h>
+#include <editor/effectpropertytooleditor.h>
 
 namespace Ui {
 class EditorDialog;
