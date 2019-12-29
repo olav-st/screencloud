@@ -20,6 +20,7 @@ NumberSelector::NumberSelector(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(m_spinBox);
 
+    setMinimumSize(56, 40);
     setLayout(layout);
 }
 
