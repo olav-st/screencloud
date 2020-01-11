@@ -78,6 +78,13 @@ Controller.prototype.ReadyForInstallationPageCallback = function() {
     gui.clickButton(buttons.NextButton);
 };
 
+//As of October 8, 2019, an extra screen has been added, see: https://stackoverflow.com/questions/25105269/silent-install-qt-run-installer-on-ubuntu-server
+Controller.prototype.DynamicTelemetryPluginFormCallback = function() {
+    var widget = gui.currentPageWidget();
+    widget.TelemetryPluginForm.statisticGroupBox.disableStatisticRadioButton.checked = true;
+    gui.clickButton(buttons.NextButton);
+};
+
 Controller.prototype.FinishedPageCallback = function() {
     console.log("Step: " + gui.currentPageWidget());
     // TODO somehow the installer crashes after this step.
