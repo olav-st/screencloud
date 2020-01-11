@@ -1,3 +1,10 @@
+screencloud (1.5.1-1qt5) unstable; urgency=low
+
+  * New 'blur/pixelize' tool in screenshot editor
+  * Minor tweaks to editor GUI
+
+ -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 11 Jan 2020 14:30:00 -0000
+
 screencloud (1.5.0-1qt5) unstable; urgency=low
 
   * Add support for Python 3.7
