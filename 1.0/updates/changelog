@@ -1,3 +1,9 @@
+<h2>ScreenCloud 1.5.1 (2019-01-11)</h2>
+<ul>
+	<li>New 'blur/pixelize' tool in screenshot editor</li>
+	<li>Minor tweaks to editor GUI</li>
+</ul>
+<br/>
 <h2>ScreenCloud 1.5.0 (2019-06-30)</h2>
 <ul>
 	<li>Add support for Python 3.7</li>
