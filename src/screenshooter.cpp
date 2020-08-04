@@ -15,94 +15,89 @@
 #include "screenshooter.h"
 #include <utils/log.h>
 #include <qxtwindowsystem.h>
+#include <QFile>
+#include <QDir>
+#include <utils/network.h>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
+#include <QtDBus/QDBusError>
 
-ScreenShooter::ScreenShooter(QObject *parent) :
-    QObject(parent)
+const QImage ScreenShooter::captureFullscreen()
 {
-}
+#if !defined(Q_OS_WIN) && !defined(Q_OS_MACX)
+    //First, attempt to take a screenshot using Gnome's DBus interface
+    //Code based on https://github.com/lupoDharkael/flameshot/blob/42619158fa71bfa10efa285f29591757177b9c1d/src/utils/screengrabber.cpp
+    QString path = QDir::tempPath() + QDir::separator() + NetworkUtils::generateNonce(6) + ".png";
+    QDBusInterface gnomeInterface(QStringLiteral("org.gnome.Shell"),
+                                  QStringLiteral("/org/gnome/Shell/Screenshot"),
+                                  QStringLiteral("org.gnome.Shell.Screenshot"));
+    QDBusReply<bool> gnomeReply = gnomeInterface.call(QStringLiteral("Screenshot"), false, false, path);
+    if (gnomeReply.value()) {
+        QPixmap res = QPixmap(path);
+        QFile dbusResult(path);
+        dbusResult.remove();
 
-void ScreenShooter::setScreenshot(const QImage &s)
-{
-    screenshot = s;
-    Q_EMIT screenshotTaken();
-}
+        return res.toImage();
+    }
 
-QImage ScreenShooter::getScreenshot()
-{
-    return screenshot;
-}
+    //Secondly, attempt to take a screenshot using KWin's DBus interface
+    //Code based on https://github.com/lupoDharkael/flameshot/blob/42619158fa71bfa10efa285f29591757177b9c1d/src/utils/screengrabber.cpp
+    QDBusInterface kwinInterface(QStringLiteral("org.kde.KWin"),
+                                 QStringLiteral("/Screenshot"),
+                                 QStringLiteral("org.kde.kwin.Screenshot"));
+    QDBusReply<QString> kwinReply = kwinInterface.call(QStringLiteral("screenshotFullscreen"));
+    QPixmap res = QPixmap(kwinReply.value());
+    if (!res.isNull()) {
+        QFile dbusResult(kwinReply.value());
+        dbusResult.remove();
 
-void ScreenShooter::setCaptureWindowBorders(const bool &value)
-{
-    captureWindowBorders = value;
-    Q_EMIT captureWindowBordersChanged();
-}
-
-bool ScreenShooter::getCaptureWindowBorders()
-{
-    return captureWindowBorders;
-}
-
-void ScreenShooter::setCaptureMouseCursor(const bool &value)
-{
-    captureMouseCursor = value;
-    Q_EMIT captureMouseCursorChanged();
-}
-
-bool ScreenShooter::getCaptureMouseCursor()
-{
-    return captureMouseCursor;
-}
-
-const QImage &ScreenShooter::captureFullscreen()
-{
-#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
-    QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
-    qDebug() << screen->name() << screen->geometry().x() << screen->geometry().y() << screen->size().width() << screen->size().height();
-    QPixmap pixmap = screen->grabWindow(0, 0, 0, screen->size().width(), screen->size().height());
+        return res.toImage();
+    }
+#endif
+    //If none of the DBus interfaces work, or we are on Win/Mac, use the Qt API to take a screenshot
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QScreen* screen = QApplication::primaryScreen();
+        QRect screenGeometry = screen->virtualGeometry();
+        QPixmap pixmap = screen->grabWindow(QApplication::desktop()->winId(), screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
 #else
-    int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
-    #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QScreen* screen = QApplication::screens().at(screenNumber);
-        QRect screenGeometry = screen->geometry();
-        QPixmap pixmap = screen->grabWindow(0, screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
-    #else
         QRect screenGeometry = QApplication::desktop()->screenGeometry(screenNumber);
         QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->screen(screenNumber)->winId(),screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
-    #endif
 #endif
-
-    screenshot = pixmap.toImage();
-    setScreenshot(pixmap.toImage());
-    return screenshot;
+    return pixmap.toImage();
 }
 
-const QImage &ScreenShooter::captureSelection(const QRect &area)
+const QImage ScreenShooter::captureSelection(const QRect &area)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
-    QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
-    qDebug() << screen->name();
-    QPixmap fullScreenShot = screen->grabWindow(0, 0, 0, screen->size().width(), screen->size().height());
-#else
-    int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
-    #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QScreen* screen = QApplication::screens().at(screenNumber);
-        QPixmap fullScreenShot = screen->grabWindow(0);
-    #else
-        QPixmap fullScreenShot = QPixmap::grabWindow(QApplication::desktop()->winId());
-    #endif
-#endif
-    QPixmap areaScreenshot = fullScreenShot.copy(area);
-    setScreenshot(areaScreenshot.toImage());
-    return screenshot;
+    QImage fullScreenShot = ScreenShooter::captureFullscreen();
+    QImage areaScreenshot = fullScreenShot.copy(area);
+    return areaScreenshot;
 }
 
-const QImage &ScreenShooter::captureWindow(WId windowID)
+const QImage ScreenShooter::captureWindow(WId windowID)
 {
     QSettings settings("screencloud", "ScreenCloud");
     settings.beginGroup("main");
-    captureWindowBorders = settings.value("capture-window-borders", false).toBool();
+    bool captureWindowBorders = settings.value("capture-window-borders", false).toBool();
     settings.endGroup();
+
+#if !defined(Q_OS_WIN) && !defined(Q_OS_MACX)
+    //First, attempt to take a screenshot of the active window using Gnome's DBus interface
+    //Code based on https://github.com/lupoDharkael/flameshot/blob/42619158fa71bfa10efa285f29591757177b9c1d/src/utils/screengrabber.cpp
+    QString path = QDir::tempPath() + QDir::separator() + NetworkUtils::generateNonce(6) + ".png";
+    QDBusInterface gnomeInterface(QStringLiteral("org.gnome.Shell"),
+                                  QStringLiteral("/org/gnome/Shell/Screenshot"),
+                                  QStringLiteral("org.gnome.Shell.Screenshot"));
+    QDBusReply<bool> gnomeReply = gnomeInterface.call(QStringLiteral("ScreenshotWindow"), captureWindowBorders, false, false, path);
+    if (gnomeReply.value()) {
+        QPixmap res = QPixmap(path);
+        QFile dbusResult(path);
+        dbusResult.remove();
+
+        return res.toImage();
+    }
+#endif
+    //If the DBus interfaces dosen't work, or we are on Win/Mac, use the Qt API to take a screenshot
 #ifdef Q_OS_MACX
     captureWindowBorders = true;
 #endif
@@ -129,6 +124,5 @@ const QImage &ScreenShooter::captureWindow(WId windowID)
         pixmap = QPixmap::grabWindow(windowID);
 #endif
     }
-    setScreenshot(pixmap.toImage());
-    return screenshot;
+    return pixmap.toImage();
 }
