@@ -67,7 +67,12 @@ const QImage &ScreenShooter::captureFullscreen()
 
 const QImage &ScreenShooter::captureSelection(const QRect &area)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
     QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
+#else
+    int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    QScreen* screen = QApplication::screens().at(screenNumber);
+#endif
     qDebug() << screen->name();
     QPixmap fullScreenShot = screen->grabWindow(0, 0, 0, screen->size().width(), screen->size().height());
     QPixmap areaScreenshot = fullScreenShot.copy(area);
