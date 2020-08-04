@@ -69,7 +69,7 @@ install:
       sudo pip3 install ssh2-python;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-      brew install qt quazip;
+      brew install qt quazip > /dev/null;
       export PATH="$(brew --prefix qt)/bin:$PATH";
       sudo easy_install pip;
       sudo pip install ssh2-python;
