@@ -62,7 +62,7 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip libquazip-dev zlib1g-dev libssl-dev libffi-dev libpythonqt-dev libx11-dev mesa-common-dev libqt4-dev qtmobility-dev;
+      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip zlib1g-dev libssl-dev libffi-dev libx11-dev mesa-common-dev;
       sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
       sudo pip3 install -Iv setuptools==41.0.1;
       sudo pip3 install ssh2-python;
@@ -108,18 +108,13 @@ install:
     fi
 
 before_script:
-  - mkdir build-qt5 build-qt4
+  - mkdir build
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      cd build-qt4;
-      cmake .. -DQT_USE_QT5=OFF -DPYTHON_USE_PYTHON3=OFF;
-      make;
-      cd ..;
-      sudo apt-get purge -y libpythonqt-dev libpythonqt2.1 libquazip-dev libquazip0;
       source /opt/qt${QT_VER}/bin/qt${QT_VER}-env.sh;
     fi
-  - cd build-qt5
+  - cd build
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt
   - git checkout 18d4c24
