@@ -44,6 +44,11 @@ matrix:
         - OPENSSL_BIN_URL: "'https://indy.fulgan.com/SSL/openssl-1.0.2s-x64_86-win64.zip'"
 
 before_install:
+  - if [[ "$TRAVIS_CPU_ARCH" == "amd64" ]]; then 
+      export ARCH=x86_64;
+    else
+      export ARCH=$TRAVIS_CPU_ARCH;
+    fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
       sudo apt-get update -qq;
     fi
@@ -153,12 +158,12 @@ after_success:
       sudo mkdir -p appdir/usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2;
       sudo cp -r /usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2/* appdir/usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2/;
       sudo chown -R $(id -nu) appdir;
-      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
-      chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
-      wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage";
-      chmod a+x appimagetool-x86_64.AppImage;
+      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-${ARCH}.AppImage";
+      chmod a+x linuxdeployqt-continuous-${ARCH}.AppImage;
+      wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${ARCH}.AppImage";
+      chmod a+x appimagetool-${ARCH}.AppImage;
       unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-      ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -unsupported-allow-new-glibc;
+      ./linuxdeployqt-continuous-${ARCH}.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -unsupported-allow-new-glibc;
       unlink appdir/AppRun;
       cp ../res/screencloud.sh appdir/AppRun;
       rm -r appdir/usr/plugins/bearer;
@@ -167,7 +172,7 @@ after_success:
       rm -r appdir/usr/plugins/printsupport;
       rm -r appdir/usr/plugins/sqldrivers;
       rm -r appdir/usr/plugins/xcbglintegrations;
-      ./appimagetool-x86_64.AppImage appdir;
+      ./appimagetool-${ARCH}.AppImage appdir;
       mkdir .snapcraft;
       mkdir snap;
       cp ../deploy/linux/snapcraft.yaml snap/snapcraft.yaml;
