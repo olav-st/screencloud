@@ -13,6 +13,7 @@
 //
 
 #include "selectionoverlay.h"
+#include "screenshooter.h"
 
 SelectionOverlay::SelectionOverlay(QWidget *parent) :
     QWidget(parent)
@@ -475,8 +476,9 @@ void SelectionOverlay::moveToScreen(int screenNumber)
         WARNING(tr("Failed to get geometry for screen ") + QString::number(currentScreenNumber));
         QMessageBox::warning(NULL, tr("Failed to get screen geom"), tr("Failed to get geometry for screen ") + QString::number(currentScreenNumber));
     }
-    // The pixmap is deep-copied in order to save the screen state at this very moment instead if utilising Qt's implicit data sharing of the original pixmap.
-    screenshot = screen->grabWindow(0, 0, 0, screenGeom.width(), screenGeom.height()).copy();
+
+    screenshot = QPixmap::fromImage(ScreenShooter::captureSelection(screenGeom));
+
     if(screenshot.size() != screenGeom.size())
     {
         INFO(tr("Scaling screenshot to fit screenGeom"));
