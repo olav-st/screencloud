@@ -48,7 +48,7 @@ before_install:
       sudo apt-get update -qq;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-      brew update;
+      brew update -q;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       export PLATFORM=${PLATFORM};
@@ -64,7 +64,7 @@ install:
       sudo pip3 install ssh2-python;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-      brew install qt quazip;
+      brew install -q qt quazip;
       export PATH="$(brew --prefix qt)/bin:$PATH";
       sudo easy_install pip;
       sudo pip install ssh2-python;
@@ -116,7 +116,7 @@ script:
       sudo chmod 777 ./pythonincludes;
       curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | patch ./pythonincludes/pyport.h;
       cmake . -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_INCLUDE_DIR=./pythonincludes -DPythonQt_Python3=OFF -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON;
-      sudo cmake --build . --config $CMAKE_BUILD_TYPE --target install;
+      sudo cmake --build . --config $CMAKE_BUILD_TYPE --target install 2> /dev/null;
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cmake . -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DPythonQt_Python3=ON -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON -DPYTHON_INCLUDE_DIR=${PYTHON_BASE_DIR}/include -DPYTHON_LIBRARY=${PYTHON_BASE_DIR}/libs/python37.lib;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
