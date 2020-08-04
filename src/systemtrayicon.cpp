@@ -17,9 +17,7 @@
 #include <uploaders/scripteduploader.h>
 #endif
 #include <QNetworkProxy>
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    #include <QUrlQuery>
-#endif
+#include <QUrlQuery>
 
 SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color, bool openPerfWindow) :
     QSystemTrayIcon(parent)
@@ -50,14 +48,12 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color, bool openPerfWind
     {
         INFO(tr("Using bundled icon: ") + QString(":/systray/trayicon-" + color + ".svg"))
     }
-    //Specify that icons can be used as masks if using recent Qt version
-#if QT_VERSION >= QT_VERSION_CHECK(5,6,0)
+    //Specify that icons can be used as masks
     if(color != "blue")
     {
         systrayIconNormal.setIsMask(true);
         systrayIconUploading.setIsMask(true);
     }
-#endif
     // set up and show the system tray icon
     setIcon(systrayIconNormal);
     connect(&uploadManager, SIGNAL(finished(QString)), this, SLOT(screenshotSaved(QString)));

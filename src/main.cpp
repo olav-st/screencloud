@@ -19,6 +19,7 @@
 #include <utils/log.h>
 #include <QDir>
 #include <QImage>
+#include <QStandardPaths>
 #include <utils/OS.h>
 #include <utils/delay.h>
 #include <plugin/pluginmanager.h>
@@ -33,13 +34,6 @@
 #else
 #include <PythonQt_QtBindings.h>
 #endif
-
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-#include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
-
 
 int main(int argc, char *argv[])
 {
@@ -109,12 +103,7 @@ int main(int argc, char *argv[])
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules");
         PythonQt::self()->addSysPath(a.applicationDirPath() + QDir::separator() + "../Resources/modules"  + QDir::separator() + "python-stdlib-native");
 #else
-        #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         QStringList dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
-        #else
-        QStringList dataLocations;
-        dataLocations.append(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-        #endif
         QString path;
         Q_FOREACH(path, dataLocations)
         {

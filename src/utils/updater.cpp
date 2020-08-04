@@ -13,9 +13,7 @@
 //
 
 #include "updater.h"
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    #include <QUrlQuery>
-#endif
+#include <QUrlQuery>
 
 Updater::Updater(QObject *parent) :
     QObject(parent)
@@ -52,20 +50,12 @@ void Updater::checkForUpdates(int flag)
     }
     QUrl baseUrl( "https://api.screencloud.net/1.0/updates/check_version.xml" );
     // create request parameters
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     QUrlQuery query(baseUrl);
-#else
-    QUrl query(baseUrl);
-#endif
     query.addQueryItem("version", VERSION);
     query.addQueryItem("os", OS_SHORTNAME);
     //Send the req
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     QUrl fullUrl(baseUrl);
     fullUrl.setQuery(query);
-#else
-    QUrl fullUrl(query);
-#endif
     QNetworkRequest appUpdateCheckReq;
     appUpdateCheckReq.setUrl(fullUrl);
     manager->get(appUpdateCheckReq);

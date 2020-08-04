@@ -20,11 +20,7 @@ AudioNotifier::AudioNotifier(QObject *parent)
     // Set up the format, eg.
     format = info.preferredFormat();
     format.setCodec("audio/pcm");
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     format.setChannelCount(2);
-#else
-    format.setChannels(2);
-#endif
     format.setSampleRate(44100);
     format.setSampleSize(16);
     format.setByteOrder(QAudioFormat::LittleEndian);

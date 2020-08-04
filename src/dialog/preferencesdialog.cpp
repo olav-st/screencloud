@@ -17,9 +17,7 @@
 #include <QTabWidget>
 #include <utils/log.h>
 #include "licensesdialog.h"
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    #include <QUrlQuery>
-#endif
+#include <QUrlQuery>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     QDialog(parent),

@@ -68,13 +68,8 @@ void PluginDialog::buildTree()
     {
         stdModel.invisibleRootItem()->appendRow(rows[i]);
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     ui->tree_plugins->header()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->tree_plugins->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-#else
-    ui->tree_plugins->header()->setResizeMode(0, QHeaderView::Stretch);
-    ui->tree_plugins->header()->setResizeMode(1, QHeaderView::ResizeToContents);
-#endif
     //ui->tree_plugins->header()->resizeSection(1, 10);
     ui->tree_plugins->header()->setStretchLastSection(false);
     busyOverlay->setVisible(false);
