@@ -157,7 +157,7 @@ after_success:
       wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage";
       chmod a+x appimagetool-x86_64.AppImage;
       unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-      ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs;
+      ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -unsupported-allow-new-glibc;
       unlink appdir/AppRun;
       cp ../res/screencloud.sh appdir/AppRun;
       rm -r appdir/usr/plugins/bearer;
