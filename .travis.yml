@@ -147,10 +147,11 @@ after_success:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       mkdir appdir;
       make install DESTDIR=appdir;
-      sudo mkdir -p appdir/usr/lib/python3.4;
-      sudo cp -r /usr/lib/python3.4/* appdir/usr/lib/python3.4/;
-      sudo mkdir -p appdir/usr/local/lib/python3.4/dist-packages/ssh2;
-      sudo cp -r /usr/local/lib/python3.4/dist-packages/ssh2/* appdir/usr/local/lib/python3.4/dist-packages/ssh2/;
+      export PYTHON_VERSION=$(python3 -c "import sys;print(str(sys.version_info.major)+'.'+str(sys.version_info.minor));");
+      sudo mkdir -p appdir/usr/lib/python${PYTHON_VERSION};
+      sudo cp -r /usr/lib/python${PYTHON_VERSION}/* appdir/usr/lib/python${PYTHON_VERSION}/;
+      sudo mkdir -p appdir/usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2;
+      sudo cp -r /usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2/* appdir/usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2/;
       sudo chown -R $(id -nu) appdir;
       wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
       chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
