@@ -4,15 +4,13 @@ matrix:
   include:
     - name: "Linux (gcc)" 
       os: linux
-      dist: trusty
+      dist: bionic
       sudo: required
       compiler: gcc
       services:
         - docker
       env: 
         - CMAKE_BUILD_TYPE: Release 
-        - QT_PPA: beineri/opt-qt562-trusty
-        - QT_VER: 56
     - name: "macOS (xcode 9.4)"
       os: osx
       osx_image: xcode9.4
@@ -47,7 +45,6 @@ matrix:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      sudo add-apt-repository -y ppa:$QT_PPA;
       sudo apt-get update -qq;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
@@ -62,8 +59,7 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip zlib1g-dev libssl-dev libffi-dev libx11-dev mesa-common-dev;
-      sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
+      sudo apt-get install -y git build-essential cmake qtbase5-dev qtbase5-private-dev libqt5svg5-dev libqt5x11extras5-dev qtmultimedia5-dev qttools5-dev libpythonqt-qt5-python3-dev libpythonqt-qtall-qt5-python3-dev libssl-dev zlib1g-dev python3-dev python3-pip;
       sudo pip3 install -Iv setuptools==41.0.1;
       sudo pip3 install ssh2-python;
     fi
@@ -111,17 +107,11 @@ before_script:
   - mkdir build
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      source /opt/qt${QT_VER}/bin/qt${QT_VER}-env.sh;
-    fi
   - cd build
   - git clone https://github.com/Orochimarufan/PythonQt
   - cd PythonQt
   - git checkout 18d4c24
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cmake . -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON;
-      sudo cmake --build . --config $CMAKE_BUILD_TYPE --target install;
-    elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo cp -r /usr/include/python2.7 ./pythonincludes;
       sudo chmod 777 ./pythonincludes;
       curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | patch ./pythonincludes/pyport.h;
@@ -139,9 +129,7 @@ script:
       qmake PREFIX=/usr;
       sudo make install;
       cd ..;
-      sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
-      sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;

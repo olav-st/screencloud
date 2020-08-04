@@ -17,7 +17,7 @@ ${CMAKE_INSTALL_PREFIX}/include
 PATH_SUFFIXES include/quazip5 include/quazip
 )
 
-FIND_LIBRARY(QUAZIP_LIBRARY NAMES quazip5 quazip-qt5 quazip )
+FIND_LIBRARY(QUAZIP_LIBRARY NAMES quazip5 quazip-qt5 quazip qtquazip QtQuazip )
 
 # handle the QUIETLY and REQUIRED arguments and set QUAZIP_FOUND to TRUE if
 # all listed variables are TRUE
