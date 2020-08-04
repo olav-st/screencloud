@@ -231,8 +231,10 @@ if(QT_USE_QT5)
     )
     if(UNIX AND NOT APPLE)
         find_package(Qt5X11Extras REQUIRED)
+        find_package(Qt5DBus REQUIRED)
         set(REQUIRED_LIBS ${REQUIRED_LIBS}        
             Qt5::X11Extras
+            Qt5::DBus
         )
     endif(UNIX AND NOT APPLE)
     if(APPLE)
