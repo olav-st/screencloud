@@ -4,15 +4,13 @@ matrix:
   include:
     - name: "Linux (gcc)" 
       os: linux
-      dist: trusty
+      dist: bionic
       sudo: required
       compiler: gcc
       services:
         - docker
       env: 
         - CMAKE_BUILD_TYPE: Release 
-        - QT_PPA: beineri/opt-qt562-trusty
-        - QT_VER: 56
     - name: "macOS (xcode 9.4)"
       os: osx
       osx_image: xcode9.4
@@ -62,8 +60,7 @@ before_install:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      sudo apt-get install -y git cmake python2.7-dev python3-dev python3-pip zlib1g-dev libssl-dev libffi-dev libx11-dev mesa-common-dev;
-      sudo apt-get install -y qt${QT_VER}-meta-minimal qt${QT_VER}declarative qt${QT_VER}imageformats qt${QT_VER}multimedia qt${QT_VER}tools qt${QT_VER}svg qt${QT_VER}x11extras qt${QT_VER}xmlpatterns;
+      sudo apt-get install -y git build-essential cmake qtbase5-dev qtbase5-private-dev libqt5svg5-dev libqt5x11extras5-dev qtmultimedia5-dev qttools5-dev libquazip5-dev libpythonqt-qt5-python3-dev python3-dev libssl-dev;
       sudo pip3 install -Iv setuptools==41.0.1;
       sudo pip3 install ssh2-python;
     fi
