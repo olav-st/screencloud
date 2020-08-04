@@ -476,7 +476,6 @@ void SelectionOverlay::moveToScreen(int screenNumber)
         WARNING(tr("Failed to get geometry for screen ") + QString::number(currentScreenNumber));
         QMessageBox::warning(NULL, tr("Failed to get screen geom"), tr("Failed to get geometry for screen ") + QString::number(currentScreenNumber));
     }
-
     screenshot = QPixmap::fromImage(ScreenShooter::captureSelection(screenGeom));
 
     if(screenshot.size() != screenGeom.size())
