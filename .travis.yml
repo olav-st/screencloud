@@ -86,7 +86,7 @@ install:
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
       echo "PATH=$PATH";
-      ./scripts/install-qt.sh -d ${QT_INSTALL_DIR} --version ${QT_VERSION} qtbase qttools qtmultimedia qtsvg qtwinextras qtimageformats;
+      ./tools/install-qt.sh -d ${QT_INSTALL_DIR} --version ${QT_VERSION} qtbase qttools qtmultimedia qtsvg qtwinextras qtimageformats;
       wget ${OPENSSL_URL};
       7z x openssl-${OPENSSL_VERSION}.tar.gz && 7z x openssl-${OPENSSL_VERSION}.tar;
       cd openssl-${OPENSSL_VERSION};
