@@ -82,11 +82,12 @@ install:
       echo "PATH=$PATH";
       ./tools/install-qt.sh --toolchain ${TOOLCHAIN} --version ${QT_VERSION} qtbase qttools qtmultimedia qtsvg qtwinextras qtimageformats qt3d qtquickcontrols qtquickcontrols2 qtdeclarative qtxmlpatterns;
       git clone https://github.com/janbar/openssl-cmake;
-      cd openssl-cmake;
-      cmake . -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM};
-      cmake --build . --config $CMAKE_BUILD_TYPE --target install;
+      mkdir openssl-cmake/build;
+      cd openssl-cmake/build;
+      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM};
+      cmake --build .. --config $CMAKE_BUILD_TYPE --target install;
       export OPENSSL_BASE_DIR=$(pwd);
-      cd ..;
+      cd ../..;
       wget http://www.zlib.net/zlib1211.zip;
       unzip zlib1211.zip;
       cd zlib-1.2.11;
