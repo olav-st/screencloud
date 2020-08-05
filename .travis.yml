@@ -84,7 +84,7 @@ install:
       git clone https://github.com/janbar/openssl-cmake;
       mkdir openssl-cmake/build;
       cd openssl-cmake/build;
-      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM};
+      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DBUILD_SHARED_LIBS=ON;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export OPENSSL_BASE_DIR=$(pwd);
       cd ../..;
