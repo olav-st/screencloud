@@ -20,9 +20,11 @@ matrix:
       os: windows
       env:
         - PLATFORM: Win32
+        - TOOLCHAIN: win32_msvc2017
         - CMAKE_BUILD_TYPE: Release
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0 --forcex86'"
+        - QT_VERSION: 5.12.3
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017'"
         - WIX_PATH: "'/c/Program Files (x86)/WiX Toolset v3.11/bin'"
         - MSBUILD_PATH: "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
@@ -33,9 +35,11 @@ matrix:
       os: windows
       env:
         - PLATFORM: x64
+        - TOOLCHAIN: win64_msvc2017_64
         - CMAKE_BUILD_TYPE: Release 
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0'"
+        - QT_VERSION: 5.12.3
         - QT5_BASE_DIR: "'/c/Qt/5.12.3/msvc2017_64'"
         - WIX_PATH: "'/c/Program Files (x86)/WiX Toolset v3.11/bin'"
         - MSBUILD_PATH: "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin'"
@@ -82,7 +86,7 @@ install:
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
       echo "PATH=$PATH";
-      tools/travis-install-qt-windows.sh;
+      ./tools/install-qt.sh --toolchain ${TOOLCHAIN} --version ${QT_VERSION} qtbase qttools qtmultimedia qtsvg qtwinextras qtimageformats qt3d qtquickcontrols qtquickcontrols2 qtdeclarative qtxmlpatterns;
       wget ${OPENSSL_URL};
       7z x openssl-${OPENSSL_VERSION}.tar.gz && 7z x openssl-${OPENSSL_VERSION}.tar;
       cd openssl-${OPENSSL_VERSION};
