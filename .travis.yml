@@ -20,6 +20,7 @@ matrix:
       os: windows
       env:
         - PLATFORM: Win32
+        - TOOLCHAIN: win32_msvc2017
         - CMAKE_BUILD_TYPE: Release
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0 --forcex86'"
@@ -34,6 +35,7 @@ matrix:
       os: windows
       env:
         - PLATFORM: x64
+        - TOOLCHAIN: win64_msvc2017_64
         - CMAKE_BUILD_TYPE: Release 
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0'"
@@ -84,7 +86,7 @@ install:
         [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", ""
       } | Select -Unique | % { cygpath $_ }) -Join ":"')";
       echo "PATH=$PATH";
-      ./tools/install-qt.sh --toolchain win64_msvc2017_64 --version ${QT_VERSION} qtbase qttools qtmultimedia qtsvg qtwinextras qtimageformats;
+      ./tools/install-qt.sh --toolchain ${TOOLCHAIN} --version ${QT_VERSION} qtbase qttools qtmultimedia qtsvg qtwinextras qtimageformats;
       wget ${OPENSSL_URL};
       7z x openssl-${OPENSSL_VERSION}.tar.gz && 7z x openssl-${OPENSSL_VERSION}.tar;
       cd openssl-${OPENSSL_VERSION};
