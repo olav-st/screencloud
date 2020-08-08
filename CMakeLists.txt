@@ -465,8 +465,8 @@ if(WIN32)
         )
         #Hack to make sure OpenSSL dlls are found
         set(RUNTIME_LIBS ${RUNTIME_LIBS}
-            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto.dll
-            ${OPENSSL_INCLUDE_DIR}/../bin/libssl.dll
+            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1.dll
+            ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1.dll
         )
         install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
         #Copy required qt plugins
