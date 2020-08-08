@@ -86,6 +86,8 @@ install:
       cd openssl-cmake/build;
       cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DBUILD_SHARED_LIBS=ON;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
+      mv bin/libcrypto*.dll bin/libcrypto-1_1.dll;
+      mv bin/libssl*.dll bin/libssl-1_1.dll;
       export OPENSSL_ROOT_DIR=$(pwd);
       cd ../..;
       wget http://www.zlib.net/zlib1211.zip;
