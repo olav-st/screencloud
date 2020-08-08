@@ -14,8 +14,8 @@
                         </File>
                     </Component>
                     <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589" Win64="$(var.Win64)">
-                        <File Id="LIBCRYPTO-1_1.DLL" Name="libcrypto-1_1.dll" Source="..\bin\libcrypto-1_1.dll" />
-                        <File Id="LIBSSL-1_1.DLL" Name="libssl-1_1.dll" Source="..\bin\libssl-1_1.dll" />
+                        <File Id="LIBCRYPTO.DLL" Name="libcrypto-1_1.dll" Source="..\bin\libcrypto-1_1.dll" />
+                        <File Id="LIBSSL.DLL" Name="libssl-1_1.dll" Source="..\bin\libssl-1_1.dll" />
                         <File Id="QUAZIP.DLL" Name="quazip5.dll" Source="..\bin\quazip5.dll" />
                         <File Id="PYTHONQT.DLL" Name="Qt5Python37.dll" Source="..\bin\Qt5Python37.dll" />
                         <File Id="PYTHON37.DLL" Name="python37.dll" Source="..\bin\python37.dll">
