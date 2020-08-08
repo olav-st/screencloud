@@ -74,6 +74,7 @@ set( screencloud_SOURCES
     src/uploadmanager.cpp
     src/utils/updater.cpp
     src/utils/network.cpp
+    src/utils/systeminfo.cpp
     src/gui-elements/screenshotthumbview.cpp
     src/main.cpp
 )
@@ -143,6 +144,7 @@ set( screencloud_HEADERS_MOC
     src/gui-elements/busyoverlay.h
     src/gui-elements/pythonconsole.h
     src/utils/updater.h
+    src/utils/systeminfo.h
     src/gui-elements/screenshotthumbview.h
     src/systemtrayicon.h
 )

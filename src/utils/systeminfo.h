@@ -11,26 +11,15 @@
  * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
-#ifndef SCREENSHOOTER_H
-#define SCREENSHOOTER_H
+#ifndef STARTUP_H
+#define STARTUP_H
 
-#include <QObject>
-#include <QPixmap>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QSettings>
-#include <QScreen>
-#include <QImage>
+#include <QProcessEnvironment>
 
-class ScreenShooter
+class SystemInfo
 {
-
 public:
-    static const QImage captureFullscreen(bool captureMultipleMonitors);
-    static const QImage captureSelection(const QRect &area);
-    static const QImage captureWindow(WId windowID = 0, bool captureWindowBorders = false);
-    static const QImage captureAllMonitors();
-
+    static bool runningOnWayland();
 };
 
-#endif // SCREENSHOOTER_H
+#endif // STARTUP_H

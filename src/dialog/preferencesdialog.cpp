@@ -58,8 +58,8 @@ void PreferencesDialog::loadSettings()
     format = settings.value("format", "png").toString();
     jpegQuality = settings.value("jpeg-quality", 90).toInt();
     screenshotDelay = settings.value("delay", 100.0).toDouble();
-    showNotifications = settings.value("show-notifications", true).toBool();
     runOnStartup = settings.value("run-on-startup", false).toBool();
+    captureMultipleMonitors = settings.value("capture-multiple-monitors", false).toBool();
     captureWindowBorders = settings.value("capture-window-borders", false).toBool();
     soundNotifications = settings.value("sound", true).toBool();
     showSaveDialog = settings.value("show-save-dialog", true).toBool();
@@ -93,8 +93,8 @@ void PreferencesDialog::saveSettings()
     selectionHotkeyStr = ui->table_hotkeys->item(1,1)->text();
     windowHotkeyStr = ui->table_hotkeys->item(2,1)->text();
     screenshotDelay = (ui->spinBox_delay->value() ) * 1000.0;
-    showNotifications = ui->checkBox_notifications->isChecked();
-    soundNotifications = ui->checkBox_soundNotifications->isChecked();
+    captureMultipleMonitors = ui->checkBox_multipleMonitors->isChecked();
+    soundNotifications = ui->checkBox_multipleMonitors->isChecked();
     runOnStartup = ui->checkBox_startup->isChecked();
     captureWindowBorders = ui->checkBox_windowBorders->isChecked();
     autoCheckUpdates = ui->checkBox_autoUpdate->isChecked();
@@ -106,7 +106,7 @@ void PreferencesDialog::saveSettings()
     settings.setValue("jpeg-quality", jpegQuality);
     settings.setValue("delay", screenshotDelay);
     settings.setValue("sound", soundNotifications);
-    settings.setValue("show-notifications", showNotifications);
+    settings.setValue("capture-multiple-monitors", captureMultipleMonitors);
     settings.setValue("run-on-startup", runOnStartup);
     settings.setValue("capture-window-borders", captureWindowBorders);
     Startup::setRunOnStartup(runOnStartup);
@@ -176,7 +176,7 @@ void PreferencesDialog::setupUi()
     ui->spinBox_delay->setValue(screenshotDelay / 1000);
     ui->slider_jpegQuality->setValue(jpegQuality);
     ui->label_qualityNumber->setText(QString::number(jpegQuality));
-    ui->checkBox_notifications->setChecked(showNotifications);
+    ui->checkBox_multipleMonitors->setChecked(captureMultipleMonitors);
     ui->checkBox_soundNotifications->setChecked(soundNotifications);
     ui->checkBox_startup->setChecked(runOnStartup);
     ui->checkBox_windowBorders->setChecked(captureWindowBorders);

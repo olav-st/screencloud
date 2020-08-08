@@ -110,6 +110,7 @@ void SystemTrayIcon::loadSettings()
     screenshotDelay = settings.value("delay", 300).toInt();
     showSaveDialog = settings.value("show-save-dialog", true).toBool();
     showNotifications = settings.value("show-notifications", true).toBool();
+    captureMultipleMonitors = settings.value("capture-multiple-monitors", false).toBool();
     currentUploaderShortname = settings.value("current-uploader", uploadManager.getDefaultService()).toString();
     settings.endGroup();
     settings.beginGroup("account");
@@ -320,7 +321,8 @@ void SystemTrayIcon::captureWindowAction()
 
 void SystemTrayIcon::captureFullScreen()
 {
-    screenshot = screenShooter.captureFullscreen();
+    loadSettings();
+    screenshot = ScreenShooter::captureFullscreen(captureMultipleMonitors);
     notifier.play(":/sounds/shutter.wav");
     if(showSaveDialog)
     {
@@ -333,6 +335,7 @@ void SystemTrayIcon::captureFullScreen()
 
 void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
 {
+    loadSettings();
     QPixmap areaScreenshot = fullScreenShot.copy(rect);
     screenshot = areaScreenshot.toImage();
     notifier.play(":/sounds/shutter.wav");
@@ -355,7 +358,8 @@ void SystemTrayIcon::selectionCanceled()
 
 void SystemTrayIcon::captureWindow()
 {
-    screenshot = screenShooter.captureWindow();
+    loadSettings();
+    screenshot = ScreenShooter::captureWindow(0, captureWindowBorders);
     notifier.play(":/sounds/shutter.wav");
     if(showSaveDialog)
     {

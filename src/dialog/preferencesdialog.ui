@@ -50,7 +50,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_general">
       <attribute name="title">
@@ -79,16 +79,16 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_notifications">
+          <widget class="QCheckBox" name="checkBox_soundNotifications">
            <property name="text">
-            <string>Show notifications</string>
+            <string>Audible notifications</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_soundNotifications">
+          <widget class="QCheckBox" name="checkBox_multipleMonitors">
            <property name="text">
-            <string>Play sounds on notifications</string>
+            <string>Capture multiple monitors</string>
            </property>
           </widget>
          </item>
@@ -278,10 +278,10 @@
            <property name="columnCount">
             <number>2</number>
            </property>
-           <attribute name="horizontalHeaderDefaultSectionSize">
+           <attribute name="horizontalHeaderMinimumSectionSize">
             <number>200</number>
            </attribute>
-           <attribute name="horizontalHeaderMinimumSectionSize">
+           <attribute name="horizontalHeaderDefaultSectionSize">
             <number>200</number>
            </attribute>
            <attribute name="horizontalHeaderStretchLastSection">
@@ -888,7 +888,6 @@ p, li { white-space: pre-wrap; }
  </widget>
  <tabstops>
   <tabstop>checkBox_startup</tabstop>
-  <tabstop>checkBox_notifications</tabstop>
   <tabstop>checkBox_soundNotifications</tabstop>
   <tabstop>checkBox_windowBorders</tabstop>
   <tabstop>spinBox_delay</tabstop>

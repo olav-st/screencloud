@@ -152,9 +152,12 @@ int main(int argc, char *argv[])
                 winIdIndex += 1;
                 if(winIdIndex > 0 && winIdIndex < cmdline_args.count())
                 {
+                    settings.beginGroup("main");
+                    bool captureWindowBorders = settings.value("capture-window-borders", false).toBool();
+                    settings.endGroup();
                     WId windowId = (WId)cmdline_args.at(winIdIndex).toInt();
                     INFO(QObject::tr("Grabbing window with id ") + QString::number((int)windowId));
-                    screenshot = screenShooter.captureWindow(windowId);
+                    screenshot = screenShooter.captureWindow(windowId), captureWindowBorders;
                 }else
                 {
                     CRITICAL(QObject::tr("No window id provided."));
@@ -193,7 +196,10 @@ int main(int argc, char *argv[])
                 {
                     INFO(QObject::tr("Capturing fullscreen."))
                 }
-                screenshot = screenShooter.captureFullscreen();
+                settings.beginGroup("main");
+                bool captureMultipleMonitors = settings.value("capture-multiple-monitors", false).toBool();
+                settings.endGroup();
+                screenshot = screenShooter.captureFullscreen(captureMultipleMonitors);
             }
             UploadManager up;
             QString serviceShortname = up.getDefaultService();

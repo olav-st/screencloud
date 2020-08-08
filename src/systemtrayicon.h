@@ -55,7 +55,6 @@ public:
     void updateGlobalShortcuts();
 private:
     QString token, tokenSecret;
-    ScreenShooter screenShooter;
     PreferencesDialog* prefDialog;
     SaveScreenshotDialog* saveDialog;
     SelectionOverlay* overlay;
@@ -89,6 +88,7 @@ private:
     bool showSaveDialog;
     bool uploading, capturing;
     bool showNotifications;
+    bool captureWindowBorders, captureMultipleMonitors;
     Updater updater;
     bool autoCheckUpdates;
     AudioNotifier notifier;

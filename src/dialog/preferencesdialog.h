@@ -70,8 +70,8 @@ private:
     HotkeyEventFilter* hotkeyFilter;
     int keysRecorded;
     bool editingHotkeyField;
-    bool showNotifications;
     bool runOnStartup;
+    bool captureMultipleMonitors;
     bool captureWindowBorders;
     Updater* updater;
     bool autoCheckUpdates;
