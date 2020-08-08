@@ -1,3 +1,10 @@
+screencloud (1.5.2) unstable; urgency=low
+
+  * Wayland support
+  * Add ability to make an existing ScreenCloud process perform actions (e.g capture screenshots) from the command line
+
+ -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 08 Aug 2020 22:40:00 -0000
+
 screencloud (1.5.1-1qt5) unstable; urgency=low
 
   * New 'blur/pixelize' tool in screenshot editor
