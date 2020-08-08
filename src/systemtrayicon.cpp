@@ -535,3 +535,20 @@ void SystemTrayIcon::pluginsUpdated()
 {
     prefDialog->pluginsUpdated();
 }
+
+void SystemTrayIcon::messageReceivedFromOtherProcess(QString message)
+{
+    INFO("Message recevied from other process: '" + message + "'");
+    if(message == "fullscreen")
+    {
+        captureFullScreen();
+    }
+    else if(message == "area")
+    {
+        openSelectionOverlay();
+    }
+    else if(message == "window")
+    {
+        captureWindow();
+    }
+}

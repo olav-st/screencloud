@@ -219,8 +219,28 @@ int main(int argc, char *argv[])
         {
             if(a.isRunning())
             {
-                QMessageBox::critical(NULL, QObject::tr("Running instance detected"), QObject::tr("ScreenCloud is already running. Please close the running instance before starting a new one."));
-                return 1;
+                INFO("Running instance detected.")
+                if(cmdline_args.contains("--fullscreen") && !cmdline_args.contains("-f"))
+                {
+                    INFO("Sending message 'fullscreen' to running instance.");
+                    a.sendMessage("fullscreen");
+                }
+                else if(cmdline_args.contains("--area") || cmdline_args.contains("-a"))
+                {
+                    INFO("Sending message 'area' to running instance.");
+                    a.sendMessage("area");
+                }
+                else if(cmdline_args.contains("--window") || cmdline_args.contains("-w"))
+                {
+                    INFO("Sending message 'window' to running instance.");
+                    a.sendMessage("window");
+                }
+                else
+                {
+                    QMessageBox::critical(NULL, QObject::tr("Running instance detected"), QObject::tr("ScreenCloud is already running. Please close the running instance before starting a new one."));
+                    return 1;
+                }
+                return 0;
             }
             //Show GUI
             if(firstRun)
@@ -256,6 +276,7 @@ int main(int argc, char *argv[])
 
             //Show the trayicon
             SystemTrayIcon w(NULL, iconColor, openPerfWindow);
+            QObject::connect(&a, SIGNAL(messageReceived(QString)), &w, SLOT(messageReceivedFromOtherProcess(QString)));
             w.show();
 
             retcode = a.exec();

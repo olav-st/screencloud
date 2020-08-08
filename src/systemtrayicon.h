@@ -115,6 +115,7 @@ private Q_SLOTS:
     void screenshotSavingError(QString errorMessage);
     void setAppProxy();
     void pluginsUpdated();
+    void messageReceivedFromOtherProcess(QString message);
 
 };
 
