@@ -23,9 +23,9 @@ plugs: # plugs for theming, font settings, cursor and to use gtk3 file chooser
 apps:
   screencloud:
     command: desktop-launch screencloud.sh
-    desktop: usr/share/applications/net.screencloud.desktop
+    desktop: usr/share/applications/net.screencloud.screencloudapp.desktop
     passthrough:
-      autostart: net.screencloud.desktop
+      autostart: net.screencloud.screencloudapp.desktop
     environment:
       QT_QPA_PLATFORMTHEME: gtk3
     plugs: 
@@ -74,7 +74,7 @@ parts:
       - qt5-gtk-platformtheme # for theming, font settings, cursor and to use gtk3 file chooser
     override-build: |
       snapcraftctl build
-      sed -i 's|Icon=screencloud|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/screencloud.svg|g' $SNAPCRAFT_PART_INSTALL/usr/share/applications/net.screencloud.desktop
+      sed -i 's|Icon=screencloud|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/screencloud.svg|g' $SNAPCRAFT_PART_INSTALL/usr/share/applications/net.screencloud.screencloudapp.desktop
     after: [desktop-qt5, quazip]
 
   quazip:
