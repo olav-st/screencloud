@@ -38,6 +38,7 @@ apps:
       - pulseaudio
       - desktop
       - desktop-legacy
+      - dbus #Used to access Gnome/KWin screenshot APIs
       - gsettings
       - network-bind #A local port is used to check if another screencloud process is running 
       - network-manager #To get proxy settings
