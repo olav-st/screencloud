@@ -9,6 +9,6 @@ Type=Application
 Exec=screencloud
 Hidden=false
 NoDisplay=false
-Categories=Network;Graphics;2DGraphics;TrayIcon;
+Categories=Network;Graphics;2DGraphics;
 Terminal=false
 OnlyShowIn=GNOME;KDE;XFCE;ROX;
