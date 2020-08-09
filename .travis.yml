@@ -151,10 +151,6 @@ after_success:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       mkdir appdir;
-      cd quazip;
-      qmake PREFIX=$(pwd)/../appdir;
-      sudo make install;
-      cd ..;
       make install DESTDIR=appdir;
       export PYTHON_VERSION=$(python3 -c "import sys;print(str(sys.version_info.major)+'.'+str(sys.version_info.minor));");
       sudo mkdir -p appdir/usr/lib/python${PYTHON_VERSION};
@@ -171,6 +167,7 @@ after_success:
       unlink appdir/AppRun;
       cp ../res/screencloud.sh appdir/AppRun;
       cp appdir/usr/share/icons/hicolor/256x256/apps/screencloud.png appdir/screencloud.png;
+      cp /usr/lib/libQtQuazip* appdir/usr/lib/;
       rm -r appdir/usr/plugins/bearer;
       rm -r appdir/usr/plugins/mediaservice;
       rm -r appdir/usr/plugins/platforminputcontexts;
