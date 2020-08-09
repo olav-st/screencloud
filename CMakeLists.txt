@@ -10,15 +10,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty)
 
 option(COLOR_OUTPUT "Use color ouput in terminal" ON)
-option(QT_USE_QT5 "Use Qt 5.x instead of Qt 4.x" ON)
 option(PYTHON_USE_PYTHON3 "Use Python 3.x instead of Python 2.x" ON)
 option(DISABLE_QT_KEYWORDS "Disable Qt keywords (for example 'slots') to avoid conflicts" OFF)
 option(PYTHONQT_IGNORE_SITE "Ignore site module when initializing PythonQt" OFF)
 
-if(QT_USE_QT5)
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif(QT_USE_QT5)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set( screencloud_SOURCES
     src/dialog/downloadupdatedialog.cpp
@@ -213,60 +210,38 @@ if(APPLE)
     )
 endif(APPLE)
 
-#Find Qt4 or Qt5 (required)
-if(QT_USE_QT5)
-    find_package(Qt5Widgets REQUIRED)
-    find_package(Qt5Network REQUIRED)
-    find_package(Qt5Xml REQUIRED)
-    find_package(Qt5Svg REQUIRED)
-    find_package(Qt5Multimedia REQUIRED)
-    find_package(Qt5Concurrent REQUIRED)
-    find_package(Qt5UiTools REQUIRED)
-    set(REQUIRED_LIBS ${REQUIRED_LIBS}
-        Qt5::Widgets
-        Qt5::Network
-        Qt5::Xml
-        Qt5::Svg
-        Qt5::Multimedia
-        Qt5::Concurrent
-        Qt5::UiTools
+#Find Qt5 (required)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Network REQUIRED)
+find_package(Qt5Xml REQUIRED)
+find_package(Qt5Svg REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5Concurrent REQUIRED)
+find_package(Qt5UiTools REQUIRED)
+set(REQUIRED_LIBS ${REQUIRED_LIBS}
+    Qt5::Widgets
+    Qt5::Network
+    Qt5::Xml
+    Qt5::Svg
+    Qt5::Multimedia
+    Qt5::Concurrent
+    Qt5::UiTools
+)
+if(UNIX AND NOT APPLE)
+    find_package(Qt5X11Extras REQUIRED)
+    find_package(Qt5DBus REQUIRED)
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}        
+        Qt5::X11Extras
+        Qt5::DBus
     )
-    if(UNIX AND NOT APPLE)
-        find_package(Qt5X11Extras REQUIRED)
-        find_package(Qt5DBus REQUIRED)
-        set(REQUIRED_LIBS ${REQUIRED_LIBS}        
-            Qt5::X11Extras
-            Qt5::DBus
-        )
-    endif(UNIX AND NOT APPLE)
-    if(APPLE)
-        find_package(Qt5DBus REQUIRED)
-        set(REQUIRED_LIBS ${REQUIRED_LIBS}        
-            Qt5::DBus
-        )
-    endif(APPLE)
-else(QT_USE_QT5)
-    set( QT_USE_QTNETWORK TRUE)
-    set( QT_USE_QTXML TRUE )
-    set( QT_USE_QTSVG TRUE )
-    SET(QT_USE_QTUITOOLS TRUE)
-    find_package(QtMobility COMPONENTS MultimediaKit)
-    if(QT_MOBILITY_FOUND)
-        message(STATUS "Using QtMobility to provide QAudioOutput.")
-        include_directories(${QT_MOBILITY_MULTIMEDIAKIT_INCLUDE_DIR} ${QT_MOBILITY_INCLUDE_DIR})
-        set(REQUIRED_LIBS ${REQUIRED_LIBS}
-            ${QT_MOBILITY_MULTIMEDIAKIT_LIBRARY}
-        )
-    else(QT_MOBILITY_FOUND)
-        message(STATUS "Using Qt library to provide QAudioOutput.")
-        set( QT_USE_QTMULTIMEDIA TRUE)
-    endif(QT_MOBILITY_FOUND)
-    find_package(Qt4 REQUIRED)
-    include( ${QT_USE_FILE} )
-    set(REQUIRED_LIBS ${REQUIRED_LIBS}
-        ${QT_LIBRARIES}
+endif(UNIX AND NOT APPLE)
+if(APPLE)
+    find_package(Qt5DBus REQUIRED)
+    set(REQUIRED_LIBS ${REQUIRED_LIBS}        
+        Qt5::DBus
     )
-endif(QT_USE_QT5)
+endif(APPLE)
+
 
 #Find QuaZip
 find_package(QuaZip REQUIRED)
@@ -326,14 +301,8 @@ message(STATUS "Including QtSingleApplication and parts of LibQxt.")
 include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
 include(src/3rdparty/LibQxt/LibQxt.cmake)
 
-if(QT_USE_QT5)
-    qt5_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
-    qt5_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
-else(QT_USE_QT5)
-    qt4_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
-    qt4_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
-    qt4_wrap_cpp( screencloud_SOURCES_MOC ${screencloud_HEADERS_MOC})
-endif(QT_USE_QT5)
+qt5_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
+qt5_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
 
 # include headers produced by uic
 include_directories( ${CMAKE_BINARY_DIR} )
@@ -380,115 +349,107 @@ if(UNIX AND NOT APPLE)
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_DATADIR}/screencloud" FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endif(UNIX AND NOT APPLE)
 if(APPLE)
-    if(NOT QT_USE_QT5)
-        message(ERROR "Install target no longer supports Qt 4!")
-    else()
-        set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
-        install(TARGETS screencloud BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX})
-        #install python modules
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-        #Copy required qt plugins
-        get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
-        get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
-        get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
-        get_target_property(COCOAPLUGIN_LOCATION Qt5::QCocoaIntegrationPlugin LOCATION)
-        get_target_property(QCOREAUDIO_LOCATION Qt5::CoreAudioPlugin LOCATION)
-        install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/imageformats")
-        install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/iconengines")
-        install(FILES ${COCOAPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/platforms")
-        install(FILES ${QCOREAUDIO_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/audio")
-        #install qt.conf
-        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-        #add Info.plist
-        set_target_properties(screencloud PROPERTIES
-            MACOSX_BUNDLE_INFO_STRING "Simple screenshot sharing application."
-            MACOSX_BUNDLE_ICON_FILE "icons_mac.icns"
-            MACOSX_BUNDLE_GUI_IDENTIFIER "ScreenCloud"
-            MACOSX_BUNDLE_LONG_VERSION_STRING "ScreenCloud Version ${VERSION_STRING}"
-            MACOSX_BUNDLE_BUNDLE_NAME "ScreenCloud"
-            MACOSX_BUNDLE_SHORT_VERSION_STRING ${VERSION_STRING}
-            MACOSX_BUNDLE_BUNDLE_VERSION ${VERSION_STRING}
-            MACOSX_BUNDLE_COPYRIGHT "Copyright 2016, Olav Sortland Thoresen. All Rights Reserved."
-            MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/res/Info.plist.in"
-        )
-        #install icons
-        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-        #Find paths to required libs
-        foreach(LIB ${REQUIRED_LIBS})
-            if(LIB MATCHES "Qt5::")
-                get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
-            endif()
-            get_filename_component(LIB_DIR ${LIB} DIRECTORY)
-            if(LIB_DIR MATCHES ".*framework$") #Only match paths ending in .framework
-                get_filename_component(LIB_DIR ${LIB_DIR} DIRECTORY) #get parent dir
-            endif()
-            set(LIB_DIRS ${LIB_DIRS}
-                ${LIB_DIR}
-                )
-        endforeach()
-        #We set rpath manually later
-        set(CMAKE_SKIP_RPATH ON)
-        #Use fixup_bundle to copy libs
-        install(CODE "
-        include(BundleUtilities)
-        fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"${LIB_DIRS}\")
-        ")
-        #Hack to make qt plugin loading work
-        install(CODE "execute_process(COMMAND install_name_tool -add_rpath @executable_path/../Frameworks ${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/MacOS/screencloud)")
-    endif()
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+    install(TARGETS screencloud BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX})
+    #install python modules
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    #Copy required qt plugins
+    get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
+    get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
+    get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
+    get_target_property(COCOAPLUGIN_LOCATION Qt5::QCocoaIntegrationPlugin LOCATION)
+    get_target_property(QCOREAUDIO_LOCATION Qt5::CoreAudioPlugin LOCATION)
+    install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/imageformats")
+    install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/iconengines")
+    install(FILES ${COCOAPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/platforms")
+    install(FILES ${QCOREAUDIO_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/audio")
+    #install qt.conf
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    #add Info.plist
+    set_target_properties(screencloud PROPERTIES
+        MACOSX_BUNDLE_INFO_STRING "Simple screenshot sharing application."
+        MACOSX_BUNDLE_ICON_FILE "icons_mac.icns"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "ScreenCloud"
+        MACOSX_BUNDLE_LONG_VERSION_STRING "ScreenCloud Version ${VERSION_STRING}"
+        MACOSX_BUNDLE_BUNDLE_NAME "ScreenCloud"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${VERSION_STRING}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${VERSION_STRING}
+        MACOSX_BUNDLE_COPYRIGHT "Copyright 2016, Olav Sortland Thoresen. All Rights Reserved."
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/res/Info.plist.in"
+    )
+    #install icons
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
+    #Find paths to required libs
+    foreach(LIB ${REQUIRED_LIBS})
+        if(LIB MATCHES "Qt5::")
+            get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
+        endif()
+        get_filename_component(LIB_DIR ${LIB} DIRECTORY)
+        if(LIB_DIR MATCHES ".*framework$") #Only match paths ending in .framework
+            get_filename_component(LIB_DIR ${LIB_DIR} DIRECTORY) #get parent dir
+        endif()
+        set(LIB_DIRS ${LIB_DIRS}
+            ${LIB_DIR}
+            )
+    endforeach()
+    #We set rpath manually later
+    set(CMAKE_SKIP_RPATH ON)
+    #Use fixup_bundle to copy libs
+    install(CODE "
+    include(BundleUtilities)
+    fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"${LIB_DIRS}\")
+    ")
+    #Hack to make qt plugin loading work
+    install(CODE "execute_process(COMMAND install_name_tool -add_rpath @executable_path/../Frameworks ${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/MacOS/screencloud)")
 endif(APPLE)
 if(WIN32)
-    if(NOT QT_USE_QT5)
-        message(ERROR "Install target no longer supports Qt 4!")
-    else()
-        install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
-        #Find dirs for the libs we're linking against
-        foreach(LIB ${REQUIRED_LIBS})
-            if(LIB MATCHES "Qt5::")
-                get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
-            endif()
-            get_filename_component(LIB_DIR ${LIB} DIRECTORY)
-            set(LIB_DIRS ${LIB_DIRS}
-                ${LIB_DIR}
-                ${LIB_DIR}/bin
-                ${LIB_DIR}/../bin
-                )
-        endforeach()
-        #Hack to make fixup_bundle work on win 10
+    install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+    #Find dirs for the libs we're linking against
+    foreach(LIB ${REQUIRED_LIBS})
+        if(LIB MATCHES "Qt5::")
+            get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
+        endif()
+        get_filename_component(LIB_DIR ${LIB} DIRECTORY)
         set(LIB_DIRS ${LIB_DIRS}
-            "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
-        )
-        #Hack to make sure zlib dlls are found
-        set(LIB_DIRS ${LIB_DIRS}
-            ${ZLIB_INCLUDE_DIRS}/bin
-        )
-        #Hack to make sure OpenSSL dlls are found
-        set(RUNTIME_LIBS ${RUNTIME_LIBS}
-            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1.dll
-            ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1.dll
-        )
-        install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
-        #Copy required qt plugins
-        get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
-        get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
-        get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
-        get_target_property(WINDOWSPLATFORMPLUGIN_LOCATION Qt5::QWindowsIntegrationPlugin LOCATION)
-        get_target_property(WINDOWSAUDIOPLUGIN_LOCATION Qt5::QWindowsAudioPlugin LOCATION)
-        get_target_property(WINDOWSVISTASTYLEPLUGIN_LOCATION Qt5::QWindowsVistaStylePlugin LOCATION)
-        install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats")
-        install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines")
-        install(FILES ${WINDOWSPLATFORMPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/platforms")
-        install(FILES ${WINDOWSAUDIOPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/audio")
-        install(FILES ${WINDOWSVISTASTYLEPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/styles")
-        #Copy pythons dlls dir
-        install(DIRECTORY ${PYTHON_INCLUDE_DIR}/../DLLs DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
-        #Use fixup_bundle to copy dlls
-        install(CODE "
-        include(BundleUtilities)
-        fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"${LIB_DIRS}\")")
-        install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows ${CMAKE_GENERATOR_PLATFORM} \")")
-    endif()
+            ${LIB_DIR}
+            ${LIB_DIR}/bin
+            ${LIB_DIR}/../bin
+            )
+    endforeach()
+    #Hack to make fixup_bundle work on win 10
+    set(LIB_DIRS ${LIB_DIRS}
+        "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
+    )
+    #Hack to make sure zlib dlls are found
+    set(LIB_DIRS ${LIB_DIRS}
+        ${ZLIB_INCLUDE_DIRS}/bin
+    )
+    #Hack to make sure OpenSSL dlls are found
+    set(RUNTIME_LIBS ${RUNTIME_LIBS}
+        ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1.dll
+        ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1.dll
+    )
+    install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    #Copy required qt plugins
+    get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
+    get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
+    get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
+    get_target_property(WINDOWSPLATFORMPLUGIN_LOCATION Qt5::QWindowsIntegrationPlugin LOCATION)
+    get_target_property(WINDOWSAUDIOPLUGIN_LOCATION Qt5::QWindowsAudioPlugin LOCATION)
+    get_target_property(WINDOWSVISTASTYLEPLUGIN_LOCATION Qt5::QWindowsVistaStylePlugin LOCATION)
+    install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats")
+    install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines")
+    install(FILES ${WINDOWSPLATFORMPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/platforms")
+    install(FILES ${WINDOWSAUDIOPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/audio")
+    install(FILES ${WINDOWSVISTASTYLEPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/styles")
+    #Copy pythons dlls dir
+    install(DIRECTORY ${PYTHON_INCLUDE_DIR}/../DLLs DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+    #Use fixup_bundle to copy dlls
+    install(CODE "
+    include(BundleUtilities)
+    fixup_bundle(${CMAKE_BINARY_DIR}/bin/screencloud.exe \"\" \"${LIB_DIRS}\")")
+    install(CODE "execute_process(COMMAND cmd ARGS /k \"cd ${CMAKE_CURRENT_BINARY_DIR} && build_installer.bat ${VERSION_STRING} windows ${CMAKE_GENERATOR_PLATFORM} \")")
 endif(WIN32)
 
 ########### Add uninstall target ###############
