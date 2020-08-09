@@ -335,6 +335,7 @@ if(UNIX AND NOT APPLE)
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/32x32/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/apps")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/64x64/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/128x128/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_linux/256x256/screencloud.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps")
     #Install dekstop file
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/screencloud.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
     #install copyright, changelog and metainfo
