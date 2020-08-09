@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>screencloud</id>
+	<id>net.screencloud</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-2.0+</project_license>
 	<name>ScreenCloud</name>
@@ -16,7 +16,7 @@
 <li>Built in screenshot editor</li>
 </ul>
 	</description>
-	<launchable type="desktop-id">screencloud.desktop</launchable>
+	<launchable type="desktop-id">net.screencloud.desktop</launchable>
 	<url type="homepage">https://www.screencloud.net</url>
 	<screenshots>
 		<screenshot type="default">
@@ -24,6 +24,6 @@
 		</screenshot>
 	</screenshots>
 	<provides>
-		<id>screencloud.desktop</id>
+		<id>net.screencloud.desktop</id>
 	</provides>
 </component>
