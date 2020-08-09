@@ -163,7 +163,7 @@ after_success:
       wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${ARCH}.AppImage";
       chmod a+x appimagetool-${ARCH}.AppImage;
       unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-      ./linuxdeployqt-continuous-${ARCH}.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -unsupported-allow-new-glibc;
+      ./linuxdeployqt-continuous-${ARCH}.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -unsupported-allow-new-glibc -verbose=2;
       unlink appdir/AppRun;
       cp ../res/screencloud.sh appdir/AppRun;
       cp appdir/usr/share/icons/hicolor/256x256/apps/screencloud.png appdir/screencloud.png;
