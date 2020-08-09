@@ -156,7 +156,7 @@ after_success:
       unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
       wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases -O - | grep "appimagetool-.*-${ARCH}.AppImage" | head -n 1 | cut -d '"' -f 2);
       chmod +x appimagetool-*.AppImage;
-      ./appimagetool-*.AppImage deploy appdir/usr/share/applications/net.screencloud.screencloudapp.desktop;
+      ./appimagetool-*.AppImage -s deploy appdir/usr/share/applications/net.screencloud.screencloudapp.desktop;
       sudo apt-get purge -y python3-dev python3-pip;
       export PYTHON_VERSION=$(python3 -c "import sys;print(str(sys.version_info.major)+'.'+str(sys.version_info.minor));");
       sudo mkdir -p appdir/usr/lib/python${PYTHON_VERSION};
