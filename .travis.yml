@@ -164,6 +164,7 @@ after_success:
       sudo mkdir -p appdir/usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2;
       sudo cp -r /usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2/* appdir/usr/local/lib/python${PYTHON_VERSION}/dist-packages/ssh2/;
       cp ../res/screencloud.sh appdir/AppRun;
+      cp appdir/usr/share/icons/hicolor/256x256/apps/screencloud.png appdir/screencloud.png;
       ./appimagetool-*.AppImage ./appdir;
       mkdir .snapcraft;
       mkdir snap;
