@@ -166,7 +166,7 @@ after_success:
       ./linuxdeployqt-continuous-${ARCH}.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -unsupported-allow-new-glibc;
       unlink appdir/AppRun;
       cp ../res/screencloud.sh appdir/AppRun;
-      ln -s appdir/usr/share/icons/hicolor/scalable/apps/screencloud.svg appdir/screencloud.svg;
+      ln -s appdir/usr/share/icons/hicolor/128x128/apps/screencloud.png appdir/screencloud.png;
       rm -r appdir/usr/plugins/bearer;
       rm -r appdir/usr/plugins/mediaservice;
       rm -r appdir/usr/plugins/platforminputcontexts;
