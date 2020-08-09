@@ -50,9 +50,7 @@ elseif(APPLE)
 endif()
 
 #We need access to the private gui api when using qt5
-if(QT_USE_QT5)
-	include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
-endif(QT_USE_QT5)
+include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 
 #Fixes some dllimport errors on windows
 add_definitions(-DQXT_STATIC=1)
