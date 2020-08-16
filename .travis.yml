@@ -189,10 +189,10 @@ after_success:
       mkdir snap;
       cp ../deploy/linux/snapcraft.yaml snap/snapcraft.yaml;
       openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in ../.snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
-      docker run -v $(pwd):$(pwd) -t ubuntu:18.04 sh -c "apt update -qq && apt install -y snapcraft && cd $(pwd) && snapcraft";
+      docker run -v $(pwd):$(pwd) -t ubuntu:20.04 sh -c "apt update -qq && apt install -y snapcraft && cd $(pwd) && snapcraft";
       export DEPLOYPATH=$(pwd);
       curl -v --upload-file $(ls | grep screencloud | grep .snap) "https://transfer.sh/$(ls | grep screencloud | grep .snap)";
-      curl -v --upload-file $(ls | grep screencloud | grep .snap) "https://transfer.sh/$(ls | grep ScreenCloud | grep .AppImage)";
+      curl -v --upload-file $(ls | grep ScreenCloud | grep .AppImage) "https://transfer.sh/$(ls | grep ScreenCloud | grep .AppImage)";
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo make install;
       sudo cp -R /usr/local/lib/python2.7/site-packages/ssh2/. screencloud.app/Contents/Resources/modules/ssh2;
