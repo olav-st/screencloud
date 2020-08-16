@@ -24,8 +24,7 @@ apps:
   screencloud:
     command: desktop-launch screencloud.sh
     desktop: usr/share/applications/net.screencloud.screencloudapp.desktop
-    passthrough:
-      autostart: net.screencloud.screencloudapp.desktop
+    autostart: net.screencloud.screencloudapp.desktop
     environment:
       DISABLE_WAYLAND: 1 #Disable Qt's Wayland rendering
       QT_QPA_PLATFORMTHEME: gtk3
