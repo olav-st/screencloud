@@ -79,7 +79,7 @@ parts:
 
   quazip:
     source: https://github.com/stachenov/quazip.git
-    source-commit: 243a411
+    source-commit: v0.9.1
     plugin: qmake
     build-packages:
       - g++
