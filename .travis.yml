@@ -131,9 +131,11 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       git clone https://github.com/stachenov/quazip;
       cd quazip;
-      qmake PREFIX=/usr;
+      mkdir build;
+      cd build;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
       sudo make install;
-      cd ..;
+      cd ../..;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
