@@ -28,18 +28,20 @@ apps:
     environment:
       DISABLE_WAYLAND: 1 #Disable Qt's Wayland rendering
       QT_QPA_PLATFORMTHEME: gtk3
+      TMPDIR: $SNAP_USER_COMMON
     plugs: 
       - x11
       - wayland
       - network
       - home
       - opengl
-      - pulseaudio
+      - audio-playback
       - desktop
       - desktop-legacy
+      - screencast-legacy #Access to DBus screenshot APIs
       - gsettings
       - network-bind #A local port is used to check if another screencloud process is running 
-      - network-manager #To get proxy settings
+      - network-manager-observe #To get proxy settings
       - unity7
 
 parts:

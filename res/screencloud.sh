@@ -10,6 +10,8 @@ if [ -n "$SNAP" ]; then
 	echo "Setting PYTHONPATH=$PYTHONPATH"
 	#Set autostart location
 	export SC_AUTOSTART_EXEC=screencloud
+	#Set TMPDIR to outside the snap to allow using Gnome DBus screenshot API
+	export TMPDIR=$SNAP_USER_COMMON
 	screencloud "$@"
 else
 	#Do the same, but for AppImage
