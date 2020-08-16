@@ -49,10 +49,6 @@ before_install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
       sudo apt-get update -qq;
-      sudo apt-get install apt-transport-https ca-certificates gnupg software-properties-common wget;
-      wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null;
-      sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main';
-      sudo apt-get update -qq;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
       brew update > /dev/null;
@@ -135,11 +131,10 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       git clone https://github.com/stachenov/quazip;
       cd quazip;
-      mkdir build;
-      cd build;
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
+      git checkout v0.9.1;
+      qmake PREFIX=/usr;
       sudo make install;
-      cd ../..;
+      cd ..;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
