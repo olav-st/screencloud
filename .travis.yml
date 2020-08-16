@@ -114,6 +114,9 @@ install:
 
 before_script:
   - mkdir build
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      source /opt/qt${QT_VER}/bin/qt${QT_VER}-env.sh;
+    fi
 
 script:
   - cd build
