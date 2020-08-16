@@ -27,6 +27,7 @@ apps:
     passthrough:
       autostart: net.screencloud.screencloudapp.desktop
     environment:
+      DISABLE_WAYLAND: 1 #Disable Qt's Wayland rendering
       QT_QPA_PLATFORMTHEME: gtk3
     plugs: 
       - x11

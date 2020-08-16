@@ -58,6 +58,7 @@ const QImage ScreenShooter::captureWindow(WId windowID, bool captureWindowBorder
     {
         //First, attempt to take a screenshot of the active window using Gnome's DBus interface
         //Code based on https://github.com/lupoDharkael/flameshot/blob/42619158fa71bfa10efa285f29591757177b9c1d/src/utils/screengrabber.cpp
+        INFO(tr("Attempting to capture active window using Gnome DBus interface..."));
         QString path = QDir::tempPath() + QDir::separator() + NetworkUtils::generateNonce(6) + ".png";
         QDBusInterface gnomeInterface(QStringLiteral("org.gnome.Shell"),
                                       QStringLiteral("/org/gnome/Shell/Screenshot"),
@@ -73,6 +74,7 @@ const QImage ScreenShooter::captureWindow(WId windowID, bool captureWindowBorder
     }
 #endif
     //If we are on Win/Mac, or not running on Wayland, use the Qt API to take a screenshot
+    INFO(tr("Capturing active window using the Qt API"));
 #ifdef Q_OS_MACX
     captureWindowBorders = true;
 #endif
@@ -99,6 +101,7 @@ const QImage ScreenShooter::captureAllMonitors()
     {
         //First, attempt to take a screenshot using Gnome's DBus interface
         //Code based on https://github.com/lupoDharkael/flameshot/blob/42619158fa71bfa10efa285f29591757177b9c1d/src/utils/screengrabber.cpp
+        INFO(tr("Attempting to capture the screen using Gnome DBus interface..."));
         QString path = QDir::tempPath() + QDir::separator() + NetworkUtils::generateNonce(6) + ".png";
         QDBusInterface gnomeInterface(QStringLiteral("org.gnome.Shell"),
                                       QStringLiteral("/org/gnome/Shell/Screenshot"),
@@ -114,6 +117,7 @@ const QImage ScreenShooter::captureAllMonitors()
 
         //Secondly, attempt to take a screenshot using KWin's DBus interface
         //Code based on https://github.com/lupoDharkael/flameshot/blob/42619158fa71bfa10efa285f29591757177b9c1d/src/utils/screengrabber.cpp
+        INFO(tr("Attempting to capture the screen using KWin DBus interface..."));
         QDBusInterface kwinInterface(QStringLiteral("org.kde.KWin"),
                                      QStringLiteral("/Screenshot"),
                                      QStringLiteral("org.kde.kwin.Screenshot"));
@@ -128,6 +132,7 @@ const QImage ScreenShooter::captureAllMonitors()
     }
 #endif
     //If we are on Win/Mac, or not running on Wayland, use the Qt API to take a screenshot
+    INFO(tr("Capturing the screen using the Qt API"));
     QScreen* screen = QApplication::primaryScreen();
     QRect screenGeometry = screen->virtualGeometry();
     QPixmap pixmap = screen->grabWindow(QApplication::desktop()->winId(), screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
