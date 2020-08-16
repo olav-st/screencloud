@@ -109,7 +109,7 @@ install:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export QUAZIP_BASE_DIR=$(pwd);
       cd ..;
-      pip install ssh2-python;
+      pip install ssh2-python==0.18.0.post1;
     fi
 
 before_script:
