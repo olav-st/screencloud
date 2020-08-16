@@ -75,7 +75,7 @@ parts:
     override-build: |
       snapcraftctl build
       sed -i 's|Icon=screencloud|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/screencloud.svg|g' $SNAPCRAFT_PART_INSTALL/usr/share/applications/net.screencloud.screencloudapp.desktop
-    after: [desktop-qt5, indicator-qt5, quazip]
+    after: [desktop-qt5, quazip]
 
   quazip:
     source: https://github.com/stachenov/quazip.git
