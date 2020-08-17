@@ -18,6 +18,7 @@
 #endif
 #include <QNetworkProxy>
 #include <QUrlQuery>
+#include <QFileDialog>
 
 SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color, bool openPerfWindow) :
     QSystemTrayIcon(parent)
@@ -90,6 +91,7 @@ SystemTrayIcon::~SystemTrayIcon()
     delete cptFullScreenAct;
     delete cptSelectionAct;
     delete cptWindowAct;
+    delete openFileAct;
     delete preferencesAct;
     delete quitAct;
     delete askMeAct;
@@ -157,6 +159,8 @@ void SystemTrayIcon::createSystrayActions()
     cptWindowAct = new QAction(tr("Capture Window"), this);
     cptWindowAct->setShortcut(keySqWindow);
     connect(cptWindowAct, SIGNAL(triggered()), this, SLOT(captureWindowAction()));
+    openFileAct = new QAction(tr("Open From File"), this);
+    connect(openFileAct, SIGNAL(triggered()), this, SLOT(openFileAction()));
     preferencesAct = new QAction(tr("Preferences..."), this);
     connect(preferencesAct, SIGNAL(triggered()), this, SLOT(openPreferencesWindow()));
     quitAct = new QAction(tr("Quit"), this);
@@ -180,6 +184,8 @@ void SystemTrayIcon::createSystrayMenu()
     trayMenu->addAction(cptFullScreenAct);
     trayMenu->addAction(cptSelectionAct);
     trayMenu->addAction(cptWindowAct);
+    trayMenu->addSeparator();
+    trayMenu->addAction(openFileAct);
     trayMenu->addSeparator();
     trayMenu->addMenu(traySubmenuUploaders);
     trayMenu->addAction(preferencesAct);
@@ -317,6 +323,20 @@ void SystemTrayIcon::captureWindowAction()
         QTimer::singleShot(screenshotDelay, this, SLOT(captureWindow()));
     }
 
+}
+
+void SystemTrayIcon::openFileAction()
+{
+    loadSettings();
+    QString selectedFilePath = QFileDialog::getOpenFileName(NULL, tr("Select Folder..."), QDir::homePath(), tr("Images (*.png *.jpg *.jpeg)"));
+    screenshot = QImage(selectedFilePath);
+    if(showSaveDialog)
+    {
+        openSaveDialog();
+    }else
+    {
+        saveScreenshot();
+    }
 }
 
 void SystemTrayIcon::captureFullScreen()

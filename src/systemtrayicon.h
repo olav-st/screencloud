@@ -74,6 +74,7 @@ private:
     QAction* cptFullScreenAct;
     QAction* cptSelectionAct;
     QAction* cptWindowAct;
+    QAction* openFileAct;
     QAction* preferencesAct;
     QAction* quitAct;
     QAction* askMeAct;
@@ -99,6 +100,7 @@ private Q_SLOTS:
     void captureFullScreenAction();
     void captureSelectionAction();
     void captureWindowAction();
+    void openFileAction();
     void captureFullScreen();
     void captureSelection(QRect& rect, QPixmap& fullScreenshot);
     void selectionCanceled();
