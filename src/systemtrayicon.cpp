@@ -114,6 +114,7 @@ void SystemTrayIcon::loadSettings()
     showNotifications = settings.value("show-notifications", true).toBool();
     captureMultipleMonitors = settings.value("capture-multiple-monitors", false).toBool();
     currentUploaderShortname = settings.value("current-uploader", uploadManager.getDefaultService()).toString();
+    openFileLastDir = settings.value("open-file-last-dir", QDir::homePath()).toString();
     settings.endGroup();
     settings.beginGroup("account");
     token = settings.value("token", "").toString();
@@ -134,6 +135,7 @@ void SystemTrayIcon::saveSettings()
     settings.beginGroup("main");
     settings.setValue("show-save-dialog", showSaveDialog);
     settings.setValue("current-uploader", currentUploaderShortname);
+    settings.setValue("open-file-last-dir", openFileLastDir);
     settings.endGroup();
     settings.sync();
 }
@@ -328,7 +330,8 @@ void SystemTrayIcon::captureWindowAction()
 void SystemTrayIcon::openFileAction()
 {
     loadSettings();
-    QString selectedFilePath = QFileDialog::getOpenFileName(NULL, tr("Select Folder..."), QDir::homePath(), tr("Images (*.png *.jpg *.jpeg)"));
+    INFO(tr("Opening file dialog, path: ") + openFileLastDir);
+    QString selectedFilePath = QFileDialog::getOpenFileName(NULL, tr("Select Image..."), openFileLastDir, tr("Images (*.png *.jpg *.jpeg)"));
     screenshot = QImage(selectedFilePath);
     if(showSaveDialog)
     {
@@ -337,6 +340,8 @@ void SystemTrayIcon::openFileAction()
     {
         saveScreenshot();
     }
+    openFileLastDir = QFileInfo(selectedFilePath).canonicalPath();
+    saveSettings();
 }
 
 void SystemTrayIcon::captureFullScreen()

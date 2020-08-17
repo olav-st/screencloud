@@ -90,6 +90,7 @@ private:
     bool uploading, capturing;
     bool showNotifications;
     bool captureWindowBorders, captureMultipleMonitors;
+    QString openFileLastDir;
     Updater updater;
     bool autoCheckUpdates;
     AudioNotifier notifier;
