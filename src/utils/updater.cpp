@@ -65,7 +65,7 @@ void Updater::checkForUpdates(int flag)
     pluginUpdateCheckReq.setUrl(pluginListUrl);
     manager->get(pluginUpdateCheckReq);
 }
-void Updater::showUpdateNotification()
+void Updater::showUpdateNotificationDialog()
 {
     INFO(tr("There is a new verision available (") + latestVersion + ")");
     if(notifyUpdates)
@@ -95,6 +95,7 @@ void Updater::showUpdateNotification()
         msgBox.addButton(&changelogBtn, QMessageBox::HelpRole);
         changelogBtn.disconnect(); //Make sure changelog button dosen't close the dialog
         connect(&changelogBtn, SIGNAL(clicked()), this, SLOT(showChangelog()));
+        connect(this, SIGNAL(updateDialogsRejected()), &msgBox, SLOT(reject()));
 
         int selection = msgBox.exec();
         if(selection == QMessageBox::Yes)
@@ -106,7 +107,7 @@ void Updater::showUpdateNotification()
     }
 }
 
-void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls)
+void Updater::showPluginUpdateNotificationDialog(QStringList plugins, QStringList urls)
 {
     INFO(tr("Found updates for plugin(s): '") + plugins.join("', '") + "'.");
     if(notifyUpdates)
@@ -119,6 +120,9 @@ void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls
         msgBox.addButton(QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::Yes);
         msgBox.setText(tr("Found updates for plugin(s): <b>") + plugins.join("</b>, <b>") + tr("</b>. Do you want to update?"));
+
+        connect(this, SIGNAL(updateDialogsRejected()), &msgBox, SLOT(reject()));
+
         if(msgBox.exec() == QMessageBox::Yes)
         {
             numPluginsUpdating = plugins.count();
@@ -143,9 +147,15 @@ void Updater::showPluginUpdateNotification(QStringList plugins, QStringList urls
     }
 }
 
+void Updater::rejectNotificationDialogs()
+{
+    Q_EMIT updateDialogsRejected();
+}
+
 void Updater::showChangelog()
 {
     ChangelogDialog changelog;
+    connect(this, SIGNAL(updateDialogsRejected()), &changelog, SLOT(reject()));
     changelog.exec();
 }
 
@@ -219,7 +229,7 @@ void Updater::replyFinished(QNetworkReply *reply)
         }
         if(!outdatedPlugins.isEmpty() && !urls.isEmpty())
         {
-            showPluginUpdateNotification(outdatedPlugins, urls);
+            showPluginUpdateNotificationDialog(outdatedPlugins, urls);
         }
     }else
     {
@@ -236,7 +246,7 @@ void Updater::replyFinished(QNetworkReply *reply)
         if(outdated && notifyUpdates)
         {
             Q_EMIT newVersionAvailable(latestVersion);
-            showUpdateNotification();
+            showUpdateNotificationDialog();
         }
         Q_EMIT versionNumberRecieved(latestVersion, outdated);
     }

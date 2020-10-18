@@ -439,6 +439,7 @@ void SystemTrayIcon::quitApplication()
 
 void SystemTrayIcon::openSelectionOverlay()
 {
+    updater.rejectNotificationDialogs(); //hide any modal update dialogs before opening fullscreen overlay
     if(!capturing)
     {
         overlay->updateScreenshot();

@@ -45,6 +45,8 @@ private:
     bool notifyUpdates;
     QString latestVersion;
     int numPluginsUpdating;
+    QMessageBox updateMsgBox, pluginUpdateMsgBox;
+    ChangelogDialog changelogDialog;
 
 public:
     const static int NoNotification = 1;
@@ -54,10 +56,12 @@ Q_SIGNALS:
     void versionNumberRecieved(QString versionNumber, bool outdated);
     void pluginsUpdated();
     void updateProgessRange(int, int);
+    void updateDialogsRejected();
 
 public Q_SLOTS:
-    void showUpdateNotification();
-    void showPluginUpdateNotification(QStringList plugins, QStringList urls);
+    void showUpdateNotificationDialog();
+    void showPluginUpdateNotificationDialog(QStringList plugins, QStringList urls);
+    void rejectNotificationDialogs();
     void showChangelog();
     void cancelPluginUpdate();
     void pluginInstallError(QString error);
