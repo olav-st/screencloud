@@ -18,6 +18,8 @@ else
 	HERE="$(dirname "$(readlink -f "${0}")")"
 	export PYTHONHOME="${HERE}"/usr
 	export PYTHONPATH="${HERE}"/usr/lib/python3.6:"${HERE}"/usr/lib/python3/dist-packages:"${HERE}"/usr/share/screencloud/modules
+	#Preload openssl to avoid python errors
+	export LD_PRELOAD="${HERE}/usr/lib/libssl.so.1.0.0"
 	#Set autostart location
 	export SC_AUTOSTART_EXEC=${APPIMAGE}
 	cd "${HERE}/usr"
