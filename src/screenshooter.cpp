@@ -151,7 +151,9 @@ const QImage ScreenShooter::captureAllMonitors()
         QDBusInterface fdInterface(QLatin1String("org.freedesktop.portal.Desktop"),
                                             QLatin1String("/org/freedesktop/portal/desktop"),
                                             QLatin1String("org.freedesktop.portal.Screenshot"));
-        QDBusReply<QDBusObjectPath> fdReply = fdInterface.call("Screenshot", QLatin1String("x11:"), QVariantMap{{QLatin1String("interactive"), false}});
+        QVariantMap parameters;
+        parameters[QLatin1String("interactive")] = false;
+        QDBusReply<QDBusObjectPath> fdReply = fdInterface.call("Screenshot", QLatin1String("x11:"), parameters);
         if(fdReply.isValid())
         {
             //Wait for the user to share the screenshot with the application
