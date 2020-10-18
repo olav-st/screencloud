@@ -332,15 +332,18 @@ void SystemTrayIcon::openFileAction()
     loadSettings();
     INFO(tr("Opening file dialog, path: ") + openFileLastDir);
     QString selectedFilePath = QFileDialog::getOpenFileName(NULL, tr("Select Image..."), openFileLastDir, tr("Images (*.png *.jpg *.jpeg)"));
-    screenshot = QImage(selectedFilePath);
-    if(showSaveDialog)
+    if(QFileInfo::exists(selectedFilePath))
     {
-        openSaveDialog();
-    }else
-    {
-        saveScreenshot();
+        screenshot = QImage(selectedFilePath);
+        if(showSaveDialog)
+        {
+            openSaveDialog();
+        }else
+        {
+            saveScreenshot();
+        }
+        openFileLastDir = QFileInfo(selectedFilePath).canonicalPath();
     }
-    openFileLastDir = QFileInfo(selectedFilePath).canonicalPath();
     saveSettings();
 }
 
