@@ -191,8 +191,8 @@ after_success:
       openssl aes-256-cbc -K $encrypted_a38449865927_key -iv $encrypted_a38449865927_iv -in ../.snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d;
       docker run -v $(pwd):$(pwd) -t yakshaveinc/snapcraft:core18 sh -c "cd $(pwd) && snapcraft";
       export DEPLOYPATH=$(pwd);
-      curl -v --upload-file $(ls | grep screencloud | grep .snap) "https://transfer.sh/$(ls | grep screencloud | grep .snap)";
-      curl -v --upload-file $(ls | grep ScreenCloud | grep .AppImage) "https://transfer.sh/$(ls | grep ScreenCloud | grep .AppImage)";
+      curl -v --upload-file $(ls | grep screencloud | grep .snap) https://oshi.at;
+      curl -v --upload-file $(ls | grep ScreenCloud | grep .AppImage) https://oshi.at;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo make install;
       sudo cp -R /usr/local/lib/python2.7/site-packages/ssh2/. screencloud.app/Contents/Resources/modules/ssh2;
@@ -203,14 +203,14 @@ after_success:
       ln -s /Applications dmgdir/Applications;
       hdiutil create -volname ScreenCloud-$VERSION -srcfolder dmgdir -ov -format UDZO ScreenCloud-$VERSION.dmg;
       export DEPLOYPATH=$(pwd);
-      curl -v --upload-file $(ls | grep ScreenCloud | grep .dmg) "https://transfer.sh/$(ls | grep ScreenCloud | grep .dmg)";
+      curl -v --upload-file $(ls | grep ScreenCloud | grep .dmg) https://oshi.at;
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       cp -r ${PYTHON_BASE_DIR}/DLLs DLLs;
       cp -r ${PYTHON_BASE_DIR}/Lib/site-packages/ssh2 modules/ssh2;
       7z a -tzip -mx=9 python37.zip ${PYTHON_BASE_DIR}/Lib/*;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       export DEPLOYPATH=$(pwd);
-      curl -v --upload-file $(ls | grep ScreenCloud | grep .msi) "https://transfer.sh/$(ls | grep ScreenCloud | grep .msi)";
+      curl -v --upload-file $(ls | grep ScreenCloud | grep .msi) https://oshi.at;
     fi
 
 deploy:
