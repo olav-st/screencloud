@@ -23,6 +23,9 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusError>
+#if !defined(Q_OS_WIN) && !defined(Q_OS_MACX)
+#include <utils/freedesktopdbusresponse.h>
+#endif
 
 const QImage ScreenShooter::captureFullscreen(bool captureMultipleMonitors)
 {
@@ -69,7 +72,11 @@ const QImage ScreenShooter::captureWindow(WId windowID, bool captureWindowBorder
             QFile dbusResult(path);
             dbusResult.remove();
 
-            return res.toImage();
+            QImage image = res.toImage();
+            if(!image.isNull())
+            {
+                return image;
+            }
         }
     }
 #endif
@@ -112,7 +119,11 @@ const QImage ScreenShooter::captureAllMonitors()
             QFile dbusResult(path);
             dbusResult.remove();
 
-            return res.toImage();
+            QImage image = res.toImage();
+            if(!image.isNull())
+            {
+                return image;
+            }
         }
 
         //Secondly, attempt to take a screenshot using KWin's DBus interface
@@ -127,7 +138,49 @@ const QImage ScreenShooter::captureAllMonitors()
             QFile dbusResult(kwinReply.value());
             dbusResult.remove();
 
-            return res.toImage();
+            QImage image = res.toImage();
+            if(!image.isNull())
+            {
+                return image;
+            }
+        }
+
+        //If the Gnome & KWin DBus interfaces fail, try to use the freedesktop screenshot portal
+        //Code based on https://github.com/flatpak/qt-flatpak-demo/blob/e00785ab7e73c5fdefd9ff6f00ffe63d1e240c51/flatpakdemo.cpp
+        INFO(QObject::tr("Attempting to capture the screen using Freedesktop DBus interface..."));
+        QDBusInterface fdInterface(QLatin1String("org.freedesktop.portal.Desktop"),
+                                            QLatin1String("/org/freedesktop/portal/desktop"),
+                                            QLatin1String("org.freedesktop.portal.Screenshot"));
+        QDBusReply<QDBusObjectPath> fdReply = fdInterface.call("Screenshot", QLatin1String("x11:"), QVariantMap{{QLatin1String("interactive"), false}});
+        if(fdReply.isValid())
+        {
+            //Wait for the user to share the screenshot with the application
+            FreedesktopDbusResponse fdResponse;
+            QEventLoop loop;
+            QDBusConnection::sessionBus().connect(QString(),
+                                                  fdReply.value().path(),
+                                                  QLatin1String("org.freedesktop.portal.Request"),
+                                                  QLatin1String("Response"),
+                                                  &fdResponse,
+                                                  SLOT(dbusScreenshotResponse(uint, const QVariantMap)));
+            QObject::connect(&fdResponse, SIGNAL(responseRecevied()), &loop, SLOT(quit()));
+            loop.exec();
+            //If we got a valid uri as response, read it and return the screenshot
+            QString uri = fdResponse.getScreenshotUri();
+            QString filepath = QUrl(uri).toLocalFile();
+            if(!filepath.isEmpty())
+            {
+                QPixmap res = QPixmap(filepath);
+                QFile dbusResult(filepath);
+                dbusResult.remove();
+
+                QImage image = res.toImage();
+                if(!image.isNull())
+                {
+                    return image;
+                }
+            }
+
         }
     }
 #endif

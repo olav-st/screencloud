@@ -75,6 +75,8 @@ set( screencloud_SOURCES
     src/gui-elements/screenshotthumbview.cpp
     src/main.cpp
 )
+
+#Platform specific source files
 if(WIN32)
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup.cpp
@@ -86,6 +88,7 @@ elseif(APPLE)
 else()
     set(screencloud_SOURCES ${screencloud_SOURCES}
     src/utils/startup.cpp
+    src/utils/freedesktopdbusresponse.cpp
     )
 endif()  
 
@@ -153,6 +156,15 @@ set(screencloud_HEADERS
     src/utils/network.h
     src/utils/delay.h
 )
+
+#Platform specific header files
+if(WIN32)
+elseif(APPLE)
+else()
+    set(screencloud_HEADERS_MOC ${screencloud_HEADERS_MOC}
+    src/utils/freedesktopdbusresponse.h
+    )
+endif()
 
 set( screencloud_FORMS
     src/dialog/downloadupdatedialog.ui
