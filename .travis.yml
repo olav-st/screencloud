@@ -124,7 +124,7 @@ script:
   - cd PythonQt
   - git checkout 18d4c24
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cmake . -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=OFF;
+      cmake . -DCMAKE_INSTALL_PREFIX=/usr -DPythonQt_Python3=ON -DPYTHONQT_WITH_WEBKIT=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo;
       sudo cmake --build . --config $CMAKE_BUILD_TYPE --target install;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       sudo cp -r /usr/include/python2.7 ./pythonincludes;
@@ -145,8 +145,8 @@ script:
       qmake PREFIX=/usr;
       sudo make install;
       cd ..;
-      sudo ln -s /usr/lib/libQt5Python34_QtAll.a /usr/lib/libQtPython_QtAll.a;
-      sudo ln -s /usr/lib/libQt5Python34.a /usr/lib/libQtPython.a;
+      sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
+      sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
       cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt -DCMAKE_BUILD_TYPE=RelWithDebInfo;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
