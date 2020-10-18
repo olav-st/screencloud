@@ -147,7 +147,7 @@ script:
       cd ..;
       sudo ln -s /usr/lib/libQt5Python34_QtAll.so /usr/lib/libQtPython_QtAll.so;
       sudo ln -s /usr/lib/libQt5Python34.so /usr/lib/libQtPython.so;
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt;
+      cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DPYTHONQT_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/include/Qt5Python34/PythonQt -DPYTHONQT_IGNORE_SITE=ON;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
