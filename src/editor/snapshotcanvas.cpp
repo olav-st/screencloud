@@ -93,6 +93,7 @@ void SnapshotCanvas::slotSelectionChanged()
     if (!items.isEmpty()) {
         m_captureKeyboardEvents = true;
     }
+    Q_EMIT itemsSelected(items);
 }
 
 void SnapshotCanvas::slotDisableKeyboardEventsCapture()
@@ -206,7 +207,7 @@ void SnapshotCanvas::mouseMoveEvent(QMouseEvent *event)
             m_currentDrawingItem = m_toolkit->createItem();
             m_currentDrawingItem->createShape(m_origin, pos);
             addItemToScene(m_currentDrawingItem);
-        } else {
+        } else if (m_currentDrawingItem != NULL) {
             m_currentDrawingItem->createShape(m_origin, pos);
         }
     } else {

@@ -42,6 +42,8 @@ public:
 
     void updateToolkitState(QList<KaptionGraphicsItem*> items);
 
+    void deselectItem();
+
 Q_SIGNALS:
     void propertyValueChanged(const QString &name,
                               const QVariant &value);
@@ -52,7 +54,6 @@ private Q_SLOTS:
     void updatePropertyValue(const QString &property);
 
 private:
-    void deselectItem();
     void setupItem(KaptionGraphicsItem *item) const;
     void updateGraphicsItemButtonsCheckedState();
     void updatePropertyToolbar(const QString &className);

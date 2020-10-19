@@ -27,6 +27,9 @@ public:
 
     void setPixmap(const QPixmap &pixmap);
 
+Q_SIGNALS:
+    void itemsSelected(QList<KaptionGraphicsItem*> items);
+
 public Q_SLOTS:
     void deselectItems();
 

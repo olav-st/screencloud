@@ -41,25 +41,26 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QPushButton" name="arrowBtn">
-          <property name="toolTip">
-           <string>Draw an arrow</string>
+         <widget class="QPushButton" name="cursorBtn">
+          <property name="text">
+           <string/>
           </property>
           <property name="icon">
            <iconset resource="../../res/icons.qrc">
-            <normaloff>:/editor/icons/editor/hi16-action-toolbox_arrow.png</normaloff>:/editor/icons/editor/hi16-action-toolbox_arrow.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>16</width>
-            <height>16</height>
-           </size>
+            <normaloff>:/editor/icons/editor/hi16-action-toolbox_cursor.png</normaloff>:/editor/icons/editor/hi16-action-toolbox_cursor.png</iconset>
           </property>
           <property name="checkable">
            <bool>true</bool>
           </property>
           <property name="flat">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -81,6 +82,9 @@
           <property name="checkable">
            <bool>true</bool>
           </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
           <property name="flat">
            <bool>true</bool>
           </property>
@@ -94,6 +98,32 @@
           <property name="icon">
            <iconset resource="../../res/icons.qrc">
             <normaloff>:/editor/icons/editor/hi16-action-toolbox_ellipse.png</normaloff>:/editor/icons/editor/hi16-action-toolbox_ellipse.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="arrowBtn">
+          <property name="cursor">
+           <cursorShape>ArrowCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>Draw an arrow</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../res/icons.qrc">
+            <normaloff>:/editor/icons/editor/hi16-action-toolbox_arrow.png</normaloff>:/editor/icons/editor/hi16-action-toolbox_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -398,6 +428,20 @@
    <header>editor/qcolorbutton.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>cursorBtn</tabstop>
+  <tabstop>boxBtn</tabstop>
+  <tabstop>ellipseBtn</tabstop>
+  <tabstop>arrowBtn</tabstop>
+  <tabstop>textBtn</tabstop>
+  <tabstop>numberedBtn</tabstop>
+  <tabstop>blurBtn</tabstop>
+  <tabstop>colorBtn</tabstop>
+  <tabstop>formatTextBtn</tabstop>
+  <tabstop>effectBtn</tabstop>
+  <tabstop>widthSlider</tabstop>
+  <tabstop>snapshotCanvas</tabstop>
+ </tabstops>
  <resources>
   <include location="../../res/icons.qrc"/>
  </resources>

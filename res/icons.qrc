@@ -17,12 +17,14 @@
         <file>icons/editor/hi16-action-toolbox_arrow.png</file>
         <file>icons/editor/hi16-action-toolbox_obscure.png</file>
         <file>icons/editor/hi16-action-toolbox_box.png</file>
+        <file>icons/editor/hi16-action-toolbox_cursor.png</file>
         <file>icons/editor/hi16-action-toolbox_ellipse.png</file>
         <file>icons/editor/hi16-action-toolbox_number.png</file>
         <file>icons/editor/hi16-action-toolbox_text.png</file>
         <file>icons/editor/hi32-action-toolbox_arrow.png</file>
         <file>icons/editor/hi32-action-toolbox_obscure.png</file>
         <file>icons/editor/hi32-action-toolbox_box.png</file>
+        <file>icons/editor/hi32-action-toolbox_cursor.png</file>
         <file>icons/editor/hi32-action-toolbox_ellipse.png</file>
         <file>icons/editor/hi32-action-toolbox_number.png</file>
         <file>icons/editor/hi32-action-toolbox_text.png</file>

@@ -38,6 +38,9 @@ private:
 
 public Q_SLOTS:
     void dialogAccepted();
+    void toolSelected();
+    void noToolSelected();
+    void selectedItemsChanged(QList<KaptionGraphicsItem*> items);
 };
 
 #endif // EDITORDIALOG_H
