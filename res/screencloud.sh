@@ -20,6 +20,10 @@ else
 	export PYTHONPATH="${HERE}"/usr/lib/python3.6:"${HERE}"/usr/lib/python3/dist-packages:"${HERE}"/usr/share/screencloud/modules
 	#Preload openssl to avoid python errors
 	export LD_PRELOAD="${HERE}/usr/lib/libssl.so.1.0.0"
+	# For Debian-based systems with newer openssl, see:
+	# https://github.com/OpenShot/openshot-qt/issues/3242
+	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=918727 
+	export OPENSSL_CONF=/dev/null
 	#Set autostart location
 	export SC_AUTOSTART_EXEC=${APPIMAGE}
 	cd "${HERE}/usr"
