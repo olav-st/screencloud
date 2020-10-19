@@ -64,13 +64,13 @@ QColor AbstractGraphicsRectItem::color() const
 void AbstractGraphicsRectItem::setScale(const Scale &scale)
 {
     QPen pen = shapeItem()->pen();
-    pen.setWidthF(scale.value(3.0, 12.0, 5.0));
+    pen.setWidthF(scale.value(1.0, 12.0, 5.0));
     shapeItem()->setPen(pen);
 }
 
 Scale AbstractGraphicsRectItem::scale() const
 {
-    Scale scale(3.0, 12.0, 5.0);
+    Scale scale(1.0, 12.0, 5.0);
     scale.setValue(shapeItem()->pen().widthF());
     return scale;
 }
