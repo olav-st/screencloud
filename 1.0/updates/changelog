@@ -1,3 +1,10 @@
+<h2>ScreenCloud 1.5.2 (2020-10-20)</h2>
+<ul>
+	<li>Wayland support</li>
+	<li>Add ability to make an existing ScreenCloud process perform actions (e.g capture screenshots) from the command line</li>
+	<li>Add new tool to editor: cursor tool</li>
+</ul>
+<br/>
 <h2>ScreenCloud 1.5.1 (2019-01-11)</h2>
 <ul>
 	<li>New 'blur/pixelize' tool in screenshot editor</li>
