@@ -218,7 +218,7 @@ deploy:
   api_key:
     secure: xY0hOHsO6oztTs/fyKAl4FrA+6ylke3QXsAHzntIEHOt7sgVGQW/4QzJQYPwmAQAkVOssjZWdaJrFXQMFw+lYUpwZGSycPB+fDnosKYlxXFHG4rIliyG+az6ODzA0YeugFwlYAcHXx1qzBJ8gh3tHhB16ur7OQ62VdunCpG7NDtaINGMojzL4DmSfyiyOMPM4p6EcD+qaKd6dxBePXkmZ5J+YOvgfLcd1mJ94V7+WnQ66KltIaFZPewaansw/p6KAUxPXcTMyMepjcjQFQyucs4rN+9EmAaA5d0rzaucbTra1nJbJel0qWC+hcH8WF86ez8nTPFY1MGjRPZmfFGesvwUkzc3IH2w5j82BmP5x7IP+TZQ4qddM/eeWIX4WeTUKoVHHt/+iZNe6kZ7Qv8ZEzQS8/G0WHz0AyoWCKSztMFBs2XZvLPjEjhCr1HKH8ueX2zXFVRf9mpp23kjGyLzacTzSC+6xjrcp27s/fY+NH3kXw67c2tB815BqtYvWMoEZVNF1+7v0nbBOs6SaDAErLqRKOP4GKgEG+J3GvokuVmQpSzwk+v4EX4ixJm3pI6C+yFaDRc7CEtkXRFIPxesMeP2w8thIuWWNaNzRAKlxR4Dx9h4bLunsx5HDfwA9h0CszcOU2ewvrR60QExZ7fjTrIoqC/UWwjoCqFv+TlyGLU=
   file_glob: true
-  file: $DEPLOYPATH/{screencloud,ScreenCloud}*.{dmg,snap,msi}
+  file: $DEPLOYPATH/{screencloud,ScreenCloud}*.{dmg,snap,msi,AppImage}
   skip_cleanup: true
   on:
     repo: olav-st/screencloud
