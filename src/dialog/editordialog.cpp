@@ -89,7 +89,7 @@ void EditorDialog::dialogAccepted()
 void EditorDialog::toolSelected()
 {
     ui->cursorBtn->setChecked(false);
-    ui->snapshotCanvas->setCursor(QCursor(Qt::CrossCursor));
+    ui->snapshotCanvas->viewport()->setCursor(QCursor(Qt::CrossCursor));
 }
 
 void EditorDialog::noToolSelected()
@@ -105,7 +105,7 @@ void EditorDialog::noToolSelected()
     toolkit->deselectItem();
     toolkit->updateUi();
 
-    ui->snapshotCanvas->setCursor(QCursor(Qt::ArrowCursor));
+    ui->snapshotCanvas->viewport()->setCursor(QCursor(Qt::ArrowCursor));
 }
 
 void EditorDialog::selectedItemsChanged(QList<KaptionGraphicsItem*> items)
