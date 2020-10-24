@@ -14,26 +14,19 @@
                         </File>
                     </Component>
                     <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589" Win64="$(var.Win64)">
+                        <?if $(sys.BUILDARCH)="x64"?>
+                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-1_1-x64.dll" Source="..\bin\libcrypto-1_1-x64.dll" />
+                            <File Id="LIBSSL.DLL" Name="libssl-1_1-x64.dll" Source="..\bin\libssl-1_1-x64.dll" />
+                        <?else?>
+                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-1_1.dll" Source="..\bin\libcrypto-1_1.dll" />
+                            <File Id="LIBSSL.DLL" Name="libssl-1_1.dll" Source="..\bin\libssl-1_1.dll" />
+                        <?endif?>
                         <File Id="QUAZIP.DLL" Name="quazip5.dll" Source="..\bin\quazip5.dll" />
                         <File Id="PYTHONQT.DLL" Name="Qt5Python37.dll" Source="..\bin\Qt5Python37.dll" />
                         <File Id="PYTHON37.DLL" Name="python37.dll" Source="..\bin\python37.dll">
                         </File>
                         <File Id="PYTHONQT_QTALL.DLL" Name="Qt5Python37_QtAll.dll" Source="..\bin\Qt5Python37_QtAll.dll" />
                         <File Id="ZLIB1.DLL" Name="zlib.dll" Source="..\bin\zlib.dll" />
-                    </Component>
-                    <Component Id="OPENSSLDLLSX86" DiskId="1" Guid="D50F4043-0827-434A-9974-1855FF49B87A" Win64="$(var.Win64)">
-                        <Condition>
-                            <![CDATA[NOT(VersionNT64)]]>
-                        </Condition>
-                        <File Id="LIBCRYPTO.DLL" Name="libcrypto-1_1.dll" Source="..\bin\libcrypto-1_1.dll" />
-                        <File Id="LIBSSL.DLL" Name="libssl-1_1.dll" Source="..\bin\libssl-1_1.dll" />
-                    </Component>
-                    <Component Id="OPENSSLDLLSX64" DiskId="1" Guid="D50F4043-0827-434A-9974-1855FF49B87A" Win64="$(var.Win64)">
-                        <Condition>
-                            <![CDATA[VersionNT64]]>
-                        </Condition>
-                        <File Id="LIBCRYPTOX64.DLL" Name="libcrypto-1_1-x64.dll" Source="..\bin\libcrypto-1_1-x64.dll" />
-                        <File Id="LIBSSLX64.DLL" Name="libssl-1_1-x64.dll" Source="..\bin\libssl-1_1-x64.dll" />
                     </Component>
                     <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545" Win64="$(var.Win64)">
                         <File Id="QTCORE" Name="Qt5Core.dll" Source="..\bin\Qt5Core.dll" />
@@ -118,8 +111,6 @@
             <ComponentRef Id="SCREENCLOUD.EXE" />
             <ComponentRef Id="StartMenuShortcuts" />
             <ComponentRef Id="DLLS" />
-            <ComponentRef Id="OPENSSLDLLSX86" />
-            <ComponentRef Id="OPENSSLDLLSX64" />
             <ComponentRef Id="QTDLLS" />
             <ComponentRef Id="RemoveSettings" />
             <ComponentRef Id="ICONENGINES" />
