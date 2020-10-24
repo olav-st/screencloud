@@ -68,7 +68,7 @@ SystemTrayIcon::SystemTrayIcon(QObject *parent, QString color, bool openPerfWind
     setContextMenu(trayMenu);
     prefDialog = new PreferencesDialog(NULL, &uploadManager);
     overlay = new SelectionOverlay();
-    connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&)), this, SLOT(captureSelection(QRect&, QPixmap&)));
+    connect(overlay, SIGNAL(selectionDone(QRect&, QPixmap&, QString)), this, SLOT(captureSelection(QRect&, QPixmap&, QString)));
     connect(overlay, SIGNAL(selectionCanceled()), this, SLOT(selectionCanceled()));
     uploading = false;
     capturing = false;
@@ -361,16 +361,21 @@ void SystemTrayIcon::captureFullScreen()
     }
 }
 
-void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot)
+void SystemTrayIcon::captureSelection(QRect &rect, QPixmap &fullScreenShot, QString uploaderShortname)
 {
     loadSettings();
     QPixmap areaScreenshot = fullScreenShot.copy(rect);
     screenshot = areaScreenshot.toImage();
     notifier.play(":/sounds/shutter.wav");
-    if(showSaveDialog)
+    if(!uploaderShortname.isEmpty())
+    {
+        saveScreenshot("", uploaderShortname);
+    }
+    else if(showSaveDialog)
     {
         openSaveDialog();
-    }else
+    }
+    else
     {
         saveScreenshot();
     }

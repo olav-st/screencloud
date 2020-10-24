@@ -247,7 +247,7 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->matches(QKeySequence::Save) || event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
     {
-        Q_EMIT selectionDone(selection, screenshot);
+        Q_EMIT selectionDone(selection, screenshot, "");
         this->close();
     }else if(event->matches(QKeySequence::Quit) || event->key() == Qt::Key_Escape)
     {
@@ -265,6 +265,11 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
         {
             this->moveToScreen(currentScreenNumber - 1);
         }
+    }
+    else if(event->matches(QKeySequence::Copy))
+    {
+        Q_EMIT selectionDone(selection, screenshot, "clipboard");
+        this->close();
     }
     QWidget::keyReleaseEvent(event);
 }
@@ -436,7 +441,7 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
         QPen roundedRectPen = QPen(roundedRectBrush, 1.0);
         QBrush textBrush = QBrush(textColor);
         QFont d;
-        QFont f(d.defaultFamily(), 22, QFont::Normal);
+        QFont f(d.defaultFamily(), 16, QFont::Normal);
         painter->setFont(f);
         QRect helpTextRect = QRect( 0, 0, 620, 100);
         QString helpText = tr("Draw a rectangular area using the mouse.\nPress Enter to take a screenshot or Esc to exit.");
@@ -446,6 +451,7 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
             helpTextRect.setWidth(helpTextRect.width() + 30);
             helpTextRect.setHeight(helpTextRect.height() + 30);
         }
+        helpText.append(tr("\nPress Ctrl+C to copy the selected area to the clipboard."));
         helpTextRect.moveCenter(this->mapFromGlobal(QApplication::desktop()->screenGeometry(currentScreenNumber).center()));
         painter->setBrush(roundedRectBrush);
         painter->setPen(roundedRectPen);

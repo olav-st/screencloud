@@ -73,7 +73,7 @@ private:
     void resizeBottom(QPoint& mousePos, QRect& rbGeometryBeforeResize);
 
 Q_SIGNALS:
-    void selectionDone(QRect& area, QPixmap& screenshot);
+    void selectionDone(QRect& area, QPixmap& screenshot, QString uploaderShortname);
     void selectionCanceled();
     void currentScreenChanged(int newScreenNumber);
 

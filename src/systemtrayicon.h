@@ -103,7 +103,7 @@ private Q_SLOTS:
     void captureWindowAction();
     void openFileAction();
     void captureFullScreen();
-    void captureSelection(QRect& rect, QPixmap& fullScreenshot);
+    void captureSelection(QRect& rect, QPixmap& fullScreenshot, QString uploaderShortname);
     void selectionCanceled();
     void captureWindow();
     void saveScreenshot(QString name = "", QString uploaderShortname = "");
