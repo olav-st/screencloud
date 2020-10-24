@@ -82,7 +82,7 @@ void ObscureGraphicsItem::updateRect(const QRectF &rect)
 
 void ObscureGraphicsItem::setScale(const Scale &scale)
 {
-    m_pixelizeEffect->setPixelization(scale.value(2, 5));
+    m_pixelizeEffect->setPixelization(scale.value(2, 9));
     m_blurEffect->setBlurRadius(scale.value(2, 25));
     updatePixmap(rect(), pos());
 }
