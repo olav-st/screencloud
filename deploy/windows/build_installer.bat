@@ -20,6 +20,14 @@ where /q candle || ECHO Cound not find candle.exe from wix. Needs to be in your 
 where /q light || ECHO Cound not find light.exe from wix. Needs to be in your PATH. && EXIT /B
 where /q heat || ECHO Cound not find heat.exe from wix. Needs to be in your PATH. && EXIT /B
 
+::Rename OpenSSL DLLs if we're building for x64
+if "%arch%"=="x64" (
+    move libcrypto-1_1.dll libcrypto-1_1-x64.dll
+	move libssl-1_1.dll libssl-1_1-x64.dll
+	move DLLs/libcrypto-1_1.dll DLLs/libcrypto-1_1-x64.dll
+	move DLLs/libssl-1_1.dll DLLs/libssl-1_1-x64.dll
+)
+
 cd wix
 ::Use heat to include directories
 heat dir ..\DLLs -o DLLs.wxs -scom -frag -srd -sreg -gg -cg PY_DLLS -dr PY_DLLS -var var.PDSourceDir

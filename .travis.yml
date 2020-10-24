@@ -92,6 +92,10 @@ install:
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       mv bin/libcrypto*.dll bin/libcrypto-1_1.dll;
       mv bin/libssl*.dll bin/libssl-1_1.dll;
+      rm ${PYTHON_BASE_DIR}/DLLs/libssl*.dll;
+      rm ${PYTHON_BASE_DIR}/DLLs/libcrypto*.dll;
+      mv bin/libcrypto-1_1.dll ${PYTHON_BASE_DIR}/DLLs/libcrypto-1_1.dll;
+      mv bin/libssl-1_1.dll ${PYTHON_BASE_DIR}/DLLs/libssl-1_1.dll;
       export OPENSSL_ROOT_DIR=$(pwd);
       cd ../..;
       wget http://www.zlib.net/zlib1211.zip;
@@ -110,8 +114,6 @@ install:
       export QUAZIP_BASE_DIR=$(pwd);
       cd ..;
       pip install ssh2-python==0.18.0.post1;
-      rm ${PYTHON_BASE_DIR}/DLLs/libssl*.dll;
-      rm ${PYTHON_BASE_DIR}/DLLs/libcrypto*.dll;
     fi
 
 before_script:
