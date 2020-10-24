@@ -36,6 +36,7 @@ public Q_SLOTS:
 private:
     QString nameFormat, folder, format;
     int jpegQuality;
+    bool copyFilepath;
     SelectFolderDialog* settingsDialog = NULL;
     
 };

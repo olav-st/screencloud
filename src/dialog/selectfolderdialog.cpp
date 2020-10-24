@@ -46,6 +46,7 @@ void SelectFolderDialog::saveSettings()
     settings.beginGroup("file");
     settings.setValue("name-format", ui->input_name->text());
     settings.setValue("folder", ui->input_folder->text());
+    settings.setValue("copy-filepath", ui->checkBox_clipboard->isChecked());
     settings.endGroup();
     settings.endGroup();
 }
@@ -57,6 +58,7 @@ void SelectFolderDialog::loadSettings()
     settings.beginGroup("file");
     nameFormat = settings.value("name-format", "Screenshot at %H-%M-%S").toString();
     folder = settings.value("folder", "").toString();
+    copyFilepath = settings.value("copy-filepath", true).toBool();
     settings.endGroup();
     settings.endGroup();
 }
@@ -66,6 +68,7 @@ void SelectFolderDialog::setupUi()
     setWindowFlags( (windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint);
     ui->input_folder->setText(folder);
     ui->input_name->setText(nameFormat);
+    ui->checkBox_clipboard->setChecked(copyFilepath);
 }
 void SelectFolderDialog::updateUi()
 {

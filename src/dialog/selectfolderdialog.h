@@ -46,6 +46,7 @@ Q_SIGNALS:
 private:
     Ui::SelectFolderDialog *ui;
     QString folder, nameFormat;
+    bool copyFilepath;
 };
 
 #endif // SELECTFOLDERDIALOG_H

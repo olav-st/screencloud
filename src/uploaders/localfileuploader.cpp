@@ -51,6 +51,7 @@ void LocalFileUploader::loadSettings()
     settings.beginGroup("file");
     nameFormat = settings.value("name-format", "Screenshot at %H-%M-%S").toString();
     folder = settings.value("folder", "").toString();
+    copyFilepath = settings.value("copy-filepath", true).toBool();
     settings.endGroup();
     settings.endGroup();
     this->configured = true;
@@ -73,7 +74,12 @@ void LocalFileUploader::upload(const QImage &screenshot, QString name)
     {
         screenshot.save(f.fileName(), format.toStdString().c_str());
         f.close();
-        this->uploadingFinished("");
+        if(copyFilepath)
+        {
+            this->uploadingFinished(f.fileName());
+        }else {
+            this->uploadingFinished("");
+        }
     }
     Q_EMIT finished();
 }
