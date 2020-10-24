@@ -32,8 +32,8 @@
                         <Condition>
                             <![CDATA[VersionNT64]]>
                         </Condition>
-                        <File Id="LIBCRYPTO-X64.DLL" Name="libcrypto-1_1-x64.dll" Source="..\bin\libcrypto-1_1-x64.dll" />
-                        <File Id="LIBSSL-X64.DLL" Name="libssl-1_1-x64.dll" Source="..\bin\libssl-1_1-x64.dll" />
+                        <File Id="LIBCRYPTOX64.DLL" Name="libcrypto-1_1-x64.dll" Source="..\bin\libcrypto-1_1-x64.dll" />
+                        <File Id="LIBSSLX64.DLL" Name="libssl-1_1-x64.dll" Source="..\bin\libssl-1_1-x64.dll" />
                     </Component>
                     <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545" Win64="$(var.Win64)">
                         <File Id="QTCORE" Name="Qt5Core.dll" Source="..\bin\Qt5Core.dll" />

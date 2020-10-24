@@ -439,10 +439,17 @@ if(WIN32)
         ${ZLIB_INCLUDE_DIRS}/bin
     )
     #Hack to make sure OpenSSL dlls are found
-    set(RUNTIME_LIBS ${RUNTIME_LIBS}
-        ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1.dll
-        ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1.dll
-    )
+    if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+        set(RUNTIME_LIBS ${RUNTIME_LIBS}
+            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1-x64.dll
+            ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1-x64.dll
+        )
+    else()
+        set(RUNTIME_LIBS ${RUNTIME_LIBS}
+            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1.dll
+            ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1.dll
+        )
+    endif()
     install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
     #Copy required qt plugins
     get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
