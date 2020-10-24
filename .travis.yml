@@ -90,12 +90,11 @@ install:
       cd openssl-cmake/build;
       cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DBUILD_SHARED_LIBS=ON;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
-      mv bin/libcrypto*.dll bin/libcrypto-1_1.dll;
-      mv bin/libssl*.dll bin/libssl-1_1.dll;
+      ls;
       rm ${PYTHON_BASE_DIR}/DLLs/libssl*.dll;
       rm ${PYTHON_BASE_DIR}/DLLs/libcrypto*.dll;
-      mv bin/libcrypto-1_1.dll ${PYTHON_BASE_DIR}/DLLs/libcrypto-1_1.dll;
-      mv bin/libssl-1_1.dll ${PYTHON_BASE_DIR}/DLLs/libssl-1_1.dll;
+      mv bin/libcrypto*.dll ${PYTHON_BASE_DIR}/DLLs/;
+      mv bin/libssl*.dll ${PYTHON_BASE_DIR}/DLLs/;
       export OPENSSL_ROOT_DIR=$(pwd);
       cd ../..;
       wget http://www.zlib.net/zlib1211.zip;
