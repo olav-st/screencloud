@@ -40,7 +40,7 @@ void ScreenshotThumbView::drawText(QPainter *painter, const QColor &bgColor, con
     QPen roundedRectPen = QPen(roundedRectBrush, 1.0);
     QBrush textBrush = QBrush(textColor);
     QFont d;
-    QFont f(d.defaultFamily(), 20, QFont::Normal);
+    QFont f(d.defaultFamily(), 18, QFont::Normal);
     QRect textRect = QRect(0, 0, this->width() / 2, this->height() / 6);
     textRect.moveCenter(this->rect().center());
 
