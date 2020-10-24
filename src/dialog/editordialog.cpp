@@ -1,7 +1,6 @@
 #include "editordialog.h"
 #include "ui_editordialog.h"
 #include <QScrollBar>
-#include <utils/log.h>
 
 EditorDialog::EditorDialog(QWidget *parent, QImage *image) :
     QDialog(parent),
@@ -110,7 +109,7 @@ void EditorDialog::noToolSelected()
 
 void EditorDialog::selectedItemsChanged(QList<KaptionGraphicsItem*> items)
 {
-    if(!items.empty())
+    if(!items.empty() || !ui->cursorBtn->isChecked())
     {
         noToolSelected();
     }
