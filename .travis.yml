@@ -96,8 +96,8 @@ install:
       mv bin/libssl*.dll bin/libssl-1_1${OPENSSL_LIB_SUFFIX}.dll;
       rm ${PYTHON_BASE_DIR}/DLLs/libssl*.dll;
       rm ${PYTHON_BASE_DIR}/DLLs/libcrypto*.dll;
-      mv bin/libcrypto*.dll ${PYTHON_BASE_DIR}/DLLs/;
-      mv bin/libssl*.dll ${PYTHON_BASE_DIR}/DLLs/;
+      cp bin/libcrypto*.dll ${PYTHON_BASE_DIR}/DLLs/;
+      cp bin/libssl*.dll ${PYTHON_BASE_DIR}/DLLs/;
       export OPENSSL_ROOT_DIR=$(pwd);
       cd ../..;
       wget http://www.zlib.net/zlib1211.zip;
