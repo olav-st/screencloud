@@ -92,7 +92,6 @@ install:
       cd openssl-cmake/build;
       cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DBUILD_SHARED_LIBS=ON;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
-      ls;
       mv bin/libcrypto*.dll bin/libcrypto-1_1${OPENSSL_LIB_SUFFIX}.dll;
       mv bin/libssl*.dll bin/libssl-1_1${OPENSSL_LIB_SUFFIX}.dll;
       rm ${PYTHON_BASE_DIR}/DLLs/libssl*.dll;
