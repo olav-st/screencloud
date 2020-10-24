@@ -26,6 +26,7 @@ matrix:
         - CMAKE_BUILD_TYPE: Release
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0 --forcex86'"
+        - OPENSSL_LIB_SUFFIX: ""
         - QT_VERSION: 5.12.9
         - QT5_BASE_DIR: "'/c/Qt/5.12.9/msvc2017'"
         - WIX_PATH: "'/c/Program Files (x86)/WiX Toolset v3.11/bin'"
@@ -38,6 +39,7 @@ matrix:
         - CMAKE_BUILD_TYPE: Release 
         - PYTHON_BASE_DIR: "'/c/Python37'"
         - PYTHON_PACKAGE: "'python3 --version 3.7.0'"
+        - OPENSSL_LIB_SUFFIX: "-x64"
         - QT_VERSION: 5.12.9
         - QT5_BASE_DIR: "'/c/Qt/5.12.9/msvc2017_64'"
         - WIX_PATH: "'/c/Program Files (x86)/WiX Toolset v3.11/bin'"
@@ -91,6 +93,8 @@ install:
       cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DBUILD_SHARED_LIBS=ON;
       cmake --build . --config $CMAKE_BUILD_TYPE --target install;
       ls;
+      mv bin/libcrypto*.dll bin/libcrypto-1_1${OPENSSL_LIB_SUFFIX}.dll;
+      mv bin/libssl*.dll bin/libssl-1_1${OPENSSL_LIB_SUFFIX}.dll;
       rm ${PYTHON_BASE_DIR}/DLLs/libssl*.dll;
       rm ${PYTHON_BASE_DIR}/DLLs/libcrypto*.dll;
       mv bin/libcrypto*.dll ${PYTHON_BASE_DIR}/DLLs/;
@@ -156,7 +160,7 @@ script:
       cmake ..  -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DPYTHON_USE_PYTHON3=OFF -DPYTHON_INCLUDE_DIR=./PythonQt/pythonincludes -DPYTHONQT_LIBRARY=/usr/local/lib/libQt5Python27.dylib -DPYTHONQT_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt -DPYTHONQT_QTALL_LIBRARY=/usr/local/lib/libQt5Python27_QtAll.dylib -DPYTHONQT_QTALL_INCLUDE_DIR=/usr/local/include/Qt5Python27/PythonQt;
       make;
     elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHON_INCLUDE_DIR=${PYTHON_BASE_DIR}/include -DPYTHON_LIBRARY=${PYTHON_BASE_DIR}/libs/python37.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib -DOPENSSL_INCLUDE_DIR=${OPENSSL_ROOT_DIR}/include -DOPENSSL_CRYPTO_LIBRARY=${OPENSSL_ROOT_DIR}/bin/libcrypto-1_1.dll -DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/bin/libssl-1_1.dll;
+      cmake .. -DCMAKE_INSTALL_PREFIX=$(pwd) -DCMAKE_GENERATOR_PLATFORM=${PLATFORM} -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR}/lib/cmake -DZLIB_INCLUDE_DIRS=${ZLIB_BASE_DIR} -DQUAZIP_INCLUDE_DIR=${QUAZIP_BASE_DIR}/include/quazip5 -DQUAZIP_LIBRARY=${QUAZIP_BASE_DIR}/lib/quazip5.lib -DPYTHON_INCLUDE_DIR=${PYTHON_BASE_DIR}/include -DPYTHON_LIBRARY=${PYTHON_BASE_DIR}/libs/python37.lib -DPYTHONQT_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/src -DPYTHONQT_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37.lib -DPYTHONQT_QTALL_INCLUDE_DIR=${PYTHONQT_BASE_DIR}/extensions/PythonQt_QtAll -DPYTHONQT_QTALL_LIBRARY=${PYTHONQT_BASE_DIR}/lib/Qt5Python37_QtAll.lib -DOPENSSL_INCLUDE_DIR=${OPENSSL_ROOT_DIR}/include -DOPENSSL_CRYPTO_LIBRARY=${OPENSSL_ROOT_DIR}/bin/libcrypto-1_1${OPENSSL_LIB_SUFFIX}.dll -DOPENSSL_SSL_LIBRARY=${OPENSSL_ROOT_DIR}/bin/libssl-1_1${OPENSSL_LIB_SUFFIX}.dll;
       cmake --build . --config $CMAKE_BUILD_TYPE; 
     fi
 
