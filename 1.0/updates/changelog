@@ -1,3 +1,10 @@
+<h2>ScreenCloud 1.5.3 (2020-10-25)</h2>
+<ul>
+	<li>Add Ctrl + C shortcut to capture selection overlay</li>
+	<li>Minor bug fixes and tweaks to the editor</li>
+	<li>Fix OpenSSL errors on Windows</li>
+</ul>
+<br/>
 <h2>ScreenCloud 1.5.2 (2020-10-20)</h2>
 <ul>
 	<li>Wayland support</li>
