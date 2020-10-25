@@ -1,17 +1,25 @@
+screencloud (1.5.3) unstable; urgency=low
+
+  * Add Ctrl + C shortcut to capture selection overlay
+  * Minor bug fixes and tweaks to the editor
+  * Fix OpenSSL errors on Windows
+
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Tue, 25 Oct 2020 17:00:00 -0000
+
 screencloud (1.5.2) unstable; urgency=low
 
   * Wayland support
   * Add ability to make an existing ScreenCloud process perform actions (e.g capture screenshots) from the command line
   * Add new tool to editor: cursor tool
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Tue, 20 Oct 2020 16:00:00 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Tue, 20 Oct 2020 16:00:00 -0000
 
 screencloud (1.5.1-1qt5) unstable; urgency=low
 
   * New 'blur/pixelize' tool in screenshot editor
   * Minor tweaks to editor GUI
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 11 Jan 2020 14:30:00 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sat, 11 Jan 2020 14:30:00 -0000
 
 screencloud (1.5.0-1qt5) unstable; urgency=low
 
@@ -21,28 +29,28 @@ screencloud (1.5.0-1qt5) unstable; urgency=low
   * Fix icon color on dark menu bar on Mac OS
   * Replace pycrypto with ssh2-python
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sun, 30 Jun 2019 19:00:00 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sun, 30 Jun 2019 19:00:00 -0000
 
 screencloud (1.4.0-1qt5) unstable; urgency=low
 
   * Remove built-in uploader for screencloud.net
   * Add editor hint in Save As dialog
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Thu, 2 Aug 2018 12:03:00 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Thu, 2 Aug 2018 12:03:00 -0000
 
 screencloud (1.3.0-1qt5) unstable; urgency=low
 
   * Codebase updates (can now compile using Qt 5)
   * Audio files now embedded in the executable
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Fri, 1 Jan 2016 18:38:30 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Fri, 1 Jan 2016 18:38:30 -0000
 
 screencloud (1.2.0) unstable; urgency=low
 
   * Added screenshot editor
   * Fixed audio output sometimes crashing the application
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 14 Feb 2015 14:57:30 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sat, 14 Feb 2015 14:57:30 -0000
 
 screencloud (1.1.6) unstable; urgency=low
 
@@ -50,14 +58,14 @@ screencloud (1.1.6) unstable; urgency=low
   * Made more strings translatable
   * Fixed running on startup not working on OS X
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Thu, 1 May 2014 14:03:23 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Thu, 1 May 2014 14:03:23 -0000
 
 screencloud (1.1.5) unstable; urgency=low
 
   * Fixed plugin update check
   * Added changelog button to update notifications
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sun, 30 Mar 2014 16:44:45 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sun, 30 Mar 2014 16:44:45 -0000
 
 screencloud (1.1.4) unstable; urgency=low
 
@@ -65,7 +73,7 @@ screencloud (1.1.4) unstable; urgency=low
   * Added check for plugin updates
   * Better cli interface
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 22 Mar 2014 17:21:30 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sat, 22 Mar 2014 17:21:30 -0000
 
 screencloud (1.1.3) unstable; urgency=low
 
@@ -73,7 +81,7 @@ screencloud (1.1.3) unstable; urgency=low
   * All urls are https by default
   * Removed a few dependencies
 
- -- Olav Sortland Thoresen <olav-s-th@gmail.com>  Sat, 1 Mar 2014 19:10:51 -0000
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sat, 1 Mar 2014 19:10:51 -0000
 
 screencloud (1.1.2) unstable; urgency=low
 
