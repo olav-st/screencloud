@@ -68,9 +68,11 @@ void KaptionGraphicsToolkit::updateItemsPropertyValue(QList<KaptionGraphicsItem 
 void KaptionGraphicsToolkit::updateToolkitState(QList<KaptionGraphicsItem *> items)
 {
     if (items.isEmpty()) {
+        /*
         if (m_selectedItemClassName.isEmpty()) {
             selectItem(m_buttonItemMap.constBegin().key());
         }
+        */
         return;
     }
 

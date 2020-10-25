@@ -109,7 +109,7 @@ void EditorDialog::noToolSelected()
 
 void EditorDialog::selectedItemsChanged(QList<KaptionGraphicsItem*> items)
 {
-    if(!items.empty() || !ui->cursorBtn->isChecked())
+    if(!items.isEmpty() || ui->cursorBtn->isChecked())
     {
         noToolSelected();
     }
