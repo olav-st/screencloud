@@ -15,13 +15,13 @@
                     </Component>
                     <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589" Win64="$(var.Win64)">
                         <?if $(sys.BUILDARCH)="x64"?>
-                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-1_1-x64.dll" Source="..\bin\libcrypto-1_1-x64.dll" />
-                            <File Id="LIBSSL.DLL" Name="libssl-1_1-x64.dll" Source="..\bin\libssl-1_1-x64.dll" />
+                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-3-x64.dll" Source="..\bin\libcrypto-3-x64.dll" />
+                            <File Id="LIBSSL.DLL" Name="libssl-3-x64.dll" Source="..\bin\libssl-3-x64.dll" />
                         <?else?>
-                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-1_1.dll" Source="..\bin\libcrypto-1_1.dll" />
-                            <File Id="LIBSSL.DLL" Name="libssl-1_1.dll" Source="..\bin\libssl-1_1.dll" />
+                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-3.dll" Source="..\bin\libcrypto-3.dll" />
+                            <File Id="LIBSSL.DLL" Name="libssl-3.dll" Source="..\bin\libssl-3.dll" />
                         <?endif?>
-                        <File Id="QUAZIP.DLL" Name="quazip5.dll" Source="..\bin\quazip5.dll" />
+                        <File Id="QUAZIP.DLL" Name="quazip1-qt5.dll" Source="..\bin\quazip1-qt5.dll" />
                         <File Id="PYTHONQT.DLL" Name="Qt5Python37.dll" Source="..\bin\Qt5Python37.dll" />
                         <File Id="PYTHON37.DLL" Name="python37.dll" Source="..\bin\python37.dll">
                         </File>
@@ -102,7 +102,7 @@
             </Directory>
         </Directory>
         <DirectoryRef Id="TARGETDIR">
-            <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_$(var.Platform).msm" DiskId="1" Language="0" />
+            <Merge Id="VCRedist" SourceFile="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\v143\MergeModules\Microsoft_VC143_CRT_$(var.Platform).msm" DiskId="1" Language="0" />
         </DirectoryRef>
         <Feature Id="VCRedist" Title="Visual C++ 14.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
             <MergeRef Id="VCRedist" />

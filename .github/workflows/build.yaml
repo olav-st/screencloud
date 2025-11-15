@@ -1,0 +1,357 @@
+name: Build
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ master ]
+
+env:
+  CMAKE_BUILD_TYPE: Release
+  CMAKE_POLICY_VERSION_MINIMUM: 3.5
+  QT_VERSION: 5.15.2
+  QT_MAJOR_VERSION: 5
+  PYTHONQT_COMMIT: 18d4c24
+  PYTHON_VERSION: 3.7
+  PYTHON_MAJOR_VERSION: 3
+  PYTHON_MINOR_VERSION: 7
+  OPENSSL_MAJOR_VERSION: 3
+
+jobs:
+  build:
+    name: Build - ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux (x86_64)
+            os: ubuntu-22.04
+            arch: x86_64
+            qt_arch: gcc_64
+            qt_host: linux
+            artifact_name: ScreenCloud-Linux-x86_64
+
+          - name: macOS (Intel)
+            os: macos-13
+            arch: x64
+            qt_arch: clang_64
+            qt_host: mac
+            artifact_name: ScreenCloud-macOS-Intel
+            
+          - name: Windows (x64)
+            os: windows-2022
+            arch: x64
+            platform: x64
+            qt_arch: win64_msvc2019_64
+            qt_host: windows
+            artifact_name: ScreenCloud-Windows-x64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "~3.21.0"
+          ninjaVersion: "^1.0.0"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          arch: ${{ matrix.qt_arch }}
+          host: ${{ matrix.qt_host }}
+          cache: true
+
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Linux dependencies
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            libssl-dev zlib1g-dev \
+            libx11-dev libxcb1-dev libxext-dev libxfixes-dev libxi-dev \
+            libxrender-dev libxcb-cursor-dev libxcb-image0-dev libxcb-keysyms1-dev \
+            libxcb-randr0-dev libxcb-render-util0-dev libxcb-shape0-dev \
+            libxcb-sync-dev libxcb-util-dev libxcb-xfixes0-dev libxcb-xinerama0-dev \
+            libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev \
+            mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev \
+            libfuse2
+          
+          pip3 install "ssh2-python<1.1"
+
+      # macOS dependencies
+      - name: Install macOS dependencies
+        if: runner.os == 'macOS'
+        run: |
+          pip3 install "ssh2-python<1.1"
+
+      # Windows dependencies
+      - name: Install Windows dependencies
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # Install WiX Toolset
+          choco install wixtoolset -y
+
+          # Install 7zip
+          choco install 7zip
+          
+          # Install OpenSSL
+          if ("${{ matrix.arch }}" -eq "x86") {
+            choco install openssl --x86 -y
+          } else {
+            choco install openssl -y
+          }
+
+          $OPENSSL_ROOT_DIR = Split-Path (Split-Path (Get-Command openssl).Path -Parent) -Parent
+          "OPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR" | Out-File -Append -FilePath $env:GITHUB_ENV
+
+          cp "${OPENSSL_ROOT_DIR}/lib/VC/${{ matrix.arch }}/MD/libcrypto.lib" "${OPENSSL_ROOT_DIR}/lib"
+          cp "${OPENSSL_ROOT_DIR}/lib/VC/${{ matrix.arch }}/MD/libssl.lib" "${OPENSSL_ROOT_DIR}/lib"
+
+          # Install zlib
+          Invoke-WebRequest -Uri "https://www.zlib.net/zlib131.zip" -OutFile "zlib131.zip"
+          Expand-Archive -Path "zlib131.zip" -DestinationPath "."
+          Set-Location "zlib-1.3.1"
+          $ZLIB_BUILD_PATH = (Get-Location).Path
+          cmake . -DCMAKE_INSTALL_PREFIX="$ZLIB_BUILD_PATH" -A ${{ matrix.platform }}
+          cmake --build . --config Release --target install
+          "ZLIB_BASE_DIR=$ZLIB_BUILD_PATH" | Out-File -Append -FilePath $env:GITHUB_ENV
+          
+          # Add to PATH
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+          
+          # Install Python packages
+          py -${{ env.PYTHON_VERSION }} -m pip install --upgrade pip
+          py -${{ env.PYTHON_VERSION }} -m pip install "ssh2-python<1.1"
+
+      # Build QuaZip
+      - name: Build QuaZip
+        shell: bash
+        run: |
+          git clone https://github.com/stachenov/quazip.git
+          cd quazip
+          git checkout v1.4
+          mkdir -p build
+          cd build
+          
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake .. \
+              -G "Visual Studio 17 2022" \
+              -A ${{ matrix.platform }} \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_INSTALL_PREFIX="../install" \
+              -DBUILD_SHARED_LIBS=ON \
+              -DZLIB_INCLUDE_DIR="${ZLIB_BASE_DIR}/include" \
+              -DZLIB_LIBRARY="${ZLIB_BASE_DIR}/lib/zlib.lib"
+            cmake --build . --config Release --target install
+          else
+            cmake .. \
+              -G Ninja \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_INSTALL_PREFIX="../install" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DBUILD_SHARED_LIBS=ON
+            ninja install
+          fi
+          
+          echo "QUAZIP_DIR=$(pwd)/../install" >> $GITHUB_ENV
+
+      # Build PythonQt
+      - name: Build PythonQt
+        shell: bash
+        run: |
+          git clone https://github.com/Orochimarufan/PythonQt
+          cd PythonQt
+          git checkout ${{ env.PYTHONQT_COMMIT }}
+          
+          # Apply macOS Python patch if needed
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            if [ -f /usr/include/python2.7/pyport.h ]; then
+              sudo cp -r /usr/include/python2.7 ./pythonincludes
+              sudo chmod -R 777 ./pythonincludes
+              curl https://trac.macports.org/raw-attachment/ticket/44288/patch-Include-pyport.h.diff | patch ./pythonincludes/pyport.h || true
+            fi
+          fi
+          
+          mkdir -p build
+          cd build
+
+          PYTHON_INCLUDE_DIR=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")
+          PYTHON_LIBRARY_DIR=$(python -c "import sysconfig,glob,os; b=sysconfig.get_config_var('base'); print(next((p for p in ((sysconfig.get_config_var('LIBPL') or os.path.join(b,'libs')), sysconfig.get_config_var('LIBDIR')) if p and any(glob.glob(p+'/*'+e) for e in ('.lib','.so','.dylib'))), ''))")
+          echo "PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}"
+          echo "PYTHON_LIBRARY_DIR=${PYTHON_LIBRARY_DIR}"
+          
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake .. \
+              -G "Visual Studio 17 2022" \
+              -A ${{ matrix.platform }} \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_INSTALL_PREFIX="../install" \
+              -DPythonQt_Python3=ON \
+              -DPythonQt_Python="${PYTHON_VERSION}" \
+              -DPYTHONQT_WITH_WEBKIT=OFF \
+              -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.lib" \
+              -DBUILD_SHARED_LIBS=ON
+            cmake --build . --config Release --target install
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            cmake .. \
+              -G Ninja \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_INSTALL_PREFIX="../install" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DPythonQt_Python3=ON \
+              -DPythonQt_Python="${PYTHON_VERSION}" \
+              -DPYTHONQT_WITH_WEBKIT=OFF \
+              -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.dylib" \
+              -DBUILD_SHARED_LIBS=ON
+            ninja install
+          else
+            cmake .. \
+              -G Ninja \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_INSTALL_PREFIX="../install" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DPythonQt_Python3=ON \
+              -DPythonQt_Python="${PYTHON_VERSION}" \
+              -DPYTHONQT_WITH_WEBKIT=OFF \
+              -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.so" \
+              -DBUILD_SHARED_LIBS=ON
+            ninja install
+          fi
+          
+          echo "PYTHONQT_DIR=$(pwd)/../install" >> $GITHUB_ENV
+
+      # Build ScreenCloud
+      - name: Build ScreenCloud
+        shell: bash
+        run: |
+          mkdir build
+          cd build
+
+          PYTHON_INCLUDE_DIR=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")
+          PYTHON_LIBRARY_DIR=$(python -c "import sysconfig,glob,os; b=sysconfig.get_config_var('base'); print(next((p for p in ((sysconfig.get_config_var('LIBPL') or os.path.join(b,'libs')), sysconfig.get_config_var('LIBDIR')) if p and any(glob.glob(p+'/*'+e) for e in ('.lib','.so','.dylib'))), ''))")
+
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            PYTHON_DIR=$(python -c "import sys; import os; print(os.path.dirname(sys.executable))")
+            cmake .. \
+              -G "Visual Studio 17 2022" \
+              -A ${{ matrix.platform }} \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DZLIB_ROOT="${ZLIB_BASE_DIR}" \
+              -DQUAZIP_INCLUDE_DIR="${QUAZIP_DIR}/include/QuaZip-Qt5-1.4/quazip" \
+              -DQUAZIP_LIBRARY="${QUAZIP_DIR}/lib/quazip1-qt5.lib" \
+              -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.lib" \
+              -DPYTHONQT_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
+              -DPYTHONQT_LIBRARY="${PYTHONQT_DIR}/lib/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.lib" \
+              -DPYTHONQT_QTALL_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
+              -DPYTHONQT_QTALL_LIBRARY="${PYTHONQT_DIR}/lib/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}_QtAll.lib" \
+              -DOPENSSL_ROOT_DIR="${OPENSSL_ROOT_DIR}"
+            cmake --build . --config Release
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            cmake .. \
+              -G Ninja \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DQUAZIP_INCLUDE_DIR="${QUAZIP_DIR}/include/QuaZip-Qt5-1.4/quazip" \
+              -DQUAZIP_LIBRARY="${QUAZIP_DIR}/lib/libquazip1-qt5.dylib" \
+              -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.dylib" \
+              -DPYTHONQT_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
+              -DPYTHONQT_LIBRARY="${PYTHONQT_DIR}/lib/libQt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.dylib" \
+              -DPYTHONQT_QTALL_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
+              -DPYTHONQT_QTALL_LIBRARY="${PYTHONQT_DIR}/lib/libQt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}_QtAll.dylib"
+            ninja
+          else
+            cmake .. \
+              -G Ninja \
+              -DCMAKE_PREFIX_PATH="${Qt5_DIR}" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DQUAZIP_INCLUDE_DIR="${QUAZIP_DIR}/include/QuaZip-Qt5-1.4/quazip" \
+              -DQUAZIP_LIBRARY="${QUAZIP_DIR}/lib/libquazip1-qt5.so" \
+              -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.so" \
+              -DPYTHONQT_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
+              -DPYTHONQT_LIBRARY="${PYTHONQT_DIR}/lib/libQt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.so" \
+              -DPYTHONQT_QTALL_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
+              -DPYTHONQT_QTALL_LIBRARY="${PYTHONQT_DIR}/lib/libQt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}_QtAll.so"
+            ninja
+          fi
+
+      # Package Linux (AppImage)
+      - name: Package Linux
+        if: runner.os == 'Linux'
+        run: |
+          cd build
+          DESTDIR=appdir cmake --build . --config Release --target install
+
+          # Download linuxdeployqt
+          wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-${{ matrix.arch }}.AppImage"
+          chmod a+x linuxdeployqt-continuous-${{ matrix.arch }}.AppImage
+
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$QUAZIP_DIR/lib:$PYTHONQT_DIR/lib
+
+          # Create AppImage
+          ./linuxdeployqt-continuous-${{ matrix.arch }}.AppImage appdir/usr/local/share/applications/*.desktop \
+            -bundle-non-qt-libs \
+            -appimage \
+            -verbose=2
+
+          rm linuxdeployqt-continuous-${{ matrix.arch }}.AppImage
+
+      # Package macOS
+      - name: Package macOS
+        if: runner.os == 'macOS'
+        run: |
+          cd build
+          cmake --build . --config Release --target install
+
+          # Use macdeployqt
+          macdeployqt screencloud.app -dmg -verbose=2
+
+          # Rename DMG
+          mv screencloud.dmg ScreenCloud-${GITHUB_SHA::7}.dmg
+
+      # Package Windows
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          cd build
+
+          # Copy Python dependencies
+          PYTHON_DIR=$(python -c "import sys; import os; print(os.path.dirname(sys.executable))")
+          cp -r "${PYTHON_DIR}/DLLs" DLLs
+          cp -r ${PYTHON_DIR}/Lib/site-packages/ssh2 modules/ssh2
+          7z a -tzip -mx=9 python37.zip ${PYTHON_DIR}/Lib/*
+
+          cmake --build . --config Release --target install
+
+      # Upload artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            build/*.AppImage
+            build/*.dmg
+            build/*.msi
+          if-no-files-found: error

@@ -254,11 +254,13 @@ if(APPLE)
     )
 endif(APPLE)
 
+#Find zlib
+find_package(ZLIB)
+include_directories(${ZLIB_INCLUDE_DIRS})
 
 #Find QuaZip
 find_package(QuaZip REQUIRED)
 include_directories(${QUAZIP_INCLUDE_DIR})
-include_directories(${ZLIB_INCLUDE_DIRS})
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
   ${QUAZIP_LIBRARY}
 )
@@ -434,22 +436,12 @@ if(WIN32)
     set(LIB_DIRS ${LIB_DIRS}
         "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
     )
-    #Hack to make sure zlib dlls are found
-    set(LIB_DIRS ${LIB_DIRS}
-        ${ZLIB_INCLUDE_DIRS}/bin
+    file(GLOB ZLIB_DLLS "${ZLIB_INCLUDE_DIR}/../bin/*.dll")
+    file(GLOB OPENSSL_DLLS "${OPENSSL_INCLUDE_DIR}/../*.dll")
+    set(RUNTIME_LIBS ${RUNTIME_LIBS}
+        ${ZLIB_DLLS}
+        ${OPENSSL_DLLS}
     )
-    #Hack to make sure OpenSSL dlls are found
-    if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
-        set(RUNTIME_LIBS ${RUNTIME_LIBS}
-            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1-x64.dll
-            ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1-x64.dll
-        )
-    else()
-        set(RUNTIME_LIBS ${RUNTIME_LIBS}
-            ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1.dll
-            ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1.dll
-        )
-    endif()
     install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
     #Copy required qt plugins
     get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
