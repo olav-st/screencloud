@@ -68,6 +68,7 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           host: ${{ matrix.qt_host }}
           cache: true
+          archives: qtbase qttools qtmultimedia qtsvg qtdeclarative qtmultimediawidgets qtopengl qtxmlpatterns qtimageformats qtx11extras icu
 
       - name: Install Python
         uses: actions/setup-python@v6
