@@ -90,13 +90,13 @@ jobs:
             mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev \
             libfuse2
           
-          pip3 install "ssh2-python<1.1"
+          pip3 install ssh2-python
 
       # macOS dependencies
       - name: Install macOS dependencies
         if: runner.os == 'macOS'
         run: |
-          pip3 install "ssh2-python<1.1"
+          pip3 install ssh2-python
 
       # Windows dependencies
       - name: Install Windows dependencies
@@ -136,7 +136,7 @@ jobs:
           
           # Install Python packages
           py -${{ env.PYTHON_VERSION }} -m pip install --upgrade pip
-          py -${{ env.PYTHON_VERSION }} -m pip install "ssh2-python<1.1"
+          py -${{ env.PYTHON_VERSION }} -m pip install ssh2-python
 
       # Build QuaZip
       - name: Build QuaZip
