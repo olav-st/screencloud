@@ -42,7 +42,7 @@ jobs:
             qt_arch: clang_64
             qt_host: mac
             artifact_name: ScreenCloud-macOS-Intel
-            
+
           - name: Windows (x64)
             os: windows-2022
             arch: x64
@@ -341,7 +341,7 @@ jobs:
           PYTHON_DIR=$(python -c "import sys; import os; print(os.path.dirname(sys.executable))")
           cp -r "${PYTHON_DIR}/DLLs" DLLs
           cp -r ${PYTHON_DIR}/Lib/site-packages/ssh2 modules/ssh2
-          7z a -tzip -mx=9 python37.zip ${PYTHON_DIR}/Lib/*
+          7z a -tzip -mx=9 python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.zip ${PYTHON_DIR}/Lib/*
 
           cmake --build . --config Release --target install
 

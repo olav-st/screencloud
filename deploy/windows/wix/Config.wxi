@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
+    <?define OpensslVersion = "3"?>
+    <?define PythonVersion = "37"?>
+    <?define QtVersion = "5"?>
     <?if $(var.Platform) = x64 ?>
     <?define Win64 = "yes" ?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
