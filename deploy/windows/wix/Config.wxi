@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-    <?define OpensslVersion = "3"?>
+    <?define OpensslVersion = "1_1"?>
     <?define PythonVersion = "39"?>
     <?define QtVersion = "5"?>
     <?if $(var.Platform) = x64 ?>

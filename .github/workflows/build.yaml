@@ -18,7 +18,7 @@ env:
   PYTHON_VERSION: 3.9
   PYTHON_MAJOR_VERSION: 3
   PYTHON_MINOR_VERSION: 9
-  OPENSSL_MAJOR_VERSION: 3
+  OPENSSL_VERSION: 1.1.1.2100
 
 jobs:
   build:
@@ -112,9 +112,9 @@ jobs:
           
           # Install OpenSSL
           if ("${{ matrix.arch }}" -eq "x86") {
-            choco install openssl --x86 -y
+            choco install openssl --version=${{ env.OPENSSL_VERSION }} --x86 -y
           } else {
-            choco install openssl -y
+            choco install openssl --version=${{ env.OPENSSL_VERSION }} -y
           }
 
           $OPENSSL_ROOT_DIR = Split-Path (Split-Path (Get-Command openssl).Path -Parent) -Parent
