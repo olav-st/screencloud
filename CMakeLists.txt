@@ -255,7 +255,7 @@ if(APPLE)
 endif(APPLE)
 
 #Find zlib
-find_package(ZLIB)
+find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
 #Find QuaZip
