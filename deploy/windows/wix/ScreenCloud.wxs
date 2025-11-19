@@ -40,6 +40,7 @@
                         <File Id="QTSVG.DLL" Name="Qt$(var.QtVersion)Svg.dll" Source="..\bin\Qt$(var.QtVersion)Svg.dll" />
                         <File Id="QTPRINTSUPPORT.DLL" Name="Qt$(var.QtVersion)PrintSupport.dll" Source="..\bin\Qt$(var.QtVersion)PrintSupport.dll" />
                         <File Id="QTQML.DLL" Name="Qt$(var.QtVersion)Qml.dll" Source="..\bin\Qt$(var.QtVersion)Qml.dll" />
+                        <File Id="QTQMLMODELS.DLL" Name="Qt$(var.QtVersion)QmlModels.dll" Source="..\bin\Qt$(var.QtVersion)QmlModels.dll" />
                         <File Id="QTQUICK.DLL" Name="Qt$(var.QtVersion)Quick.dll" Source="..\bin\Qt$(var.QtVersion)Quick.dll" />
                         <File Id="QTQUICKWIDGETS.DLL" Name="Qt$(var.QtVersion)QuickWidgets.dll" Source="..\bin\Qt$(var.QtVersion)QuickWidgets.dll" />
                         <File Id="QTSQL.DLL" Name="Qt$(var.QtVersion)Sql.dll" Source="..\bin\Qt$(var.QtVersion)Sql.dll" />
