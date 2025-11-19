@@ -15,9 +15,9 @@ env:
   QT_VERSION: 5.15.2
   QT_MAJOR_VERSION: 5
   PYTHONQT_COMMIT: 18d4c24
-  PYTHON_VERSION: 3.7
+  PYTHON_VERSION: 3.9
   PYTHON_MAJOR_VERSION: 3
-  PYTHON_MINOR_VERSION: 7
+  PYTHON_MINOR_VERSION: 9
   OPENSSL_MAJOR_VERSION: 3
 
 jobs:
@@ -218,7 +218,7 @@ jobs:
               -DPythonQt_Python="${PYTHON_VERSION}" \
               -DPYTHONQT_WITH_WEBKIT=OFF \
               -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
-              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.dylib" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}.dylib" \
               -DBUILD_SHARED_LIBS=ON
             ninja install
           else
@@ -231,7 +231,7 @@ jobs:
               -DPythonQt_Python="${PYTHON_VERSION}" \
               -DPYTHONQT_WITH_WEBKIT=OFF \
               -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
-              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.so" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}.so" \
               -DBUILD_SHARED_LIBS=ON
             ninja install
           fi
@@ -274,7 +274,7 @@ jobs:
               -DQUAZIP_INCLUDE_DIR="${QUAZIP_DIR}/include/QuaZip-Qt5-1.4/quazip" \
               -DQUAZIP_LIBRARY="${QUAZIP_DIR}/lib/libquazip1-qt5.dylib" \
               -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
-              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.dylib" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}.dylib" \
               -DPYTHONQT_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
               -DPYTHONQT_LIBRARY="${PYTHONQT_DIR}/lib/libQt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.dylib" \
               -DPYTHONQT_QTALL_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
@@ -288,7 +288,7 @@ jobs:
               -DQUAZIP_INCLUDE_DIR="${QUAZIP_DIR}/include/QuaZip-Qt5-1.4/quazip" \
               -DQUAZIP_LIBRARY="${QUAZIP_DIR}/lib/libquazip1-qt5.so" \
               -DPYTHON_INCLUDE_DIR="${PYTHON_INCLUDE_DIR}" \
-              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}m.so" \
+              -DPYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/libpython${PYTHON_VERSION}.so" \
               -DPYTHONQT_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
               -DPYTHONQT_LIBRARY="${PYTHONQT_DIR}/lib/libQt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}.so" \
               -DPYTHONQT_QTALL_INCLUDE_DIR="${PYTHONQT_DIR}/include/Qt${QT_MAJOR_VERSION}Python${PYTHON_MAJOR_VERSION}${PYTHON_MINOR_VERSION}/PythonQt" \
