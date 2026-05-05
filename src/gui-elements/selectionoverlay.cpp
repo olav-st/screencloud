@@ -27,7 +27,9 @@ SelectionOverlay::SelectionOverlay(QWidget *parent) :
     rbDistX = 0;
     rbDistY = 0;
     drawingRubberBand = resizingRubberBand = movingRubberBand = false;
-    currentScreenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    currentScreenNumber = QGuiApplication::screens().indexOf(screen);
+    if (currentScreenNumber < 0) currentScreenNumber = 0;
     setWindowFlags( this->windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
     setFocusPolicy( Qt::StrongFocus );
     setMouseTracking(true);
@@ -255,13 +257,13 @@ void SelectionOverlay::keyReleaseEvent(QKeyEvent *event)
         this->close();
     }else if(event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
-        if(QApplication::desktop()->screenCount() > 1)
+        if(QGuiApplication::screens().count() > 1)
         {
             this->moveToScreen(currentScreenNumber + 1);
         }
     }else if(event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
-        if(QApplication::desktop()->screenCount() > 1)
+        if(QGuiApplication::screens().count() > 1)
         {
             this->moveToScreen(currentScreenNumber - 1);
         }
@@ -365,7 +367,9 @@ void SelectionOverlay::resetRubberBand()
 
 void SelectionOverlay::updateScreenshot()
 {
-    currentScreenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    currentScreenNumber = QGuiApplication::screens().indexOf(screen);
+    if (currentScreenNumber < 0) currentScreenNumber = 0;
     moveToScreen(currentScreenNumber); //Moving to the current screen to get a new screenshot
 }
 
@@ -445,14 +449,15 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
         painter->setFont(f);
         QRect helpTextRect = QRect( 0, 0, 620, 100);
         QString helpText = tr("Draw a rectangular area using the mouse.\nPress Enter to take a screenshot or Esc to exit.");
-        if(QApplication::desktop()->screenCount() > 1)
+        if(QGuiApplication::screens().count() > 1)
         {
             helpText.append(tr("\nUse the arrow keys to switch between screens."));
             helpTextRect.setWidth(helpTextRect.width() + 30);
             helpTextRect.setHeight(helpTextRect.height() + 30);
         }
         helpText.append(tr("\nPress Ctrl+C to copy the selected area to the clipboard."));
-        helpTextRect.moveCenter(this->mapFromGlobal(QApplication::desktop()->screenGeometry(currentScreenNumber).center()));
+        QScreen *screen = QGuiApplication::screens().at(currentScreenNumber);
+        helpTextRect.moveCenter(this->mapFromGlobal(screen->geometry().center()));
         painter->setBrush(roundedRectBrush);
         painter->setPen(roundedRectPen);
         painter->drawRoundedRect(helpTextRect, 10.0, 10.0);
@@ -465,10 +470,11 @@ void SelectionOverlay::drawHelpText(QPainter *painter,const QColor &bgColor, con
 
 void SelectionOverlay::moveToScreen(int screenNumber)
 {
+    int screenCount = QGuiApplication::screens().count();
     if(screenNumber < 0)
     {
-        screenNumber = QApplication::desktop()->screenCount() -1;
-    }else if(screenNumber >= QApplication::desktop()->screenCount())
+        screenNumber = screenCount - 1;
+    }else if(screenNumber >= screenCount)
     {
         screenNumber = 0;
     }

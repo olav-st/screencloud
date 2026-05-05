@@ -37,7 +37,7 @@ bool QxtGlobalShortcutPrivate::eventFilter(void* message)
 {
 #else
 bool QxtGlobalShortcutPrivate::nativeEventFilter(const QByteArray & eventType,
-    void * message, long * result)
+    void * message, qintptr * result)
 {
     Q_UNUSED(eventType);
     Q_UNUSED(result);

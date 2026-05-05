@@ -190,7 +190,7 @@ const QImage ScreenShooter::captureAllMonitors()
     INFO(QObject::tr("Capturing the screen using the Qt API"));
     QScreen* screen = QApplication::primaryScreen();
     QRect screenGeometry = screen->virtualGeometry();
-    QPixmap pixmap = screen->grabWindow(QApplication::desktop()->winId(), screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
+    QPixmap pixmap = screen->grabWindow(0, screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
 
     return pixmap.toImage();
 }

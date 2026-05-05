@@ -9,7 +9,6 @@
 #include <QList>
 #include <QSize>
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QScrollBar>
 #include <QStyle>
 #include <QResizeEvent>
@@ -359,7 +358,7 @@ void SnapshotCanvas::tryToConnectTextItem(KaptionGraphicsItem *item)
 
 void SnapshotCanvas::rebuildZIndexOrder()
 {
-    QLinkedListIterator<QGraphicsItem*> i(m_zIndexList);
+    QListIterator<QGraphicsItem*> i(m_zIndexList);
     int z = 0;
     while (i.hasNext()) {
         i.next()->setZValue(z);

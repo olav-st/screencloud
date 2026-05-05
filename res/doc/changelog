@@ -1,3 +1,9 @@
+screencloud (1.6.0) unstable; urgency=low
+
+  * Upgrade to Qt 6
+
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sat, 9 May 2026 12:00:00 -0000
+
 screencloud (1.5.3) unstable; urgency=low
 
   * Add Ctrl + C shortcut to capture selection overlay

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-    <?define OpensslVersion = "1_1"?>
-    <?define PythonVersion = "3.10"?>
+    <?define OpensslVersion = "3"?>
+    <?define PythonVersion = "3.11"?>
     <?define PythonMajorVersion = "3"?>
-    <?define PythonMinorVersion = "10"?>
-    <?define QtVersion = "5"?>
+    <?define PythonMinorVersion = "11"?>
+    <?define QtVersion = "6"?>
     <?if $(var.Platform) = x64 ?>
     <?define Win64 = "yes" ?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>

@@ -5,7 +5,6 @@
 #include <QPushButton>
 #include <QMap>
 #include <QString>
-#include <QSignalMapper>
 #include <QMetaObject>
 #include <QEvent>
 #include "graphicsitemfactory.h"
@@ -49,20 +48,16 @@ Q_SIGNALS:
                               const QVariant &value);
     void itemSelected();
 
-private Q_SLOTS:
-    void selectItem(const QString &className, bool upt = true);
-    void updatePropertyValue(const QString &property);
-
 private:
     void setupItem(KaptionGraphicsItem *item) const;
     void updateGraphicsItemButtonsCheckedState();
     void updatePropertyToolbar(const QString &className);
     void updatePropertyToolbar(QList<KaptionGraphicsItem*> items);
     void populatePropertyToolbar(QSet<QWidget*> widgetsToAdd);
+    void selectItem(const QString &className, bool upt = true);
+    void updatePropertyValue(const QString &property);
 
     GraphicsItemFactory m_factory;
-    QSignalMapper *m_bttnSignalMapper;
-    QSignalMapper *m_propertySignalMapper;
     QMap<QString, QPushButton*> m_buttonItemMap;
     QMap<QString, PropertyToolEditor*> m_propertiesMap;
     QString m_selectedItemClassName;
@@ -82,9 +77,9 @@ void KaptionGraphicsToolkit::bindButtonToGraphicsItem(QPushButton *bttn,
 
     m_buttonItemMap[className] = bttn;
 
-    m_bttnSignalMapper->setMapping(bttn, className);
-    connect(bttn, SIGNAL(clicked()),
-            m_bttnSignalMapper, SLOT(map()));
+    connect(bttn, &QPushButton::clicked, this, [this, className]() {
+        selectItem(className, true);
+    });
 
     if (select) {
         selectItem(className, false);

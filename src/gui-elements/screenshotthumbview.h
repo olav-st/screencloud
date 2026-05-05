@@ -34,8 +34,8 @@ Q_SIGNALS:
 public Q_SLOTS:
     void mouseReleaseEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent* pe);
-    void enterEvent(QEvent* e);
-    void leaveEvent(QEvent *e);
+    void enterEvent(QEnterEvent* e) override;
+    void leaveEvent(QEvent *e) override;
     
 };
 

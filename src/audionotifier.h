@@ -16,7 +16,8 @@
 
 #include <QObject>
 #include <QSettings>
-#include <QAudioOutput>
+#include <QAudioSink>
+#include <QAudioFormat>
 #include <utils/log.h>
 #include <QDir>
 #include <QApplication>
@@ -31,8 +32,7 @@ public:
     void play(QString file);
 
 private:
-    QAudioOutput* audioOutput;
-    QAudioFormat format;
+    QAudioSink* audioOutput;
     QFile audioFile;
     QQueue<QString> queue;
 

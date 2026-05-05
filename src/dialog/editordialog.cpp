@@ -25,7 +25,8 @@ EditorDialog::~EditorDialog()
 
 void EditorDialog::setupUi()
 {
-    setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
+    setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
+    setWindowModality(Qt::ApplicationModal);
     //Try to use theme icons if available
     ui->formatTextBtn->setIcon(QIcon::fromTheme("draw-text", ui->formatTextBtn->icon()));
     /*

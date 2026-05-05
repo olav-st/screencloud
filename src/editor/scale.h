@@ -12,6 +12,7 @@ public:
     Scale(qreal min, qreal max);
     Scale(qreal min, qreal max, qreal pivot);
     Scale(const Scale &scale);
+    Scale &operator=(const Scale &scale);
 
     qreal min() const;
 

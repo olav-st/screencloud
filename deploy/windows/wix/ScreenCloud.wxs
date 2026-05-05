@@ -14,22 +14,20 @@
                         </File>
                     </Component>
                     <Component Id="DLLS" DiskId="1" Guid="9475C27F-4706-4554-A316-C5BB60A38589" Win64="$(var.Win64)">
-                        <?if $(sys.BUILDARCH)="x64"?>
-                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-$(var.OpensslVersion)-x64.dll" Source="..\bin\libcrypto-$(var.OpensslVersion)-x64.dll" />
-                            <File Id="LIBSSL.DLL" Name="libssl-$(var.OpensslVersion)-x64.dll" Source="..\bin\libssl-$(var.OpensslVersion)-x64.dll" />
-                        <?else?>
-                            <File Id="LIBCRYPTO.DLL" Name="libcrypto-$(var.OpensslVersion).dll" Source="..\bin\libcrypto-$(var.OpensslVersion).dll" />
-                            <File Id="LIBSSL.DLL" Name="libssl-$(var.OpensslVersion).dll" Source="..\bin\libssl-$(var.OpensslVersion).dll" />
-                        <?endif?>
+                        <File Id="LIBCRYPTO.DLL" Name="libcrypto-$(var.OpensslVersion)-$(sys.BUILDARCH).dll" Source="..\bin\libcrypto-$(var.OpensslVersion)-$(sys.BUILDARCH).dll" />
+                        <File Id="LIBSSL.DLL" Name="libssl-$(var.OpensslVersion)-$(sys.BUILDARCH).dll"    Source="..\bin\libssl-$(var.OpensslVersion)-$(sys.BUILDARCH).dll" />
                         <File Id="QUAZIP.DLL" Name="quazip1-qt$(var.QtVersion).dll" Source="..\bin\quazip1-qt$(var.QtVersion).dll" />
                         <File Id="PYTHONQT.DLL" Name="PythonQt-Qt$(var.QtVersion)-Python$(var.PythonVersion).dll" Source="..\bin\PythonQt-Qt$(var.QtVersion)-Python$(var.PythonVersion).dll" />
                         <File Id="PYTHON.DLL" Name="python$(var.PythonMajorVersion)$(var.PythonMinorVersion).dll" Source="..\bin\python$(var.PythonMajorVersion)$(var.PythonMinorVersion).dll">
                         </File>
                         <File Id="PYTHONQT_QTALL.DLL" Name="PythonQt_QtAll-Qt$(var.QtVersion)-Python$(var.PythonVersion).dll" Source="..\bin\PythonQt_QtAll-Qt$(var.QtVersion)-Python$(var.PythonVersion).dll" />
+                        <File Id="LIBSSH2.DLL" Name="libssh2.dll" Source="..\bin\libssh2.dll" />
+                        <File Id="Z.DLL" Name="z.dll" Source="..\bin\z.dll" />
                         <File Id="ZLIB.DLL" Name="zlib.dll" Source="..\bin\zlib.dll" />
                     </Component>
                     <Component Id="QTDLLS" DiskId="1" Guid="5B39DF2B-C7A8-49FE-B364-439B5A01D545" Win64="$(var.Win64)">
                         <File Id="QTCORE" Name="Qt$(var.QtVersion)Core.dll" Source="..\bin\Qt$(var.QtVersion)Core.dll" />
+                        <File Id="QTCORE5COMPAT.DLL" Name="Qt$(var.QtVersion)Core5Compat.dll" Source="..\bin\Qt$(var.QtVersion)Core5Compat.dll" />
                         <File Id="QTWIDGETS" Name="Qt$(var.QtVersion)Widgets.dll" Source="..\bin\Qt$(var.QtVersion)Widgets.dll" />
                         <File Id="QTNETWORK" Name="Qt$(var.QtVersion)Network.dll" Source="..\bin\Qt$(var.QtVersion)Network.dll" />
                         <File Id="QTXML" Name="Qt$(var.QtVersion)Xml.dll" Source="..\bin\Qt$(var.QtVersion)Xml.dll" />
@@ -37,14 +35,16 @@
                         <File Id="QTGUI.DLL" Name="Qt$(var.QtVersion)Gui.dll" Source="..\bin\Qt$(var.QtVersion)Gui.dll" />
                         <File Id="QTMULTIMEDIAWIDGETS.DLL" Name="Qt$(var.QtVersion)MultimediaWidgets.dll" Source="..\bin\Qt$(var.QtVersion)MultimediaWidgets.dll" />
                         <File Id="QTOPENGL.DLL" Name="Qt$(var.QtVersion)OpenGL.dll" Source="..\bin\Qt$(var.QtVersion)OpenGL.dll" />
-                        <File Id="QTSVG.DLL" Name="Qt$(var.QtVersion)Svg.dll" Source="..\bin\Qt$(var.QtVersion)Svg.dll" />
-                        <File Id="QTPRINTSUPPORT.DLL" Name="Qt$(var.QtVersion)PrintSupport.dll" Source="..\bin\Qt$(var.QtVersion)PrintSupport.dll" />
+                        <File Id="QTOPENGLWIDGETS.DLL" Name="Qt$(var.QtVersion)OpenGLWidgets.dll" Source="..\bin\Qt$(var.QtVersion)OpenGLWidgets.dll" />
                         <File Id="QTQML.DLL" Name="Qt$(var.QtVersion)Qml.dll" Source="..\bin\Qt$(var.QtVersion)Qml.dll" />
                         <File Id="QTQMLMODELS.DLL" Name="Qt$(var.QtVersion)QmlModels.dll" Source="..\bin\Qt$(var.QtVersion)QmlModels.dll" />
                         <File Id="QTQUICK.DLL" Name="Qt$(var.QtVersion)Quick.dll" Source="..\bin\Qt$(var.QtVersion)Quick.dll" />
                         <File Id="QTQUICKWIDGETS.DLL" Name="Qt$(var.QtVersion)QuickWidgets.dll" Source="..\bin\Qt$(var.QtVersion)QuickWidgets.dll" />
+                        <File Id="QTSVG.DLL" Name="Qt$(var.QtVersion)Svg.dll" Source="..\bin\Qt$(var.QtVersion)Svg.dll" />
+                        <File Id="QTSVGWIDGETS.DLL" Name="Qt$(var.QtVersion)SvgWidgets.dll" Source="..\bin\Qt$(var.QtVersion)SvgWidgets.dll" />
+                        <File Id="QTPRINTSUPPORT.DLL" Name="Qt$(var.QtVersion)PrintSupport.dll" Source="..\bin\Qt$(var.QtVersion)PrintSupport.dll" />
                         <File Id="QTSQL.DLL" Name="Qt$(var.QtVersion)Sql.dll" Source="..\bin\Qt$(var.QtVersion)Sql.dll" />
-                        <File Id="QTXMLPATTERNS.DLL" Name="Qt$(var.QtVersion)XmlPatterns.dll" Source="..\bin\Qt$(var.QtVersion)XmlPatterns.dll" />
+                        <File Id="QUITOOLS.DLL" Name="Qt$(var.QtVersion)UiTools.dll" Source="..\bin\Qt$(var.QtVersion)UiTools.dll" />
                     </Component>
                     <Component Id="PYTHON.ZIP" Guid="DD2E14B6-0F20-429F-83CB-82AF2D8D77CB" DiskId="1" Win64="$(var.Win64)">
                         <File Id="PYTHON.ZIP" Name="python$(var.PythonMajorVersion)$(var.PythonMinorVersion).zip" Source="..\python$(var.PythonMajorVersion)$(var.PythonMinorVersion).zip" />
@@ -60,11 +60,6 @@
                             <File Id="QGIF.DLL" Name="qgif.dll" Source="..\bin\imageformats\qgif.dll" />
                         </Component>
                     </Directory>
-                    <Directory Id="AUDIO" Name="audio">
-                        <Component Guid="F814613D-80E9-42CB-9AD0-F51F712C2342" Id="AUDIO" Win64="$(var.Win64)">
-                            <File Id="QTAUDIO_WINDOWS.DLL" Name="qtaudio_windows.dll" Source="..\bin\audio\qtaudio_windows.dll" />
-                        </Component>
-                    </Directory>
                     <Directory Id="PLATFORMS" Name="platforms">
                         <Component Guid="324673D5-8C7F-4337-A7FA-D5D24B4A1563" Id="PLATFORMS" Win64="$(var.Win64)">
                             <File Id="QWINDOWS.DLL" Name="qwindows.dll" Source="..\bin\platforms\qwindows.dll" />
@@ -72,7 +67,12 @@
                     </Directory>
                     <Directory Id="STYLES" Name="styles">
                         <Component Guid="AEE0CA66-3F28-4D96-B358-FA118230A9E7" Id="STYLES" Win64="$(var.Win64)">
-                            <File Id="QWINDOWSVISTASTYLE.DLL" Name="qwindowsvistastyle.dll" Source="..\bin\styles\qwindowsvistastyle.dll" />
+                            <File Id="QMODERNWINDOWSSTYLE.DLL" Name="qmodernwindowsstyle.dll" Source="..\bin\styles\qmodernwindowsstyle.dll" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="TLS" Name="tls">
+                        <Component Guid="B3F82C1A-9D4E-4A7B-8C2F-E16D057A3F8B" Id="TLS" Win64="$(var.Win64)">
+                            <File Id="QOPENSSLBACKEND.DLL" Name="qopensslbackend.dll" Source="..\bin\tls\qopensslbackend.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="PY_MODULES" Name="modules">
@@ -117,9 +117,9 @@
             <ComponentRef Id="ICONENGINES" />
             <ComponentRef Id="IMAGEFORMATS" />
             <ComponentRef Id="PYTHON.ZIP" />
-            <ComponentRef Id="AUDIO" />
             <ComponentRef Id="PLATFORMS" />
             <ComponentRef Id="STYLES" />
+            <ComponentRef Id="TLS" />
             <ComponentGroupRef Id="PY_MODULES" />
             <ComponentGroupRef Id="PY_DLLS" />
         </Feature>

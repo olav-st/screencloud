@@ -18,23 +18,27 @@
 #include <utils/log.h>
 #include "licensesdialog.h"
 #include <QUrlQuery>
+#include <QRegularExpression>
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, UploadManager *uManager) :
     QDialog(parent),
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
-    connect(this, SIGNAL(finished(int)), SLOT(dialogFinished(int)));
-    connect(ui->combobox_imageFormat, SIGNAL(currentIndexChanged(int)), this, SLOT(comboboxImageFormatChanged(int)));
+    connect(ui->slider_jpegQuality, QOverload<int>::of(&QSlider::valueChanged), this, [this](int value) {
+        ui->label_qualityNumber->setText(QString::number(value));
+    });
+    connect(this, &QDialog::finished, this, &PreferencesDialog::dialogFinished);
+    connect(ui->combobox_imageFormat, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PreferencesDialog::comboboxImageFormatChanged);
     updater = new Updater(this);
-    connect(updater, SIGNAL(versionNumberRecieved(QString,bool)), this, SLOT(gotVersionNumber(QString,bool)));
-    connect(updater, SIGNAL(pluginsUpdated()), this, SLOT(pluginsUpdated()));
+    connect(updater, &Updater::versionNumberRecieved, this, &PreferencesDialog::gotVersionNumber);
+    connect(updater, &Updater::pluginsUpdated, this, &PreferencesDialog::pluginsUpdated);
     this->uploadManager = uManager;
     hotkeyFilter = new HotkeyEventFilter(this);
     //Hotkey signals
-    connect(ui->table_hotkeys, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(recordHotkey(QTableWidgetItem*)));
-    connect(hotkeyFilter, SIGNAL(keyRecorded(Qt::Key, int, Qt::KeyboardModifiers)), this, SLOT(keyRecorded(Qt::Key, int, Qt::KeyboardModifiers)));
-    connect(ui->table_hotkeys, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(hotkeyItemChanged(QTableWidgetItem*,QTableWidgetItem*)));
+    connect(ui->table_hotkeys, &QTableWidget::itemDoubleClicked, this, &PreferencesDialog::recordHotkey);
+    connect(hotkeyFilter, &HotkeyEventFilter::keyRecorded, this, &PreferencesDialog::keyRecorded);
+    connect(ui->table_hotkeys, &QTableWidget::currentItemChanged, this, &PreferencesDialog::hotkeyItemChanged);
     editingHotkeyField = false;
     keysRecorded = 0;
     pythonContext = PythonQt::self()->getMainModule();
@@ -238,7 +242,7 @@ void PreferencesDialog::validateHotkey(QTableWidgetItem* item)
     {
         QKeySequence keySeq = QKeySequence(item->text());
         QString keySeqString = keySeq.toString();
-        if (keySeqString.isEmpty() || (keySeqString.count(QRegExp("[!@#$%^&*()_\"]")) > 0)) {
+        if (keySeqString.isEmpty() || (keySeqString.count(QRegularExpression("[!@#$%^&*()_\"]")) > 0)) {
             WARNING(tr("Failed to validate hotkey(") + keySeqString + tr("). Resetting to ") + oldHotkeyText);
             item->setText(oldHotkeyText);
             this->setFocus(Qt::OtherFocusReason);

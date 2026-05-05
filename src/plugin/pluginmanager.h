@@ -26,6 +26,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QDesktopServices>
+#include <QStandardPaths>
 #include <utils/OS.h>
 #include <uploaders/pythonuploader.h>
 #include <QNetworkAccessManager>

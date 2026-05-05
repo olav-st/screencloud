@@ -30,8 +30,28 @@
 *****************************************************************************/
 
 #include <QLibrary>
-#include <QX11Info>
+#include <QGuiApplication>
+#include <QtGui/qpa/qplatformnativeinterface.h>
 #include <X11/Xutil.h>
+
+static Display* qt_x11_display()
+{
+    QPlatformNativeInterface *nativeInterface = QGuiApplication::platformNativeInterface();
+    return static_cast<Display*>(nativeInterface->nativeResourceForScreen("display", QGuiApplication::primaryScreen()));
+}
+
+static Window qt_x11_appRootWindow(int screen = 0)
+{
+    Display *display = qt_x11_display();
+    if (!display)
+        return 0;
+    return RootWindow(display, screen);
+}
+
+static int qt_x11_appScreen()
+{
+    return 0;  // Default to screen 0
+}
 
 static WindowList qxt_getWindows(Atom prop)
 {
@@ -40,8 +60,8 @@ static WindowList qxt_getWindows(Atom prop)
     int format = 0;
     uchar* data = 0;
     ulong count, after;
-    Display* display = QX11Info::display();
-    Window window = QX11Info::appRootWindow();
+    Display* display = qt_x11_display();
+    Window window = qt_x11_appRootWindow();
     if (XGetWindowProperty(display, window, prop, 0, 1024 * sizeof(Window) / 4, False, AnyPropertyType,
                            &type, &format, &count, &after, &data) == Success)
     {
@@ -58,7 +78,7 @@ WindowList QxtWindowSystem::windows()
 {
     static Atom net_clients = 0;
     if (!net_clients)
-        net_clients = XInternAtom(QX11Info::display(), "_NET_CLIENT_LIST_STACKING", True);
+        net_clients = XInternAtom(qt_x11_display(), "_NET_CLIENT_LIST_STACKING", True);
 
     return qxt_getWindows(net_clients);
 }
@@ -67,7 +87,7 @@ WId QxtWindowSystem::activeWindow()
 {
     static Atom net_active = 0;
     if (!net_active)
-        net_active = XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", True);
+        net_active = XInternAtom(qt_x11_display(), "_NET_ACTIVE_WINDOW", True);
 
     return qxt_getWindows(net_active).value(0);
 }
@@ -107,7 +127,7 @@ QString QxtWindowSystem::windowTitle(WId window)
 {
     QString name;
     char* str = 0;
-    if (XFetchName(QX11Info::display(), window, &str))
+    if (XFetchName(qt_x11_display(), window, &str))
         name = QString::fromLatin1(str);
     if (str)
         XFree(str);
@@ -119,13 +139,13 @@ QRect QxtWindowSystem::windowGeometry(WId window)
     int x, y;
     uint width, height, border, depth;
     Window root, child;
-    Display* display = QX11Info::display();
+    Display* display = qt_x11_display();
     XGetGeometry(display, window, &root, &x, &y, &width, &height, &border, &depth);
     XTranslateCoordinates(display, window, root, x, y, &x, &y, &child);
 
     static Atom net_frame = 0;
     if (!net_frame)
-        net_frame = XInternAtom(QX11Info::display(), "_NET_FRAME_EXTENTS", True);
+        net_frame = XInternAtom(qt_x11_display(), "_NET_FRAME_EXTENTS", True);
 
     QRect rect(x, y, width, height);
     Atom type = 0;
@@ -178,9 +198,9 @@ uint QxtWindowSystem::idleTime()
     if (xssResolved)
     {
         XScreenSaverInfo* info = _xScreenSaverAllocInfo();
-        const int screen = QX11Info::appScreen();
-        Qt::HANDLE rootWindow = (Qt::HANDLE) QX11Info::appRootWindow(screen);
-        _xScreenSaverQueryInfo(QX11Info::display(), (Drawable*) rootWindow, info);
+        const int screen = qt_x11_appScreen();
+        Qt::HANDLE rootWindow = (Qt::HANDLE) qt_x11_appRootWindow(screen);
+        _xScreenSaverQueryInfo(qt_x11_display(), (Drawable*) rootWindow, info);
         idle = info->idle;
         if (info)
             XFree(info);

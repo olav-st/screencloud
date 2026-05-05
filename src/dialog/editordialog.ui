@@ -227,7 +227,7 @@
      <item>
       <widget class="SnapshotCanvas" name="snapshotCanvas">
        <property name="renderHints">
-        <set>QPainter::Antialiasing|QPainter::HighQualityAntialiasing|QPainter::TextAntialiasing</set>
+        <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
        </property>
       </widget>
      </item>

@@ -31,7 +31,7 @@
 
 #include <QVector>
 #include <QApplication>
-#include <qpa/qplatformnativeinterface.h>
+#include <QtGui/qpa/qplatformnativeinterface.h>
 #include <xcb/xcb.h>
 #include <X11/Xlib.h>
 
@@ -144,7 +144,7 @@ private:
 } // namespace
 
 bool QxtGlobalShortcutPrivate::nativeEventFilter(const QByteArray & eventType,
-    void *message, long *result)
+    void *message, qintptr *result)
 {
     Q_UNUSED(result);
 

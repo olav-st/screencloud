@@ -1,7 +1,7 @@
 # Debian base image with the correct Python version
-FROM python:3.10-trixie
+FROM python:3.11-trixie
 
-ENV PYTHON_VERSION=3.10
+ENV PYTHON_VERSION=3.11
 ENV PYTHONQT_TAG=v4.0.1
 
 # Prevent interactive prompts during install
@@ -17,16 +17,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         pkg-config \
         ninja-build \
-        qt5-qmake \
-        qtbase5-dev \
-        qttools5-dev \
-        qtmultimedia5-dev \
-        qtdeclarative5-dev \
-        libqt5svg5-dev \
-        libqt5x11extras5-dev \
-        libqt5opengl5-dev \
-        libqt5xmlpatterns5-dev \
-        qtbase5-private-dev \
+        qmake6 \
+        qt6-base-dev \
+        qt6-tools-dev \
+        qt6-multimedia-dev \
+        libqt6svg6-dev \
+        libqt6opengl6-dev \
+        qt6-base-private-dev \
+        qt6-5compat-dev \
         libssl-dev \
         zlib1g-dev \
         libx11-dev libxcb1-dev libxext-dev libxfixes-dev libxi-dev \
@@ -58,12 +56,12 @@ RUN git clone https://github.com/stachenov/quazip.git /tmp/quazip \
 # Mirrors the "Build PythonQt" step in the GitHub workflow
 RUN git clone https://github.com/mevislab/PythonQt /tmp/pythonqt \
     && cd /tmp/pythonqt \
-    && git checkout ${PYTHONQT_COMMIT} \
+    && git checkout ${PYTHONQT_TAG} \
     && PYTHON_PATH=$(python3 -c "import sys; print(sys.prefix)") \
-    && QTDIR=$(qmake -query QT_INSTALL_PREFIX) \
+    && QTDIR=$(qmake6 -query QT_INSTALL_PREFIX) \
     && NPROC=$(nproc) \
     # Build the binding generator
-    && qmake \
+    && qmake6 \
         CONFIG+=generator_only CONFIG+=Release \
         PYTHON_VERSION="${PYTHON_VERSION}" \
         PYTHON_PATH="${PYTHON_PATH}" \
@@ -74,7 +72,7 @@ RUN git clone https://github.com/mevislab/PythonQt /tmp/pythonqt \
     # Run the generator to produce generated_cpp/
     && (cd generator && ./pythonqt_generator qtscript_masterinclude.h build_all.txt) \
     # Build the full runtime (generator excluded)
-    && qmake \
+    && qmake6 \
         CONFIG+=Release CONFIG+=exclude_generator \
         PYTHON_VERSION="${PYTHON_VERSION}" \
         PYTHON_PATH="${PYTHON_PATH}" \

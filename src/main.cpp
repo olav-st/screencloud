@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
                     settings.endGroup();
                     WId windowId = (WId)cmdline_args.at(winIdIndex).toInt();
                     INFO(QObject::tr("Grabbing window with id ") + QString::number((int)windowId));
-                    screenshot = screenShooter.captureWindow(windowId), captureWindowBorders;
+                    screenshot = screenShooter.captureWindow(windowId, captureWindowBorders);
                 }else
                 {
                     CRITICAL(QObject::tr("No window id provided."));
