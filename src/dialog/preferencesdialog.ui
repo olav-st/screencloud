@@ -917,22 +917,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>slider_jpegQuality</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_qualityNumber</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>391</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>403</x>
-     <y>328</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>checkBox_auth</sender>
    <signal>toggled(bool)</signal>
    <receiver>formWidget_ProxyAuth</receiver>

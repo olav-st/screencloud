@@ -54,10 +54,13 @@ bool UploadManager::upload(const QImage &screenshot, QString serviceShortname, Q
             Uploader* uploader = uploaders.at(i);
             connect(uploader, SIGNAL(uploadingFinished(QString)), this, SLOT(uploaderFinished(QString)));
             connect(uploader, SIGNAL(uploadingError(QString)), this, SLOT(uploaderError(QString)));
-            INFO(tr("Uploading screenshot to \'") + serviceShortname + tr("\'. Size: ") + QString::number(screenshot.byteCount()) + " bytes");
+            INFO(tr("Uploading screenshot to \'") + serviceShortname + tr("\'. Size: ") + QString::number(screenshot.sizeInBytes()) + " bytes");
             if(qobject_cast<PythonUploader*>(uploader) != NULL)
             {
-                QtConcurrent::run(uploader, &Uploader::upload, screenshot, screenshotName);
+                // Use a lambda to call the member function
+                QtConcurrent::run([uploader, screenshot, screenshotName]() {
+                    uploader->upload(screenshot, screenshotName);
+                });
             }else
             {
                 uploader->upload(screenshot, screenshotName);

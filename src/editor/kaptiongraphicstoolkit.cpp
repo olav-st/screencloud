@@ -15,14 +15,8 @@ const QEvent::Type KaptionGraphicsToolkit::ItemSetupEvent
 KaptionGraphicsToolkit::KaptionGraphicsToolkit(QWidget *propertyToolbar,
                                                QObject *parent)
     : QObject(parent),
-      m_bttnSignalMapper(new QSignalMapper(this)),
-      m_propertySignalMapper(new QSignalMapper(this)),
       m_propertyToolbar(propertyToolbar)
 {
-    connect(m_bttnSignalMapper, SIGNAL(mapped(QString)),
-            this, SLOT(selectItem(QString)));
-    connect(m_propertySignalMapper, SIGNAL(mapped(QString)),
-            this, SLOT(updatePropertyValue(QString)));
     m_propertyOffset = KaptionGraphicsItem::staticMetaObject.propertyOffset();
 }
 
@@ -33,9 +27,9 @@ void KaptionGraphicsToolkit::bindPropertyTool(PropertyToolEditor *tool,
 
     m_propertiesMap.insert(property, tool);
 
-    m_propertySignalMapper->setMapping(tool, property);
-    connect(tool, SIGNAL(valueChanged(QVariant)),
-            m_propertySignalMapper, SLOT(map()));
+    connect(tool, &PropertyToolEditor::valueChanged, this, [this, property](const QVariant &) {
+        updatePropertyValue(property);
+    });
 }
 
 GraphicsItemFactory::CreationPolicy KaptionGraphicsToolkit::itemCreationPolicy() const

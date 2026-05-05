@@ -2,7 +2,6 @@
 #define SNAPSHOTCANVAS_H
 
 #include <QGraphicsView>
-#include <QLinkedList>
 #include "kaptiongraphicstoolkit.h"
 #include "editor/scale.h"
 
@@ -67,7 +66,7 @@ private:
     bool m_captureKeyboardEvents;
     KaptionGraphicsToolkit *m_toolkit;
     QMenu *m_contextMenu;
-    QLinkedList<QGraphicsItem*> m_zIndexList;
+    QList<QGraphicsItem*> m_zIndexList;
 };
 
 inline

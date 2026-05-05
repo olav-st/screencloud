@@ -28,6 +28,17 @@ Scale::Scale(const Scale &scale)
 {
 }
 
+Scale &Scale::operator=(const Scale &scale)
+{
+    if (this != &scale) {
+        m_min = scale.min();
+        m_max = scale.max();
+        m_pivot = scale.pivot();
+        m_value = scale.value();
+    }
+    return *this;
+}
+
 qreal Scale::min() const
 {
     return m_min;

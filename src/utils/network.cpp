@@ -13,6 +13,7 @@
 //
 
 #include <utils/network.h>
+#include <random>
 
 NetworkUtils::NetworkUtils()
 {
@@ -49,10 +50,14 @@ QString NetworkUtils::generateNonce(int length)
 {
    const QString possibleCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
+   std::random_device rd;
+   std::mt19937 gen(rd());
+   std::uniform_int_distribution<> dis(0, possibleCharacters.length() - 1);
+
    QString randomString;
    for(int i=0; i< length; ++i)
    {
-       int index = qrand() % possibleCharacters.length();
+       int index = dis(gen);
        QChar nextChar = possibleCharacters.at(index);
        randomString.append(nextChar);
    }

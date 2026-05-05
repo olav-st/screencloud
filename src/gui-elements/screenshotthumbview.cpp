@@ -91,7 +91,7 @@ void ScreenshotThumbView::paintEvent(QPaintEvent *pe)
     }
 }
 
-void ScreenshotThumbView::enterEvent(QEvent *e)
+void ScreenshotThumbView::enterEvent(QEnterEvent *e)
 {
     hovered = true;
     this->viewport()->update();

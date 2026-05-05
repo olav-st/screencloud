@@ -17,7 +17,6 @@
 #include <QObject>
 #include <QPixmap>
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QSettings>
 #include <QScreen>
 #include <QImage>

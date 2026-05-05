@@ -19,7 +19,7 @@
 ClickableLabel::ClickableLabel(QLabel *parent) :
     QLabel(parent)
 {
-    connect(this, SIGNAL(linkActivated(QString)), this, SLOT(linkIsActivated(QString)));
+    connect(this, &QLabel::linkActivated, this, &ClickableLabel::linkIsActivated);
 }
 
 void ClickableLabel::mouseReleaseEvent(QMouseEvent *ev)

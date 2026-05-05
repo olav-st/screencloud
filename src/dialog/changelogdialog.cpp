@@ -11,7 +11,7 @@ ChangelogDialog::ChangelogDialog(QWidget *parent) :
     overlayLayout = new QHBoxLayout(ui->text_changes);
     overlayLayout->setAlignment(Qt::AlignCenter);
     overlayLayout->addWidget(busyOverlay);
-    connect(&netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    connect(&netManager, &QNetworkAccessManager::finished, this, &ChangelogDialog::replyFinished);
 }
 
 ChangelogDialog::~ChangelogDialog()

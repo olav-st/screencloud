@@ -1,6 +1,6 @@
 project( screencloud )
 cmake_minimum_required(VERSION 2.8.12)
-set(VERSION_STRING 1.5.3)
+set(VERSION_STRING 1.6.0)
 
 
 #set module path
@@ -222,35 +222,34 @@ if(APPLE)
     )
 endif(APPLE)
 
-#Find Qt5 (required)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5Xml REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5UiTools REQUIRED)
+#Find Qt6 (required)
+find_package(Qt6Widgets REQUIRED)
+find_package(Qt6Gui REQUIRED PRIVATE)
+find_package(Qt6Network REQUIRED)
+find_package(Qt6Xml REQUIRED)
+find_package(Qt6Svg REQUIRED)
+find_package(Qt6Multimedia REQUIRED)
+find_package(Qt6Concurrent REQUIRED)
+find_package(Qt6UiTools REQUIRED)
 set(REQUIRED_LIBS ${REQUIRED_LIBS}
-    Qt5::Widgets
-    Qt5::Network
-    Qt5::Xml
-    Qt5::Svg
-    Qt5::Multimedia
-    Qt5::Concurrent
-    Qt5::UiTools
+    Qt6::Widgets
+    Qt6::Network
+    Qt6::Xml
+    Qt6::Svg
+    Qt6::Multimedia
+    Qt6::Concurrent
+    Qt6::UiTools
 )
 if(UNIX AND NOT APPLE)
-    find_package(Qt5X11Extras REQUIRED)
-    find_package(Qt5DBus REQUIRED)
+    find_package(Qt6DBus REQUIRED)
     set(REQUIRED_LIBS ${REQUIRED_LIBS}        
-        Qt5::X11Extras
-        Qt5::DBus
+        Qt6::DBus
     )
 endif(UNIX AND NOT APPLE)
 if(APPLE)
-    find_package(Qt5DBus REQUIRED)
+    find_package(Qt6DBus REQUIRED)
     set(REQUIRED_LIBS ${REQUIRED_LIBS}        
-        Qt5::DBus
+        Qt6::DBus
     )
 endif(APPLE)
 
@@ -315,8 +314,8 @@ message(STATUS "Including QtSingleApplication and parts of LibQxt.")
 include(src/3rdparty/QtSingleApplication/QtSingleApplication.cmake)
 include(src/3rdparty/LibQxt/LibQxt.cmake)
 
-qt5_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
-qt5_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
+qt6_add_resources( screencloud_SOURCES_RC ${screencloud_RESOURCES} )
+qt6_wrap_ui( screencloud_FORMS_HEADERS ${screencloud_FORMS} )
 
 # include headers produced by uic
 include_directories( ${CMAKE_BINARY_DIR} )
@@ -324,6 +323,9 @@ include_directories( ${CMAKE_BINARY_DIR} )
 add_executable( screencloud WIN32 MACOSX_BUNDLE ${screencloud_SOURCES} ${screencloud_HEADERS} ${screencloud_SOURCES_MOC} ${screencloud_SOURCES_RC} ${screencloud_FORMS_HEADERS}  )
 
 target_link_libraries( screencloud ${REQUIRED_LIBS})
+
+# Add Qt6Gui private headers for QPA functionality
+target_include_directories(screencloud PRIVATE ${Qt6Gui_PRIVATE_INCLUDE_DIRS})
 
 #enable warnings
 if(CMAKE_COMPILER_IS_GNUCC)
@@ -369,15 +371,13 @@ if(APPLE)
     #install python modules
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res/modules" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
     #Copy required qt plugins
-    get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
-    get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
-    get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
-    get_target_property(COCOAPLUGIN_LOCATION Qt5::QCocoaIntegrationPlugin LOCATION)
-    get_target_property(QCOREAUDIO_LOCATION Qt5::CoreAudioPlugin LOCATION)
+    get_target_property(JPEGPLUGIN_LOCATION Qt6::QJpegPlugin LOCATION)
+    get_target_property(GIFPLUGIN_LOCATION Qt6::QGifPlugin LOCATION)
+    get_target_property(SVGICONPLUGIN_LOCATION Qt6::QSvgIconPlugin LOCATION)
+    get_target_property(COCOAPLUGIN_LOCATION Qt6::QCocoaIntegrationPlugin LOCATION)
     install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/imageformats")
     install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/iconengines")
     install(FILES ${COCOAPLUGIN_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/platforms")
-    install(FILES ${QCOREAUDIO_LOCATION} DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/PlugIns/audio")
     #install qt.conf
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/qt.conf" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
     #add Info.plist
@@ -394,35 +394,13 @@ if(APPLE)
     )
     #install icons
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/res/icons/icons_mac.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/Resources")
-    #Find paths to required libs
-    foreach(LIB ${REQUIRED_LIBS})
-        if(LIB MATCHES "Qt5::")
-            get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
-        endif()
-        get_filename_component(LIB_DIR ${LIB} DIRECTORY)
-        if(LIB_DIR MATCHES ".*framework$") #Only match paths ending in .framework
-            get_filename_component(LIB_DIR ${LIB_DIR} DIRECTORY) #get parent dir
-        endif()
-        set(LIB_DIRS ${LIB_DIRS}
-            ${LIB_DIR}
-            )
-    endforeach()
-    #We set rpath manually later
-    set(CMAKE_SKIP_RPATH ON)
-    #Use fixup_bundle to copy libs
-    install(CODE "
-    include(BundleUtilities)
-    fixup_bundle(${CMAKE_BINARY_DIR}/screencloud.app \"\" \"${LIB_DIRS}\")
-    ")
-    #Hack to make qt plugin loading work
-    install(CODE "execute_process(COMMAND install_name_tool -add_rpath @executable_path/../Frameworks ${CMAKE_INSTALL_PREFIX}/screencloud.app/Contents/MacOS/screencloud)")
 endif(APPLE)
 if(WIN32)
     install(TARGETS screencloud RUNTIME DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deploy/windows/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
     #Find dirs for the libs we're linking against
     foreach(LIB ${REQUIRED_LIBS})
-        if(LIB MATCHES "Qt5::")
+        if(LIB MATCHES "Qt6::")
             get_target_property(LIB ${LIB} LOCATION_${CMAKE_BUILD_TYPE})
         endif()
         get_filename_component(LIB_DIR ${LIB} DIRECTORY)
@@ -437,24 +415,24 @@ if(WIN32)
         "C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs/x86"
     )
     file(GLOB ZLIB_DLLS "${ZLIB_INCLUDE_DIR}/../bin/*.dll")
-    file(GLOB OPENSSL_DLLS "${OPENSSL_INCLUDE_DIR}/../*.dll")
+    file(GLOB OPENSSL_DLLS "${OPENSSL_INCLUDE_DIR}/../bin/*.dll")
     set(RUNTIME_LIBS ${RUNTIME_LIBS}
         ${ZLIB_DLLS}
         ${OPENSSL_DLLS}
     )
     install(FILES ${RUNTIME_LIBS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin")
     #Copy required qt plugins
-    get_target_property(JPEGPLUGIN_LOCATION Qt5::QJpegPlugin LOCATION)
-    get_target_property(GIFPLUGIN_LOCATION Qt5::QGifPlugin LOCATION)
-    get_target_property(SVGICONPLUGIN_LOCATION Qt5::QSvgIconPlugin LOCATION)
-    get_target_property(WINDOWSPLATFORMPLUGIN_LOCATION Qt5::QWindowsIntegrationPlugin LOCATION)
-    get_target_property(WINDOWSAUDIOPLUGIN_LOCATION Qt5::QWindowsAudioPlugin LOCATION)
-    get_target_property(WINDOWSVISTASTYLEPLUGIN_LOCATION Qt5::QWindowsVistaStylePlugin LOCATION)
+    get_target_property(JPEGPLUGIN_LOCATION Qt6::QJpegPlugin LOCATION)
+    get_target_property(GIFPLUGIN_LOCATION Qt6::QGifPlugin LOCATION)
+    get_target_property(SVGICONPLUGIN_LOCATION Qt6::QSvgIconPlugin LOCATION)
+    get_target_property(WINDOWSPLATFORMPLUGIN_LOCATION Qt6::QWindowsIntegrationPlugin LOCATION)
+    get_target_property(WINDOWSSTYLEPLUGIN_LOCATION Qt6::QModernWindowsStylePlugin LOCATION)
+    get_target_property(TLSOPENSSLPLUGIN_LOCATION Qt6::QTlsBackendOpenSSLPlugin LOCATION)
     install(FILES ${JPEGPLUGIN_LOCATION} ${GIFPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/imageformats")
     install(FILES ${SVGICONPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/iconengines")
     install(FILES ${WINDOWSPLATFORMPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/platforms")
-    install(FILES ${WINDOWSAUDIOPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/audio")
-    install(FILES ${WINDOWSVISTASTYLEPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/styles")
+    install(FILES ${WINDOWSSTYLEPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/styles")
+    install(FILES ${TLSOPENSSLPLUGIN_LOCATION} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/tls")
     #Copy pythons dlls dir
     install(DIRECTORY ${PYTHON_INCLUDE_DIR}/../DLLs DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
     #Use fixup_bundle to copy dlls

@@ -16,27 +16,13 @@
 
 AudioNotifier::AudioNotifier(QObject *parent)
 {
-    QAudioDeviceInfo info = QAudioDeviceInfo::defaultOutputDevice();
-    // Set up the format, eg.
-    format = info.preferredFormat();
-    format.setCodec("audio/pcm");
-    format.setChannelCount(2);
+    QAudioFormat format;
     format.setSampleRate(44100);
-    format.setSampleSize(16);
-    format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::SignedInt);
+    format.setChannelCount(2);
+    format.setSampleFormat(QAudioFormat::Int16);
 
-    if (!info.isFormatSupported(format)) {
-        WARNING(tr("Audio format not supported by backend. Trying nearest format."));
-        format = info.nearestFormat(format);
-    }
-
-    audioOutput = new QAudioOutput(format, this);
-    connect(audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioStateChanged(QAudio::State)));
-    if(audioOutput->error() != QAudio::NoError)
-    {
-        WARNING(tr("Error while creating audio output. Code: ") + QString::number(audioOutput->error()) + tr(" Device: ") + info.deviceName());
-    }
+    audioOutput = new QAudioSink(format, this);
+    connect(audioOutput, &QAudioSink::stateChanged, this, &AudioNotifier::audioStateChanged);
 }
 
 AudioNotifier::~AudioNotifier()
@@ -92,20 +78,15 @@ void AudioNotifier::playNextFromQueue()
             }
             audioOutput->start(&audioFile);
         }
-        if(audioOutput->error() != QAudio::NoError)
+        if(audioOutput->state() == QAudio::IdleState)
         {
-            WARNING(tr("Error while playing ") + file + tr(". Code: ") + QString::number(audioOutput->error()));
+            WARNING(tr("Error while playing ") + file + tr(". Error: State is Idle"));
         }
     }
 }
 
 void AudioNotifier::audioStateChanged(QAudio::State state)
 {
-    if(audioOutput->error() != QAudio::NoError)
-    {
-        WARNING(tr("Error while playing audio. Code: ") + QString::number(audioOutput->error()));
-        audioOutput->stop();
-    }
     if(state == QAudio::IdleState)
     {
         audioFile.close();

@@ -1,0 +1,46 @@
+name: Snap
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ master, qt6 ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build snap (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build snap
+        uses: snapcore/action-build@v1
+        id: build
+        with:
+          path: deploy/linux
+
+      - name: Verify snap
+        run: |
+          snap_file="${{ steps.build.outputs.snap }}"
+          echo "Built snap: $snap_file"
+          unsquashfs -l "$snap_file" | head -30
+
+      - name: Upload snap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screencloud-${{ matrix.arch }}.snap
+          path: ${{ steps.build.outputs.snap }}
+          retention-days: 30

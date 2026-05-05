@@ -26,6 +26,7 @@ FirstRunWizard::FirstRunWizard(QWidget *parent) :
     setStartId(Page_Welcome);
 
     setWindowTitle(tr("ScreenCloud"));
+    setWizardStyle(QWizard::ClassicStyle);
     setOptions(QWizard::CancelButtonOnLeft);
     background = QPixmap(":/images/wizard_background.png");
     setPixmap(QWizard::BackgroundPixmap, background);

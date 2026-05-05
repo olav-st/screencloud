@@ -20,8 +20,8 @@ PythonConsole::PythonConsole(QWidget *parent, PythonQtObjectPtr pythonContext) :
     colorError = Qt::red;
     prompt = "py>";
 
-    connect(PythonQt::self(), SIGNAL(pythonStdOut(const QString&)), this, SLOT(stdOut(const QString&)));
-    connect(PythonQt::self(), SIGNAL(pythonStdErr(const QString&)), this, SLOT(stdErr(const QString&)));
+    connect(PythonQt::self(), &PythonQt::pythonStdOut, this, &PythonConsole::stdOut);
+    connect(PythonQt::self(), &PythonQt::pythonStdErr, this, &PythonConsole::stdErr);
 
     insertPrompt();
 }

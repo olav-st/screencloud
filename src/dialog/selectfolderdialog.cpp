@@ -25,16 +25,16 @@ SelectFolderDialog::SelectFolderDialog(QWidget *parent) :
     loadSettings();
     setupUi();
 
-    connect(this, SIGNAL(accepted()), this, SLOT(onDialogAccepted()));
-    connect(ui->button_browse, SIGNAL(clicked()), this, SLOT(onBrowseButtonPressed()));
-    connect(ui->input_name, SIGNAL(textChanged(QString)), this, SLOT(onNameFormatChanged(QString)));
+    connect(this, &QDialog::accepted, this, &SelectFolderDialog::onDialogAccepted);
+    connect(ui->button_browse, &QPushButton::clicked, this, &SelectFolderDialog::onBrowseButtonPressed);
+    connect(ui->input_name, &QLineEdit::textChanged, this, &SelectFolderDialog::onNameFormatChanged);
 }
 
 SelectFolderDialog::~SelectFolderDialog()
 {
-    disconnect(this, SIGNAL(accepted()), this, SLOT(onDialogAccepted()));
-    disconnect(ui->button_browse, SIGNAL(clicked()), this, SLOT(onBrowseButtonPressed()));
-    disconnect(ui->input_name, SIGNAL(textChanged(QString)), this, SLOT(onNameFormatChanged(QString)));
+    disconnect(this, &QDialog::accepted, this, &SelectFolderDialog::onDialogAccepted);
+    disconnect(ui->button_browse, &QPushButton::clicked, this, &SelectFolderDialog::onBrowseButtonPressed);
+    disconnect(ui->input_name, &QLineEdit::textChanged, this, &SelectFolderDialog::onNameFormatChanged);
     delete ui;
 }
 
