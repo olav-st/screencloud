@@ -45,3 +45,12 @@ jobs:
             cd build
             cmake -GNinja ..
             ninja
+
+      - name: Test built binary
+        uses: devcontainers/ci@v0.3
+        with:
+          cacheFrom: ghcr.io/${{ github.repository_owner }}/screencloud-devcontainer
+          push: never
+          runCmd: |
+            cd build
+            ./screencloud --version

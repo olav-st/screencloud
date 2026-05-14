@@ -89,3 +89,6 @@ RUN git clone https://github.com/mevislab/PythonQt /tmp/pythonqt \
 RUN useradd -m -s /bin/bash vscode
 USER vscode
 WORKDIR /home/vscode/work
+
+# Set environment variable for headless Qt rendering
+ENV QT_QPA_PLATFORM=offscreen
