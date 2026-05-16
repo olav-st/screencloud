@@ -376,12 +376,11 @@ jobs:
           mkdir -p appdir/usr/local/lib/${PYTHON_VERSION_DIR}
           cp -r "${PYTHON_PREFIX}/lib/${PYTHON_VERSION_DIR}/." \
             appdir/usr/local/lib/${PYTHON_VERSION_DIR}
-          # Remove test dirs, site-packages and __pycache__ to save space
+          # Remove test dirs and __pycache__ to save space
           find appdir/usr/local/lib/${PYTHON_VERSION_DIR} \
             -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
           rm -rf appdir/usr/local/lib/${PYTHON_VERSION_DIR}/test
           rm -rf appdir/usr/local/lib/${PYTHON_VERSION_DIR}/ensurepip
-          rm -rf appdir/usr/local/lib/${PYTHON_VERSION_DIR}/site-packages
 
           # Download linuxdeployqt
           wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-${{ matrix.arch }}.AppImage"
