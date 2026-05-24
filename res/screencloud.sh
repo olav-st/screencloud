@@ -25,8 +25,17 @@ if [ -n "$SNAP" ]; then
 	export QT_XCB_GL_INTEGRATION=none
 	export XDG_DATA_DIRS="$SNAP/usr/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 	export XDG_CONFIG_DIRS="$SNAP/etc/xdg:${XDG_CONFIG_DIRS:-/etc/xdg}"
-	export QT_QPA_PLATFORMTHEME=gtk3
-	export QT_STYLE_OVERRIDE=adwaita
+	case "${XDG_CURRENT_DESKTOP:-}" in
+		*GNOME*|*gnome*)
+			ADWAITA_VARIANT="Adwaita"
+			if [ "$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)" = "'prefer-dark'" ]; then
+				ADWAITA_VARIANT="Adwaita-Dark"
+			fi
+			export QT_QPA_PLATFORMTHEME=gtk3
+			export QT_STYLE_OVERRIDE="${ADWAITA_VARIANT}"
+			echo "GNOME desktop detected, setting QT_STYLE_OVERRIDE=${ADWAITA_VARIANT}"
+			;;
+	esac
 
 	exec screencloud "$@"
 else

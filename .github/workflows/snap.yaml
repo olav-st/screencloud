@@ -3,7 +3,7 @@ name: Snap
 on:
   workflow_dispatch: {}
   push:
-    branches: [ master ]
+    branches: [ master, qt6 ]
     tags:
       - 'v*'
   pull_request:
