@@ -122,6 +122,7 @@ jobs:
             exit 1
           fi
           echo "ADWAITA_QT_STYLE=$(pwd)/${ADWAITA_STYLE#./}" >> $GITHUB_ENV
+          echo "ADWAITA_QT_LIB_DIR=$(pwd)/src/lib" >> $GITHUB_ENV
 
       # macOS dependencies
       - name: Install macOS dependencies
@@ -452,11 +453,20 @@ jobs:
 
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(dirname "${PYTHONQT_LIB}"):$QUAZIP_DIR/lib
 
+          # Bundle adwaita-qt6 style plugin and its support libraries
+          mkdir -p appdir/usr/local/plugins/styles
+          cp "${ADWAITA_QT_STYLE}" appdir/usr/local/plugins/styles/
+          cp "${ADWAITA_QT_LIB_DIR}"/libadwaitaqt6*.so* appdir/usr/local/lib/
+
           # Prepare appdir
           ./linuxdeployqt-continuous-${{ matrix.arch }}.AppImage appdir/usr/local/share/applications/*.desktop \
             -bundle-non-qt-libs \
             -exclude-libs=libqsqlmimer,libmariadb \
             -verbose=2
+
+          # adwaita.so rpath isn't fixed by linuxdeployqt; patch it so it finds
+          # the bundled libadwaitaqt6.so.1 in usr/local/lib/ rather than the system one
+          patchelf --set-rpath '$ORIGIN/../../lib' appdir/usr/local/plugins/styles/adwaita.so
 
           # Overwrite the generated AppRun to use screencloud.sh
           cat > appdir/AppRun << 'EOF'
@@ -465,10 +475,6 @@ jobs:
           exec "${APPDIR}/usr/local/bin/screencloud.sh" "$@"
           EOF
           chmod +x appdir/AppRun
-
-          # Bundle adwaita-qt6 style plugin so it can be used on GNOME
-          mkdir -p appdir/usr/plugins/styles
-          cp "${ADWAITA_QT_STYLE}" appdir/usr/plugins/styles/
 
           # appimagetool needs the desktop file and icon at the appdir root
           cp appdir/usr/local/share/applications/*.desktop appdir/
