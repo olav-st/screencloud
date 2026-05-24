@@ -1,3 +1,9 @@
+<h2>ScreenCloud 1.6.0 (2026-05-24)</h2>
+<ul>
+	<li>Upgrade to Qt 6</li>
+	<li>Add dark-mode support on Linux (GNOME-only)</li>
+</ul>
+<br/>
 <h2>ScreenCloud 1.5.3 (2020-10-25)</h2>
 <ul>
 	<li>Add Ctrl + C shortcut to capture selection overlay</li>
