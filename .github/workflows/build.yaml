@@ -101,9 +101,27 @@ jobs:
             libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libswresample-dev \
             libunwind-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
             libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-bad \
-            libmariadb-dev libfuse2
+            libmariadb-dev libfuse2 libgtk-3-dev
 
           pip3 install --no-binary :all: ssh2-python
+
+          # Build adwaita-qt6 style plugin for AppImage bundling
+          git clone https://github.com/FedoraQt/adwaita-qt.git
+          cd adwaita-qt
+          mkdir build && cd build
+          cmake .. \
+            -G Ninja \
+            -DCMAKE_PREFIX_PATH="${Qt6_DIR}" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DUSE_QT6=ON
+          ninja
+          ADWAITA_STYLE=$(find . -name "adwaita.so" | head -1)
+          if [ -z "${ADWAITA_STYLE}" ]; then
+            echo "ERROR: Could not locate built adwaita.so"
+            find . -name "*.so" 2>/dev/null
+            exit 1
+          fi
+          echo "ADWAITA_QT_STYLE=$(pwd)/${ADWAITA_STYLE#./}" >> $GITHUB_ENV
 
       # macOS dependencies
       - name: Install macOS dependencies
@@ -447,6 +465,10 @@ jobs:
           exec "${APPDIR}/usr/local/bin/screencloud.sh" "$@"
           EOF
           chmod +x appdir/AppRun
+
+          # Bundle adwaita-qt6 style plugin so it can be used on GNOME
+          mkdir -p appdir/usr/plugins/styles
+          cp "${ADWAITA_QT_STYLE}" appdir/usr/plugins/styles/
 
           # appimagetool needs the desktop file and icon at the appdir root
           cp appdir/usr/local/share/applications/*.desktop appdir/

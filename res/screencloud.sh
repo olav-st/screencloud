@@ -35,5 +35,19 @@ else
 	export PYTHONHOME="${HERE}/.."
 	export PYTHONPATH="${HERE}/../lib/python3.12:${HERE}/../share/screencloud/modules"
 	export SC_AUTOSTART_EXEC=${APPIMAGE}
+	export QT_PLUGIN_PATH="${HERE}/../../plugins${QT_PLUGIN_PATH:+:${QT_PLUGIN_PATH}}"
+
+	# Apply the Adwaita style when running under GNOME
+	case "${XDG_CURRENT_DESKTOP:-}" in
+		*GNOME*|*gnome*)
+			ADWAITA_VARIANT="Adwaita"
+			if [ "$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)" = "'prefer-dark'" ]; then
+				ADWAITA_VARIANT="Adwaita-Dark"
+			fi
+			export QT_STYLE_OVERRIDE="${ADWAITA_VARIANT}"
+			echo "GNOME desktop detected, setting QT_STYLE_OVERRIDE=${ADWAITA_VARIANT}"
+			;;
+	esac
+
 	exec "${HERE}/screencloud" "$@"
 fi
