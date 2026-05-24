@@ -27,9 +27,9 @@ if [ -n "$SNAP" ]; then
 	export XDG_CONFIG_DIRS="$SNAP/etc/xdg:${XDG_CONFIG_DIRS:-/etc/xdg}"
 	case "${XDG_CURRENT_DESKTOP:-}" in
 		*GNOME*|*gnome*)
-			ADWAITA_VARIANT="Adwaita"
+			ADWAITA_VARIANT="adwaita"
 			if [ "$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)" = "'prefer-dark'" ]; then
-				ADWAITA_VARIANT="Adwaita-Dark"
+				ADWAITA_VARIANT="adwaita-dark"
 			fi
 			export QT_QPA_PLATFORMTHEME=gtk3
 			export QT_STYLE_OVERRIDE="${ADWAITA_VARIANT}"
@@ -49,9 +49,9 @@ else
 	# Apply the Adwaita style when running under GNOME
 	case "${XDG_CURRENT_DESKTOP:-}" in
 		*GNOME*|*gnome*)
-			ADWAITA_VARIANT="Adwaita"
+			ADWAITA_VARIANT="adwaita"
 			if [ "$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)" = "'prefer-dark'" ]; then
-				ADWAITA_VARIANT="Adwaita-Dark"
+				ADWAITA_VARIANT="adwaita-dark"
 			fi
 			export QT_STYLE_OVERRIDE="${ADWAITA_VARIANT}"
 			echo "GNOME desktop detected, setting QT_STYLE_OVERRIDE=${ADWAITA_VARIANT}"
