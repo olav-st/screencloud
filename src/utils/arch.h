@@ -33,4 +33,16 @@
 #endif
 #endif //Q_OS_WIN
 
+#ifdef Q_OS_MACOS
+#ifdef __arm64__
+#define ARCH "arm64"
+#elif defined(__x86_64__)
+#define ARCH "x86_64"
+#elif defined(__i386__)
+#define ARCH "x86"
+#else
+#define ARCH "unknown"
+#endif
+#endif //Q_OS_MACOS
+
 #endif // ARCH_H

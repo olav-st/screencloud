@@ -59,7 +59,7 @@ void DownloadUpdateDialog::startDownload(QString version)
         tmpFile->remove();
     }
     INFO(tr("Saving dmg to ") + tmpFile->fileName());
-    QNetworkRequest downloadRequest("https://api.screencloud.net/files/mac/ScreenCloud-" + version + ".dmg");
+    QNetworkRequest downloadRequest("https://api.screencloud.net/files/mac/ScreenCloud-" + version + "-" + QString(ARCH) + ".dmg");
     QNetworkReply* r = netManager->get(downloadRequest);
     connect(r, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
     INFO(tr("Downloading ") + downloadRequest.url().toString());
