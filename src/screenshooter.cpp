@@ -27,31 +27,34 @@
 #include <utils/freedesktopdbusresponse.h>
 #endif
 
+static QRect virtualDesktopRect()
+{
+    QRect r;
+    for (QScreen *s : QGuiApplication::screens())
+        r = r.united(s->geometry());
+    return r;
+}
+
 const QImage ScreenShooter::captureFullscreen(bool captureMultipleMonitors)
 {
     QImage allMonitorsScreenshot = ScreenShooter::captureAllMonitors();
 
-    //If capturing only a single monitor, crop the image
     if(!captureMultipleMonitors)
     {
-        #if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
-            QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
-        #else
-            int screenNumber = QApplication::desktop()->screenNumber(QCursor::pos());
-            QScreen* screen = QApplication::screens().at(screenNumber);
-        #endif
-            return allMonitorsScreenshot.copy(screen->geometry());
+        QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
+        if (!screen) screen = QApplication::primaryScreen();
+        QRect virt = virtualDesktopRect();
+        return allMonitorsScreenshot.copy(screen->geometry().translated(-virt.topLeft()));
     }
 
-    //Otherwise return the image as is
     return allMonitorsScreenshot;
 }
 
 const QImage ScreenShooter::captureSelection(const QRect &area)
 {
+    QRect virt = virtualDesktopRect();
     QImage allMonitorsScreenshot = ScreenShooter::captureAllMonitors();
-    QImage areaScreenshot = allMonitorsScreenshot.copy(area);
-    return areaScreenshot;
+    return allMonitorsScreenshot.copy(area.translated(-virt.topLeft()));
 }
 
 const QImage ScreenShooter::captureWindow(WId windowID, bool captureWindowBorders)
@@ -186,11 +189,20 @@ const QImage ScreenShooter::captureAllMonitors()
         }
     }
 #endif
-    //If we are on Win/Mac, or not running on Wayland, use the Qt API to take a screenshot
+    // Qt6: grabWindow(0) captures only "this screen", not the full virtual desktop.
+    // Grab each screen individually and composite them into one image.
     INFO(QObject::tr("Capturing the screen using the Qt API"));
-    QScreen* screen = QApplication::primaryScreen();
-    QRect screenGeometry = screen->virtualGeometry();
-    QPixmap pixmap = screen->grabWindow(0, screenGeometry.x(), screenGeometry.y(), screenGeometry.width(), screenGeometry.height());
-
-    return pixmap.toImage();
+    QRect virt = virtualDesktopRect();
+    QImage result(virt.size(), QImage::Format_RGB32);
+    result.fill(Qt::black);
+    QPainter painter(&result);
+    for (QScreen *s : QGuiApplication::screens()) {
+        QImage screenImg = s->grabWindow(0).toImage();
+        QRect target = s->geometry().translated(-virt.topLeft());
+        if (screenImg.size() != target.size())
+            screenImg = screenImg.scaled(target.size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        painter.drawImage(target.topLeft(), screenImg);
+    }
+    painter.end();
+    return result;
 }
