@@ -193,7 +193,6 @@ const QImage ScreenShooter::captureAllMonitors()
 #endif
     //If we are on Win/Mac, or not running on Wayland, use the Qt API to take a screenshot
     // Grab each screen individually and composite them into one image.
-    // Grab each screen individually and composite them into one image.
     INFO(QObject::tr("Capturing the screen using the Qt API"));
     QRect virt = virtualDesktopRect();
     QImage result(virt.size(), QImage::Format_RGB32);
