@@ -60,7 +60,7 @@ apps:
 parts:
   screencloud:
     source: https://github.com/olav-st/screencloud.git
-    source-tag: qt6 #TODO: Switch to master
+    source-tag: master
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
