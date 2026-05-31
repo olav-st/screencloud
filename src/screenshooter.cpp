@@ -39,6 +39,7 @@ const QImage ScreenShooter::captureFullscreen(bool captureMultipleMonitors)
 {
     QImage allMonitorsScreenshot = ScreenShooter::captureAllMonitors();
 
+    //If capturing only a single monitor, crop the image
     if(!captureMultipleMonitors)
     {
         QScreen* screen = QGuiApplication::screenAt(QCursor::pos());
@@ -47,6 +48,7 @@ const QImage ScreenShooter::captureFullscreen(bool captureMultipleMonitors)
         return allMonitorsScreenshot.copy(screen->geometry().translated(-virt.topLeft()));
     }
 
+    //Otherwise return the image as is
     return allMonitorsScreenshot;
 }
 
@@ -189,7 +191,8 @@ const QImage ScreenShooter::captureAllMonitors()
         }
     }
 #endif
-    // Qt6: grabWindow(0) captures only "this screen", not the full virtual desktop.
+    //If we are on Win/Mac, or not running on Wayland, use the Qt API to take a screenshot
+    // Grab each screen individually and composite them into one image.
     // Grab each screen individually and composite them into one image.
     INFO(QObject::tr("Capturing the screen using the Qt API"));
     QRect virt = virtualDesktopRect();
