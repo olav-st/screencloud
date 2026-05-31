@@ -17,9 +17,11 @@
 #include <QObject>
 #include <QPixmap>
 #include <QApplication>
+#include <QGuiApplication>
 #include <QSettings>
 #include <QScreen>
 #include <QImage>
+#include <QPainter>
 
 class ScreenShooter
 {
