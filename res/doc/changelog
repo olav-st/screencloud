@@ -1,3 +1,9 @@
+screencloud (1.6.1) unstable; urgency=low
+
+  * Fix multi-monitor screen capture regression after Qt 6 upgrade
+
+ -- Olav Sortland Thoresen <olav.s.th@gmail.com>  Sun, 31 May 2026 15:00:00 -0000
+
 screencloud (1.6.0) unstable; urgency=low
 
   * Upgrade to Qt 6
