@@ -1,3 +1,8 @@
+<h2>ScreenCloud 1.6.2 (2026-05-31)</h2>
+<ul>
+	<li>Fix auto-update regression after Qt 6 upgrade</li>
+</ul>
+<br/>
 <h2>ScreenCloud 1.6.1 (2026-05-31)</h2>
 <ul>
 	<li>Fix multi-monitor screen capture regression after Qt 6 upgrade</li>
