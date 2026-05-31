@@ -107,7 +107,7 @@ void DownloadUpdateDialog::launchInstaller()
     QString program = "open " + QDir::toNativeSeparators(tmpFile->fileName());
 #endif
     INFO(tr("Starting new process: ") + program);
-    process->start(program);
+    process->startCommand(program);
     QCoreApplication::exit(0);
 }
 
