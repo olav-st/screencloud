@@ -33,7 +33,8 @@ jobs:
         with:
           imageName: ghcr.io/${{ github.repository_owner }}/screencloud-devcontainer
           cacheFrom: ghcr.io/${{ github.repository_owner }}/screencloud-devcontainer
-          push: always
+          push: filter
+          refFilterForPush: refs/heads/master
 
       - name: Build ScreenCloud
         uses: devcontainers/ci@v0.3
